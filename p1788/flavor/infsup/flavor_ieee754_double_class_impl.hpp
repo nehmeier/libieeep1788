@@ -97,6 +97,25 @@ assert(!"not implemented");
     return representation(0.0, 0.0);
 }
 
+
+ieee754_flavor<double>::representation ieee754_flavor<double>::constructor_infsup ( representation const& other )
+{
+// TODO (nehmeier#1#): Check
+assert(!"not implemented");
+
+    return other;
+}
+
+template<typename T>
+ieee754_flavor<double>::representation ieee754_flavor<double>::constructor_infsup ( representation_type<T> const& other )
+{
+// TODO (nehmeier#1#): Check
+assert(!"not implemented");
+
+    return other;
+}
+
+
 // Methods
 
 double ieee754_flavor<double>::method_lower ( ieee754_flavor<double>::representation const& x )

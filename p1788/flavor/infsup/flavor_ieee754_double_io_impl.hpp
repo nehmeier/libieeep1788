@@ -45,7 +45,7 @@ std::basic_ostream<CharT, Traits>& ieee754_flavor<double>::operator_output ( std
 // TODO (nehmeier#1#): Check
 assert(!"not implemented");
 
-    os << "[" << x.first << "," << x.second << "]";
+    return os << "[" << x.first << "," << x.second << "]";
 }
 
 template< typename CharT, typename Traits >

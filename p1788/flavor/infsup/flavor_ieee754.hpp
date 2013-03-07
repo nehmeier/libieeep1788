@@ -48,17 +48,23 @@ public:
 };
 
 
+
 template<>
 class ieee754_flavor<double>
 {
 public:
 
+    template<typename T>
+    using representation_type = std::pair<T,T>;
+
+    // Internal representation
+    typedef representation_type<double> representation;
+
+
+
 // -----------------------------------------------------------------------------
 // Class constructors and methods
 // -----------------------------------------------------------------------------
-
-    // Internal representation
-    typedef std::pair<double, double> representation;
 
     // Constructors
     static representation constructor_infsup ( );
@@ -69,6 +75,11 @@ public:
     static representation constructor_infsup ( ConstRandomAccessIterator first, ConstRandomAccessIterator last );
 
     static representation constructor_infsup ( std::string const& str );
+
+    static representation constructor_infsup ( representation const& other );
+
+    template<typename T>
+    static representation constructor_infsup ( representation_type<T> const& other );
 
     // Methods
     static double method_lower ( representation const& x );
@@ -243,5 +254,8 @@ public:
 #include "p1788/flavor/infsup/flavor_ieee754_double_rec_elem_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_ieee754_double_rec_overlap_impl.hpp"
 #include "p1788/flavor/infsup/flavor_ieee754_double_rec_slope_func_impl.hpp"
+
+
+
 
 #endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_HPP

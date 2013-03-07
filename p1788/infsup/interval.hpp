@@ -47,6 +47,7 @@ namespace infsup
 
 //TODO hull, see P1788/D7.0 Sect. 9.3
 
+//TODO Mixed-type with different Flavors?
 
 template< typename T, template< typename > class Flavor > class interval;
 
@@ -86,6 +87,9 @@ interval<T, Flavor> operator- ( interval<T, Flavor> const& x );    ///< Required
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> operator+ ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Required, tightest, Mixed-Type
+
+template< typename Interval, typename Tx, typename Ty, template< typename > class Flavor >
+Interval add ( interval<Tx, Flavor> const& x, interval<Ty, Flavor> const& y );  ///< Required, tightest, Mixed-Type-implementation
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> operator- ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Required, tightest, Mixed-Type
@@ -535,6 +539,14 @@ template< typename T, template< typename > class Flavor >
 class interval  // TODO final
 {
 public:
+
+    typedef T bound_type;
+
+    // TODO type alias ?
+    //template<typename TT> using flavor_type = Flavor<TT>;
+
+    typedef Flavor<T> flavor_type;
+
     // TODO Constructor specification
 
     interval ( );                               ///< Implementation specific, default constructor
@@ -548,6 +560,13 @@ public:
     explicit interval ( std::string const& str);     ///< Required, text2Interval, see P1788/D7.0 Sect. 9.6.8
     //interval (char const *);     ///< Required, text2Interval, see P1788/D7.0 Sect. 9.6.8 //TODO String
     // TODO literal, see P1788/D7.0 Sect. 9.6.1  (c++11 literal)
+
+
+    interval (interval<T, Flavor> const& other);  ///< Copy-constructor
+
+    template<typename TT>
+    interval (interval<TT, Flavor> const& other);  ///< Copy-constructor
+
 
     // TODO public representation,
 
@@ -573,6 +592,8 @@ private:
 //------------------------------------------------------------------------------
 // Friends
 //------------------------------------------------------------------------------
+
+    template<typename, template<typename> class> friend class p1788::infsup::interval;
 
     // IO
     friend std::ostream& operator<< <> ( std::ostream& os, interval<T, Flavor> const& x );

@@ -58,7 +58,7 @@ ieee754_flavor<double>::representation ieee754_flavor<double>::add( ieee754_flav
 // TODO (nehmeier#1#): Implement!
 assert(!"not implemented");
 
-    return ieee754_flavor<double>::static_method_entire();
+    return representation(x.first + y.first, x.second + y.second);
 }
 
 ieee754_flavor<double>::representation ieee754_flavor<double>::sub( ieee754_flavor<double>::representation const& x, ieee754_flavor<double>::representation const& y )

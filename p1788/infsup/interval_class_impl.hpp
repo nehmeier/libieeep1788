@@ -73,6 +73,20 @@ interval<T, Flavor>::interval ( std::string const& str )
 {
 }
 
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor>::interval (interval<T, Flavor> const& other)  ///< Copy-constructor
+    : rep_(Flavor<T>::constructor_infsup( other.rep_ ))
+{
+}
+
+
+template< typename T, template< typename > class Flavor>
+template<typename TT>
+interval<T, Flavor>::interval (interval<TT, Flavor> const& other)  ///< Copy-constructor
+    : rep_(Flavor<T>::constructor_infsup( other.rep_ ))
+{
+}
+
 
 // -----------------------------------------------------------------------------
 // Methods

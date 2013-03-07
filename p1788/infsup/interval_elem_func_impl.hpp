@@ -29,6 +29,7 @@
 #include <vector>
 #include <algorithm>
 
+#include "p1788/util/mixed_type_traits.hpp"
 
 namespace p1788
 {
@@ -57,6 +58,25 @@ interval<T, Flavor> operator+ ( interval<T, Flavor> const& x, interval<T, Flavor
 {
     return interval<T, Flavor>(Flavor<T>::add(x.rep(), y.rep()));
 }
+
+template< typename Interval, typename Tx, typename Ty, template< typename > class Flavor >
+Interval add ( interval<Tx, Flavor> const& x, interval<Ty, Flavor> const& y )
+{
+    static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                  "Return type is not supported by mixed type operations!");
+    static_assert(std::is_same<typename Interval::flavor_type,
+                  Flavor<typename Interval::bound_type>>::value,
+                  "Different flavors not supported!");
+
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             Tx,
+             Ty
+             >::type Tmax;
+
+    return interval<Tmax, Flavor>(x) + interval<Tmax, Flavor>(y);
+}
+
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> operator- ( interval<T, Flavor> const& x, interval<T, Flavor> const& y )
