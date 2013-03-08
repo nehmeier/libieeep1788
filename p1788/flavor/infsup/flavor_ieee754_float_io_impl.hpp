@@ -23,8 +23,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_IO_IMPL_HPP
-#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_IO_IMPL_HPP
+#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_FLOAT_IO_IMPL_HPP
+#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_FLOAT_IO_IMPL_HPP
 
 #include <cassert>
 
@@ -40,16 +40,16 @@ namespace infsup
 
 // IO
 template< typename CharT, typename Traits >
-std::basic_ostream<CharT, Traits>& ieee754_flavor<double>::operator_output ( std::basic_ostream<CharT, Traits>& os, ieee754_flavor<double>::representation const& x )
+std::basic_ostream<CharT, Traits>& ieee754_flavor<float>::operator_output ( std::basic_ostream<CharT, Traits>& os, ieee754_flavor<float>::representation const& x )
 {
 // TODO (nehmeier#1#): Check
 assert(!"not implemented");
 
-    return os << "[" << x.first << "," << x.second << "]_d";
+    return os << "[" << x.first << "," << x.second << "]_f";
 }
 
 template< typename CharT, typename Traits >
-std::basic_istream<CharT, Traits>& ieee754_flavor<double>::operator_input ( std::basic_istream<CharT, Traits>& is, ieee754_flavor<double>::representation& x )
+std::basic_istream<CharT, Traits>& ieee754_flavor<float>::operator_input ( std::basic_istream<CharT, Traits>& is, ieee754_flavor<float>::representation& x )
 {
 // TODO (nehmeier#1#): Check
 assert(!"not implemented");
@@ -70,4 +70,4 @@ assert(!"not implemented");
 } // namespace p1788
 
 
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_IO_IMPL_HPP
+#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_FLOAT_IO_IMPL_HPP

@@ -49,15 +49,17 @@ namespace infsup
 
 //TODO Mixed-type with different Flavors?
 
+
+// Forward declaration
 template< typename T, template< typename > class Flavor > class interval;
-
-
 
 
 
 // -----------------------------------------------------------------------------
 // Input and output, see P1788/D7.0 Sect. 13
 // -----------------------------------------------------------------------------
+
+//TODO basic_ostream & basic_istream
 
 template< typename T, template< typename > class Flavor >
 std::ostream& operator<< ( std::ostream& os, interval<T, Flavor> const& x );
@@ -66,49 +68,111 @@ template< typename T, template< typename > class Flavor >
 std::istream& operator>> ( std::istream& is, interval<T, Flavor>& x );
 
 
-//TODO basic_ostream & basic_istream
-
-//template< typename CharT, typename Traits, typename T, template< typename > class Flavor >
-//std::basic_ostream<CharT, Traits>& operator<< ( std::basic_ostream<CharT, Traits>& os, interval<T, Flavor> const& x );
-
-//template< typename CharT, typename Traits, typename T, template< typename > class Flavor >
-//std::basic_istream<CharT, Traits>& operator>> ( std::basic_istream<CharT, Traits>& is, interval<T, Flavor>& x );
-
 
 // -----------------------------------------------------------------------------
 // Forward elementary functions, see P1788/D7.0 Sect. 9.6.3 Table 1
 // -----------------------------------------------------------------------------
 
-template< typename T, template< typename > class Flavor >
-interval<T, Flavor> operator+ ( interval<T, Flavor> const& x );   ///< Implementation specific, for consistency with -x, not mentioned in the standard
+//pos
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> operator- ( interval<T, Flavor> const& x );    ///< Required, -x
+interval<T, Flavor> pos ( interval<T, Flavor> const& x );   ///< Implementation specific, for consistency with -x, not mentioned in the standard
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval pos ( interval<T, Flavor> const& x );              ///< Mixed type
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> operator+ ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Required, tightest, Mixed-Type
+interval<T, Flavor> operator+ ( interval<T, Flavor> const& x ); ///< Shorthand for pos(x)
+
+
+// neg
+
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor> neg ( interval<T, Flavor> const& x );    ///< Required, -x
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval neg ( interval<T, Flavor> const& x );    ///< Mixed type
+
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor> operator- ( interval<T, Flavor> const& x );    ///< Shorthand for neg(x)
+
+
+// add
+
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor> add ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Required, tightest
 
 template< typename Interval, typename Tx, typename Ty, template< typename > class Flavor >
-Interval add ( interval<Tx, Flavor> const& x, interval<Ty, Flavor> const& y );  ///< Required, tightest, Mixed-Type-implementation
+Interval add ( interval<Tx, Flavor> const& x, interval<Ty, Flavor> const& y );  ///< Mixed type
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> operator- ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Required, tightest, Mixed-Type
+interval<T, Flavor> operator+ ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Shorthand for add(a,b)
+
+
+// sub
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> operator* ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Required, tightest, Mixed-Type
+interval<T, Flavor> sub ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Required, tightest
+
+template< typename Interval, typename Tx, typename Ty, template< typename > class Flavor >
+Interval sub ( interval<Tx, Flavor> const& x, interval<Ty, Flavor> const& y );  ///< Mixed type
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> operator/ ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Required, tightest, Mixed-Type
+interval<T, Flavor> operator- ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Shorthand for sub(a,b)
+
+
+// mul
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> inv ( interval<T, Flavor> const& x );     ///< Required, tightest, Mixed-Type, called recip in Table 1 and inv in Table 10
+interval<T, Flavor> mul ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Required, tightest
+
+template< typename Interval, typename Tx, typename Ty, template< typename > class Flavor >
+Interval mul ( interval<Tx, Flavor> const& x, interval<Ty, Flavor> const& y );  ///< Mixed type
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> sqrt ( interval<T, Flavor> const& x );    ///< Required, tightest, Mixed-Type
+interval<T, Flavor> operator* ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Shorthand for mul(a,b)
+
+
+// mul
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> fma ( interval<T, Flavor> const& x, interval<T, Flavor> const& y, interval<T, Flavor> const& z ); ///< Required, accuracy ? Mixed-Type
+interval<T, Flavor> div ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Required, tightest
 
+template< typename Interval, typename Tx, typename Ty, template< typename > class Flavor >
+Interval div ( interval<Tx, Flavor> const& x, interval<Ty, Flavor> const& y );  ///< Mixed type
+
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor> operator/ ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );   ///< Shorthand for div(a,b)
+
+
+// inv
+
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor> inv ( interval<T, Flavor> const& x );     ///< Required, tightest, called recip in Table 1 and inv in Table 10
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval inv ( interval<T, Flavor> const& x );     ///< Mixed type
+
+
+// sqrt
+
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor> sqrt ( interval<T, Flavor> const& x );    ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval sqrt ( interval<T, Flavor> const& x );    ///< mixed Type
+
+
+// fma
+
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor> fma ( interval<T, Flavor> const& x, interval<T, Flavor> const& y, interval<T, Flavor> const& z ); ///< Required, accuracy ?
+
+template< typename Interval, typename Tx, typename Ty, typename Tz, template< typename > class Flavor >
+Interval fma ( interval<Tx, Flavor> const& x, interval<Ty, Flavor> const& y, interval<Tz, Flavor> const& z ); ///< mixed type
+
+
+// interval_case
 
 /// Required, tightest
 ///
@@ -122,96 +186,281 @@ interval<T, Flavor> fma ( interval<T, Flavor> const& x, interval<T, Flavor> cons
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> interval_case ( interval<T, Flavor> const& c, interval<T, Flavor> const& g, interval<T, Flavor> const& h );
 
+template< typename Interval, typename Tc, typename Tg, typename Th, template< typename > class Flavor >
+Interval interval_case ( interval<Tc, Flavor> const& c, interval<Tg, Flavor> const& g, interval<Th, Flavor> const& h ); ///< mixed type
+
+
+// sqr
+
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> sqr ( interval<T, Flavor> const& x );     ///< Required, tightest, Mixed-Type
+interval<T, Flavor> sqr ( interval<T, Flavor> const& x );     ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval sqr ( interval<T, Flavor> const& x );     ///< mixed type
+
+
+// pown
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> pown ( interval<T, Flavor> const& x, int p );   ///< Required, accurate
 
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval pown ( interval<T, Flavor> const& x, int p );   ///< mixed type
+
+
+// pow
+
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> pow ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );     ///< Required, accurate
+
+template< typename Interval, typename Tx, typename Ty, template< typename > class Flavor >
+Interval pow ( interval<Tx, Flavor> const& x, interval<Ty, Flavor> const& y );     ///<  mixed type
+
+
+// exp
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> exp ( interval<T, Flavor> const& x );     ///< Required, tightest
 
-template< typename T, template< typename > class Flavor >
-interval<T, Flavor> exp2 ( interval<T, Flavor> const& x );    ///< Required, tightest
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval exp ( interval<T, Flavor> const& x );     ///< mixed type
+
+
+// exp2
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> exp10 ( interval<T, Flavor> const& x );   ///< Required, tightest
+interval<T, Flavor> exp2 ( interval<T, Flavor> const& x );     ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval exp2 ( interval<T, Flavor> const& x );     ///< mixed type
+
+
+// exp10
+
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor> exp10 ( interval<T, Flavor> const& x );     ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval exp10 ( interval<T, Flavor> const& x );     ///< mixed type
+
+
+// log
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> log ( interval<T, Flavor> const& x );     ///< Required, tightest
 
-template< typename T, template< typename > class Flavor >
-interval<T, Flavor> log2 ( interval<T, Flavor> const& x );    ///< Required, tightest
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval log ( interval<T, Flavor> const& x );     ///< mixed type
+
+
+// log2
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> log10 ( interval<T, Flavor> const& x );   ///< Required, tightest
+interval<T, Flavor> log2 ( interval<T, Flavor> const& x );     ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval log2 ( interval<T, Flavor> const& x );     ///< mixed type
+
+
+// log10
+
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor> log10 ( interval<T, Flavor> const& x );     ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval log10 ( interval<T, Flavor> const& x );     ///< mixed type
+
+
+// sin
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> sin ( interval<T, Flavor> const& x );     ///< Required, accurate
 
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval sin ( interval<T, Flavor> const& x );     ///< mixed type
+
+
+// cos
+
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> cos ( interval<T, Flavor> const& x );     ///< Required, accurate
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval cos ( interval<T, Flavor> const& x );     ///< mixed type
+
+
+// tan
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> tan ( interval<T, Flavor> const& x );     ///< Required, accurate
 
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval tan ( interval<T, Flavor> const& x );     ///< mixed type
+
+
+// asin
+
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> asin ( interval<T, Flavor> const& x );    ///< Required, accurate
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval asin ( interval<T, Flavor> const& x );    ///< mixed type
+
+
+// acos
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> acos ( interval<T, Flavor> const& x );    ///< Required, accurate
 
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval acos ( interval<T, Flavor> const& x );    ///< mixed type
+
+
+// atan
+
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> atan ( interval<T, Flavor> const& x );    ///< Required, accurate
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval atan ( interval<T, Flavor> const& x );    ///< mixed type
+
+
+// atan2
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> atan2 ( interval<T, Flavor> const& y, interval<T, Flavor> const& x );   ///< Required, accurate
 
+template< typename Interval, typename Ty, typename Tx, template< typename > class Flavor >
+Interval atan2 ( interval<Ty, Flavor> const& y, interval<Tx, Flavor> const& x );   ///< mixed type
+
+
+// sinh
+
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> sinh ( interval<T, Flavor> const& x );    ///< Required, accurate
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval sinh ( interval<T, Flavor> const& x );    ///< mixed type
+
+
+// cosh
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> cosh ( interval<T, Flavor> const& x );    ///< Required, accurate
 
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval cosh ( interval<T, Flavor> const& x );    ///< mixed type
+
+
+// tanh
+
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> tanh ( interval<T, Flavor> const& x );    ///< Required, accurate
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval asinh ( interval<T, Flavor> const& x );   ///< mixed type
+
+
+// asinh
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> asinh ( interval<T, Flavor> const& x );   ///< Required, accurate
 
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval asinh ( interval<T, Flavor> const& x );   ///< mixed type
+
+
+// acosh
+
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> acosh ( interval<T, Flavor> const& x );   ///< Required, accurate
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval acosh ( interval<T, Flavor> const& x );   ///< mixed type
+
+
+// atanh
 
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> atanh ( interval<T, Flavor> const& x );   ///< Required, accurate
 
-template< typename T, template< typename > class Flavor >
-interval<T, Flavor> sign ( interval<T, Flavor> const& x );        ///< Required, tightest, Mixed-Type
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval atanh ( interval<T, Flavor> const& x );   ///< mixed type
+
+
+// sign
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> ceil ( interval<T, Flavor> const& x );        ///< Required, tightest, Mixed-Type
+interval<T, Flavor> sign ( interval<T, Flavor> const& x );        ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval sign ( interval<T, Flavor> const& x );        ///< mixed type
+
+
+// ceil
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> floor ( interval<T, Flavor> const& x );       ///< Required, tightest, Mixed-Type
+interval<T, Flavor> ceil ( interval<T, Flavor> const& x );        ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval ceil ( interval<T, Flavor> const& x );        ///< mixed type
+
+
+// floor
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> trunc ( interval<T, Flavor> const& x );       ///< Required, tightest, Mixed-Type
+interval<T, Flavor> floor ( interval<T, Flavor> const& x );       ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval floor ( interval<T, Flavor> const& x );       ///< mixed type
+
+
+// trunc
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> round_ties_to_even ( interval<T, Flavor> const& x );      ///< Required, tightest, Mixed-Type
+interval<T, Flavor> trunc ( interval<T, Flavor> const& x );       ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval trunc ( interval<T, Flavor> const& x );       ///< mixed type
+
+
+// round_ties_to_even
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> round_ties_to_away ( interval<T, Flavor> const& x );      ///< Required, tightest, Mixed-Type
+interval<T, Flavor> round_ties_to_even ( interval<T, Flavor> const& x );      ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval round_ties_to_even ( interval<T, Flavor> const& x );      ///< mixed type
+
+
+// round_ties_to_away
 
 template< typename T, template< typename > class Flavor >
-interval<T, Flavor> abs ( interval<T, Flavor> const& x );         ///< Required, tightest, Mixed-Type
+interval<T, Flavor> round_ties_to_away ( interval<T, Flavor> const& x );      ///< Required, tightest
 
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval round_ties_to_away ( interval<T, Flavor> const& x );      ///< mixed type
+
+
+// abs
+
+template< typename T, template< typename > class Flavor >
+interval<T, Flavor> abs ( interval<T, Flavor> const& x );         ///< Required, tightest
+
+template< typename Interval, typename T, template< typename > class Flavor >
+Interval abs ( interval<T, Flavor> const& x );         ///< mixed type
+
+
+// min
+
+//TODO mixed type
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> min ( std::initializer_list< interval<T, Flavor>> intervals );    ///< Required, Mixed-Type, tightest, hull(menge der untergrenzen)
 
+
+// max
+
+//TODO mixed type
 template< typename T, template< typename > class Flavor >
 interval<T, Flavor> max ( std::initializer_list< interval<T, Flavor>> intervals );    ///<  Required, Mixed-Type, tightest, hull(menge der obergrenzen)
 
@@ -565,7 +814,7 @@ public:
     interval (interval<T, Flavor> const& other);  ///< Copy-constructor
 
     template<typename TT>
-    interval (interval<TT, Flavor> const& other);  ///< Copy-constructor
+    explicit interval (interval<TT, Flavor> const& other);  ///< Copy-constructor
 
 
     // TODO public representation,
@@ -600,12 +849,12 @@ private:
     friend std::istream& operator>> <> ( std::istream& is, interval<T, Flavor>& x );
 
     // Elementary functions
-    friend interval<T, Flavor> operator+ <> ( interval<T, Flavor> const& x );
-    friend interval<T, Flavor> operator- <> ( interval<T, Flavor> const& x );
-    friend interval<T, Flavor> operator+ <> ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );
-    friend interval<T, Flavor> operator- <> ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );
-    friend interval<T, Flavor> operator* <> ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );
-    friend interval<T, Flavor> operator/ <> ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );
+    friend interval<T, Flavor> pos <> ( interval<T, Flavor> const& x );
+    friend interval<T, Flavor> neg <> ( interval<T, Flavor> const& x );
+    friend interval<T, Flavor> add <> ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );
+    friend interval<T, Flavor> sub <> ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );
+    friend interval<T, Flavor> mul <> ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );
+    friend interval<T, Flavor> div <> ( interval<T, Flavor> const& x, interval<T, Flavor> const& y );
     friend interval<T, Flavor> inv <> ( interval<T, Flavor> const& x );
     friend interval<T, Flavor> sqrt <> ( interval<T, Flavor> const& x );
     friend interval<T, Flavor> fma <> ( interval<T, Flavor> const& x, interval<T, Flavor> const& y, interval<T, Flavor> const& z );
