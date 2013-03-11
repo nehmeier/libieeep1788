@@ -59,7 +59,12 @@ Interval pos ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(pos(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(pos(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 template< typename T, template< typename > class Flavor >
@@ -86,7 +91,12 @@ Interval neg ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(neg(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(neg(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 template< typename T, template< typename > class Flavor >
@@ -261,7 +271,12 @@ Interval inv ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(inv(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(inv(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -282,7 +297,12 @@ Interval sqrt ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(sqrt(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(sqrt(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -374,7 +394,12 @@ Interval sqr ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(sqr(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(sqr(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -397,7 +422,12 @@ Interval pown ( interval<T, Flavor> const& x,
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(pown(x, p));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(pown(static_cast<interval<Tmax, Flavor>>(x), p));
 }
 
 
@@ -449,7 +479,12 @@ Interval exp ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(exp(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(exp(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -470,7 +505,12 @@ Interval exp2 ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(exp2(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(exp2(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -491,7 +531,12 @@ Interval exp10 ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(exp10(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(exp10(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -512,7 +557,12 @@ Interval log ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(log(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(log(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -533,7 +583,12 @@ Interval log2 ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(log2(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(log2(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -554,7 +609,12 @@ Interval log10 ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(log10(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(log10(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -575,7 +635,12 @@ Interval sin ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(sin(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(sin(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -596,7 +661,12 @@ Interval cos ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(cos(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(cos(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -617,7 +687,12 @@ Interval tan ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(tan(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(tan(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -638,7 +713,12 @@ Interval asin ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(asin(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(asin(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 // acos
@@ -658,7 +738,12 @@ Interval acos ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(acos(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(acos(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -679,7 +764,12 @@ Interval atan ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(atan(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(atan(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 // atan2
@@ -730,7 +820,12 @@ Interval sinh ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(sinh(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(sinh(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -751,7 +846,12 @@ Interval cosh ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(cosh(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(cosh(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -772,7 +872,12 @@ Interval tanh ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(tanh(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(tanh(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -793,7 +898,12 @@ Interval asinh ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(asinh(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(asinh(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -814,7 +924,12 @@ Interval acosh ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(acosh(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(acosh(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -835,7 +950,12 @@ Interval atanh ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(atanh(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(atanh(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -856,7 +976,12 @@ Interval sign ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(sign(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(sign(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -877,7 +1002,12 @@ Interval ceil ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(ceil(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(ceil(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -898,7 +1028,12 @@ Interval floor ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(floor(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(floor(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -919,7 +1054,12 @@ Interval trunc ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(trunc(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(trunc(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -940,7 +1080,12 @@ Interval round_ties_to_even ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(round_ties_to_even(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(round_ties_to_even(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -961,7 +1106,12 @@ Interval round_ties_to_away ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(round_ties_to_away(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(round_ties_to_away(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
@@ -982,7 +1132,12 @@ Interval abs ( interval<T, Flavor> const& x )
                   Flavor<typename Interval::bound_type>>::value,
                   "Different flavors are not supported by mixed type operations!");
 
-    return Interval(abs(x));
+    typedef typename p1788::util::max_precision_type<
+    typename Interval::bound_type,
+             T
+             >::type Tmax;
+
+    return Interval(abs(static_cast<interval<Tmax, Flavor>>(x)));
 }
 
 
