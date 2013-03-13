@@ -42,35 +42,40 @@ namespace infsup
 
 // Constructors
 
-ieee754_flavor<double>::representation ieee754_flavor<double>::constructor_infsup ( )
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::constructor_infsup()
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     return static_method_empty();
 }
 
-ieee754_flavor<double>::representation ieee754_flavor<double>::constructor_infsup ( double lower, double upper )
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::constructor_infsup(double lower, double upper)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     return representation(lower, upper);
 }
 
-ieee754_flavor<double>::representation ieee754_flavor<double>::constructor_infsup ( double point )
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::constructor_infsup(double point)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     return representation(point, point);
 }
 
 template<typename ConstRandomAccessIterator>
-ieee754_flavor<double>::representation ieee754_flavor<double>::constructor_infsup ( ConstRandomAccessIterator first, ConstRandomAccessIterator last )
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::constructor_infsup(ConstRandomAccessIterator first,
+        ConstRandomAccessIterator last)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     auto lower = std::min_element(first, last);
     auto upper = std::max_element(first, last);
@@ -78,10 +83,11 @@ assert(!"not implemented");
     return representation(*lower, *upper);
 }
 
-ieee754_flavor<double>::representation ieee754_flavor<double>::constructor_infsup ( std::string const& str )
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::constructor_infsup(std::string const& str)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     std::string tmp = str;
 
@@ -98,19 +104,21 @@ assert(!"not implemented");
 }
 
 
-ieee754_flavor<double>::representation ieee754_flavor<double>::constructor_infsup ( representation const& other )
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::constructor_infsup(representation const& other)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     return other;
 }
 
 template<typename T>
-ieee754_flavor<double>::representation ieee754_flavor<double>::constructor_infsup ( representation_type<T> const& other )
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::constructor_infsup( representation_type<T> const& other)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     return other;
 }
@@ -118,54 +126,62 @@ assert(!"not implemented");
 
 // Methods
 
-double ieee754_flavor<double>::method_lower ( ieee754_flavor<double>::representation const& x )
+double
+ieee754_flavor<double>::method_lower(ieee754_flavor<double>::representation const& x)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     return x.first;
 }
 
-double ieee754_flavor<double>::method_upper ( ieee754_flavor<double>::representation const& x )
+double
+ieee754_flavor<double>::method_upper(ieee754_flavor<double>::representation const& x)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     return x.second;
 }
 
-double ieee754_flavor<double>::method_mid ( ieee754_flavor<double>::representation const& x )
+double
+ieee754_flavor<double>::method_mid(ieee754_flavor<double>::representation const& x)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     return (x.first + x.second) / 2.0;
 }
 
-double ieee754_flavor<double>::method_rad ( ieee754_flavor<double>::representation const& x )
+double
+ieee754_flavor<double>::method_rad(ieee754_flavor<double>::representation const& x)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     return (x.second - x.first) / 2.0;
 }
 
 // Static Methods
 
-ieee754_flavor<double>::representation ieee754_flavor<double>::static_method_empty ( )
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::static_method_empty()
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
-    return representation(std::numeric_limits<double>::quiet_NaN(), std::numeric_limits<double>::quiet_NaN());
+    return representation(std::numeric_limits<double>::quiet_NaN(),
+                          std::numeric_limits<double>::quiet_NaN());
 }
 
-ieee754_flavor<double>::representation ieee754_flavor<double>::static_method_entire ( )
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::static_method_entire()
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
-    return representation(-std::numeric_limits<double>::infinity(), std::numeric_limits<double>::infinity());
+    return representation(-std::numeric_limits<double>::infinity(),
+                          std::numeric_limits<double>::infinity());
 }
 
 

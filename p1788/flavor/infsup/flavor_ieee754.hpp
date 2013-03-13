@@ -44,13 +44,14 @@ namespace flavor
 namespace infsup
 {
 
-template< typename T >
+template<typename T>
 class ieee754_flavor
 {
 public:
     typedef struct {} representation;
 
-    static_assert(!std::is_same<T,T>::value, "Type is not supported by this flavor!");
+    static_assert(!std::is_same<T,T>::value,
+                  "Type is not supported by this flavor!");
 };
 
 
@@ -94,29 +95,30 @@ public:
 // -----------------------------------------------------------------------------
 
     // Constructors
-    static representation constructor_infsup ( );
-    static representation constructor_infsup ( double lower, double upper );
-    static representation constructor_infsup ( double point );
+    static representation constructor_infsup();
+    static representation constructor_infsup(double lower, double upper);
+    static representation constructor_infsup(double point);
 
     template<typename ConstRandomAccessIterator>
-    static representation constructor_infsup ( ConstRandomAccessIterator first, ConstRandomAccessIterator last );
+    static representation constructor_infsup(ConstRandomAccessIterator first,
+            ConstRandomAccessIterator last);
 
-    static representation constructor_infsup ( std::string const& str );
+    static representation constructor_infsup(std::string const& str);
 
-    static representation constructor_infsup ( representation const& other );
+    static representation constructor_infsup(representation const& other);
 
     template<typename T>
-    static representation constructor_infsup ( representation_type<T> const& other );
+    static representation constructor_infsup(representation_type<T> const& other);
 
     // Methods
-    static double method_lower ( representation const& x );
-    static double method_upper ( representation const& x );
-    static double method_mid ( representation const& x );
-    static double method_rad ( representation const& x );
+    static double method_lower(representation const& x);
+    static double method_upper(representation const& x);
+    static double method_mid(representation const& x);
+    static double method_rad(representation const& x);
 
     // Static Methods
-    static representation static_method_empty ( );
-    static representation static_method_entire ( );
+    static representation static_method_empty();
+    static representation static_method_entire();
 
 
 // -----------------------------------------------------------------------------
@@ -124,10 +126,14 @@ public:
 // -----------------------------------------------------------------------------
 
     template< typename CharT, typename Traits >
-    static std::basic_ostream<CharT, Traits>& operator_output ( std::basic_ostream<CharT, Traits>& os, representation const& x );
+    static std::basic_ostream<CharT, Traits>& operator_output(
+        std::basic_ostream<CharT, Traits>& os,
+        representation const& x);
 
     template< typename CharT, typename Traits >
-    static std::basic_istream<CharT, Traits>& operator_input ( std::basic_istream<CharT, Traits>& is, representation& x );
+    static std::basic_istream<CharT, Traits>& operator_input(
+        std::basic_istream<CharT, Traits>& is,
+        representation& x);
 
 
 
@@ -136,89 +142,95 @@ public:
 // -----------------------------------------------------------------------------
 
 
-    static representation pos( representation const& x );
+    static representation pos(representation const& x);
 
-    static representation neg( representation const& x );
+    static representation neg(representation const& x);
 
-    static representation add( representation const& x, representation const& y );
+    static representation add(representation const& x, representation const& y);
 
-    static representation sub( representation const& x, representation const& y );
+    static representation sub(representation const& x, representation const& y);
 
-    static representation mul( representation const& x, representation const& y );
+    static representation mul(representation const& x, representation const& y);
 
-    static representation div( representation const& x, representation const& y );
+    static representation div(representation const& x, representation const& y);
 
-    static representation inv( representation const& x );
+    static representation inv(representation const& x);
 
-    static representation sqrt( representation const& x );
+    static representation sqrt(representation const& x);
 
-    static representation fma( representation const& x, representation const& y, representation const& z );
+    static representation fma(representation const& x, representation const& y,
+                              representation const& z );
 
-    static representation interval_case( representation const& c, representation const& g, representation const& h );
+    static representation interval_case(representation const& c,
+                                        representation const& g,
+                                        representation const& h );
 
-    static representation sqr( representation const& x );
+    static representation sqr(representation const& x);
 
-    static representation pown( representation const& x, int p);
+    static representation pown(representation const& x, int p);
 
-    static representation pow( representation const& x, representation const& y );
+    static representation pow(representation const& x, representation const& y);
 
-    static representation exp( representation const& x );
+    static representation exp(representation const& x);
 
-    static representation exp2( representation const& x );
+    static representation exp2(representation const& x);
 
-    static representation exp10( representation const& x );
+    static representation exp10(representation const& x);
 
-    static representation log( representation const& x );
+    static representation log(representation const& x);
 
-    static representation log2( representation const& x );
+    static representation log2(representation const& x);
 
-    static representation log10( representation const& x );
+    static representation log10(representation const& x);
 
-    static representation sin( representation const& x );
+    static representation sin(representation const& x);
 
-    static representation cos( representation const& x );
+    static representation cos(representation const& x);
 
-    static representation tan( representation const& x );
+    static representation tan(representation const& x);
 
-    static representation asin( representation const& x );
+    static representation asin(representation const& x);
 
-    static representation acos( representation const& x );
+    static representation acos(representation const& x);
 
-    static representation atan( representation const& x );
+    static representation atan(representation const& x);
 
-    static representation atan2( representation const& y, representation const& x );
+    static representation atan2(representation const& y,
+                                representation const& x);
 
-    static representation sinh( representation const& x );
+    static representation sinh(representation const& x);
 
-    static representation cosh( representation const& x );
+    static representation cosh(representation const& x);
 
-    static representation tanh( representation const& x );
+    static representation tanh(representation const& x);
 
-    static representation asinh( representation const& x );
+    static representation asinh(representation const& x);
 
-    static representation acosh( representation const& x );
+    static representation acosh(representation const& x);
 
-    static representation atanh( representation const& x );
+    static representation atanh(representation const& x);
 
-    static representation sign( representation const& x );
+    static representation sign(representation const& x);
 
-    static representation ceil( representation const& x );
+    static representation ceil(representation const& x);
 
-    static representation floor( representation const& x );
+    static representation floor(representation const& x);
 
-    static representation trunc( representation const& x );
+    static representation trunc(representation const& x);
 
-    static representation round_ties_to_even( representation const& x );
+    static representation round_ties_to_even(representation const& x);
 
-    static representation round_ties_to_away( representation const& x );
+    static representation round_ties_to_away(representation const& x);
 
-    static representation abs( representation const& x );
+    static representation abs(representation const& x);
 
     template<typename ConstRandomAccessIterator>
-    static representation min( ConstRandomAccessIterator first, ConstRandomAccessIterator last );
+    static representation min(ConstRandomAccessIterator first,
+                              ConstRandomAccessIterator last);
 
     template<typename ConstRandomAccessIterator>
-    static representation max( ConstRandomAccessIterator first, ConstRandomAccessIterator last );
+    static representation max(ConstRandomAccessIterator first,
+                              ConstRandomAccessIterator last);
 
 
 
@@ -317,29 +329,30 @@ public:
 // -----------------------------------------------------------------------------
 
     // Constructors
-    static representation constructor_infsup ( );
-    static representation constructor_infsup ( float lower, float upper );
-    static representation constructor_infsup ( float point );
+    static representation constructor_infsup();
+    static representation constructor_infsup(float lower, float upper);
+    static representation constructor_infsup(float point);
 
     template<typename ConstRandomAccessIterator>
-    static representation constructor_infsup ( ConstRandomAccessIterator first, ConstRandomAccessIterator last );
+    static representation constructor_infsup(ConstRandomAccessIterator first,
+            ConstRandomAccessIterator last);
 
-    static representation constructor_infsup ( std::string const& str );
+    static representation constructor_infsup(std::string const& str);
 
-    static representation constructor_infsup ( representation const& other );
+    static representation constructor_infsup(representation const& other);
 
     template<typename T>
-    static representation constructor_infsup ( representation_type<T> const& other );
+    static representation constructor_infsup(representation_type<T> const& other);
 
     // Methods
-    static float method_lower ( representation const& x );
-    static float method_upper ( representation const& x );
-    static float method_mid ( representation const& x );
-    static float method_rad ( representation const& x );
+    static float method_lower(representation const& x);
+    static float method_upper(representation const& x);
+    static float method_mid(representation const& x);
+    static float method_rad(representation const& x);
 
     // Static Methods
-    static representation static_method_empty ( );
-    static representation static_method_entire ( );
+    static representation static_method_empty();
+    static representation static_method_entire();
 
 
 // -----------------------------------------------------------------------------
@@ -347,10 +360,14 @@ public:
 // -----------------------------------------------------------------------------
 
     template< typename CharT, typename Traits >
-    static std::basic_ostream<CharT, Traits>& operator_output ( std::basic_ostream<CharT, Traits>& os, representation const& x );
+    static std::basic_ostream<CharT, Traits>& operator_output(
+        std::basic_ostream<CharT, Traits>& os,
+        representation const& x);
 
     template< typename CharT, typename Traits >
-    static std::basic_istream<CharT, Traits>& operator_input ( std::basic_istream<CharT, Traits>& is, representation& x );
+    static std::basic_istream<CharT, Traits>& operator_input(
+        std::basic_istream<CharT, Traits>& is,
+        representation& x);
 
 
 
@@ -359,89 +376,95 @@ public:
 // -----------------------------------------------------------------------------
 
 
-    static representation pos( representation const& x );
+    static representation pos(representation const& x);
 
-    static representation neg( representation const& x );
+    static representation neg(representation const& x);
 
-    static representation add( representation const& x, representation const& y );
+    static representation add(representation const& x, representation const& y);
 
-    static representation sub( representation const& x, representation const& y );
+    static representation sub(representation const& x, representation const& y);
 
-    static representation mul( representation const& x, representation const& y );
+    static representation mul(representation const& x, representation const& y);
 
-    static representation div( representation const& x, representation const& y );
+    static representation div(representation const& x, representation const& y);
 
-    static representation inv( representation const& x );
+    static representation inv(representation const& x);
 
-    static representation sqrt( representation const& x );
+    static representation sqrt(representation const& x);
 
-    static representation fma( representation const& x, representation const& y, representation const& z );
+    static representation fma(representation const& x, representation const& y,
+                              representation const& z );
 
-    static representation interval_case( representation const& c, representation const& g, representation const& h );
+    static representation interval_case(representation const& c,
+                                        representation const& g,
+                                        representation const& h );
 
-    static representation sqr( representation const& x );
+    static representation sqr(representation const& x);
 
-    static representation pown( representation const& x, int p);
+    static representation pown(representation const& x, int p);
 
-    static representation pow( representation const& x, representation const& y );
+    static representation pow(representation const& x, representation const& y);
 
-    static representation exp( representation const& x );
+    static representation exp(representation const& x);
 
-    static representation exp2( representation const& x );
+    static representation exp2(representation const& x);
 
-    static representation exp10( representation const& x );
+    static representation exp10(representation const& x);
 
-    static representation log( representation const& x );
+    static representation log(representation const& x);
 
-    static representation log2( representation const& x );
+    static representation log2(representation const& x);
 
-    static representation log10( representation const& x );
+    static representation log10(representation const& x);
 
-    static representation sin( representation const& x );
+    static representation sin(representation const& x);
 
-    static representation cos( representation const& x );
+    static representation cos(representation const& x);
 
-    static representation tan( representation const& x );
+    static representation tan(representation const& x);
 
-    static representation asin( representation const& x );
+    static representation asin(representation const& x);
 
-    static representation acos( representation const& x );
+    static representation acos(representation const& x);
 
-    static representation atan( representation const& x );
+    static representation atan(representation const& x);
 
-    static representation atan2( representation const& y, representation const& x );
+    static representation atan2(representation const& y,
+                                representation const& x);
 
-    static representation sinh( representation const& x );
+    static representation sinh(representation const& x);
 
-    static representation cosh( representation const& x );
+    static representation cosh(representation const& x);
 
-    static representation tanh( representation const& x );
+    static representation tanh(representation const& x);
 
-    static representation asinh( representation const& x );
+    static representation asinh(representation const& x);
 
-    static representation acosh( representation const& x );
+    static representation acosh(representation const& x);
 
-    static representation atanh( representation const& x );
+    static representation atanh(representation const& x);
 
-    static representation sign( representation const& x );
+    static representation sign(representation const& x);
 
-    static representation ceil( representation const& x );
+    static representation ceil(representation const& x);
 
-    static representation floor( representation const& x );
+    static representation floor(representation const& x);
 
-    static representation trunc( representation const& x );
+    static representation trunc(representation const& x);
 
-    static representation round_ties_to_even( representation const& x );
+    static representation round_ties_to_even(representation const& x);
 
-    static representation round_ties_to_away( representation const& x );
+    static representation round_ties_to_away(representation const& x);
 
-    static representation abs( representation const& x );
+    static representation abs(representation const& x);
 
     template<typename ConstRandomAccessIterator>
-    static representation min( ConstRandomAccessIterator first, ConstRandomAccessIterator last );
+    static representation min(ConstRandomAccessIterator first,
+                              ConstRandomAccessIterator last);
 
     template<typename ConstRandomAccessIterator>
-    static representation max( ConstRandomAccessIterator first, ConstRandomAccessIterator last );
+    static representation max(ConstRandomAccessIterator first,
+                              ConstRandomAccessIterator last);
 
 
 

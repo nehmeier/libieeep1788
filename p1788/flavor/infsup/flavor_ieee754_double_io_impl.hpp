@@ -40,19 +40,23 @@ namespace infsup
 
 // IO
 template< typename CharT, typename Traits >
-std::basic_ostream<CharT, Traits>& ieee754_flavor<double>::operator_output ( std::basic_ostream<CharT, Traits>& os, ieee754_flavor<double>::representation const& x )
+std::basic_ostream<CharT, Traits>&
+ieee754_flavor<double>::operator_output(std::basic_ostream<CharT, Traits>& os,
+                                        ieee754_flavor<double>::representation const& x)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     return os << "[" << x.first << "," << x.second << "]_d";
 }
 
 template< typename CharT, typename Traits >
-std::basic_istream<CharT, Traits>& ieee754_flavor<double>::operator_input ( std::basic_istream<CharT, Traits>& is, ieee754_flavor<double>::representation& x )
+std::basic_istream<CharT, Traits>&
+ieee754_flavor<double>::operator_input(std::basic_istream<CharT, Traits>& is,
+                                       ieee754_flavor<double>::representation& x)
 {
 // TODO (nehmeier#1#): Check
-assert(!"not implemented");
+    assert(!"not implemented");
 
     std::string str;
     std::getline(std::cin, str);

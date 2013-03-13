@@ -30,12 +30,6 @@
 template<typename T>
 using interval = p1788::infsup::interval<T, p1788::flavor::infsup::ieee754_flavor>;
 
-template<typename T> struct foo{
-    typedef std::pair<T,T> representation;
-};
-
-template<typename T>
-using interval_foo = p1788::infsup::interval<T, foo>;
 
 int main()
 {
@@ -168,9 +162,11 @@ int main()
     std::cout << "abs: " << abs(d_a) << std::endl;
     std::cout << "abs mt: " << p1788::infsup::abs<interval<float>>(d_a) << std::endl << std::endl;
 
-    std::cout << "min: " << p1788::infsup::min( {d_a, d_b, d_c}) << std::endl;
-    std::cout << "max: " << p1788::infsup::max( {d_a, d_b, d_c}) << std::endl;
+    std::cout << "min: " << min( d_a, d_b, d_c, d_b) << std::endl;
+    std::cout << "min mt: " << p1788::infsup::min<interval<float>>( d_a, f_b, d_c) << std::endl << std::endl;
 
+    std::cout << "max: " << p1788::infsup::max( d_a, d_b, d_c) << std::endl;
+    std::cout << "max mt: " << p1788::infsup::max<interval<float>>( d_a, f_b, d_c) << std::endl;
 
 
     return 0;

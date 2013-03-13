@@ -34,28 +34,28 @@ namespace util
 {
 
 
-
-//------------------------------------------------------------------------------
-// Trait is_infsup_interval
-//------------------------------------------------------------------------------
-
-
-//TODO move this trait into an other header?
-/// \brief Trait to check if type T is an p1788::infsup::interval
+/// \brief Functor to insert different types into a back insert sequence.
+///        All types are converted to the type Target.
 ///
-/// \param T type
-/// \return field value contains boolean result of the check
+/// \param Target type
+/// \param BackInsertIterator iterator
 ///
 ///
-template<typename T>
-class is_infsup_interval
-    : public std::integral_constant<bool, false>
-{ };
 
-template<typename T, template< typename > class Flavor>
-class is_infsup_interval<p1788::infsup::interval<T,Flavor>>
-            : public std::integral_constant<bool, true>
-{ };
+template<typename Target, typename BackInsertIterator>
+class inserter_func
+{
+private:
+    BackInsertIterator iter_;
+
+public:
+    inserter_func(BackInsertIterator iter) : iter_(iter) {}
+
+    template<typename T>
+    void operator()(T const& x) {
+        ++iter_ = static_cast<Target>(x);
+    }
+};
 
 
 
@@ -116,6 +116,8 @@ class max_precision_type<Type>
 public:
     typedef Type type;
 };
+
+
 
 
 
