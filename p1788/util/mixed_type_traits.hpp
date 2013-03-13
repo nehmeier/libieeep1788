@@ -33,33 +33,6 @@ namespace p1788
 namespace util
 {
 
-
-/// \brief Functor to insert different types into a back insert sequence.
-///        All types are converted to the type Target.
-///
-/// \param Target type
-/// \param BackInsertIterator iterator
-///
-///
-
-template<typename Target, typename BackInsertIterator>
-class inserter_func
-{
-private:
-    BackInsertIterator iter_;
-
-public:
-    inserter_func(BackInsertIterator iter) : iter_(iter) {}
-
-    template<typename T>
-    void operator()(T const& x) {
-        ++iter_ = static_cast<Target>(x);
-    }
-};
-
-
-
-
 //------------------------------------------------------------------------------
 //  Traits type_precision_order and max_precision_type
 //------------------------------------------------------------------------------

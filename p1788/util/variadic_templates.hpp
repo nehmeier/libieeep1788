@@ -30,13 +30,27 @@ namespace p1788
 namespace util
 {
 
+
+
+//------------------------------------------------------------------------------
+// for_each
+//------------------------------------------------------------------------------
+
+
 template<typename... Args>
 class for_each;
 
+
+/// \brief For each loop over a set of variadic template parameters.
+///
 template<typename First, typename... Tail>
 class for_each<First, Tail...>
 {
 public:
+
+    /// \brief Applies each element out of the set of variadic template
+    /// parameters onto the functor f of type Func.
+    ///
     template<typename Func>
     inline static void apply(Func f, First const& first, Tail const& ... tail) {
         f(first);
@@ -52,6 +66,36 @@ public:
     inline static void apply(Func f) {
     }
 };
+
+
+
+
+//------------------------------------------------------------------------------
+// inserter_func
+//------------------------------------------------------------------------------
+
+/// \brief Functor to insert different types into a back insert sequence.
+///        All types are converted to the type Target.
+///
+/// \param Target type
+/// \param BackInsertIterator iterator
+///
+///
+template<typename Target, typename BackInsertIterator>
+class inserter_func
+{
+private:
+    BackInsertIterator iter_;
+
+public:
+    inserter_func(BackInsertIterator iter) : iter_(iter) {}
+
+    template<typename T>
+    void operator()(T const& x) {
+        ++iter_ = static_cast<Target>(x);
+    }
+};
+
 
 
 } // namespace util
