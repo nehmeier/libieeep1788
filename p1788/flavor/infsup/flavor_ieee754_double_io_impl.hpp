@@ -26,7 +26,7 @@
 #ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_IO_IMPL_HPP
 #define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_IO_IMPL_HPP
 
-#include <cassert>
+#include "p1788/util/assert.hpp"
 
 namespace p1788
 {
@@ -44,8 +44,7 @@ std::basic_ostream<CharT, Traits>&
 ieee754_flavor<double>::operator_output(std::basic_ostream<CharT, Traits>& os,
                                         ieee754_flavor<double>::representation const& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return os << "[" << x.first << "," << x.second << "]_d";
 }
@@ -55,8 +54,7 @@ std::basic_istream<CharT, Traits>&
 ieee754_flavor<double>::operator_input(std::basic_istream<CharT, Traits>& is,
                                        ieee754_flavor<double>::representation& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     std::string str;
     std::getline(std::cin, str);

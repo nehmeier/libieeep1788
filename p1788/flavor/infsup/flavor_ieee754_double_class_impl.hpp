@@ -28,7 +28,8 @@
 
 #include <algorithm>
 #include <limits>
-#include <cassert>
+
+#include "p1788/util/assert.hpp"
 
 namespace p1788
 {
@@ -45,8 +46,7 @@ namespace infsup
 ieee754_flavor<double>::representation
 ieee754_flavor<double>::constructor_infsup()
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return static_method_empty();
 }
@@ -54,8 +54,7 @@ ieee754_flavor<double>::constructor_infsup()
 ieee754_flavor<double>::representation
 ieee754_flavor<double>::constructor_infsup(double lower, double upper)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return representation(lower, upper);
 }
@@ -63,8 +62,7 @@ ieee754_flavor<double>::constructor_infsup(double lower, double upper)
 ieee754_flavor<double>::representation
 ieee754_flavor<double>::constructor_infsup(double point)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return representation(point, point);
 }
@@ -74,8 +72,7 @@ ieee754_flavor<double>::representation
 ieee754_flavor<double>::constructor_infsup(ConstRandomAccessIterator first,
         ConstRandomAccessIterator last)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     auto lower = std::min_element(first, last);
     auto upper = std::max_element(first, last);
@@ -86,8 +83,7 @@ ieee754_flavor<double>::constructor_infsup(ConstRandomAccessIterator first,
 ieee754_flavor<double>::representation
 ieee754_flavor<double>::constructor_infsup(std::string const& str)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     std::string tmp = str;
 
@@ -107,8 +103,7 @@ ieee754_flavor<double>::constructor_infsup(std::string const& str)
 ieee754_flavor<double>::representation
 ieee754_flavor<double>::constructor_infsup(representation const& other)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return other;
 }
@@ -117,8 +112,7 @@ template<typename T>
 ieee754_flavor<double>::representation
 ieee754_flavor<double>::constructor_infsup( representation_type<T> const& other)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return other;
 }
@@ -129,8 +123,7 @@ ieee754_flavor<double>::constructor_infsup( representation_type<T> const& other)
 double
 ieee754_flavor<double>::method_lower(ieee754_flavor<double>::representation const& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return x.first;
 }
@@ -138,8 +131,7 @@ ieee754_flavor<double>::method_lower(ieee754_flavor<double>::representation cons
 double
 ieee754_flavor<double>::method_upper(ieee754_flavor<double>::representation const& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return x.second;
 }
@@ -147,8 +139,7 @@ ieee754_flavor<double>::method_upper(ieee754_flavor<double>::representation cons
 double
 ieee754_flavor<double>::method_mid(ieee754_flavor<double>::representation const& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return (x.first + x.second) / 2.0;
 }
@@ -156,8 +147,7 @@ ieee754_flavor<double>::method_mid(ieee754_flavor<double>::representation const&
 double
 ieee754_flavor<double>::method_rad(ieee754_flavor<double>::representation const& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return (x.second - x.first) / 2.0;
 }
@@ -167,8 +157,7 @@ ieee754_flavor<double>::method_rad(ieee754_flavor<double>::representation const&
 ieee754_flavor<double>::representation
 ieee754_flavor<double>::static_method_empty()
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return representation(std::numeric_limits<double>::quiet_NaN(),
                           std::numeric_limits<double>::quiet_NaN());
@@ -177,8 +166,7 @@ ieee754_flavor<double>::static_method_empty()
 ieee754_flavor<double>::representation
 ieee754_flavor<double>::static_method_entire()
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return representation(-std::numeric_limits<double>::infinity(),
                           std::numeric_limits<double>::infinity());
