@@ -1,2 +1,3 @@
-add_executable(basic basic.cpp)
-add_executable(elementaryFunc elementaryFunc.cpp)
+add_executable(basic basic.cpp ${HEADER_FILES})
+add_executable(elementaryFunc elementaryFunc.cpp ${HEADER_FILES})
+
