@@ -1,9 +1,3 @@
-add_subdirectory(decoration)
-add_subdirectory(flavor)
-add_subdirectory(infsup)
-add_subdirectory(overlapping)
-add_subdirectory(util)
-
 file(GLOB LOCAL_HEADER_FILES "${CMAKE_CURRENT_SOURCE_DIR}/*.hpp" )
 list(APPEND HEADER_FILES "${LOCAL_HEADER_FILES}")
 set(HEADER_FILES "${HEADER_FILES}" PARENT_SCOPE)
