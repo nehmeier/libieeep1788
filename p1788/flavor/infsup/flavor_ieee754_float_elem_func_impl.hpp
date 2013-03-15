@@ -26,7 +26,7 @@
 #ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_FLOAT_ELEM_FUNC_IMPL_HPP
 #define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_FLOAT_ELEM_FUNC_IMPL_HPP
 
-#include <cassert>
+#include "p1788/util/assert.hpp"
 
 namespace p1788
 {
@@ -38,384 +38,342 @@ namespace infsup
 {
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::pos(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::pos(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::neg(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::neg(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::add(ieee754_flavor<float>::representation const& x,
-                           ieee754_flavor<float>::representation const& y)
+ieee754_flavor<float>::add(ieee754_flavor<float>::representation const&,
+                            ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
-
-    return representation(x.first + y.first, x.second + y.second);
-}
-
-ieee754_flavor<float>::representation
-ieee754_flavor<float>::sub(ieee754_flavor<float>::representation const& x,
-                           ieee754_flavor<float>::representation const& y)
-{
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::mul(ieee754_flavor<float>::representation const& x,
-                           ieee754_flavor<float>::representation const& y)
+ieee754_flavor<float>::sub(ieee754_flavor<float>::representation const&,
+                            ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::div(ieee754_flavor<float>::representation const& x,
-                           ieee754_flavor<float>::representation const& y)
+ieee754_flavor<float>::mul(ieee754_flavor<float>::representation const&,
+                            ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::inv(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::div(ieee754_flavor<float>::representation const&,
+                            ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::sqrt(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::inv(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::fma(ieee754_flavor<float>::representation const& x,
-                           ieee754_flavor<float>::representation const& y,
-                           ieee754_flavor<float>::representation const& z)
+ieee754_flavor<float>::sqrt(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::interval_case(ieee754_flavor<float>::representation const& c,
-                                     ieee754_flavor<float>::representation const& g,
-                                     ieee754_flavor<float>::representation const& h)
+ieee754_flavor<float>::fma(ieee754_flavor<float>::representation const&,
+                            ieee754_flavor<float>::representation const&,
+                            ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::sqr(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::interval_case(ieee754_flavor<float>::representation const&,
+                                      ieee754_flavor<float>::representation const&,
+                                      ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::pown(ieee754_flavor<float>::representation const& x,
-                            int p)
+ieee754_flavor<float>::sqr(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::pow(ieee754_flavor<float>::representation const& x,
-                           ieee754_flavor<float>::representation const& y)
+ieee754_flavor<float>::pown(ieee754_flavor<float>::representation const&,
+                             int)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::exp(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::pow(ieee754_flavor<float>::representation const&,
+                            ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::exp2(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::exp(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::exp10(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::exp2(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::log(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::exp10(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::log2(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::log(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::log10(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::log2(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::sin(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::log10(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::cos(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::sin(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::tan(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::cos(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::asin(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::tan(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::acos(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::asin(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::atan(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::acos(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::atan2(ieee754_flavor<float>::representation const& y,
-                             ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::atan(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::sinh(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::atan2(ieee754_flavor<float>::representation const&,
+                              ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::cosh(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::sinh(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::tanh(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::cosh(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+    return ieee754_flavor<float>::static_method_entire();
+}
+
+ieee754_flavor<float>::representation
+ieee754_flavor<float>::tanh(ieee754_flavor<float>::representation const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::asinh(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::asinh(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::acosh(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::acosh(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::atanh(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::atanh(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::sign(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::sign(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::ceil(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::ceil(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::floor(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::floor(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::trunc(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::trunc(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::round_ties_to_even(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::round_ties_to_even(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::round_ties_to_away(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::round_ties_to_away(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::abs(ieee754_flavor<float>::representation const& x)
+ieee754_flavor<float>::abs(ieee754_flavor<float>::representation const&)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 template<typename ConstRandomAccessIterator>
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::min(ConstRandomAccessIterator first, ConstRandomAccessIterator last)
+ieee754_flavor<float>::min(ConstRandomAccessIterator, ConstRandomAccessIterator)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }
 
 template<typename ConstRandomAccessIterator>
 ieee754_flavor<float>::representation
-ieee754_flavor<float>::max(ConstRandomAccessIterator first,
-                           ConstRandomAccessIterator last)
+ieee754_flavor<float>::max(ConstRandomAccessIterator,
+                            ConstRandomAccessIterator)
 {
-// TODO (nehmeier#1#): Implement!
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<float>::static_method_entire();
 }

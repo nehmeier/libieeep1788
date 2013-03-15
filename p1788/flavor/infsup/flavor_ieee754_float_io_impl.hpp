@@ -26,7 +26,7 @@
 #ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_FLOAT_IO_IMPL_HPP
 #define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_FLOAT_IO_IMPL_HPP
 
-#include <cassert>
+#include "p1788/util/assert.hpp"
 
 namespace p1788
 {
@@ -42,10 +42,9 @@ namespace infsup
 template< typename CharT, typename Traits >
 std::basic_ostream<CharT, Traits>&
 ieee754_flavor<float>::operator_output(std::basic_ostream<CharT, Traits>& os,
-                                       ieee754_flavor<float>::representation const& x)
+                                        ieee754_flavor<float>::representation const& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return os << "[" << x.first << "," << x.second << "]_d";
 }
@@ -53,10 +52,9 @@ ieee754_flavor<float>::operator_output(std::basic_ostream<CharT, Traits>& os,
 template< typename CharT, typename Traits >
 std::basic_istream<CharT, Traits>&
 ieee754_flavor<float>::operator_input(std::basic_istream<CharT, Traits>& is,
-                                      ieee754_flavor<float>::representation& x)
+                                       ieee754_flavor<float>::representation& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     std::string str;
     std::getline(std::cin, str);

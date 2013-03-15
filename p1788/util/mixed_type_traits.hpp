@@ -106,6 +106,12 @@ enum class ieee754_binary_precision_order : unsigned int
 };
 
 
+// Ignore the warning about non-virtual destructors
+// on GCC  push the last diagnostic state and disable -Weffc++
+//TODO support other compiler
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+
 template<>
 class type_precision_order<float>
     : public std::integral_constant<ieee754_binary_precision_order,
@@ -123,6 +129,9 @@ class type_precision_order<long double>
     : public std::integral_constant<ieee754_binary_precision_order,
       ieee754_binary_precision_order::long_double_type>
 { };
+
+// on GCC  enable the diagnostic state -Weffc++ again
+#pragma GCC diagnostic pop
 
 
 } // namespace util

@@ -91,8 +91,13 @@ namespace util
 // Trait is_infsup_interval
 //------------------------------------------------------------------------------
 
+// Ignore the warning about non-virtual destructors
+// on GCC  push the last diagnostic state and disable -Weffc++
+//TODO support other compiler
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
 
-//TODO move this trait into an other header?
+
 /// \brief Trait to check if type T is an p1788::infsup::interval
 ///
 /// \param T type
@@ -108,6 +113,9 @@ template<typename T, template<typename> class Flavor>
 class is_infsup_interval<p1788::infsup::interval<T,Flavor>>
             : public std::integral_constant<bool, true>
 { };
+
+// on GCC  enable the diagnostic state -Weffc++ again
+#pragma GCC diagnostic pop
 
 
 //------------------------------------------------------------------------------

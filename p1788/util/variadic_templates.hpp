@@ -63,7 +63,7 @@ class for_each<>
 {
 public:
     template<typename Func>
-    inline static void apply(Func f) {
+    inline static void apply(Func) {
     }
 };
 

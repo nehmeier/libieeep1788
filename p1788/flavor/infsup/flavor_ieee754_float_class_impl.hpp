@@ -28,7 +28,8 @@
 
 #include <algorithm>
 #include <limits>
-#include <cassert>
+
+#include "p1788/util/assert.hpp"
 
 namespace p1788
 {
@@ -45,8 +46,7 @@ namespace infsup
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::constructor_infsup()
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return static_method_empty();
 }
@@ -54,8 +54,7 @@ ieee754_flavor<float>::constructor_infsup()
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::constructor_infsup(float lower, float upper)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return representation(lower, upper);
 }
@@ -63,8 +62,7 @@ ieee754_flavor<float>::constructor_infsup(float lower, float upper)
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::constructor_infsup(float point)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return representation(point, point);
 }
@@ -74,20 +72,17 @@ ieee754_flavor<float>::representation
 ieee754_flavor<float>::constructor_infsup(ConstRandomAccessIterator first,
         ConstRandomAccessIterator last)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    auto lower = std::min_element(first, last);
-    auto upper = std::max_element(first, last);
+    auto result = std::minmax_element(first, last);
 
-    return representation(*lower, *upper);
+    return representation(*result.first, *result.second);
 }
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::constructor_infsup(std::string const& str)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     std::string tmp = str;
 
@@ -107,8 +102,7 @@ ieee754_flavor<float>::constructor_infsup(std::string const& str)
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::constructor_infsup(representation const& other)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return other;
 }
@@ -117,8 +111,7 @@ template<typename T>
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::constructor_infsup( representation_type<T> const& other)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return other;
 }
@@ -129,8 +122,7 @@ ieee754_flavor<float>::constructor_infsup( representation_type<T> const& other)
 float
 ieee754_flavor<float>::method_lower(ieee754_flavor<float>::representation const& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return x.first;
 }
@@ -138,8 +130,7 @@ ieee754_flavor<float>::method_lower(ieee754_flavor<float>::representation const&
 float
 ieee754_flavor<float>::method_upper(ieee754_flavor<float>::representation const& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return x.second;
 }
@@ -147,8 +138,7 @@ ieee754_flavor<float>::method_upper(ieee754_flavor<float>::representation const&
 float
 ieee754_flavor<float>::method_mid(ieee754_flavor<float>::representation const& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return (x.first + x.second) / 2.0;
 }
@@ -156,8 +146,7 @@ ieee754_flavor<float>::method_mid(ieee754_flavor<float>::representation const& x
 float
 ieee754_flavor<float>::method_rad(ieee754_flavor<float>::representation const& x)
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return (x.second - x.first) / 2.0;
 }
@@ -167,8 +156,7 @@ ieee754_flavor<float>::method_rad(ieee754_flavor<float>::representation const& x
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::static_method_empty()
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return representation(std::numeric_limits<float>::quiet_NaN(),
                           std::numeric_limits<float>::quiet_NaN());
@@ -177,8 +165,7 @@ ieee754_flavor<float>::static_method_empty()
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::static_method_entire()
 {
-// TODO (nehmeier#1#): Check
-    assert(!"not implemented");
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return representation(-std::numeric_limits<float>::infinity(),
                           std::numeric_limits<float>::infinity());
@@ -191,6 +178,5 @@ ieee754_flavor<float>::static_method_entire()
 } // namespace flavor
 
 } // namespace p1788
-
 
 #endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_FLOAT_CLASS_IMPL_HPP

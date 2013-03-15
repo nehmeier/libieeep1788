@@ -38,7 +38,7 @@ namespace infsup
 {
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::pos(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::pos(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -46,7 +46,7 @@ ieee754_flavor<double>::pos(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::neg(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::neg(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -54,17 +54,8 @@ ieee754_flavor<double>::neg(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::add(ieee754_flavor<double>::representation const& x,
-                            ieee754_flavor<double>::representation const& y)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return representation(x.first + y.first, x.second + y.second);
-}
-
-ieee754_flavor<double>::representation
-ieee754_flavor<double>::sub(ieee754_flavor<double>::representation const& x,
-                            ieee754_flavor<double>::representation const& y)
+ieee754_flavor<double>::add(ieee754_flavor<double>::representation const&,
+                            ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -72,8 +63,8 @@ ieee754_flavor<double>::sub(ieee754_flavor<double>::representation const& x,
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::mul(ieee754_flavor<double>::representation const& x,
-                            ieee754_flavor<double>::representation const& y)
+ieee754_flavor<double>::sub(ieee754_flavor<double>::representation const&,
+                            ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -81,8 +72,8 @@ ieee754_flavor<double>::mul(ieee754_flavor<double>::representation const& x,
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::div(ieee754_flavor<double>::representation const& x,
-                            ieee754_flavor<double>::representation const& y)
+ieee754_flavor<double>::mul(ieee754_flavor<double>::representation const&,
+                            ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -90,7 +81,8 @@ ieee754_flavor<double>::div(ieee754_flavor<double>::representation const& x,
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::inv(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::div(ieee754_flavor<double>::representation const&,
+                            ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -98,7 +90,7 @@ ieee754_flavor<double>::inv(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::sqrt(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::inv(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -106,9 +98,7 @@ ieee754_flavor<double>::sqrt(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::fma(ieee754_flavor<double>::representation const& x,
-                            ieee754_flavor<double>::representation const& y,
-                            ieee754_flavor<double>::representation const& z)
+ieee754_flavor<double>::sqrt(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -116,9 +106,9 @@ ieee754_flavor<double>::fma(ieee754_flavor<double>::representation const& x,
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::interval_case(ieee754_flavor<double>::representation const& c,
-                                      ieee754_flavor<double>::representation const& g,
-                                      ieee754_flavor<double>::representation const& h)
+ieee754_flavor<double>::fma(ieee754_flavor<double>::representation const&,
+                            ieee754_flavor<double>::representation const&,
+                            ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -126,7 +116,9 @@ ieee754_flavor<double>::interval_case(ieee754_flavor<double>::representation con
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::sqr(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::interval_case(ieee754_flavor<double>::representation const&,
+                                      ieee754_flavor<double>::representation const&,
+                                      ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -134,8 +126,7 @@ ieee754_flavor<double>::sqr(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::pown(ieee754_flavor<double>::representation const& x,
-                             int p)
+ieee754_flavor<double>::sqr(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -143,8 +134,8 @@ ieee754_flavor<double>::pown(ieee754_flavor<double>::representation const& x,
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::pow(ieee754_flavor<double>::representation const& x,
-                            ieee754_flavor<double>::representation const& y)
+ieee754_flavor<double>::pown(ieee754_flavor<double>::representation const&,
+                             int)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -152,7 +143,8 @@ ieee754_flavor<double>::pow(ieee754_flavor<double>::representation const& x,
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::exp(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::pow(ieee754_flavor<double>::representation const&,
+                            ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -160,7 +152,7 @@ ieee754_flavor<double>::exp(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::exp2(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::exp(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -168,7 +160,7 @@ ieee754_flavor<double>::exp2(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::exp10(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::exp2(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -176,7 +168,7 @@ ieee754_flavor<double>::exp10(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::log(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::exp10(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -184,7 +176,7 @@ ieee754_flavor<double>::log(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::log2(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::log(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -192,7 +184,7 @@ ieee754_flavor<double>::log2(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::log10(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::log2(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -200,7 +192,7 @@ ieee754_flavor<double>::log10(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::sin(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::log10(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -208,7 +200,7 @@ ieee754_flavor<double>::sin(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::cos(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::sin(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -216,7 +208,7 @@ ieee754_flavor<double>::cos(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::tan(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::cos(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -224,7 +216,7 @@ ieee754_flavor<double>::tan(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::asin(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::tan(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -232,7 +224,7 @@ ieee754_flavor<double>::asin(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::acos(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::asin(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -240,7 +232,7 @@ ieee754_flavor<double>::acos(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::atan(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::acos(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -248,8 +240,7 @@ ieee754_flavor<double>::atan(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::atan2(ieee754_flavor<double>::representation const& y,
-                              ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::atan(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -257,7 +248,8 @@ ieee754_flavor<double>::atan2(ieee754_flavor<double>::representation const& y,
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::sinh(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::atan2(ieee754_flavor<double>::representation const&,
+                              ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -265,14 +257,7 @@ ieee754_flavor<double>::sinh(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::cosh(ieee754_flavor<double>::representation const& x)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-    return ieee754_flavor<double>::static_method_entire();
-}
-
-ieee754_flavor<double>::representation
-ieee754_flavor<double>::tanh(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::sinh(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -280,7 +265,14 @@ ieee754_flavor<double>::tanh(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::asinh(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::cosh(ieee754_flavor<double>::representation const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+    return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::tanh(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -288,7 +280,7 @@ ieee754_flavor<double>::asinh(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::acosh(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::asinh(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -296,7 +288,7 @@ ieee754_flavor<double>::acosh(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::atanh(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::acosh(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -304,7 +296,7 @@ ieee754_flavor<double>::atanh(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::sign(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::atanh(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -312,7 +304,7 @@ ieee754_flavor<double>::sign(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::ceil(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::sign(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -320,7 +312,7 @@ ieee754_flavor<double>::ceil(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::floor(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::ceil(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -328,7 +320,7 @@ ieee754_flavor<double>::floor(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::trunc(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::floor(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -336,7 +328,7 @@ ieee754_flavor<double>::trunc(ieee754_flavor<double>::representation const& x)
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::round_ties_to_even(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::trunc(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -344,7 +336,7 @@ ieee754_flavor<double>::round_ties_to_even(ieee754_flavor<double>::representatio
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::round_ties_to_away(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::round_ties_to_even(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -352,16 +344,15 @@ ieee754_flavor<double>::round_ties_to_away(ieee754_flavor<double>::representatio
 }
 
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::abs(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::round_ties_to_away(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<double>::static_method_entire();
 }
 
-template<typename ConstRandomAccessIterator>
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::min(ConstRandomAccessIterator first, ConstRandomAccessIterator last)
+ieee754_flavor<double>::abs(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -370,8 +361,17 @@ ieee754_flavor<double>::min(ConstRandomAccessIterator first, ConstRandomAccessIt
 
 template<typename ConstRandomAccessIterator>
 ieee754_flavor<double>::representation
-ieee754_flavor<double>::max(ConstRandomAccessIterator first,
-                            ConstRandomAccessIterator last)
+ieee754_flavor<double>::min(ConstRandomAccessIterator, ConstRandomAccessIterator)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return ieee754_flavor<double>::static_method_entire();
+}
+
+template<typename ConstRandomAccessIterator>
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::max(ConstRandomAccessIterator,
+                            ConstRandomAccessIterator)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

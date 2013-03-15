@@ -74,10 +74,9 @@ ieee754_flavor<double>::constructor_infsup(ConstRandomAccessIterator first,
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    auto lower = std::min_element(first, last);
-    auto upper = std::max_element(first, last);
+    auto result = std::minmax_element(first, last);
 
-    return representation(*lower, *upper);
+    return representation(*result.first, *result.second);
 }
 
 ieee754_flavor<double>::representation
