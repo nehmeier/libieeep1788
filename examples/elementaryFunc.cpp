@@ -27,15 +27,23 @@
 
 #include "p1788/p1788.hpp"
 
-template<typename T>
-using interval = p1788::infsup::interval<T, p1788::flavor::infsup::ieee754_flavor>;
+//template<typename T>
+//using interval = p1788::infsup::interval<T, p1788::flavor::infsup::ieee754_flavor>;
 
+template<typename T>
+using interval = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor>;
 
 int main()
 {
 
+    typedef p1788::flavor::infsup::mpfr_flavor<double> flav;
+
+    flav a;
+    a = a;
+
     interval<double> d_a(1,2), d_b(3,4), d_c(5,6);
     interval<float> f_a(1,2), f_b(3,4), f_c(5,6);
+
 
 // Elementary functions
 

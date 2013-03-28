@@ -45,7 +45,7 @@
 
 
 #include "p1788/flavor/infsup/flavor_ieee754.hpp"
-
+#include "p1788/flavor/infsup/flavor_mpfr.hpp"
 
 //TODO Dot product and Complete format, see P1788/D7.0 Sect. 9.6.11 and Sect. 11.11.11
 //TODO interval type conversion, see P1788/D7.0 Sect. 11.8.3
