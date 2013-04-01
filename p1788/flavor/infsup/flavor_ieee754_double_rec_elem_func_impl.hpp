@@ -35,7 +35,144 @@ namespace flavor
 namespace infsup
 {
 
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::rootn(ieee754_flavor<double>::representation const&, int)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
 
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::expm1(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::exp2m1(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::exp10m1(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::logp1(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::log2p1(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::log10p1(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::compoundm1(ieee754_flavor<double>::representation const&,
+                                   ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::hypot(ieee754_flavor<double>::representation const&,
+                              ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::r_sqrt(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::sin_pi(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::cos_pi(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::tan_pi(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::asin_pi(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::acos_pi(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::atan_pi(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::atan2_pi(ieee754_flavor<double>::representation const&,
+                                 ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
 
 } // namespace infsup
 
