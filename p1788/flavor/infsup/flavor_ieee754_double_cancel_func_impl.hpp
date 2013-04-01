@@ -35,7 +35,23 @@ namespace flavor
 namespace infsup
 {
 
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::cancel_plus(ieee754_flavor<double>::representation const& a,
+                                    ieee754_flavor<double>::representation const& b)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
 
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::cancel_minus(ieee754_flavor<double>::representation const& a,
+                                      ieee754_flavor<double>::representation const& b)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
 
 } // namespace infsup
 

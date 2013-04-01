@@ -35,7 +35,69 @@ namespace flavor
 namespace infsup
 {
 
+double
+ieee754_flavor<double>::inf(ieee754_flavor<double>::representation const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
+    return method_lower(x);
+}
+
+double
+ieee754_flavor<double>::sup(ieee754_flavor<double>::representation const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return method_upper(x);
+}
+
+double
+ieee754_flavor<double>::mid(ieee754_flavor<double>::representation const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return method_mid(x);
+}
+
+double
+ieee754_flavor<double>::wid(ieee754_flavor<double>::representation const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return x.second - x.first;
+}
+
+double
+ieee754_flavor<double>::rad(ieee754_flavor<double>::representation const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return method_rad(x);
+}
+
+double
+ieee754_flavor<double>::mag(ieee754_flavor<double>::representation const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return 0.;
+}
+
+double
+ieee754_flavor<double>::mig(ieee754_flavor<double>::representation const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return 0.;
+}
+
+std::pair<double, double>
+ieee754_flavor<double>::mid_rad(ieee754_flavor<double>::representation const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return ieee754_flavor<double>::static_method_entire();
+}
 
 } // namespace infsup
 

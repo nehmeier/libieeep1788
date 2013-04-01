@@ -35,7 +35,85 @@ namespace flavor
 namespace infsup
 {
 
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::exp_slope1(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
 
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::exp_slope2(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::log_slope1(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::log_slope2(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::cos_slope2(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::sin_slope3(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::asin_slope3(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::atan_slope3(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::cosh_slope2(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
+
+ieee754_flavor<double>::representation
+ieee754_flavor<double>::sinh_slope3(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return ieee754_flavor<double>::static_method_entire();
+}
 
 } // namespace infsup
 
