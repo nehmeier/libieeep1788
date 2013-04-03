@@ -23,8 +23,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_REC_OVERLAP_IMPL_HPP
-#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_REC_OVERLAP_IMPL_HPP
+#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_SET_OP_IMPL_HPP
+#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_SET_OP_IMPL_HPP
 
 namespace p1788
 {
@@ -35,12 +35,33 @@ namespace flavor
 namespace infsup
 {
 
-p1788::overlapping_state ieee754_flavor<double>::overlap(ieee754_flavor<double>::representation const&,
-                                 ieee754_flavor<double>::representation const&)
+template<typename T>
+typename mpfr_flavor<T>::representation
+mpfr_flavor<T>::intersect(mpfr_flavor<T>::representation const&,
+                                  mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return p1788::overlapping_state::both_empty;
+    return mpfr_flavor<T>::static_method_entire();
+}
+
+template<typename T>
+typename mpfr_flavor<T>::representation
+mpfr_flavor<T>::hull(mpfr_flavor<T>::representation const&,
+                                  mpfr_flavor<T>::representation const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return mpfr_flavor<T>::static_method_entire();
+}
+
+template<typename T>
+typename mpfr_flavor<T>::representation
+mpfr_flavor<T>::widen(mpfr_flavor<T>::representation const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 } // namespace infsup
@@ -50,4 +71,4 @@ p1788::overlapping_state ieee754_flavor<double>::overlap(ieee754_flavor<double>:
 } // namespace p1788
 
 
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_REC_OVERLAP_IMPL_HPP
+#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_SET_OP_IMPL_HPP

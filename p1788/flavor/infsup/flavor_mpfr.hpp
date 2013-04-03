@@ -45,9 +45,10 @@ namespace infsup
 {
 
 template<typename T>
-class mpfr_flavor {
+class mpfr_flavor
+{
 
-static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
 public:
 
@@ -208,68 +209,267 @@ public:
 // Reverse elementary functions
 // -----------------------------------------------------------------------------
 
+    static representation sqr_rev(representation const& c,
+                                  representation const& x);
+
+    static representation sqr_rev(representation const& x);
+
+    static representation inv_rev(representation const& c,
+                                  representation const& x);
+
+    static representation inv_rev(representation const& x);
+
+    static representation abs_rev(representation const& c,
+                                  representation const& x);
+
+    static representation abs_rev(representation const& x);
+
+    static representation pown_rev(representation const& c,
+                                   representation const& x,
+                                   int n);
+
+    static representation pown_rev(representation const& x,
+                                   int n);
+
+    static representation sin_rev(representation const& c,
+                                  representation const& x);
+
+    static representation sin_rev(representation const& x);
+
+    static representation cos_rev(representation const& c,
+                                  representation const& x);
+
+    static representation cos_rev(representation const& x);
+
+    static representation tan_rev(representation const& c,
+                                  representation const& x);
+
+    static representation tan_rev(representation const& x);
+
+    static representation cosh_rev(representation const& c,
+                                   representation const& x);
+
+    static representation cosh_rev(representation const& x);
+
+    static representation mul_rev(representation const& b,
+                                  representation const& c,
+                                  representation const& x);
+
+    static representation mul_rev(representation const& c,
+                                  representation const& x);
+
+    static representation div_rev1(representation const& b,
+                                   representation const& c,
+                                   representation const& x);
+
+    static representation div_rev1(representation const& c,
+                                   representation const& x);
+
+    static representation div_rev2(representation const& a,
+                                   representation const& c,
+                                   representation const& x);
+
+    static representation div_rev2(representation const& c,
+                                   representation const& x);
+
+    static representation pow_rev1(representation const& b,
+                                   representation const& c,
+                                   representation const& x);
+
+    static representation pow_rev1(representation const& c,
+                                   representation const& x);
+
+    static representation pow_rev2(representation const& a,
+                                   representation const& c,
+                                   representation const& x);
+
+    static representation pow_rev2(representation const& c,
+                                   representation const& x);
+
+    static representation atan2_rev1(representation const& b,
+                                     representation const& c,
+                                     representation const& x);
+
+    static representation atan2_rev1(representation const& c,
+                                     representation const& x);
+
+    static representation atan2_rev2(representation const& a,
+                                     representation const& c,
+                                     representation const& x);
+
+    static representation atan2_rev2(representation const& c,
+                                     representation const& x);
+
 
 // -----------------------------------------------------------------------------
 // Cancellative addition and subtraction
 // -----------------------------------------------------------------------------
 
+    static representation cancel_plus(representation const& a,
+                                      representation const& b);
+
+    static representation cancel_minus(representation const& a,
+                                       representation const& b);
+
 // -----------------------------------------------------------------------------
 // Non-arithmetic set operations
 // -----------------------------------------------------------------------------
 
+    static representation intersect(representation const& x,
+                                    representation const& y);
 
+    static representation hull(representation const& x,
+                               representation const& y);
+
+    static representation widen(representation const& x);
 // -----------------------------------------------------------------------------
 // Numeric functions on intervals
 // -----------------------------------------------------------------------------
 
+    static double inf(representation const& x);
+
+    static double sup(representation const& x);
+
+    static double mid(representation const& x);
+
+    static double wid(representation const& x);
+
+    static double rad(representation const& x);
+
+    static double mag(representation const& x);
+
+    static double mig(representation const& x);
+
+    static std::pair<double, double> mid_rad(representation const& x);
 
 // -----------------------------------------------------------------------------
 // Boolean functions on intervals
 // -----------------------------------------------------------------------------
 
+    static bool is_empty(representation const& x);
+
+    static bool is_entire(representation const& x);
+
+    static bool is_equal(representation const& x, representation const& y);
+
+    static bool contained_in(representation const& x, representation const& y);
+
+    static bool precedes(representation const& x, representation const& y);
+
+    static bool is_enterior(representation const& x, representation const& y);
+
+    static bool strictly_less(representation const& x, representation const& y);
+
+    static bool strictly_precedes(representation const& x, representation const& y);
+
+    static bool are_disjoint(representation const& x, representation const& y);
+
+
 // -----------------------------------------------------------------------------
 // Recommended forward elementary functions on intervals
 // -----------------------------------------------------------------------------
+
+    static representation rootn(representation const&, int);
+
+    static representation expm1(representation const&);
+
+    static representation exp2m1(representation const&);
+
+    static representation exp10m1(representation const&);
+
+    static representation logp1(representation const&);
+
+    static representation log2p1(representation const&);
+
+    static representation log10p1(representation const&);
+
+    static representation compoundm1(representation const&,
+                                     representation const&);
+
+    static representation hypot(representation const&,
+                                representation const&);
+
+    static representation r_sqrt(representation const&);
+
+    static representation sin_pi(representation const&);
+
+    static representation cos_pi(representation const&);
+
+    static representation tan_pi(representation const&);
+
+    static representation asin_pi(representation const&);
+
+    static representation acos_pi(representation const&);
+
+    static representation atan_pi(representation const&);
+
+    static representation atan2_pi(representation const&,
+                                   representation const&);
+
 
 // -----------------------------------------------------------------------------
 // Recommended interval overlapping
 // -----------------------------------------------------------------------------
 
+    static p1788::overlapping_state overlap(representation const&,
+                                            representation const&);
+
+
 // -----------------------------------------------------------------------------
 // Recommended slope functions
 // -----------------------------------------------------------------------------
 
+    static representation exp_slope1(representation const&);
+
+    static representation exp_slope2(representation const&);
+
+    static representation log_slope1(representation const&);
+
+    static representation log_slope2(representation const&);
+
+    static representation cos_slope2(representation const&);
+
+    static representation sin_slope3(representation const&);
+
+    static representation asin_slope3(representation const&);
+
+    static representation atan_slope3(representation const&);
+
+    static representation cosh_slope2(representation const&);
+
+    static representation sinh_slope3(representation const&);
 
 
 
 private:
 
 
-class mpfr_var {
-public:
+    class mpfr_var
+    {
+    public:
 
-    static void setup();
-
-
-    mpfr_var();
-    mpfr_var(float op, mpfr_rnd_t rnd);
-    mpfr_var(double op, mpfr_rnd_t rnd);
-    mpfr_var(long double op, mpfr_rnd_t rnd);
-
-    ~mpfr_var();
-
-    void set(float op, mpfr_rnd_t rnd);
-    void set(double op, mpfr_rnd_t rnd);
-    void set(long double op, mpfr_rnd_t rnd);
-
-    T get(mpfr_rnd_t rnd);
-
-    mpfr_t& operator() ();
+        static void setup();
 
 
-private:
-    mpfr_t var_;
-};
+        mpfr_var();
+        mpfr_var(float op, mpfr_rnd_t rnd);
+        mpfr_var(double op, mpfr_rnd_t rnd);
+        mpfr_var(long double op, mpfr_rnd_t rnd);
+
+        ~mpfr_var();
+
+        void set(float op, mpfr_rnd_t rnd);
+        void set(double op, mpfr_rnd_t rnd);
+        void set(long double op, mpfr_rnd_t rnd);
+
+        T get(mpfr_rnd_t rnd);
+
+        mpfr_t& operator() ();
+
+
+    private:
+        mpfr_t var_;
+    };
 
 
 };
@@ -285,6 +485,14 @@ private:
 #include "p1788/flavor/infsup/flavor_mpfr_class_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_io_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_elem_func_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_rev_elem_func_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_cancel_func_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_set_op_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_num_func_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_bool_func_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_rec_elem_func_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_rec_overlap_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_rec_slope_func_impl.hpp"
 
 
 #include "p1788/flavor/infsup/flavor_mpfr_class_mpfr_var_impl.hpp"

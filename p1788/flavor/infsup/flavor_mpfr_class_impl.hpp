@@ -143,8 +143,8 @@ mpfr_flavor<T>::method_mid(mpfr_flavor<T>::representation const& x)
 
     mpfr_var::setup();
 
-    mpfr_var lower(other.first, MPFR_RNDD);
-    mpfr_var upper(other.second, MPFR_RNDU);
+    mpfr_var lower(x.first, MPFR_RNDD);
+    mpfr_var upper(x.second, MPFR_RNDU);
 
     return (x.first + x.second) / 2.0;
 }
@@ -185,4 +185,4 @@ mpfr_flavor<T>::static_method_entire()
 } // namespace p1788
 
 
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_CLASS_IMPL_HPP
+#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_CLASS_IMPL_HPP

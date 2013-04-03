@@ -23,8 +23,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_REC_OVERLAP_IMPL_HPP
-#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_REC_OVERLAP_IMPL_HPP
+#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_OVERLAP_IMPL_HPP
+#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_OVERLAP_IMPL_HPP
 
 namespace p1788
 {
@@ -35,8 +35,9 @@ namespace flavor
 namespace infsup
 {
 
-p1788::overlapping_state ieee754_flavor<double>::overlap(ieee754_flavor<double>::representation const&,
-                                 ieee754_flavor<double>::representation const&)
+template<typename T>
+p1788::overlapping_state mpfr_flavor<T>::overlap(mpfr_flavor<T>::representation const&,
+                                 mpfr_flavor<T>::representation const&)
 {
   LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -50,4 +51,4 @@ p1788::overlapping_state ieee754_flavor<double>::overlap(ieee754_flavor<double>:
 } // namespace p1788
 
 
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_IEEE754_DOUBLE_REC_OVERLAP_IMPL_HPP
+#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_OVERLAP_IMPL_HPP
