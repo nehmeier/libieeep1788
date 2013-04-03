@@ -35,7 +35,84 @@ namespace flavor
 namespace infsup
 {
 
+bool
+ieee754_flavor<double>::is_empty(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
 
+  return false;
+}
+
+bool
+ieee754_flavor<double>::is_entire(ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return false;
+}
+
+bool
+ieee754_flavor<double>::is_equal(ieee754_flavor<double>::representation const&,
+                                 ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return false;
+}
+
+bool
+ieee754_flavor<double>::contained_in(ieee754_flavor<double>::representation const&,
+                                     ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return false;
+}
+
+bool
+ieee754_flavor<double>::precedes(ieee754_flavor<double>::representation const&,
+                                 ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return false;
+}
+
+bool
+ieee754_flavor<double>::is_enterior(ieee754_flavor<double>::representation const&,
+                                    ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return false;
+}
+
+bool
+ieee754_flavor<double>::strictly_less(ieee754_flavor<double>::representation const&,
+                                      ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return false;
+}
+
+bool
+ieee754_flavor<double>::strictly_precedes(ieee754_flavor<double>::representation const&,
+                                          ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return false;
+}
+
+bool
+ieee754_flavor<double>::are_disjoint(ieee754_flavor<double>::representation const&,
+                                     ieee754_flavor<double>::representation const&)
+{
+  LIBIEEEP1788_NOT_IMPLEMENTED;
+
+  return false;
+}
 
 } // namespace infsup
 
