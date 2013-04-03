@@ -46,7 +46,7 @@ ieee754_flavor<double>::intersect(ieee754_flavor<double>::representation const&,
 
 ieee754_flavor<double>::representation
 ieee754_flavor<double>::hull(ieee754_flavor<double>::representation const&,
-                                  ieee754_flavor<double>::representation const&)
+                             ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

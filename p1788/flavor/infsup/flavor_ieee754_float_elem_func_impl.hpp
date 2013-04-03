@@ -55,7 +55,7 @@ ieee754_flavor<float>::neg(ieee754_flavor<float>::representation const&)
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::add(ieee754_flavor<float>::representation const&,
-                            ieee754_flavor<float>::representation const&)
+                           ieee754_flavor<float>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -64,7 +64,7 @@ ieee754_flavor<float>::add(ieee754_flavor<float>::representation const&,
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::sub(ieee754_flavor<float>::representation const&,
-                            ieee754_flavor<float>::representation const&)
+                           ieee754_flavor<float>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -73,7 +73,7 @@ ieee754_flavor<float>::sub(ieee754_flavor<float>::representation const&,
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::mul(ieee754_flavor<float>::representation const&,
-                            ieee754_flavor<float>::representation const&)
+                           ieee754_flavor<float>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -82,7 +82,7 @@ ieee754_flavor<float>::mul(ieee754_flavor<float>::representation const&,
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::div(ieee754_flavor<float>::representation const&,
-                            ieee754_flavor<float>::representation const&)
+                           ieee754_flavor<float>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -107,8 +107,8 @@ ieee754_flavor<float>::sqrt(ieee754_flavor<float>::representation const&)
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::fma(ieee754_flavor<float>::representation const&,
-                            ieee754_flavor<float>::representation const&,
-                            ieee754_flavor<float>::representation const&)
+                           ieee754_flavor<float>::representation const&,
+                           ieee754_flavor<float>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -117,8 +117,8 @@ ieee754_flavor<float>::fma(ieee754_flavor<float>::representation const&,
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::interval_case(ieee754_flavor<float>::representation const&,
-                                      ieee754_flavor<float>::representation const&,
-                                      ieee754_flavor<float>::representation const&)
+                                     ieee754_flavor<float>::representation const&,
+                                     ieee754_flavor<float>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -135,7 +135,7 @@ ieee754_flavor<float>::sqr(ieee754_flavor<float>::representation const&)
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::pown(ieee754_flavor<float>::representation const&,
-                             int)
+                            int)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -144,7 +144,7 @@ ieee754_flavor<float>::pown(ieee754_flavor<float>::representation const&,
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::pow(ieee754_flavor<float>::representation const&,
-                            ieee754_flavor<float>::representation const&)
+                           ieee754_flavor<float>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -249,7 +249,7 @@ ieee754_flavor<float>::atan(ieee754_flavor<float>::representation const&)
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::atan2(ieee754_flavor<float>::representation const&,
-                              ieee754_flavor<float>::representation const&)
+                             ieee754_flavor<float>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -371,7 +371,7 @@ ieee754_flavor<float>::min(ConstRandomAccessIterator, ConstRandomAccessIterator)
 template<typename ConstRandomAccessIterator>
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::max(ConstRandomAccessIterator,
-                            ConstRandomAccessIterator)
+                           ConstRandomAccessIterator)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
