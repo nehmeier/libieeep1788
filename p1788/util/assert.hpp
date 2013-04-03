@@ -28,9 +28,18 @@
 
 #include <cassert>
 
+#ifndef LIBIEEEP1788_NOT_IMPLEMENTED_ASSERT_LEVEL
+#define LIBIEEEP1788_NOT_IMPLEMENTED_ASSERT_LEVEL 0
+#endif
 
+#if LIBIEEEP1788_NOT_IMPLEMENTED_ASSERT_LEVEL == 0
+#define LIBIEEEP1788_NOT_IMPLEMENTED
+#elif LIBIEEEP1788_NOT_IMPLEMENTED_ASSERT_LEVEL == 1
 #define LIBIEEEP1788_NOT_IMPLEMENTED \
-    (assert(!"not implemented!"))
-
+    assert(false, "not implemented!")
+#elif LIBIEEEP1788_NOT_IMPLEMENTED_ASSERT_LEVEL == 2
+#define LIBIEEEP1788_NOT_IMPLEMENTED \
+    static_assert(false, "not implemented!")
+#endif
 
 #endif // LIBIEEEP1788_P1788_UTIL_ASSERT_HPP
