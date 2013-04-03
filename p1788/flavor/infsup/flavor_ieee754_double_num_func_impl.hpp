@@ -76,7 +76,7 @@ ieee754_flavor<double>::rad(ieee754_flavor<double>::representation const& x)
 }
 
 double
-ieee754_flavor<double>::mag(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::mag(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -84,7 +84,7 @@ ieee754_flavor<double>::mag(ieee754_flavor<double>::representation const& x)
 }
 
 double
-ieee754_flavor<double>::mig(ieee754_flavor<double>::representation const& x)
+ieee754_flavor<double>::mig(ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
