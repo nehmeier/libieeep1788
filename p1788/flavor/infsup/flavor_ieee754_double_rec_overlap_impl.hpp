@@ -35,12 +35,12 @@ namespace flavor
 namespace infsup
 {
 
-p1788::overlapping_state ieee754_flavor<double>::overlap(ieee754_flavor<double>::representation const&,
-                                 ieee754_flavor<double>::representation const&)
+p1788::overlapping::overlapping_state ieee754_flavor<double>::overlap(ieee754_flavor<double>::representation const&,
+        ieee754_flavor<double>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return p1788::overlapping_state::both_empty;
+    return p1788::overlapping::overlapping_state::both_empty;
 }
 
 } // namespace infsup

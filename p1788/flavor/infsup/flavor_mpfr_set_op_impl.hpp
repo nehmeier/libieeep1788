@@ -26,6 +26,8 @@
 #ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_SET_OP_IMPL_HPP
 #define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_SET_OP_IMPL_HPP
 
+#include <algorithm>
+
 namespace p1788
 {
 
@@ -37,32 +39,29 @@ namespace infsup
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::intersect(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::intersect(mpfr_flavor<T>::representation const& x,
+                          mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T>::static_method_entire();
+    if (are_disjoint(x, y))
+        return static_method_empty();
+    else
+        return
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::hull(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::hull(mpfr_flavor<T>::representation const& x,
+                     mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(x))
+        return y;
+    else if (is_empty(y))
+        return x;
+    else
+        return representation(std::min(x.first, y.first),
+                              std::max(x.second, y.second));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::widen(mpfr_flavor<T>::representation const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T>::static_method_entire();
-}
 
 } // namespace infsup
 

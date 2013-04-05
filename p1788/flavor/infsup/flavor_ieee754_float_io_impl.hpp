@@ -42,7 +42,7 @@ namespace infsup
 template< typename CharT, typename Traits >
 std::basic_ostream<CharT, Traits>&
 ieee754_flavor<float>::operator_output(std::basic_ostream<CharT, Traits>& os,
-                                        ieee754_flavor<float>::representation const& x)
+                                       ieee754_flavor<float>::representation const& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -52,7 +52,7 @@ ieee754_flavor<float>::operator_output(std::basic_ostream<CharT, Traits>& os,
 template< typename CharT, typename Traits >
 std::basic_istream<CharT, Traits>&
 ieee754_flavor<float>::operator_input(std::basic_istream<CharT, Traits>& is,
-                                       ieee754_flavor<float>::representation& x)
+                                      ieee754_flavor<float>::representation& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

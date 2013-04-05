@@ -27,6 +27,7 @@
 #define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_BOOL_FUNC_IMPL_HPP
 
 #include <cmath>
+#include <limits>
 
 namespace p1788
 {
@@ -48,7 +49,8 @@ template<typename T>
 bool
 mpfr_flavor<T>::is_entire(mpfr_flavor<T>::representation const& x)
 {
-    return std::isinf(x.first) && std::isinf(x.second) && (x.first < x.second);
+    return x.first == -std::numeric_limits<T>::infinity()
+           && x.second == std::numeric_limits<T>::infinity();
 }
 
 template<typename T>
@@ -70,52 +72,63 @@ mpfr_flavor<T>::contained_in(mpfr_flavor<T>::representation const& x,
 
 template<typename T>
 bool
-mpfr_flavor<T>::precedes(mpfr_flavor<T>::representation const&,
-                         mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::less(mpfr_flavor<T>::representation const& x,
+                     mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
+    return (is_empty(x) && is_empty(y))
+           || (x.first <= y.first && x.second <= y.second);
 }
 
 template<typename T>
 bool
-mpfr_flavor<T>::is_enterior(mpfr_flavor<T>::representation const&,
-                            mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::precedes(mpfr_flavor<T>::representation const& x,
+                         mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
+    return is_empty(x) || is_empty(y) || x.second <= y.first;
 }
 
 template<typename T>
 bool
-mpfr_flavor<T>::strictly_less(mpfr_flavor<T>::representation const&,
-                              mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::is_interior(mpfr_flavor<T>::representation const& x,
+                            mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
+    return is_empty(x)
+           || ((y.first < x. first
+                || (y.first == -std::numeric_limits<T>::infinity()
+                    && x.first == -std::numeric_limits<T>::infinity()))
+               && (x.second < y.second
+                   || (x.second == std::numeric_limits<T>::infinity()
+                       && y.second == std::numeric_limits<T>::infinity())));
 }
 
 template<typename T>
 bool
-mpfr_flavor<T>::strictly_precedes(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::strictly_less(mpfr_flavor<T>::representation const& x,
+                              mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
+    return (is_empty(x) && is_empty(y))
+           || ((x.first < y. first
+                || (x.first == -std::numeric_limits<T>::infinity()
+                    && y.first == -std::numeric_limits<T>::infinity()))
+               && (x.second < y.second
+                   || (x.second == std::numeric_limits<T>::infinity()
+                       && y.second == std::numeric_limits<T>::infinity())));
 }
 
 template<typename T>
 bool
-mpfr_flavor<T>::are_disjoint(mpfr_flavor<T>::representation const&,
-                             mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::strictly_precedes(mpfr_flavor<T>::representation const& x,
+                                  mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    return is_empty(x) || is_empty(y) || x.second < y.first;
+}
 
-    return false;
+template<typename T>
+bool
+mpfr_flavor<T>::are_disjoint(mpfr_flavor<T>::representation const& x,
+                             mpfr_flavor<T>::representation const& y)
+{
+    return is_empty(x) || is_empty(y) || x.second < y.first || y.second < x.first;
 }
 
 } // namespace infsup

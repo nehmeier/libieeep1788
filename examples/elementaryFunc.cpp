@@ -38,9 +38,6 @@ int main()
 
     typedef p1788::flavor::infsup::mpfr_flavor<double> flav;
 
-    flav a;
-    a = a;
-
     interval<double> d_a(1,2), d_b(3,4), d_c(5,6);
     interval<float> f_a(1,2), f_b(3,4), f_c(5,6);
 

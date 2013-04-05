@@ -69,7 +69,7 @@ template<typename T>
 template<typename ConstRandomAccessIterator>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::constructor_infsup(ConstRandomAccessIterator first,
-        ConstRandomAccessIterator last)
+                                   ConstRandomAccessIterator last)
 {
     //TODO check iterator
     auto result = std::minmax_element(first, last);
@@ -164,16 +164,16 @@ template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::static_method_empty()
 {
-    return representation(std::numeric_limits<double>::quiet_NaN(),
-                          std::numeric_limits<double>::quiet_NaN());
+    return representation(std::numeric_limits<T>::quiet_NaN(),
+                          std::numeric_limits<T>::quiet_NaN());
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::static_method_entire()
 {
-    return representation(-std::numeric_limits<double>::infinity(),
-                          std::numeric_limits<double>::infinity());
+    return representation(-std::numeric_limits<T>::infinity(),
+                          std::numeric_limits<T>::infinity());
 }
 
 

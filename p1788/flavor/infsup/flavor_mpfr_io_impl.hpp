@@ -26,6 +26,8 @@
 #ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_IO_IMPL_HPP
 #define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_IO_IMPL_HPP
 
+#include <iostream>
+
 #include "p1788/util/assert.hpp"
 
 namespace p1788
@@ -43,7 +45,7 @@ template<typename T>
 template< typename CharT, typename Traits >
 std::basic_ostream<CharT, Traits>&
 mpfr_flavor<T>::operator_output(std::basic_ostream<CharT, Traits>& os,
-                                        mpfr_flavor<T>::representation const& x)
+                                mpfr_flavor<T>::representation const& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -54,7 +56,7 @@ template<typename T>
 template< typename CharT, typename Traits >
 std::basic_istream<CharT, Traits>&
 mpfr_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is,
-                                       mpfr_flavor<T>::representation& x)
+                               mpfr_flavor<T>::representation& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

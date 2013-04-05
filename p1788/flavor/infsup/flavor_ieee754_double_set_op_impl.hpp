@@ -46,20 +46,13 @@ ieee754_flavor<double>::intersect(ieee754_flavor<double>::representation const&,
 
 ieee754_flavor<double>::representation
 ieee754_flavor<double>::hull(ieee754_flavor<double>::representation const&,
-                                  ieee754_flavor<double>::representation const&)
+                             ieee754_flavor<double>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return ieee754_flavor<double>::static_method_entire();
 }
 
-ieee754_flavor<double>::representation
-ieee754_flavor<double>::widen(ieee754_flavor<double>::representation const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return ieee754_flavor<double>::static_method_entire();
-}
 
 } // namespace infsup
 

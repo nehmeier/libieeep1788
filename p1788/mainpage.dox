@@ -1,0 +1,5 @@
+/// \mainpage libieeep1788 - An implementation of the preliminary IEEE P1788 standard for interval arithmetic
+///
+/// Foo bar baz
+///
+/// \see p1788::infsup::interval

@@ -46,20 +46,14 @@
 //------------------------------------------------------------------------------
 
 
-/// \brief Namespace for all IEEE P1788 interval types
-///
 namespace p1788
 {
 
-/// \brief Namespace for all IEEE P1788 infsup interval types
-///
 namespace infsup
 {
 
 
 //TODO hull, see P1788/D7.0 Sect. 9.3
-
-//TODO Mixed-type with different Flavors?
 
 
 // Forward declaration
@@ -196,15 +190,15 @@ namespace infsup
 ///
 /// This class only serves as a uniform interface/representation of an (bare)
 /// interval. All the behavior will be specified by the template policy class
-/// Flavor which implements the flavors concept of the standard in coherent way,
+/// Flavor<T> which implements the flavors concept of the standard in coherent way,
 /// see P1788/D7.0 Sect. 5.
 ///
-/// \param T                  Number system /parent format
+/// \param T                  Number system / parent format
 /// \param Flavor<typename>   Generic flavor which will be instantiated with the
 ///                           number system T
 ///
 template<typename T, template<typename> class Flavor>
-class interval final
+class interval //TODO final
 {
 
 // -----------------------------------------------------------------------------
@@ -353,9 +347,10 @@ private:
 
 
 // -----------------------------------------------------------------------------
-// IO operators
 // -----------------------------------------------------------------------------
-
+/// \name IO operators
+///
+///@{
 
     template<typename CharT, typename Traits>
     friend std::basic_ostream<CharT, Traits>& operator<<(
@@ -371,12 +366,873 @@ private:
         return Flavor<T>::operator_input(is, x.rep_);
     }
 
+///@}
+
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+/// \name Non-arithmetic set operations, see P1788/D7.0 Sect. 9.6.7
+///
+///@{
+
+
+    /// \brief Intersection of two intervals <B>x</B> and <B>y</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The intersection of two intervals <B>x</B>  and <B>y</B> is defined as:
+    /// \f[
+    ///    \mathbf{x} \cap \mathbf{y}
+    /// \f]
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::intersect(Flavor<T>::representation const&, Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the intervals.
+    ///
+    ///
+    /// \see #intersect(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// \param x interval
+    /// \param y interval
+    /// \return intersection of <B>x</B>  and <B>y</B>
+    ///
+    friend interval<T, Flavor> intersect(interval<T, Flavor> const& x,
+                                         interval<T, Flavor> const& y) {
+        return interval<T, Flavor>(Flavor<T>::intersect(x.rep_, y.rep_));
+    }
+
+    /// \brief Intersection of two intervals <B>x</B> and <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #intersect(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>Interval</TT> is of type p1788::infsup::interval and the flavor
+    /// of <TT>Interval</TT> is the same as <TT>Flavor</TT> and the number system
+    /// <TT>Ti</TT> of <TT>Interval</TT> as well as
+    ///  <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>Ti</TT>, <TT>T</TT> and <TT>Ty</TT> is determined at compile time
+    /// using template meta programming. Then the intervals
+    /// <B>x</B> and <B>y</B> are converted to intervals of type
+    /// <TT>interval<Tmax,Flavor></TT> and are passed to the function
+    /// #intersect(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+    /// Afterwards the return value of #intersect(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    /// is converted to type <TT>Interval</TT>.
+    ///
+    template<typename Interval, typename Ty>
+    friend Interval intersect(interval<T, Flavor> const& x,
+                              interval<Ty, Flavor> const& y) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Ty
+                 >::type TMax;
+
+        return Interval(intersect(static_cast<interval<TMax, Flavor>>(x),
+                                  static_cast<interval<TMax, Flavor>>(y)));
+    }
+
+
+
+
+    /// \brief Interval hull of two intervals <B>x</B> and <B>y</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The interval hull of two intervals <B>x</B>  and <B>y</B> is defined as:
+    /// \f[
+    ///    \operatorname{hull}(\mathbf{x} \cup\mathbf{y})
+    /// \f]
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::intersect(Flavor<T>::representation const&, Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the intervals.
+    ///
+    ///
+    /// \see #hull(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// \param x interval
+    /// \param y interval
+    /// \return interval hull of <B>x</B>  and <B>y</B>
+    ///
+    friend interval<T, Flavor> hull(interval<T, Flavor> const& x,
+                                    interval<T, Flavor> const& y) {
+        return interval<T, Flavor>(Flavor<T>::hull(x.rep_, y.rep_));
+    }
+
+    /// \brief Interval hull of two intervals <B>x</B> and <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #hull(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>Interval</TT> is of type p1788::infsup::interval and the flavor
+    /// of <TT>Interval</TT> is the same as <TT>Flavor</TT> and the number system
+    /// <TT>Ti</TT> of <TT>Interval</TT> as well as
+    ///  <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>Ti</TT>, <TT>T</TT> and <TT>Ty</TT> is determined at compile time
+    /// using template meta programming. Then the intervals
+    /// <B>x</B> and <B>y</B> are converted to intervals of type
+    /// <TT>interval<Tmax,Flavor></TT> and are passed to the function
+    /// #hull(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+    /// Afterwards the return value of #hull(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    /// is converted to type <TT>Interval</TT>.
+    ///
+    template<typename Interval, typename Ty>
+    friend Interval hull(interval<T, Flavor> const& x,
+                         interval<Ty, Flavor> const& y) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Ty
+                 >::type TMax;
+
+        return Interval(hull(static_cast<interval<TMax, Flavor>>(x),
+                             static_cast<interval<TMax, Flavor>>(y)));
+    }
+
+    // TODO
+    //friend interval<T, Flavor> hull(std::initializer_list<T> ilst);           ///< interval hull, see P1788/D7.0 Sect. 11.8.1
+    // TODO: Mixed type operation
+
+
+///@}
+
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+/// \name Numeric functions on intervals, see P1788/D7.0 Sect. 9.6.9
+///
+///@{
+
+    friend T inf(interval<T, Flavor> const& x) {       ///< Required
+        return Flavor<T>::inf(x.rep_);
+    }
+
+    friend T sup(interval<T, Flavor> const& x) {       ///< Required
+        return Flavor<T>::sup(x.rep_);
+    }
+
+    friend T mid(interval<T, Flavor> const& x) {       ///< Required
+        return Flavor<T>::mid(x.rep_);
+    }
+
+    friend T wid(interval<T, Flavor> const& x) {       ///< Required
+        return Flavor<T>::wid(x.rep_);
+    }
+
+    friend T rad(interval<T, Flavor> const& x) {       ///< Required
+        return Flavor<T>::rad(x.rep_);
+    }
+
+    friend T mag(interval<T, Flavor> const& x) {       ///< Required
+        return Flavor<T>::mag(x.rep_);
+    }
+
+    friend T mig(interval<T, Flavor> const& x) {       ///< Required
+        return Flavor<T>::mig(x.rep_);
+    }
+
+    friend std::pair<T, T> mid_rad(interval<T, Flavor> const& x) {     ///< Recommended, see Note in P1788/D7.0 Sect. 9.6.9
+        return Flavor<T>::mid_rad(x.rep_);
+    }
+
+///@}
+
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+/// \name Boolean functions on intervals, see P1788/D7.0 Sect. 9.6.10
+///
+///@{
+
+
+    /// \brief Check if an interval <B>x</B> is the empty set
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::is_empty(Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param x   interval
+    /// \retval true    <B>x</B> is the empty set
+    /// \retval false   otherwise
+    ///
+    friend bool is_empty(interval<T, Flavor> const& x) {
+        return Flavor<T>::is_empty(x.rep_);
+    }
+
+
+
+
+    /// \brief Check if an interval <B>x</B> is the whole line
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::is_entire(Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param x interval
+    /// \retval true    <B>x</B> is the whole line
+    /// \retval false   otherwise
+    ///
+    friend bool is_entire(interval<T, Flavor> const& x) {
+        return Flavor<T>::is_entire(x.rep_);
+    }
+
+
+
+
+    /// \brief Check if two intervals <B>x</B> and <B>y</B> are equal
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// Two intervals <B>x</B> and <B>y</B> are equal if the condition
+    /// \f[
+    ///     \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, x = y  \,
+    ///     \wedge \, \forall_{y \in \mathbf{y}}\exists_{x \in \mathbf{x}} \, y = x
+    /// \f]
+    /// is fulfilled.
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::is_equal(Flavor<T>::representation const&, Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the intervals.
+    ///
+    ///
+    /// \see #is_equal(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// \param x interval
+    /// \param y interval
+    /// \retval true    <B>x</B> and <B>y</B> are equal
+    /// \retval false   otherwise
+    ///
+    friend bool is_equal(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return Flavor<T>::is_equal(x.rep_, y.rep_);
+    }
+
+    /// \brief Check if two intervals <B>x</B> and <B>y</B> are equal
+    ///
+    /// <B>Mixed type operation of</B> #is_equal(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>T</TT> and <TT>Ty</TT> is determined at compile time
+    /// using template meta programming. Then the intervals
+    /// <B>x</B> and <B>y</B> are converted to intervals of type
+    /// <TT>interval<Tmax,Flavor></TT> and are passed to the function
+    /// #is_equal(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+    ///
+    template<typename Ty>
+    friend bool is_equal(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        typedef typename p1788::util::max_precision_type<
+        T,
+        Ty
+        >::type TMax;
+
+        return is_equal(static_cast<interval<TMax, Flavor>>(x),
+                        static_cast<interval<TMax, Flavor>>(y));
+    }
+
+    /// \brief Check if two intervals <B>x</B> and <B>y</B> are equal
+    ///
+    /// <B>Short hand of</B> #is_equal(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    friend bool operator==(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return is_equal(x, y);
+    }
+
+    /// \brief Check if two intervals <B>x</B> and <B>y</B> are equal
+    ///
+    /// <B>Short hand of</B> #is_equal(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    template<typename Ty>
+    friend bool operator==(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        return is_equal(x, y);
+    }
+
+    /// \brief Check if two intervals <B>x</B> and <B>y</B> are <B>not</B> equal
+    ///
+    /// <B>Short hand of</B> !#is_equal(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    friend bool operator!=(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return !is_equal(x, y);
+    }
+
+    /// \brief Check if two intervals <B>x</B> and <B>y</B> are <B>not</B> equal
+    ///
+    /// <B>Short hand of</B> !#is_equal(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    template<typename Ty>
+    friend bool operator!=(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        return !is_equal(x, y);
+    }
+
+
+
+
+    /// \brief Check if intervals <B>x</B> is a subset of interval <B>y</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// An interval <B>x</B> is a subset of an interval <B>y</B> if the condition
+    /// \f[
+    ///     \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, x = y
+    /// \f]
+    /// is fulfilled.
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::contained_in(Flavor<T>::representation const&, Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the intervals.
+    ///
+    ///
+    /// \see #contained_in(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// \param x interval
+    /// \param y interval
+    /// \retval true    <B>x</B> is subset of <B>y</B>
+    /// \retval false   otherwise
+    ///
+    friend bool contained_in(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return Flavor<T>::contained_in(x.rep_, y.rep_);
+    }
+
+    /// \brief Check if intervals <B>x</B> is a subset of interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #contained_in(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>T</TT> and <TT>Ty</TT> is determined at compile time
+    /// using template meta programming. Then the intervals
+    /// <B>x</B> and <B>y</B> are converted to intervals of type
+    /// <TT>interval<Tmax,Flavor></TT> and are passed to the function
+    /// #contained_in(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+    ///
+    template<typename Ty>
+    friend bool contained_in(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        typedef typename p1788::util::max_precision_type<
+        T,
+        Ty
+        >::type TMax;
+
+        return contained_in(static_cast<interval<TMax, Flavor>>(x),
+                            static_cast<interval<TMax, Flavor>>(y));
+    }
+
+    /// \brief Check if interval <B>x</B> is a superset of interval <B>y</B>
+    ///
+    /// <B>Calls</B> #contained_in(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    friend bool contains(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return contained_in(y, x);
+    }
+
+    /// \brief Check if interval <B>x</B> is a superset of interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #contains(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Calls</B> #contained_in(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    template<typename Ty>
+    friend bool contains(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        return contained_in(y, x);
+    }
+
+
+
+
+    /// \brief Check if intervals <B>x</B> is weakly less then interval <B>y</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// An interval <B>x</B> is weakly less then an interval <B>y</B> if the condition
+    /// \f[
+    ///     \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, x \leq y  \,
+    ///     \wedge \, \forall_{y \in \mathbf{y}}\exists_{x \in \mathbf{x}} \, x \leq y
+    /// \f]
+    /// is fulfilled.
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::less(Flavor<T>::representation const&, Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the intervals.
+    ///
+    ///
+    /// \see #less(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// \param x interval
+    /// \param y interval
+    /// \retval true    <B>x</B> is weakly less then <B>y</B>
+    /// \retval false   otherwise
+    ///
+    friend bool less(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return Flavor<T>::less(x.rep_, y.rep_);
+    }
+
+    /// \brief Check if intervals <B>x</B> is weakly less then interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #less(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>T</TT> and <TT>Ty</TT> is determined at compile time
+    /// using template meta programming. Then the intervals
+    /// <B>x</B> and <B>y</B> are converted to intervals of type
+    /// <TT>interval<Tmax,Flavor></TT> and are passed to the function
+    /// #less(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+    ///
+    template<typename Ty>
+    friend bool less(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        typedef typename p1788::util::max_precision_type<
+        T,
+        Ty
+        >::type TMax;
+
+        return less(static_cast<interval<TMax, Flavor>>(x),
+                    static_cast<interval<TMax, Flavor>>(y));
+    }
+
+    /// \brief Check if intervals <B>x</B> is weakly greater then interval <B>y</B>
+    ///
+    /// <B>Calls</B> #less(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    friend bool greater(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return less(y, x);
+    }
+
+    /// \brief Check if intervals <B>x</B> is weakly greater then interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #greater(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Calls</B> #less(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    template<typename Ty>
+    friend bool greater(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        return less(y, x);
+    }
+
+
+
+
+    /// \brief Check if intervals <B>x</B> is to left of but may touch interval <B>y</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// An interval <B>x</B> is to left of but may touch an interval <B>y</B> if the condition
+    /// \f[
+    ///     \forall_{x \in \mathbf{x}}\forall_{y \in \mathbf{y}} \, x \leq y
+    /// \f]
+    /// is fulfilled.
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::precedes(Flavor<T>::representation const&, Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the intervals.
+    ///
+    ///
+    /// \see #precedes(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// \param x interval
+    /// \param y interval
+    /// \retval true    <B>x</B> is to left of but may touch <B>y</B>
+    /// \retval false   otherwise
+    ///
+    friend bool precedes(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return Flavor<T>::precedes(x.rep_, y.rep_);
+    }
+
+    /// \brief Check if intervals <B>x</B> is to left of but may touch interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #precedes(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>T</TT> and <TT>Ty</TT> is determined at compile time
+    /// using template meta programming. Then the intervals
+    /// <B>x</B> and <B>y</B> are converted to intervals of type
+    /// <TT>interval<Tmax,Flavor></TT> and are passed to the function
+    /// #precedes(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+    ///
+    template<typename Ty>
+    friend bool precedes(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        typedef typename p1788::util::max_precision_type<
+        T,
+        Ty
+        >::type TMax;
+
+        return precedes(static_cast<interval<TMax, Flavor>>(x),
+                        static_cast<interval<TMax, Flavor>>(y));
+    }
+
+    /// \brief Check if intervals <B>x</B> is to right of but may touch interval <B>y</B>
+    ///
+    /// <B>Calls</B> #precedes(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    friend bool succeeds(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return precedes(y, x);
+    }
+
+    /// \brief Check if intervals <B>x</B> is to right of but may touch interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #succeeds(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Calls</B> #precedes(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    template<typename Ty>
+    friend bool succeeds(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        return precedes(y, x);
+    }
+
+
+
+
+    /// \brief Check if intervals <B>x</B> is interior to interval <B>y</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// An interval <B>x</B> is interior to an interval <B>y</B> if the condition
+    /// \f[
+    ///     \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, x < y  \,
+    ///     \wedge \, \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, y < x
+    /// \f]
+    /// is fulfilled.
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::is_interior(Flavor<T>::representation const&, Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the intervals.
+    ///
+    ///
+    /// \see #is_interior(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// \param x interval
+    /// \param y interval
+    /// \retval true    <B>x</B> is interior to <B>y</B>
+    /// \retval false   otherwise
+    ///
+    friend bool is_interior(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return Flavor<T>::is_interior(x.rep_, y.rep_);
+    }
+
+    /// \brief Check if intervals <B>x</B> is interior to interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #is_interior(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>T</TT> and <TT>Ty</TT> is determined at compile time
+    /// using template meta programming. Then the intervals
+    /// <B>x</B> and <B>y</B> are converted to intervals of type
+    /// <TT>interval<Tmax,Flavor></TT> and are passed to the function
+    /// #is_interior(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+    ///
+    template<typename Ty>
+    friend bool is_interior(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        typedef typename p1788::util::max_precision_type<
+        T,
+        Ty
+        >::type TMax;
+
+        return is_interior(static_cast<interval<TMax, Flavor>>(x),
+                           static_cast<interval<TMax, Flavor>>(y));
+    }
+
+
+
+
+    /// \brief Check if intervals <B>x</B> is strictly less then interval <B>y</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// An interval <B>x</B> is strictly less then an interval <B>y</B> if the condition
+    /// \f[
+    ///     \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, x < y  \,
+    ///     \wedge \, \forall_{y \in \mathbf{y}}\exists_{x \in \mathbf{x}} \, x < y
+    /// \f]
+    /// is fulfilled.
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::strictly_less(Flavor<T>::representation const&, Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the intervals.
+    ///
+    ///
+    /// \see #strictly_less(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// \param x interval
+    /// \param y interval
+    /// \retval true    <B>x</B> is strictly less then <B>y</B>
+    /// \retval false   otherwise
+    ///
+    friend bool strictly_less(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return Flavor<T>::strictly_less(x.rep_, y.rep_);
+    }
+
+    /// \brief Check if intervals <B>x</B> is strictly less then interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #strictly_less(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>T</TT> and <TT>Ty</TT> is determined at compile time
+    /// using template meta programming. Then the intervals
+    /// <B>x</B> and <B>y</B> are converted to intervals of type
+    /// <TT>interval<Tmax,Flavor></TT> and are passed to the function
+    /// #strictly_less(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+    ///
+    template<typename Ty>
+    friend bool strictly_less(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        typedef typename p1788::util::max_precision_type<
+        T,
+        Ty
+        >::type TMax;
+
+        return strictly_less(static_cast<interval<TMax, Flavor>>(x),
+                             static_cast<interval<TMax, Flavor>>(y));
+    }
+
+    /// \brief Check if intervals <B>x</B> is strictly greater then interval <B>y</B>
+    ///
+    /// <B>Calls</B> #strictly_less(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    friend bool strictly_greater(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return strictly_less(y, x);
+    }
+
+    /// \brief Check if intervals <B>x</B> is strictly greater then interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #strictly_greater(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Calls</B> #strictly_less(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    template<typename Ty>
+    friend bool strictly_greater(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        return strictly_less(y, x);
+    }
+
+
+
+
+    /// \brief Check if intervals <B>x</B> is strictly to left of interval <B>y</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// An interval <B>x</B> is strictly to left of an interval <B>y</B> if the condition
+    /// \f[
+    ///     \forall_{x \in \mathbf{x}}\forall_{y \in \mathbf{y}} \, x < y
+    /// \f]
+    /// is fulfilled.
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::strictly_precedes(Flavor<T>::representation const&, Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the intervals.
+    ///
+    ///
+    /// \see #strictly_precedes(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// \param x interval
+    /// \param y interval
+    /// \retval true    <B>x</B> is strictly to left of <B>y</B>
+    /// \retval false   otherwise
+    ///
+    friend bool strictly_precedes(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return Flavor<T>::strictly_precedes(x.rep_, y.rep_);
+    }
+
+    /// \brief Check if intervals <B>x</B> is strictly to left of interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #strictly_precedes(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>T</TT> and <TT>Ty</TT> is determined at compile time
+    /// using template meta programming. Then the intervals
+    /// <B>x</B> and <B>y</B> are converted to intervals of type
+    /// <TT>interval<Tmax,Flavor></TT> and are passed to the function
+    /// #strictly_precedes(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+    ///
+    template<typename Ty>
+    friend bool strictly_precedes(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        typedef typename p1788::util::max_precision_type<
+        T,
+        Ty
+        >::type TMax;
+
+        return strictly_precedes(static_cast<interval<TMax, Flavor>>(x),
+                                 static_cast<interval<TMax, Flavor>>(y));
+    }
+
+    /// \brief Check if intervals <B>x</B> is strictly to right of interval <B>y</B>
+    ///
+    /// <B>Calls</B> #strictly_precedes(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    friend bool strictly_succeeds(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return strictly_precedes(y, x);
+    }
+
+    /// \brief Check if intervals <B>x</B> is strictly to right of interval <B>y</B>
+    ///
+    /// <B>Mixed type operation of</B> #strictly_succeeds(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Calls</B> #strictly_precedes(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    template<typename Ty>
+    friend bool strictly_succeeds(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        return strictly_precedes(y, x);
+    }
+
+
+
+
+    /// \brief Check if intervals <B>x</B> and interval <B>y</B> are disjoint
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The intervals <B>x</B> and <B>y</B> are disjoint if the condition
+    /// \f[
+    ///     \forall_{x \in \mathbf{x}}\forall_{y \in \mathbf{y}} \, x \not= y
+    /// \f]
+    /// is fulfilled.
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::are_disjoint(Flavor<T>::representation const&, Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the intervals.
+    ///
+    ///
+    /// \see #are_disjoint(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    ///
+    /// \param x interval
+    /// \param y interval
+    /// \retval true    <B>x</B> and <B>y</B> are disjoint
+    /// \retval false   otherwise
+    ///
+    friend bool are_disjoint(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return Flavor<T>::are_disjoint(x.rep_, y.rep_);
+    }
+
+    /// \brief Check if intervals <B>x</B> and interval <B>y</B> are disjoint
+    ///
+    /// <B>Mixed type operation of</B> #are_disjoint(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>T</TT> and <TT>Ty</TT> is determined at compile time
+    /// using template meta programming. Then the intervals
+    /// <B>x</B> and <B>y</B> are converted to intervals of type
+    /// <TT>interval<Tmax,Flavor></TT> and are passed to the function
+    /// #are_disjoint(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+    ///
+    template<typename Ty>
+    friend bool are_disjoint(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        typedef typename p1788::util::max_precision_type<
+        T,
+        Ty
+        >::type TMax;
+
+        return are_disjoint(static_cast<interval<TMax, Flavor>>(x),
+                            static_cast<interval<TMax, Flavor>>(y));
+    }
+
+
+///@}
 
 
 // -----------------------------------------------------------------------------
-// Forward elementary functions
 // -----------------------------------------------------------------------------
-
+/// \name Forward elementary functions
+///
+///@{
 
 // pos
 
@@ -1520,9 +2376,14 @@ private:
         return Interval(interval<Tmax, Flavor>(Flavor<Tmax>::max(first, last)));
     }
 
-    // -----------------------------------------------------------------------------
-    // Reverse elementary functions, see P1788/D7.0 Sect. 9.6.5 Table 2
-    // -----------------------------------------------------------------------------
+///@}
+
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+/// \name Reverse elementary functions, see P1788/D7.0 Sect. 9.6.5 Table 2
+///
+///@{
+
 
     // reverse version of unary point functions
 
@@ -1530,141 +2391,141 @@ private:
 // sqr_rev
 
     friend interval<T, Flavor> sqr_rev(interval<T, Flavor> const& c, interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::sqr_rev(c.rep_, x.rep_));
+        return interval<T, Flavor>(Flavor<T>::sqr_rev(c.rep_, x.rep_));
     }
 
     template<typename Interval, typename Tx>
     friend Interval sqr_rev(interval<T, Flavor> const& c, interval<Tx, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T,
-               Tx
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-      return Interval(sqr_rev(static_cast<interval<TMax, Flavor>>(c),
-                              static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(sqr_rev(static_cast<interval<TMax, Flavor>>(c),
+                                static_cast<interval<TMax, Flavor>>(x)));
     }
 
     friend interval<T, Flavor> sqr_rev(interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::sqr_rev(x.rep_));
+        return interval<T, Flavor>(Flavor<T>::sqr_rev(x.rep_));
     }
 
     template<typename Interval>
     friend Interval sqr_rev(interval<T, Flavor> const & x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-      return Interval(sqr_rev(static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(sqr_rev(static_cast<interval<TMax, Flavor>>(x)));
     }
 
 
 // inv_rev
 
     friend interval<T, Flavor> inv_rev(interval<T, Flavor> const& c, interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::inv_rev(c.rep_, x.rep_));
+        return interval<T, Flavor>(Flavor<T>::inv_rev(c.rep_, x.rep_));
     }
 
     template<typename Interval, typename Tx>
     friend Interval inv_rev(interval<T, Flavor> const &c, interval<Tx, Flavor> const &x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T,
-               Tx
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-      return Interval(inv_rev(static_cast<interval<TMax, Flavor>>(c),
-                              static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(inv_rev(static_cast<interval<TMax, Flavor>>(c),
+                                static_cast<interval<TMax, Flavor>>(x)));
     }
 
     friend interval<T, Flavor> inv_rev(interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::inv_rev(x.rep_));
+        return interval<T, Flavor>(Flavor<T>::inv_rev(x.rep_));
     }
 
     template<typename Interval>
     friend Interval inv_rev(interval<T, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-      return Interval(inv_rev(static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(inv_rev(static_cast<interval<TMax, Flavor>>(x)));
     }
 
 
 // abs_rev
 
     friend interval<T, Flavor> abs_rev(interval<T, Flavor> const& c, interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::abs_rev(c.rep_, x.rep_));
+        return interval<T, Flavor>(Flavor<T>::abs_rev(c.rep_, x.rep_));
     }
 
     template<typename Interval, typename Tx>
     friend Interval abs_rev(interval<T, Flavor> const& c, interval<Tx, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T,
-               Tx
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-      return Interval(abs_rev(static_cast<interval<TMax, Flavor>>(c),
-                              static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(abs_rev(static_cast<interval<TMax, Flavor>>(c),
+                                static_cast<interval<TMax, Flavor>>(x)));
     }
 
     friend interval<T, Flavor> abs_rev(interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::abs_rev(x.rep_));
+        return interval<T, Flavor>(Flavor<T>::abs_rev(x.rep_));
     }
 
     template<typename Interval>
     friend Interval abs_rev(interval<T, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-      return Interval(abs_rev(static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(abs_rev(static_cast<interval<TMax, Flavor>>(x)));
     }
 
 
@@ -1672,143 +2533,143 @@ private:
 
     friend interval<T, Flavor> pown_rev(interval<T, Flavor> const& c,
                                         interval<T, Flavor> const& x, int n) {   ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::pown_rev(c.rep_, x.rep_, n));
+        return interval<T, Flavor>(Flavor<T>::pown_rev(c.rep_, x.rep_, n));
     }
 
     template<typename Interval, typename Tx>
     friend Interval pown_rev(interval<T, Flavor> const& c,
                              interval<Tx, Flavor> const& x, int n) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T,
-               Tx
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-      return Interval(pown_rev(static_cast<interval<TMax, Flavor>>(c),
-                               static_cast<interval<TMax, Flavor>>(x),
-                               n));
+        return Interval(pown_rev(static_cast<interval<TMax, Flavor>>(c),
+                                 static_cast<interval<TMax, Flavor>>(x),
+                                 n));
     }
 
     friend interval<T, Flavor> pown_rev(interval<T, Flavor> const& x, int n) {   ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::pown_rev(x.rep_, n));
+        return interval<T, Flavor>(Flavor<T>::pown_rev(x.rep_, n));
     }
 
     template<typename Interval>
     friend Interval pown_rev(interval<T, Flavor> const& x, int n) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-      return Interval(pown_rev(static_cast<interval<TMax, Flavor>>(x), n));
+        return Interval(pown_rev(static_cast<interval<TMax, Flavor>>(x), n));
     }
 
 
 // sin_rev
 
     friend interval<T, Flavor> sin_rev(interval<T, Flavor> const& c, interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::sin_rev(c.rep_, x.rep_));
+        return interval<T, Flavor>(Flavor<T>::sin_rev(c.rep_, x.rep_));
     }
 
     template<typename Interval, typename Tx>
     friend Interval sin_rev(interval<T, Flavor> const& c, interval<Tx, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T,
-               Tx
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-      return Interval(sin_rev(static_cast<interval<TMax, Flavor>>(c),
-                              static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(sin_rev(static_cast<interval<TMax, Flavor>>(c),
+                                static_cast<interval<TMax, Flavor>>(x)));
     }
 
     friend interval<T, Flavor> sin_rev(interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::sin_rev(x.rep_));
+        return interval<T, Flavor>(Flavor<T>::sin_rev(x.rep_));
     }
 
     template<typename Interval>
     friend Interval sin_rev(interval<T, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-      return Interval(sin_rev(static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(sin_rev(static_cast<interval<TMax, Flavor>>(x)));
     }
 
 
 // cos_rev
 
     friend interval<T, Flavor> cos_rev(interval<T, Flavor> const& c, interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::cos_rev(c.rep_, x.rep_));
+        return interval<T, Flavor>(Flavor<T>::cos_rev(c.rep_, x.rep_));
     }
 
     template<typename Interval, typename Tx>
     friend Interval cos_rev(interval<T, Flavor> const& c, interval<Tx, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T,
-               Tx
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-      return Interval(cos_rev(static_cast<interval<TMax, Flavor>>(c),
-                              static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(cos_rev(static_cast<interval<TMax, Flavor>>(c),
+                                static_cast<interval<TMax, Flavor>>(x)));
     }
 
     friend interval<T, Flavor> cos_rev(interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::cos_rev(x.rep_));
+        return interval<T, Flavor>(Flavor<T>::cos_rev(x.rep_));
     }
 
     template<typename Interval>
     friend Interval cos_rev(interval<T, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-      return Interval(cos_rev(static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(cos_rev(static_cast<interval<TMax, Flavor>>(x)));
     }
 
 
@@ -1816,1464 +2677,1189 @@ private:
 
     friend interval<T, Flavor> tan_rev(interval<T, Flavor> const& c,
                                        interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::tan_rev(c.rep_, x.rep_));
+        return interval<T, Flavor>(Flavor<T>::tan_rev(c.rep_, x.rep_));
     }
 
     template<typename Interval, typename Tx>
     friend Interval tan_rev(interval<T, Flavor> const& c,
-                                       interval<Tx, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+                            interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T,
-               Tx
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-      return Interval(tan_rev(static_cast<interval<TMax, Flavor>>(c),
-                              static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(tan_rev(static_cast<interval<TMax, Flavor>>(c),
+                                static_cast<interval<TMax, Flavor>>(x)));
     }
 
     friend interval<T, Flavor> tan_rev(interval<T, Flavor> const& x) {     ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::tan_rev(x.rep_));
+        return interval<T, Flavor>(Flavor<T>::tan_rev(x.rep_));
     }
 
     template<typename Interval>
     friend Interval tan_rev(interval<T, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-      return Interval(tan_rev(static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(tan_rev(static_cast<interval<TMax, Flavor>>(x)));
     }
 
 
 // cosh_rev
 
     friend interval<T, Flavor> cosh_rev(interval<T, Flavor> const& c, interval<T, Flavor> const& x) {    ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::cosh_rev(c.rep_, x.rep_));
+        return interval<T, Flavor>(Flavor<T>::cosh_rev(c.rep_, x.rep_));
     }
 
     template<typename Interval, typename Tx>
     friend Interval cosh_rev(interval<T, Flavor> const &c, interval<Tx, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T,
-               Tx
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-      return Interval(cosh_rev(static_cast<interval<TMax, Flavor>>(c),
-                               static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(cosh_rev(static_cast<interval<TMax, Flavor>>(c),
+                                 static_cast<interval<TMax, Flavor>>(x)));
     }
 
     friend interval<T, Flavor> cosh_rev(interval<T, Flavor> const& x) {    ///< Required, accurate
-      return interval<T, Flavor>(Flavor<T>::cosh_rev(x.rep_));
+        return interval<T, Flavor>(Flavor<T>::cosh_rev(x.rep_));
     }
 
     template<typename Interval>
     friend Interval cosh_rev(interval<T, Flavor> const& x) {
-      static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                    "Return type is not supported by mixed type operations!");
-      static_assert(std::is_same<typename Interval::flavor_type,
-                    Flavor<typename Interval::bound_type>>::value,
-                    "Different flavors are not supported by "
-                    "mixed type operations!");
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-      typedef typename p1788::util::max_precision_type<
-      typename Interval::bound_type,
-               T
-               >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-      return Interval(cosh_rev(static_cast<interval<TMax, Flavor>>(x)));
+        return Interval(cosh_rev(static_cast<interval<TMax, Flavor>>(x)));
     }
 
 
-  // reverse versions of binary point functions
+    // reverse versions of binary point functions
 
 
 // mul_rev
 
-  friend interval<T, Flavor> mul_rev(interval<T, Flavor> const& b,
-                                     interval<T, Flavor> const& c,
-                                     interval<T, Flavor> const& x) {    ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::mul_rev(b.rep_, c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> mul_rev(interval<T, Flavor> const& b,
+                                       interval<T, Flavor> const& c,
+                                       interval<T, Flavor> const& x) {    ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::mul_rev(b.rep_, c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tc, typename Tx>
-  friend Interval mul_rev(interval<T, Flavor> const& b,
-                          interval<Tc, Flavor> const& c,
-                          interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tc, typename Tx>
+    friend Interval mul_rev(interval<T, Flavor> const& b,
+                            interval<Tc, Flavor> const& c,
+                            interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tc,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tc,
+                 Tx
+                 >::type TMax;
 
-    return Interval(mul_rev(static_cast<interval<TMax, Flavor>>(b),
-                            static_cast<interval<TMax, Flavor>>(c),
-                            static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(mul_rev(static_cast<interval<TMax, Flavor>>(b),
+                                static_cast<interval<TMax, Flavor>>(c),
+                                static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> mul_rev(interval<T, Flavor> const& c,
-                                     interval<T, Flavor> const& x) {     ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::mul_rev(c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> mul_rev(interval<T, Flavor> const& c,
+                                       interval<T, Flavor> const& x) {     ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::mul_rev(c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tx>
-  friend Interval mul_rev(interval<T, Flavor> const& c,
-                          interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tx>
+    friend Interval mul_rev(interval<T, Flavor> const& c,
+                            interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-    return Interval(mul_rev(static_cast<interval<TMax, Flavor>>(c),
-                            static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(mul_rev(static_cast<interval<TMax, Flavor>>(c),
+                                static_cast<interval<TMax, Flavor>>(x)));
+    }
 
 
 // div_rev1
 
-  friend interval<T, Flavor> div_rev1(interval<T, Flavor> const& b,
-                                      interval<T, Flavor> const& c,
-                                      interval<T, Flavor> const& x) {    ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::div_rev1(b.rep_, c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> div_rev1(interval<T, Flavor> const& b,
+                                        interval<T, Flavor> const& c,
+                                        interval<T, Flavor> const& x) {    ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::div_rev1(b.rep_, c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tc, typename Tx>
-  friend Interval div_rev1(interval<T, Flavor> const& b,
-                           interval<Tc, Flavor> const& c,
-                           interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tc, typename Tx>
+    friend Interval div_rev1(interval<T, Flavor> const& b,
+                             interval<Tc, Flavor> const& c,
+                             interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tc,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tc,
+                 Tx
+                 >::type TMax;
 
-    return Interval(div_rev1(static_cast<interval<TMax, Flavor>>(b),
-                             static_cast<interval<TMax, Flavor>>(c),
-                             static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(div_rev1(static_cast<interval<TMax, Flavor>>(b),
+                                 static_cast<interval<TMax, Flavor>>(c),
+                                 static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> div_rev1(interval<T, Flavor> const& c,
-                                      interval<T, Flavor> const& x) {    ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::div_rev1(c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> div_rev1(interval<T, Flavor> const& c,
+                                        interval<T, Flavor> const& x) {    ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::div_rev1(c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tx>
-  friend Interval div_rev1(interval<T, Flavor> const& c,
-                           interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tx>
+    friend Interval div_rev1(interval<T, Flavor> const& c,
+                             interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-    return Interval(div_rev1(static_cast<interval<TMax, Flavor>>(c),
-                             static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(div_rev1(static_cast<interval<TMax, Flavor>>(c),
+                                 static_cast<interval<TMax, Flavor>>(x)));
+    }
 
 
 // div_rev2
 
-  friend interval<T, Flavor> div_rev2(interval<T, Flavor> const& a,
-                                      interval<T, Flavor> const& c,
-                                      interval<T, Flavor> const& x) {    ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::div_rev2(a.rep_, c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> div_rev2(interval<T, Flavor> const& a,
+                                        interval<T, Flavor> const& c,
+                                        interval<T, Flavor> const& x) {    ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::div_rev2(a.rep_, c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tc, typename Tx>
-  friend Interval div_rev2(interval<T, Flavor> const& a,
-                           interval<Tc, Flavor> const& c,
-                           interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tc, typename Tx>
+    friend Interval div_rev2(interval<T, Flavor> const& a,
+                             interval<Tc, Flavor> const& c,
+                             interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tc,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tc,
+                 Tx
+                 >::type TMax;
 
-    return Interval(div_rev2(static_cast<interval<TMax, Flavor>>(a),
-                             static_cast<interval<TMax, Flavor>>(c),
-                             static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(div_rev2(static_cast<interval<TMax, Flavor>>(a),
+                                 static_cast<interval<TMax, Flavor>>(c),
+                                 static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> div_rev2(interval<T, Flavor> const& c,
-                                      interval<T, Flavor> const& x) {    ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::div_rev2(c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> div_rev2(interval<T, Flavor> const& c,
+                                        interval<T, Flavor> const& x) {    ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::div_rev2(c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tx>
-  friend Interval div_rev2(interval<T, Flavor> const& c,
-                           interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tx>
+    friend Interval div_rev2(interval<T, Flavor> const& c,
+                             interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-    return Interval(div_rev2(static_cast<interval<TMax, Flavor>>(c),
-                             static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(div_rev2(static_cast<interval<TMax, Flavor>>(c),
+                                 static_cast<interval<TMax, Flavor>>(x)));
+    }
 
 
 // pow_rev1
 
-  friend interval<T, Flavor> pow_rev1(interval<T, Flavor> const& b,
-                                      interval<T, Flavor> const& c,
-                                      interval<T, Flavor> const& x) {    ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::pow_rev1(b.rep_, c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> pow_rev1(interval<T, Flavor> const& b,
+                                        interval<T, Flavor> const& c,
+                                        interval<T, Flavor> const& x) {    ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::pow_rev1(b.rep_, c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tc, typename Tx>
-  friend Interval pow_rev1(interval<T, Flavor> const& b,
-                           interval<Tc, Flavor> const& c,
-                           interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tc, typename Tx>
+    friend Interval pow_rev1(interval<T, Flavor> const& b,
+                             interval<Tc, Flavor> const& c,
+                             interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tc,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tc,
+                 Tx
+                 >::type TMax;
 
-    return Interval(pow_rev1(static_cast<interval<TMax, Flavor>>(b),
-                             static_cast<interval<TMax, Flavor>>(c),
-                             static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(pow_rev1(static_cast<interval<TMax, Flavor>>(b),
+                                 static_cast<interval<TMax, Flavor>>(c),
+                                 static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> pow_rev1(interval<T, Flavor> const& c,
-                                      interval<T, Flavor> const& x) {    ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::pow_rev1(c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> pow_rev1(interval<T, Flavor> const& c,
+                                        interval<T, Flavor> const& x) {    ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::pow_rev1(c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tx>
-  friend Interval pow_rev1(interval<T, Flavor> const& c,
-                           interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tx>
+    friend Interval pow_rev1(interval<T, Flavor> const& c,
+                             interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-    return Interval(pow_rev1(static_cast<interval<TMax, Flavor>>(c),
-                             static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(pow_rev1(static_cast<interval<TMax, Flavor>>(c),
+                                 static_cast<interval<TMax, Flavor>>(x)));
+    }
 
 
 // pow_rev2
 
-  friend interval<T, Flavor> pow_rev2(interval<T, Flavor> const& a,
-                                      interval<T, Flavor> const& c,
-                                      interval<T, Flavor> const& x) {    ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::pow_rev2(a.rep_, c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> pow_rev2(interval<T, Flavor> const& a,
+                                        interval<T, Flavor> const& c,
+                                        interval<T, Flavor> const& x) {    ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::pow_rev2(a.rep_, c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tc, typename Tx>
-  friend Interval pow_rev2(interval<T, Flavor> const& a,
-                           interval<Tc, Flavor> const& c,
-                           interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tc, typename Tx>
+    friend Interval pow_rev2(interval<T, Flavor> const& a,
+                             interval<Tc, Flavor> const& c,
+                             interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tc,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tc,
+                 Tx
+                 >::type TMax;
 
-    return Interval(pow_rev2(static_cast<interval<TMax, Flavor>>(a),
-                             static_cast<interval<TMax, Flavor>>(c),
-                             static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(pow_rev2(static_cast<interval<TMax, Flavor>>(a),
+                                 static_cast<interval<TMax, Flavor>>(c),
+                                 static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> pow_rev2(interval<T, Flavor> const& c,
-                                      interval<T, Flavor> const& x) {    ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::pow_rev2(c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> pow_rev2(interval<T, Flavor> const& c,
+                                        interval<T, Flavor> const& x) {    ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::pow_rev2(c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tx>
-  friend Interval pow_rev2(interval<T, Flavor> const& c,
-                           interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tx>
+    friend Interval pow_rev2(interval<T, Flavor> const& c,
+                             interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-    return Interval(pow_rev2(static_cast<interval<TMax, Flavor>>(c),
-                             static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(pow_rev2(static_cast<interval<TMax, Flavor>>(c),
+                                 static_cast<interval<TMax, Flavor>>(x)));
+    }
 
 
 // atan2_rev1
 
-  friend interval<T, Flavor> atan2_rev1(interval<T, Flavor> const& b,
-                                        interval<T, Flavor> const& c,
-                                        interval<T, Flavor> const& x) {  ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::atan2_rev1(b.rep_, c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> atan2_rev1(interval<T, Flavor> const& b,
+                                          interval<T, Flavor> const& c,
+                                          interval<T, Flavor> const& x) {  ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::atan2_rev1(b.rep_, c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tc, typename Tx>
-  friend Interval atan2_rev1(interval<T, Flavor> const& b,
-                             interval<Tc, Flavor> const& c,
-                             interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tc, typename Tx>
+    friend Interval atan2_rev1(interval<T, Flavor> const& b,
+                               interval<Tc, Flavor> const& c,
+                               interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tc,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tc,
+                 Tx
+                 >::type TMax;
 
-    return Interval(atan2_rev1(static_cast<interval<TMax, Flavor>>(b),
-                               static_cast<interval<TMax, Flavor>>(c),
-                               static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(atan2_rev1(static_cast<interval<TMax, Flavor>>(b),
+                                   static_cast<interval<TMax, Flavor>>(c),
+                                   static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> atan2_rev1(interval<T, Flavor> const& c,
-                                        interval<T, Flavor> const& x) {  ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::atan2_rev1(c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> atan2_rev1(interval<T, Flavor> const& c,
+                                          interval<T, Flavor> const& x) {  ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::atan2_rev1(c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tx>
-  friend Interval atan2_rev1(interval<T, Flavor> const& c,
-                             interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tx>
+    friend Interval atan2_rev1(interval<T, Flavor> const& c,
+                               interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-    return Interval(atan2_rev1(static_cast<interval<TMax, Flavor>>(c),
-                               static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(atan2_rev1(static_cast<interval<TMax, Flavor>>(c),
+                                   static_cast<interval<TMax, Flavor>>(x)));
+    }
 
 
 // atan2_rev2
 
-  friend interval<T, Flavor> atan2_rev2(interval<T, Flavor> const& a,
-                                        interval<T, Flavor> const& c,
-                                        interval<T, Flavor> const& x) {  ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::atan2_rev2(a.rep_, c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> atan2_rev2(interval<T, Flavor> const& a,
+                                          interval<T, Flavor> const& c,
+                                          interval<T, Flavor> const& x) {  ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::atan2_rev2(a.rep_, c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tc, typename Tx>
-  friend Interval atan2_rev2(interval<T, Flavor> const& a,
-                             interval<Tc, Flavor> const& c,
-                             interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tc, typename Tx>
+    friend Interval atan2_rev2(interval<T, Flavor> const& a,
+                               interval<Tc, Flavor> const& c,
+                               interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tc,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tc,
+                 Tx
+                 >::type TMax;
 
-    return Interval(atan2_rev2(static_cast<interval<TMax, Flavor>>(a),
-                               static_cast<interval<TMax, Flavor>>(c),
-                               static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(atan2_rev2(static_cast<interval<TMax, Flavor>>(a),
+                                   static_cast<interval<TMax, Flavor>>(c),
+                                   static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> atan2_rev2(interval<T, Flavor> const& c,
-                                        interval<T, Flavor> const& x) {  ///< Required, accurate
-    return interval<T, Flavor>(Flavor<T>::atan2_rev2(c.rep_, x.rep_));
-  }
+    friend interval<T, Flavor> atan2_rev2(interval<T, Flavor> const& c,
+                                          interval<T, Flavor> const& x) {  ///< Required, accurate
+        return interval<T, Flavor>(Flavor<T>::atan2_rev2(c.rep_, x.rep_));
+    }
 
-  template<typename Interval, typename Tx>
-  friend Interval atan2_rev2(interval<T, Flavor> const& c,
-                             interval<Tx, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tx>
+    friend Interval atan2_rev2(interval<T, Flavor> const& c,
+                               interval<Tx, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tx
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tx
+                 >::type TMax;
 
-    return Interval(atan2_rev2(static_cast<interval<TMax, Flavor>>(c),
-                               static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(atan2_rev2(static_cast<interval<TMax, Flavor>>(c),
+                                   static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  // -----------------------------------------------------------------------------
-  // Cancellative addition and subtraction, see P1788/D7.0 Sect. 9.6.6
-  // -----------------------------------------------------------------------------
+///@}
+
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+/// \name Cancellative addition and subtraction, see P1788/D7.0 Sect. 9.6.6
+///
+///@{
 
 
 // cancel_plus
 
-  friend interval<T, Flavor> cancel_plus(interval<T, Flavor> const& a,
-                                         interval<T, Flavor> const& b) {     ///< Required, necessary for bare intervals? see, 11.11.6 // TODO nicht fuer bare interval
-    return interval<T, Flavor>(Flavor<T>::cancel_plus(a.rep_, b.rep_));
-  }
+    friend interval<T, Flavor> cancel_plus(interval<T, Flavor> const& a,
+                                           interval<T, Flavor> const& b) {     ///< Required, necessary for bare intervals? see, 11.11.6 // TODO nicht fuer bare interval
+        return interval<T, Flavor>(Flavor<T>::cancel_plus(a.rep_, b.rep_));
+    }
 
-  template<typename Interval, typename Tb>
-  friend Interval cancel_plus(interval<T, Flavor> const& a,
-                              interval<Tb, Flavor> const& b) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Tb>
+    friend Interval cancel_plus(interval<T, Flavor> const& a,
+                                interval<Tb, Flavor> const& b) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tb
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tb
+                 >::type TMax;
 
-    return Interval(cancel_plus(static_cast<interval<TMax, Flavor>>(a),
-                                static_cast<interval<TMax, Flavor>>(b)));
-  }
+        return Interval(cancel_plus(static_cast<interval<TMax, Flavor>>(a),
+                                    static_cast<interval<TMax, Flavor>>(b)));
+    }
 
 
 // cancel_minus
 
-  friend interval<T, Flavor> cancel_minus(interval<T, Flavor> const& a,
-                                          interval<T, Flavor> const& b) {    ///< Required, necessary for bare intervals? see, 11.11.6 // TODO nicht fuer bare interval
-    return interval<T, Flavor>(Flavor<T>::cancel_minus(a.rep_, b.rep_));
-  }
-
-  template<typename Interval, typename Tb>
-  friend Interval cancel_minus(interval<T, Flavor> const& a,
-                               interval<Tb, Flavor> const& b) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Tb
-              >::type TMax;
-
-    return Interval(cancel_minus(static_cast<interval<TMax, Flavor>>(a),
-                                 static_cast<interval<TMax, Flavor>>(b)));
-  }
-
-
-  // -----------------------------------------------------------------------------
-  // Non-arithmetic set operations, see P1788/D7.0 Sect. 9.6.6
-  // -----------------------------------------------------------------------------
-
-
-// intersect
-
-  friend interval<T, Flavor> intersect(interval<T, Flavor> const& x,
-                                       interval<T, Flavor> const& y) {       ///< Required
-    return interval<T, Flavor>(Flavor<T>::intersect(x.rep_, y.rep_));
-  }
-
-  template<typename Interval, typename Ty>
-  friend Interval intersect(interval<T, Flavor> const& x,
-                            interval<Ty, Flavor> const& y) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Ty
-              >::type TMax;
-
-    return Interval(intersect(static_cast<interval<TMax, Flavor>>(x),
-                              static_cast<interval<TMax, Flavor>>(y)));
-  }
-
-
-// hull
-
-  friend interval<T, Flavor> hull(interval<T, Flavor> const& x,
-                                  interval<T, Flavor> const& y) {            ///< Required
-    return interval<T, Flavor>(Flavor<T>::hull(x.rep_, y.rep_));
-  }
-
-  template<typename Interval, typename Ty>
-  friend Interval hull(interval<T, Flavor> const& x,
-                       interval<Ty, Flavor> const& y) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Ty
-              >::type TMax;
-
-    return Interval(hull(static_cast<interval<TMax, Flavor>>(x),
-                         static_cast<interval<TMax, Flavor>>(y)));
-  }
-
-  // TODO
-  //friend interval<T, Flavor> hull(std::initializer_list<T> ilst);           ///< interval hull, see P1788/D7.0 Sect. 11.8.1
-  // TODO: Mixed type operation
-
-
-// widen
-
-  friend interval<T, Flavor> widen(interval<T, Flavor> const& x) {           ///< necessary as  a function?, see P1788/D7.0 Sect. 11.10  // TODO nicht notwendig
-    return interval<T, Flavor>(Flavor<T>::widen(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval widen(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(widen(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-
-  // -----------------------------------------------------------------------------
-  // Numeric functions on intervals, see P1788/D7.0 Sect. 9.6.9
-  // -----------------------------------------------------------------------------
-
-  friend T inf(interval<T, Flavor> const& x) {       ///< Required
-    return Flavor<T>::inf(x.rep_);
-  }
-
-  friend T sup(interval<T, Flavor> const& x) {       ///< Required
-    return Flavor<T>::sup(x.rep_);
-  }
-
-  friend T mid(interval<T, Flavor> const& x) {       ///< Required
-    return Flavor<T>::mid(x.rep_);
-  }
-
-  friend T wid(interval<T, Flavor> const& x) {       ///< Required
-    return Flavor<T>::wid(x.rep_);
-  }
-
-  friend T rad(interval<T, Flavor> const& x) {       ///< Required
-    return Flavor<T>::rad(x.rep_);
-  }
-
-  friend T mag(interval<T, Flavor> const& x) {       ///< Required
-    return Flavor<T>::mag(x.rep_);
-  }
-
-  friend T mig(interval<T, Flavor> const& x) {       ///< Required
-    return Flavor<T>::mig(x.rep_);
-  }
-
-  friend std::pair<T, T> mid_rad(interval<T, Flavor> const& x) {     ///< Recommended, see Note in P1788/D7.0 Sect. 9.6.9
-    return Flavor<T>::mid_rad(x.rep_);
-  }
-
-
-  // -----------------------------------------------------------------------------
-  // Boolean functions on intervals, see P1788/D7.0 Sect. 9.6.10
-  // -----------------------------------------------------------------------------
-
-  // set op
-  friend bool is_empty(interval<T, Flavor> const& x) {   ///< Required
-    return Flavor<T>::is_empty(x.rep_);
-  }
-
-  friend bool is_entire(interval<T, Flavor> const& x) {  ///< Required
-    return Flavor<T>::is_entire(x.rep_);
-  }
-
-  // comparisons see P1788/D7.0 Sect. 9.6.10 Table 4
-
-
-// is_equal
-
-  friend bool is_equal(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {   ///< Required, Mixed Type
-    return Flavor<T>::is_equal(x.rep_, y.rep_);
-  }
-
-  template<typename Ty>
-  friend bool is_equal(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
-    typedef typename p1788::util::max_precision_type<
-              T,
-              Ty
-              >::type TMax;
-
-    return is_equal(static_cast<interval<TMax, Flavor>>(x),
-                    static_cast<interval<TMax, Flavor>>(y));
-  }
-
-
-// contained_in
-
-  friend bool contained_in(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {   ///< Required, Mixed Type
-    return Flavor<T>::contained_in(x.rep_, y.rep_);
-  }
-
-  template<typename Ty>
-  friend bool contained_in(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
-    typedef typename p1788::util::max_precision_type<
-              T,
-              Ty
-              >::type TMax;
-
-    return contained_in(static_cast<interval<TMax, Flavor>>(x),
-                        static_cast<interval<TMax, Flavor>>(y));
-  }
-
-
-// precedes
-
-  friend bool precedes(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {   ///< Required, Mixed Type
-    return Flavor<T>::precedes(x.rep_, y.rep_);
-  }
-
-  template<typename Ty>
-  friend bool precedes(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
-    typedef typename p1788::util::max_precision_type<
-              T,
-              Ty
-              >::type TMax;
-
-    return precedes(static_cast<interval<TMax, Flavor>>(x),
-                    static_cast<interval<TMax, Flavor>>(y));
-  }
-
-
-// is_interior
-
-  friend bool is_interior(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {    ///< Required, Mixed Type
-    return Flavor<T>::is_interior(x.rep_, y.rep_);
-  }
-
-  template<typename Ty>
-  friend bool is_interior(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
-    typedef typename p1788::util::max_precision_type<
-              T,
-              Ty
-              >::type TMax;
-
-    return is_interior(static_cast<interval<TMax, Flavor>>(x),
-                       static_cast<interval<TMax, Flavor>>(y));
-  }
-
-
-// strictly_less
-
-  friend bool strictly_less(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {  ///< Required, Mixed Type
-    return Flavor<T>::strictly_less(x.rep_, y.rep_);
-  }
-
-  template<typename Ty>
-  friend bool strictly_less(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
-    typedef typename p1788::util::max_precision_type<
-              T,
-              Ty
-              >::type TMax;
-
-    return strictly_less(static_cast<interval<TMax, Flavor>>(x),
-                         static_cast<interval<TMax, Flavor>>(y));
-  }
-
-
-// strictly_precedes
-
-  friend bool strictly_precedes(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {  ///< Required, Mixed Type
-    return Flavor<T>::strictly_precedes(x.rep_, y.rep_);
-  }
-
-  template<typename Ty>
-  friend bool strictly_precedes(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
-    typedef typename p1788::util::max_precision_type<
-              T,
-              Ty
-              >::type TMax;
-
-    return strictly_precedes(static_cast<interval<TMax, Flavor>>(x),
-                             static_cast<interval<TMax, Flavor>>(y));
-  }
-
-
-// are_disjoint
-  friend bool are_disjoint(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {   ///< Required, Mixed Type
-    return Flavor<T>::are_disjoint(x.rep_, y.rep_);
-  }
-
-  template<typename Ty>
-  friend bool are_disjoint(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
-    typedef typename p1788::util::max_precision_type<
-              T,
-              Ty
-              >::type TMax;
-
-    return are_disjoint(static_cast<interval<TMax, Flavor>>(x),
-                        static_cast<interval<TMax, Flavor>>(y));
-  }
-
-
-// Equal and Unequal operator : short form of is_equal and !is_equal
-  friend bool operator==(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {    ///< Implementation specific, short hand for is_equal
-    return is_equal(x, y);
-  }
-
-  template<typename Ty>
-  friend bool operator==(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
-    return is_equal(x, y);
-  }
-
-  friend bool operator!=(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {     ///< Implementation specific, short hand for !is_equal
-    return !is_equal(x, y);
-  }
-
-  template<typename Ty>
-  friend bool operator!=(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
-    return !is_equal(x, y);
-  }
-
-
-  // -----------------------------------------------------------------------------
-  // Recommended forward elementary functions on intervals, see P1788/D7.0 Sect. 9.7.1 Table 5
-  // -----------------------------------------------------------------------------
-
-  friend interval<T, Flavor> rootn(interval<T, Flavor> const& x, int n) {
-    return interval<T, Flavor>(Flavor<T>::rootn(x.rep_, n));
-  }
-
-  template<typename Interval>
-  friend Interval rootn(interval<T, Flavor> const& x, int n) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(rootn(static_cast<interval<TMax, Flavor>>(x), n));
-  }
-
-  friend interval<T, Flavor> expm1(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::expm1(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval expm1(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(expm1(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> exp2m1(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::exp2m1(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval exp2m1(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(exp2m1(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> exp10m1(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::exp10m1(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval exp10m1(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(exp10m1(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> logp1(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::logp1(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval logp1(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(logp1(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> log2p1(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::log2p1(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval log2p1(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(log2p1(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> log10p1(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::log10p1(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval log10p1(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(log10p1(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> compoundm1(interval<T, Flavor> const& x,
-                                        interval<T, Flavor> const& y) {
-    return interval<T, Flavor>(Flavor<T>::compoundm1(x.rep_, y.rep_));
-  }
-
-  template<typename Interval, typename Ty>
-  friend Interval compoundm1(interval<T, Flavor> const& x,
-                        interval<Ty, Flavor> const& y) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Ty
-              >::type TMax;
-
-    return Interval(compoundm1(static_cast<interval<TMax, Flavor>>(x),
-                               static_cast<interval<TMax, Flavor>>(y)));
-  }
-
-  friend interval<T, Flavor> hypot(interval<T, Flavor> const& x,
-                                   interval<T, Flavor> const& y) {   ///< tightest, required or recommended?
-    return interval<T, Flavor>(Flavor<T>::hypot(x.rep_, y.rep_));
-  }
-
-  template<typename Interval, typename Ty>
-  friend Interval hypot(interval<T, Flavor> const& x,
-                        interval<Ty, Flavor> const& y) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Ty
-              >::type TMax;
-
-    return Interval(hypot(static_cast<interval<TMax, Flavor>>(x),
-                          static_cast<interval<TMax, Flavor>>(y)));
-  }
-
-  friend interval<T, Flavor> r_sqrt(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::r_sqrt(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval r_sqrt(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(r_sqrt(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-
-  friend interval<T, Flavor> sin_pi(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::sin_pi(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval sin_pi(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(sin_pi(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> cos_pi(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::cos_pi(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval cos_pi(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(cos_pi(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> tan_pi(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::tan_pi(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval tan_pi(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(tan_pi(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> asin_pi(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::asin_pi(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval asin_pi(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(asin_pi(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> acos_pi(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::acos_pi(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval acos_pi(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(acos_pi(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> atan_pi(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::atan_pi(x.rep_));
-  }
-
-  template<typename Interval>
-  friend Interval atan_pi(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
-
-    return Interval(atan_pi(static_cast<interval<TMax, Flavor>>(x)));
-  }
-
-  friend interval<T, Flavor> atan2_pi(interval<T, Flavor> const& x,
-                                      interval<T, Flavor> const& y) {
-    return interval<T, Flavor>(Flavor<T>::atan2_pi(x.rep_, y.rep_));
-  }
-
-  template<typename Interval, typename Ty>
-  friend Interval atan2_pi(interval<T, Flavor> const& x,
-                           interval<Ty, Flavor> const& y) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
-
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Ty
-              >::type TMax;
-
-    return Interval(atan2_pi(static_cast<interval<TMax, Flavor>>(x),
-                             static_cast<interval<TMax, Flavor>>(y)));
-  }
-
-
-  // -----------------------------------------------------------------------------
-  // Recommended interval overlapping, see P1788/D7.0 Sect. 9.7.2
-  // -----------------------------------------------------------------------------
-
-  friend p1788::overlapping_state overlap(interval<T, Flavor> const& x,
+    friend interval<T, Flavor> cancel_minus(interval<T, Flavor> const& a,
+                                            interval<T, Flavor> const& b) {    ///< Required, necessary for bare intervals? see, 11.11.6 // TODO nicht fuer bare interval
+        return interval<T, Flavor>(Flavor<T>::cancel_minus(a.rep_, b.rep_));
+    }
+
+    template<typename Interval, typename Tb>
+    friend Interval cancel_minus(interval<T, Flavor> const& a,
+                                 interval<Tb, Flavor> const& b) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Tb
+                 >::type TMax;
+
+        return Interval(cancel_minus(static_cast<interval<TMax, Flavor>>(a),
+                                     static_cast<interval<TMax, Flavor>>(b)));
+    }
+
+///@}
+
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+/// \name Recommended forward elementary functions on intervals, see P1788/D7.0 Sect. 9.7.1 Table 5
+///
+///@{
+
+
+    friend interval<T, Flavor> rootn(interval<T, Flavor> const& x, int n) {
+        return interval<T, Flavor>(Flavor<T>::rootn(x.rep_, n));
+    }
+
+    template<typename Interval>
+    friend Interval rootn(interval<T, Flavor> const& x, int n) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(rootn(static_cast<interval<TMax, Flavor>>(x), n));
+    }
+
+    friend interval<T, Flavor> expm1(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::expm1(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval expm1(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(expm1(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> exp2m1(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::exp2m1(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval exp2m1(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(exp2m1(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> exp10m1(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::exp10m1(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval exp10m1(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(exp10m1(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> logp1(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::logp1(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval logp1(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(logp1(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> log2p1(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::log2p1(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval log2p1(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(log2p1(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> log10p1(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::log10p1(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval log10p1(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(log10p1(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> compoundm1(interval<T, Flavor> const& x,
                                           interval<T, Flavor> const& y) {
-    return Flavor<T>::overlap(x.rep_, y.rep_);
-  }
+        return interval<T, Flavor>(Flavor<T>::compoundm1(x.rep_, y.rep_));
+    }
 
-  template<typename Interval, typename Ty>
-  friend p1788::overlapping_state overlap(interval<T, Flavor> const& x,
-                           interval<Ty, Flavor> const& y) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Ty>
+    friend Interval compoundm1(interval<T, Flavor> const& x,
+                               interval<Ty, Flavor> const& y) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T,
-              Ty
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Ty
+                 >::type TMax;
 
-    return overlap(static_cast<interval<TMax, Flavor>>(x),
-                   static_cast<interval<TMax, Flavor>>(y));
-  }
+        return Interval(compoundm1(static_cast<interval<TMax, Flavor>>(x),
+                                   static_cast<interval<TMax, Flavor>>(y)));
+    }
 
-  // -----------------------------------------------------------------------------
-  // Recommended slope functions, see P1788/D7.0 Sect. 9.7.3 Table 7
-  // -----------------------------------------------------------------------------
+    friend interval<T, Flavor> hypot(interval<T, Flavor> const& x,
+                                     interval<T, Flavor> const& y) {   ///< tightest, required or recommended?
+        return interval<T, Flavor>(Flavor<T>::hypot(x.rep_, y.rep_));
+    }
 
-  friend interval<T, Flavor> exp_slope1(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::exp_slope1(x.rep_));
-  }
+    template<typename Interval, typename Ty>
+    friend Interval hypot(interval<T, Flavor> const& x,
+                          interval<Ty, Flavor> const& y) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-  template<typename Interval>
-  friend Interval exp_slope1(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Ty
+                 >::type TMax;
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
+        return Interval(hypot(static_cast<interval<TMax, Flavor>>(x),
+                              static_cast<interval<TMax, Flavor>>(y)));
+    }
 
-    return Interval(exp_slope1(static_cast<interval<TMax, Flavor>>(x)));
-  }
+    friend interval<T, Flavor> r_sqrt(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::r_sqrt(x.rep_));
+    }
 
-  friend interval<T, Flavor> exp_slope2(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::exp_slope2(x.rep_));
-  }
+    template<typename Interval>
+    friend Interval r_sqrt(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-  template<typename Interval>
-  friend Interval exp_slope2(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
+        return Interval(r_sqrt(static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-    return Interval(exp_slope2(static_cast<interval<TMax, Flavor>>(x)));
-  }
 
-  friend interval<T, Flavor> log_slope1(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::log_slope1(x.rep_));
-  }
+    friend interval<T, Flavor> sin_pi(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::sin_pi(x.rep_));
+    }
 
-  template<typename Interval>
-  friend Interval log_slope1(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval>
+    friend Interval sin_pi(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-    return Interval(log_slope1(static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(sin_pi(static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> log_slope2(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::log_slope2(x.rep_));
-  }
+    friend interval<T, Flavor> cos_pi(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::cos_pi(x.rep_));
+    }
 
-  template<typename Interval>
-  friend Interval log_slope2(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval>
+    friend Interval cos_pi(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-    return Interval(log_slope2(static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(cos_pi(static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> cos_slope2(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::cos_slope2(x.rep_));
-  }
+    friend interval<T, Flavor> tan_pi(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::tan_pi(x.rep_));
+    }
 
-  template<typename Interval>
-  friend Interval cos_slope2(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval>
+    friend Interval tan_pi(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-    return Interval(cos_slope2(static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(tan_pi(static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> sin_slope3(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::sin_slope3(x.rep_));
-  }
+    friend interval<T, Flavor> asin_pi(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::asin_pi(x.rep_));
+    }
 
-  template<typename Interval>
-  friend Interval sin_slope3(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval>
+    friend Interval asin_pi(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-    return Interval(sin_slope3(static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(asin_pi(static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> asin_slope3(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::asin_slope3(x.rep_));
-  }
+    friend interval<T, Flavor> acos_pi(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::acos_pi(x.rep_));
+    }
 
-  template<typename Interval>
-  friend Interval asin_slope3(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval>
+    friend Interval acos_pi(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-    return Interval(asin_slope3(static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(acos_pi(static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> atan_slope3(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::atan_slope3(x.rep_));
-  }
+    friend interval<T, Flavor> atan_pi(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::atan_pi(x.rep_));
+    }
 
-  template<typename Interval>
-  friend Interval atan_slope3(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval>
+    friend Interval atan_pi(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
 
-    return Interval(atan_slope3(static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(atan_pi(static_cast<interval<TMax, Flavor>>(x)));
+    }
 
-  friend interval<T, Flavor> cosh_slope2(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::cosh_slope2(x.rep_));
-  }
+    friend interval<T, Flavor> atan2_pi(interval<T, Flavor> const& x,
+                                        interval<T, Flavor> const& y) {
+        return interval<T, Flavor>(Flavor<T>::atan2_pi(x.rep_, y.rep_));
+    }
 
-  template<typename Interval>
-  friend Interval cosh_slope2(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+    template<typename Interval, typename Ty>
+    friend Interval atan2_pi(interval<T, Flavor> const& x,
+                             interval<Ty, Flavor> const& y) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T,
+                 Ty
+                 >::type TMax;
 
-    return Interval(cosh_slope2(static_cast<interval<TMax, Flavor>>(x)));
-  }
+        return Interval(atan2_pi(static_cast<interval<TMax, Flavor>>(x),
+                                 static_cast<interval<TMax, Flavor>>(y)));
+    }
 
-  friend interval<T, Flavor> sinh_slope3(interval<T, Flavor> const& x) {
-    return interval<T, Flavor>(Flavor<T>::sinh_slope3(x.rep_));
-  }
+///@}
 
-  template<typename Interval>
-  friend Interval sinh_slope3(interval<T, Flavor> const& x) {
-    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-                  "Return type is not supported by mixed type operations!");
-    static_assert(std::is_same<typename Interval::flavor_type,
-                  Flavor<typename Interval::bound_type>>::value,
-                  "Different flavors are not supported by "
-                  "mixed type operations!");
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+/// \name Recommended interval overlapping, see P1788/D7.0 Sect. 9.7.2
+///
+///@{
 
-    typedef typename p1788::util::max_precision_type<
-    typename Interval::bound_type,
-              T
-              >::type TMax;
 
-    return Interval(sinh_slope3(static_cast<interval<TMax, Flavor>>(x)));
-  }
+    friend p1788::overlapping::overlapping_state overlap(interval<T, Flavor> const& x,
+                                            interval<T, Flavor> const& y) {
+        return Flavor<T>::overlap(x.rep_, y.rep_);
+    }
+
+    template<typename Ty>
+    friend p1788::overlapping::overlapping_state overlap(interval<T, Flavor> const& x,
+                                            interval<Ty, Flavor> const& y) {
+        typedef typename p1788::util::max_precision_type<
+        T,
+        Ty
+        >::type TMax;
+
+        return overlap(static_cast<interval<TMax, Flavor>>(x),
+                       static_cast<interval<TMax, Flavor>>(y));
+    }
+
+///@}
+
+// -----------------------------------------------------------------------------
+// -----------------------------------------------------------------------------
+/// \name Recommended slope functions, see P1788/D7.0 Sect. 9.7.3 Table 7
+///
+///@{
+
+
+    friend interval<T, Flavor> exp_slope1(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::exp_slope1(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval exp_slope1(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(exp_slope1(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> exp_slope2(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::exp_slope2(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval exp_slope2(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(exp_slope2(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> log_slope1(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::log_slope1(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval log_slope1(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(log_slope1(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> log_slope2(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::log_slope2(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval log_slope2(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(log_slope2(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> cos_slope2(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::cos_slope2(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval cos_slope2(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(cos_slope2(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> sin_slope3(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::sin_slope3(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval sin_slope3(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(sin_slope3(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> asin_slope3(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::asin_slope3(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval asin_slope3(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(asin_slope3(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> atan_slope3(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::atan_slope3(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval atan_slope3(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(atan_slope3(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> cosh_slope2(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::cosh_slope2(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval cosh_slope2(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(cosh_slope2(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+    friend interval<T, Flavor> sinh_slope3(interval<T, Flavor> const& x) {
+        return interval<T, Flavor>(Flavor<T>::sinh_slope3(x.rep_));
+    }
+
+    template<typename Interval>
+    friend Interval sinh_slope3(interval<T, Flavor> const& x) {
+        static_assert(p1788::util::is_infsup_interval<Interval>::value,
+                      "Return type is not supported by mixed type operations!");
+        static_assert(std::is_same<typename Interval::flavor_type,
+                      Flavor<typename Interval::bound_type>>::value,
+                      "Different flavors are not supported by "
+                      "mixed type operations!");
+
+        typedef typename p1788::util::max_precision_type<
+        typename Interval::bound_type,
+                 T
+                 >::type TMax;
+
+        return Interval(sinh_slope3(static_cast<interval<TMax, Flavor>>(x)));
+    }
+
+///@}
+
 
 };
 

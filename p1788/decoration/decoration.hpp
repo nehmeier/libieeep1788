@@ -29,6 +29,9 @@
 namespace p1788
 {
 
+namespace decoration
+{
+
 /// \brief Enum describing the 6 different interval decorations
 /// see P1788/D7.0 Sect. 10.2 and 10.10
 ///
@@ -43,6 +46,8 @@ enum class decoration
 };
 
 // TODO decorations, finish implementation, functions ...
+
+} // namespace decoration
 
 } // namespace p1788
 

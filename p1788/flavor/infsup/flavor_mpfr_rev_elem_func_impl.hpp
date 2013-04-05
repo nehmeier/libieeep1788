@@ -38,302 +38,302 @@ namespace infsup
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::sqr_rev(mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&)
+                        mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::sqr_rev(mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::inv_rev(mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&)
+                        mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::inv_rev(mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::abs_rev(mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&)
+                        mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::abs_rev(mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::pown_rev(mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&,
-                                int)
+                         mpfr_flavor<T>::representation const&,
+                         int)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::pown_rev(mpfr_flavor<T>::representation const&,
-                                  int)
+                         int)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::sin_rev(mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&)
+                        mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::sin_rev(mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::cos_rev(mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&)
+                        mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::cos_rev(mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::tan_rev(mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&)
+                        mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::tan_rev(mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::cosh_rev(mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&)
+                         mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::cosh_rev(mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::mul_rev(mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&)
+                        mpfr_flavor<T>::representation const&,
+                        mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::mul_rev(mpfr_flavor<T>::representation const&,
-                                mpfr_flavor<T>::representation const&)
+                        mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::div_rev1(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+                         mpfr_flavor<T>::representation const&,
+                         mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::div_rev1(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+                         mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::div_rev2(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+                         mpfr_flavor<T>::representation const&,
+                         mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::div_rev2(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+                         mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::pow_rev1(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+                         mpfr_flavor<T>::representation const&,
+                         mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::pow_rev1(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+                         mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::pow_rev2(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+                         mpfr_flavor<T>::representation const&,
+                         mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::pow_rev2(mpfr_flavor<T>::representation const&,
-                                  mpfr_flavor<T>::representation const&)
+                         mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::atan2_rev1(mpfr_flavor<T>::representation const&,
-                                    mpfr_flavor<T>::representation const&,
-                                    mpfr_flavor<T>::representation const&)
+                           mpfr_flavor<T>::representation const&,
+                           mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::atan2_rev1(mpfr_flavor<T>::representation const&,
-                                    mpfr_flavor<T>::representation const&)
+                           mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::atan2_rev2(mpfr_flavor<T>::representation const&,
-                                    mpfr_flavor<T>::representation const&,
-                                    mpfr_flavor<T>::representation const&)
+                           mpfr_flavor<T>::representation const&,
+                           mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::atan2_rev2(mpfr_flavor<T>::representation const&,
-                                    mpfr_flavor<T>::representation const&)
+                           mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 } // namespace infsup

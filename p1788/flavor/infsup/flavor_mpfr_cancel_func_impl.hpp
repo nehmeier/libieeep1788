@@ -38,21 +38,21 @@ namespace infsup
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::cancel_plus(mpfr_flavor<T>::representation const&,
-                                    mpfr_flavor<T>::representation const&)
+                            mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::cancel_minus(mpfr_flavor<T>::representation const&,
-                                      mpfr_flavor<T>::representation const&)
+                             mpfr_flavor<T>::representation const&)
 {
-  LIBIEEEP1788_NOT_IMPLEMENTED;
+    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-  return mpfr_flavor<T>::static_method_entire();
+    return mpfr_flavor<T>::static_method_entire();
 }
 
 } // namespace infsup

@@ -30,6 +30,10 @@
 namespace p1788
 {
 
+namespace overlapping
+{
+
+
 /// \brief Enum describing the 16 states of the interval overlapping
 /// see P1788/D7.0 Sect. 9.7.2 Table 6
 ///
@@ -54,6 +58,9 @@ enum class overlapping_state
 };
 
 // TODO overlapping relation, finish implementation, functions ...
+
+
+} // namespace overlapping
 
 } // namespace p1788
 

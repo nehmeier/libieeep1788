@@ -58,7 +58,7 @@ mpfr_flavor<T>::neg(mpfr_flavor<T>::representation const&)
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::add(mpfr_flavor<T>::representation const&,
-                            mpfr_flavor<T>::representation const&)
+                    mpfr_flavor<T>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -68,7 +68,7 @@ mpfr_flavor<T>::add(mpfr_flavor<T>::representation const&,
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::sub(mpfr_flavor<T>::representation const&,
-                            mpfr_flavor<T>::representation const&)
+                    mpfr_flavor<T>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -78,7 +78,7 @@ mpfr_flavor<T>::sub(mpfr_flavor<T>::representation const&,
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const&,
-                            mpfr_flavor<T>::representation const&)
+                    mpfr_flavor<T>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -88,7 +88,7 @@ mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const&,
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::div(mpfr_flavor<T>::representation const&,
-                            mpfr_flavor<T>::representation const&)
+                    mpfr_flavor<T>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -116,8 +116,8 @@ mpfr_flavor<T>::sqrt(mpfr_flavor<T>::representation const&)
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const&,
-                            mpfr_flavor<T>::representation const&,
-                            mpfr_flavor<T>::representation const&)
+                    mpfr_flavor<T>::representation const&,
+                    mpfr_flavor<T>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -127,8 +127,8 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const&,
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::interval_case(mpfr_flavor<T>::representation const&,
-                                      mpfr_flavor<T>::representation const&,
-                                      mpfr_flavor<T>::representation const&)
+                              mpfr_flavor<T>::representation const&,
+                              mpfr_flavor<T>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -147,7 +147,7 @@ mpfr_flavor<T>::sqr(mpfr_flavor<T>::representation const&)
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::pown(mpfr_flavor<T>::representation const&,
-                             int)
+                     int)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -157,7 +157,7 @@ mpfr_flavor<T>::pown(mpfr_flavor<T>::representation const&,
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::pow(mpfr_flavor<T>::representation const&,
-                            mpfr_flavor<T>::representation const&)
+                    mpfr_flavor<T>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -275,7 +275,7 @@ mpfr_flavor<T>::atan(mpfr_flavor<T>::representation const&)
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::atan2(mpfr_flavor<T>::representation const&,
-                              mpfr_flavor<T>::representation const&)
+                      mpfr_flavor<T>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -412,7 +412,7 @@ template<typename T>
 template<typename ConstRandomAccessIterator>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::max(ConstRandomAccessIterator,
-                            ConstRandomAccessIterator)
+                    ConstRandomAccessIterator)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

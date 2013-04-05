@@ -105,7 +105,66 @@ public:
         std::basic_istream<CharT, Traits>& is,
         representation& x);
 
+// -----------------------------------------------------------------------------
+// Non-arithmetic set operations
+// -----------------------------------------------------------------------------
 
+    static representation intersect(representation const& x,
+                                    representation const& y);
+
+    static representation hull(representation const& x,
+                               representation const& y);
+
+
+// -----------------------------------------------------------------------------
+// Numeric functions on intervals
+// -----------------------------------------------------------------------------
+
+    static double inf(representation const& x);
+
+    static double sup(representation const& x);
+
+    static double mid(representation const& x);
+
+    static double wid(representation const& x);
+
+    static double rad(representation const& x);
+
+    static double mag(representation const& x);
+
+    static double mig(representation const& x);
+
+    static std::pair<double, double> mid_rad(representation const& x);
+
+// -----------------------------------------------------------------------------
+// Boolean functions on intervals
+// -----------------------------------------------------------------------------
+
+    /// \brief Test
+    ///
+    /// \param x representation
+    /// \return bool
+    ///
+    ///
+    static bool is_empty(representation const& x);
+
+    static bool is_entire(representation const& x);
+
+    static bool is_equal(representation const& x, representation const& y);
+
+    static bool contained_in(representation const& x, representation const& y);
+
+    static bool less(representation const& x, representation const& y);
+
+    static bool precedes(representation const& x, representation const& y);
+
+    static bool is_interior(representation const& x, representation const& y);
+
+    static bool strictly_less(representation const& x, representation const& y);
+
+    static bool strictly_precedes(representation const& x, representation const& y);
+
+    static bool are_disjoint(representation const& x, representation const& y);
 
 // -----------------------------------------------------------------------------
 // Forward elementary functions
@@ -311,59 +370,6 @@ public:
     static representation cancel_minus(representation const& a,
                                        representation const& b);
 
-// -----------------------------------------------------------------------------
-// Non-arithmetic set operations
-// -----------------------------------------------------------------------------
-
-    static representation intersect(representation const& x,
-                                    representation const& y);
-
-    static representation hull(representation const& x,
-                               representation const& y);
-
-    static representation widen(representation const& x);
-// -----------------------------------------------------------------------------
-// Numeric functions on intervals
-// -----------------------------------------------------------------------------
-
-    static double inf(representation const& x);
-
-    static double sup(representation const& x);
-
-    static double mid(representation const& x);
-
-    static double wid(representation const& x);
-
-    static double rad(representation const& x);
-
-    static double mag(representation const& x);
-
-    static double mig(representation const& x);
-
-    static std::pair<double, double> mid_rad(representation const& x);
-
-// -----------------------------------------------------------------------------
-// Boolean functions on intervals
-// -----------------------------------------------------------------------------
-
-    static bool is_empty(representation const& x);
-
-    static bool is_entire(representation const& x);
-
-    static bool is_equal(representation const& x, representation const& y);
-
-    static bool contained_in(representation const& x, representation const& y);
-
-    static bool precedes(representation const& x, representation const& y);
-
-    static bool is_enterior(representation const& x, representation const& y);
-
-    static bool strictly_less(representation const& x, representation const& y);
-
-    static bool strictly_precedes(representation const& x, representation const& y);
-
-    static bool are_disjoint(representation const& x, representation const& y);
-
 
 // -----------------------------------------------------------------------------
 // Recommended forward elementary functions on intervals
@@ -411,7 +417,7 @@ public:
 // Recommended interval overlapping
 // -----------------------------------------------------------------------------
 
-    static p1788::overlapping_state overlap(representation const&,
+    static p1788::overlapping::overlapping_state overlap(representation const&,
                                             representation const&);
 
 
@@ -484,12 +490,12 @@ private:
 
 #include "p1788/flavor/infsup/flavor_mpfr_class_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_io_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_elem_func_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_rev_elem_func_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_cancel_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_set_op_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_num_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_bool_func_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_elem_func_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_rev_elem_func_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_cancel_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rec_elem_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rec_overlap_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rec_slope_func_impl.hpp"

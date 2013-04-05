@@ -23,32 +23,28 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_OVERLAP_IMPL_HPP
-#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_OVERLAP_IMPL_HPP
+#include <iostream>
 
-namespace p1788
-{
+#include "p1788/p1788.hpp"
 
-namespace flavor
-{
-
-namespace infsup
-{
+//template<typename T>
+//using interval = p1788::infsup::interval<T, p1788::flavor::infsup::ieee754_flavor>;
 
 template<typename T>
-p1788::overlapping::overlapping_state mpfr_flavor<T>::overlap(mpfr_flavor<T>::representation const&,
-        mpfr_flavor<T>::representation const&)
+using interval = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor>;
+
+int main()
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return p1788::overlapping::overlapping_state::both_empty;
+    typedef p1788::flavor::infsup::mpfr_flavor<double> flav;
+
+    interval<double> d_a(-2,1), d_b(0,4), d_c(5,6);
+    interval<float> f_a(1,2), f_b(3,4), f_c(5,6);
+
+
+// Boolean functions
+
+
+
+    return 0;
 }
-
-} // namespace infsup
-
-} // namespace flavor
-
-} // namespace p1788
-
-
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_OVERLAP_IMPL_HPP
