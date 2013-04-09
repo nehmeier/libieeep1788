@@ -120,21 +120,21 @@ public:
 // Numeric functions on intervals
 // -----------------------------------------------------------------------------
 
-    static double inf(representation const& x);
+    static T inf(representation const& x);
 
-    static double sup(representation const& x);
+    static T sup(representation const& x);
 
-    static double mid(representation const& x);
+    static T mid(representation const& x);
 
-    static double wid(representation const& x);
+    static T wid(representation const& x);
 
-    static double rad(representation const& x);
+    static T rad(representation const& x);
 
-    static double mag(representation const& x);
+    static T mag(representation const& x);
 
-    static double mig(representation const& x);
+    static T mig(representation const& x);
 
-    static std::pair<double, double> mid_rad(representation const& x);
+    static std::pair<T, T> mid_rad(representation const& x);
 
 // -----------------------------------------------------------------------------
 // Boolean functions on intervals

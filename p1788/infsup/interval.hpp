@@ -264,7 +264,11 @@ public:
 // -----------------------------------------------------------------------------
 
 
-// Implementation specific
+    /// \brief Foo Bar baz
+    /// Implementation specific
+    /// \return T
+    ///
+    ///
     T lower() const {
         return Flavor<T>::method_lower(rep_);
     }
@@ -370,7 +374,7 @@ private:
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name Non-arithmetic set operations, see P1788/D7.0 Sect. 9.6.7
+/// \name Non-arithmetic set operations, see P1788/D7.1 Sect. 9.6.7
 ///
 ///@{
 
@@ -519,40 +523,226 @@ private:
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name Numeric functions on intervals, see P1788/D7.0 Sect. 9.6.9
+/// \name Numeric functions on intervals, see P1788/D7.1 Sect. 9.6.9
 ///
 ///@{
 
-    friend T inf(interval<T, Flavor> const& x) {       ///< Required
+    /// \brief Infimum of an interval <B>x</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The infimum of an interval <B>x</B> is defined as:
+    /// \f[
+    ///    \operatorname{inf}(\mathbf{x}) = \begin{cases}
+    ///        \underline{x} & \text{if } \mathbf{x} \text{ is nonempty} \br
+    ///        +\infty & \text{if } \mathbf{x} \text{ is empty}
+    ///    \end{cases}
+    /// \f]
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::inf(Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the interval.
+    ///
+    ///
+    /// \see interval<T,Flavor>.lower()
+    ///
+    /// \param x interval
+    /// \return infimum of <B>x</B>
+    ///
+    friend T inf(interval<T, Flavor> const& x) {
         return Flavor<T>::inf(x.rep_);
     }
 
-    friend T sup(interval<T, Flavor> const& x) {       ///< Required
+    /// \brief Supremum of an interval <B>x</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The supremum of an interval <B>x</B> is defined as:
+    /// \f[
+    ///    \operatorname{sup}(\mathbf{x}) = \begin{cases}
+    ///        \overline{x} & \text{if } \mathbf{x} \text{ is nonempty} \br
+    ///        -\infty & \text{if } \mathbf{x} \text{ is empty}
+    ///    \end{cases}
+    /// \f]
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::sup(Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the interval.
+    ///
+    ///
+    /// \see interval<T,Flavor>.upper()
+    ///
+    /// \param x interval
+    /// \return supremum of <B>x</B>
+    ///
+    friend T sup(interval<T, Flavor> const& x) {
         return Flavor<T>::sup(x.rep_);
     }
 
-    friend T mid(interval<T, Flavor> const& x) {       ///< Required
+    /// \brief Midpoint of an interval <B>x</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The midpoint of an interval <B>x</B> is defined as:
+    /// \f[
+    ///    \operatorname{mid}(\mathbf{x}) = \begin{cases}
+    ///        (\underline{x} + \overline{x}) / 2 & \text{if } \mathbf{x} \text{ is nonempty bounded} \br
+    ///         \text{no value } & \text{if } \mathbf{x} \text{ is empty or unbounded}
+    ///    \end{cases}
+    /// \f]
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::mid(Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the interval.
+    ///
+    ///
+    /// \see interval<T,Flavor>.mid()
+    ///
+    /// \param x interval
+    /// \return midpoint of <B>x</B>
+    ///
+    friend T mid(interval<T, Flavor> const& x) {
         return Flavor<T>::mid(x.rep_);
     }
 
-    friend T wid(interval<T, Flavor> const& x) {       ///< Required
-        return Flavor<T>::wid(x.rep_);
-    }
-
-    friend T rad(interval<T, Flavor> const& x) {       ///< Required
+    /// \brief Radius of an interval <B>x</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The radius of an interval <B>x</B> is defined as:
+    /// \f[
+    ///    \operatorname{rad}(\mathbf{x}) = \begin{cases}
+    ///        (\overline{x} - \underline{x}) / 2 & \text{if } \mathbf{x} \text{ is nonempty} \br
+    ///         \text{no value } & \text{if } \mathbf{x} \text{ is empty}
+    ///    \end{cases}
+    /// \f]
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::rad(Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the interval.
+    ///
+    ///
+    /// \see interval<T,Flavor>.rad()
+    ///
+    /// \param x interval
+    /// \return radius of <B>x</B>
+    ///
+    friend T rad(interval<T, Flavor> const& x) {
         return Flavor<T>::rad(x.rep_);
     }
 
-    friend T mag(interval<T, Flavor> const& x) {       ///< Required
+    /// \brief Midpoint and radius of an interval <B>x</B>
+    ///
+    /// <B>Recommended by IEEE P1788</B>
+    /// see Note in P1788/D7.0 Sect. 9.6.9
+    ///
+    /// Computes the midpoint and the radius of an interval <B>x</B>.
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::mid_rad(Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \see #mid(interval<T,Flavor> const& x)
+    /// \see #rad(interval<T,Flavor> const& x)
+    ///
+    /// \param x interval
+    /// \return std::pair<T,T> containing the midpoint (first value) and the radius (second value) of <B>x</B>
+    ///
+    friend std::pair<T, T> mid_rad(interval<T, Flavor> const& x) {
+        return Flavor<T>::mid_rad(x.rep_);
+    }
+
+    /// \brief Width of an interval <B>x</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The width of an interval <B>x</B> is defined as:
+    /// \f[
+    ///    \operatorname{wid}(\mathbf{x}) = \begin{cases}
+    ///        (\overline{x} - \underline{x}) & \text{if } \mathbf{x} \text{ is nonempty} \br
+    ///         \text{no value } & \text{if } \mathbf{x} \text{ is empty}
+    ///    \end{cases}
+    /// \f]
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::wid(Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param x interval
+    /// \return width of <B>x</B>
+    ///
+    friend T wid(interval<T, Flavor> const& x) {
+        return Flavor<T>::wid(x.rep_);
+    }
+
+    /// \brief Magnitude of an interval <B>x</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The magnitude of an interval <B>x</B> is defined as:
+    /// \f[
+    ///    \operatorname{mag}(\mathbf{x}) = \begin{cases}
+    ///        \operatorname{sup}\{ |x| \mid x \in \mathbf{x}\} & \text{if } \mathbf{x} \text{ is nonempty} \br
+    ///         \text{no value } & \text{if } \mathbf{x} \text{ is empty}
+    ///    \end{cases}
+    /// \f]
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::mag(Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param x interval
+    /// \return magnitude of <B>x</B>
+    ///
+    friend T mag(interval<T, Flavor> const& x) {
         return Flavor<T>::mag(x.rep_);
     }
 
-    friend T mig(interval<T, Flavor> const& x) {       ///< Required
+    /// \brief Mignitude of an interval <B>x</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// The mignitude of an interval <B>x</B> is defined as:
+    /// \f[
+    ///    \operatorname{mig}(\mathbf{x}) = \begin{cases}
+    ///        \operatorname{inf}\{ |x| \mid x \in \mathbf{x}\} & \text{if } \mathbf{x} \text{ is nonempty} \br
+    ///         \text{no value } & \text{if } \mathbf{x} \text{ is empty}
+    ///    \end{cases}
+    /// \f]
+    ///
+    /// The computation is delegated to the static function
+    /// \code
+    /// Flavor<T>::mig(Flavor<T>::representation const&)
+    /// \endcode
+    /// of the policy class <TT>Flavor<T></TT> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param x interval
+    /// \return mignutude of <B>x</B>
+    ///
+    friend T mig(interval<T, Flavor> const& x) {
         return Flavor<T>::mig(x.rep_);
-    }
-
-    friend std::pair<T, T> mid_rad(interval<T, Flavor> const& x) {     ///< Recommended, see Note in P1788/D7.0 Sect. 9.6.9
-        return Flavor<T>::mid_rad(x.rep_);
     }
 
 ///@}
@@ -1005,6 +1195,31 @@ private:
                            static_cast<interval<TMax, Flavor>>(y));
     }
 
+    /// \brief Check if intervals <B>x</B> contains interval <B>y</B> in the interior
+    ///
+    /// <B>Calls</B> #is_interior(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    friend bool contains_interior(interval<T, Flavor> const& x, interval<T, Flavor> const& y) {
+        return is_interior(y, x);
+    }
+
+    /// \brief Check if intervals <B>x</B> contains interval <B>y</B> in the interior
+    ///
+    /// <B>Mixed type operation of</B> #contains_interior(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+    ///
+    /// <B>Calls</B> #is_interior(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+    /// <B>with swapped arguments.</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    template<typename Ty>
+    friend bool contains_interior(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+        return is_interior(y, x);
+    }
+
 
 
 
@@ -1234,12 +1449,34 @@ private:
 ///
 ///@{
 
-// pos
-
+    /// \brief Identity of an interval <B>x</B>
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    /// Only provided for consistency with #neg(interval<T,Flavor> const& x).
+    ///
+    /// \see #neg(interval<T,Flavor> const& x)
+    /// \see #operator+(interval<T,Flavor> const& x)
+    ///
+    /// \param x interval
+    /// \return <B>x</B>
+    ///
     friend interval<T, Flavor> pos(interval<T, Flavor> const& x) {
-        return interval<T, Flavor>(Flavor<T>::pos(x.rep_));
+        return x;
     }
 
+    /// \brief Identity of an interval <B>x</B>
+    ///
+    /// <B>Mixed type operation of</B> #pos(interval<T,Flavor> const& x)
+    ///
+    /// <B>Implementation specific</B>
+    ///
+    /// If <TT>Interval</TT> is of type p1788::infsup::interval and the flavor
+    /// of <TT>Interval</TT> is the same as <TT>Flavor</TT> and the number system
+    /// <TT>Ti</TT> of <TT>Interval</TT> as well as
+    /// <TT>T</TT> are of the same radix, the interval
+    /// <B>x</B> is converted to type <TT>Interval</TT>.
+    ///
     template<typename Interval>
     friend Interval pos(interval<T, Flavor> const& x) {
         static_assert(p1788::util::is_infsup_interval<Interval>::value,
@@ -1248,26 +1485,61 @@ private:
                       Flavor<typename Interval::bound_type>>::value,
                       "Different flavors are not supported by "
                       "mixed type operations!");
+        static_assert(std::is_same<
+                      typename p1788::util::type_precision_order<T>::value_type,
+                      typename p1788::util::type_precision_order<typename Interval::bound_type>::value_type
+                      >::value,
+                      "Different type groups!");
 
-        typedef typename p1788::util::max_precision_type<
-        typename Interval::bound_type,
-                 T
-                 >::type Tmax;
-
-        return Interval(pos(static_cast<interval<Tmax, Flavor>>(x)));
+        return Interval(x);
     }
 
+    /// \brief Identity of an interval <B>x</B>
+    ///
+    /// <B>Short hand of</B> #pos(interval<T,Flavor> const& x)
+    ///
+    /// <B>Implementation specific</B>
+    ///
     friend interval<T, Flavor> operator+(interval<T, Flavor> const& x) {
         return pos(x);
     }
 
 
-// neg
 
+
+    /// \brief Negation of an interval <B>x</B>
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    ///
+    /// \see #operator-(interval<T,Flavor> const& x)
+    /// \see #pos(interval<T,Flavor> const& x)
+    ///
+    /// \param x interval
+    /// \return -<B>x</B>
+    ///
     friend interval<T, Flavor> neg(interval<T, Flavor> const& x) {
         return interval<T, Flavor>(Flavor<T>::neg(x.rep_));
     }
 
+    /// \brief Negation of an interval <B>x</B>
+    ///
+    /// <B>Mixed type operation of</B> #neg(interval<T,Flavor> const& x)
+    ///
+    /// <B>Required by IEEE P1788</B>
+    ///
+    /// If <TT>Interval</TT> is of type p1788::infsup::interval and the flavor
+    /// of <TT>Interval</TT> is the same as <TT>Flavor</TT> and the number system
+    /// <TT>Ti</TT> of <TT>Interval</TT> as well as
+    ///  <TT>T</TT> are of the same radix, the maximum precision
+    /// <TT>Tmax</TT> of <TT>Ti</TT> and <TT>T</TT> is determined at compile time
+    /// using template meta programming. Then the interval
+    /// <B>x</B> is converted to an interval of type
+    /// <TT>interval<Tmax,Flavor></TT> and is passed to the function
+    /// #neg(interval<T,Flavor> const& x).
+    /// Afterwards the return value of #neg(interval<T,Flavor> const& x)
+    /// is converted to type <TT>Interval</TT>.
+    ///
     template<typename Interval>
     friend Interval neg(interval<T, Flavor> const& x) {
         static_assert(p1788::util::is_infsup_interval<Interval>::value,
@@ -1285,6 +1557,12 @@ private:
         return Interval(neg(static_cast<interval<Tmax, Flavor>>(x)));
     }
 
+    /// \brief Negation of an interval <B>x</B>
+    ///
+    /// <B>Short hand of</B> #neg(interval<T,Flavor> const& x)
+    ///
+    /// <B>Implementation specific</B>
+    ///
     friend interval<T, Flavor> operator-(interval<T, Flavor> const& x) {
         return neg(x);
     }
@@ -3623,13 +3901,13 @@ private:
 
 
     friend p1788::overlapping::overlapping_state overlap(interval<T, Flavor> const& x,
-                                            interval<T, Flavor> const& y) {
+            interval<T, Flavor> const& y) {
         return Flavor<T>::overlap(x.rep_, y.rep_);
     }
 
     template<typename Ty>
     friend p1788::overlapping::overlapping_state overlap(interval<T, Flavor> const& x,
-                                            interval<Ty, Flavor> const& y) {
+            interval<Ty, Flavor> const& y) {
         typedef typename p1788::util::max_precision_type<
         T,
         Ty

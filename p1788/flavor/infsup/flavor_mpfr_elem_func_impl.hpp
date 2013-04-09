@@ -37,32 +37,32 @@ namespace flavor
 namespace infsup
 {
 
+
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::pos(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::neg(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T>::static_method_entire();
+    return representation(-x.second, -x.first);
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::neg(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::add(mpfr_flavor<T>::representation const& x,
+                    mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    mpfr_var::setup();
 
-    return mpfr_flavor<T>::static_method_entire();
-}
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::add(mpfr_flavor<T>::representation const&,
-                    mpfr_flavor<T>::representation const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    mpfr_var yl(y.first, MPFR_RNDD);
+    mpfr_var yu(y.second, MPFR_RNDU);
 
-    return mpfr_flavor<T>::static_method_entire();
+
+    mpfr_add(xl(), xl(), yl(), MPFR_RNDD);
+    mpfr_add(xu(), xu(), yu, MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
@@ -70,9 +70,19 @@ typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::sub(mpfr_flavor<T>::representation const&,
                     mpfr_flavor<T>::representation const&)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    mpfr_var::setup();
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_var yl(y.first, MPFR_RNDD);
+    mpfr_var yu(y.second, MPFR_RNDU);
+
+
+    mpfr_sub(xl(), xl(), yu(), MPFR_RNDD);
+    mpfr_sub(xu(), xu(), yl, MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>

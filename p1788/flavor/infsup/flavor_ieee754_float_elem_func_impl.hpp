@@ -37,13 +37,6 @@ namespace flavor
 namespace infsup
 {
 
-ieee754_flavor<float>::representation
-ieee754_flavor<float>::pos(ieee754_flavor<float>::representation const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return ieee754_flavor<float>::static_method_entire();
-}
 
 ieee754_flavor<float>::representation
 ieee754_flavor<float>::neg(ieee754_flavor<float>::representation const&)

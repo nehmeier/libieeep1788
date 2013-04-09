@@ -27,36 +27,51 @@
 
 #include "p1788/p1788.hpp"
 
+template<typename T>
+using interval = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor>;
+
 int main()
 {
-    typedef p1788::infsup::interval<double, p1788::flavor::infsup::ieee754_flavor>  interval;
+    //typedef p1788::infsup::interval<double, p1788::flavor::infsup::ieee754_flavor>  interval;
 
-    interval i1(1.2);
-    interval i2(1.2, 3.4);
-    interval i3( {1,2,3,4,5,56,7,8,9,.9});
-    interval i4("[1.2,3.4]");
-    interval i5("EMPTY");
-    interval i6 = interval::empty();
-    interval i7 = interval::entire();
 
-    interval i8;
-    std::cin >> i8;
+    interval<double> a(1,2);
+    std::cout << a << std::endl;
+    std::cout << inf(a) << std::endl;
+    std::cout << sup(a) << std::endl;
+    std::cout << mid(a) << std::endl;
+    std::cout << rad(a) << std::endl;
+    std::cout << wid(a) << std::endl;
+    std::cout << mag(a) << std::endl;
+    std::cout << mig(a) << std::endl;
 
-    std::cout << std::endl;
 
-    std::cout << i1 << std::endl;
-    std::cout << i2 << std::endl;
-    std::cout << i3 << std::endl;
-    std::cout << i4 << std::endl;
-    std::cout << i5 << std::endl;
-    std::cout << i6 << std::endl;
-    std::cout << i7 << std::endl;
-    std::cout << i8 << std::endl << std::endl;
-
-    std::cout << i2.lower() << std::endl;
-    std::cout << i2.upper() << std::endl;
-    std::cout << i2.mid() << std::endl;
-    std::cout << i2.rad() << std::endl;
+//    interval i1(1.2);
+//    interval i2(1.2, 3.4);
+//    interval i3( {1,2,3,4,5,56,7,8,9,.9});
+//    interval i4("[1.2,3.4]");
+//    interval i5("EMPTY");
+//    interval i6 = interval::empty();
+//    interval i7 = interval::entire();
+//
+//    interval i8;
+//    std::cin >> i8;
+//
+//    std::cout << std::endl;
+//
+//    std::cout << i1 << std::endl;
+//    std::cout << i2 << std::endl;
+//    std::cout << i3 << std::endl;
+//    std::cout << i4 << std::endl;
+//    std::cout << i5 << std::endl;
+//    std::cout << i6 << std::endl;
+//    std::cout << i7 << std::endl;
+//    std::cout << i8 << std::endl << std::endl;
+//
+//    std::cout << i2.lower() << std::endl;
+//    std::cout << i2.upper() << std::endl;
+//    std::cout << i2.mid() << std::endl;
+//    std::cout << i2.rad() << std::endl;
 
     return 0;
 }

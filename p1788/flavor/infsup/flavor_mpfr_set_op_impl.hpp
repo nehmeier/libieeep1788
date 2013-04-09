@@ -45,7 +45,8 @@ mpfr_flavor<T>::intersect(mpfr_flavor<T>::representation const& x,
     if (are_disjoint(x, y))
         return static_method_empty();
     else
-        return
+        return representation(std::max(x.first, y.first),
+                              std::min(x.second, y.second));
 }
 
 template<typename T>
