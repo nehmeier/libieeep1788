@@ -42,6 +42,9 @@ template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::neg(mpfr_flavor<T>::representation const& x)
 {
+    if (is_empty(x))
+        return x;
+
     return representation(-x.second, -x.first);
 }
 
@@ -50,6 +53,12 @@ typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::add(mpfr_flavor<T>::representation const& x,
                     mpfr_flavor<T>::representation const& y)
 {
+    if (is_empty(x))
+        return x;
+
+    if (is_empty(y))
+        return y;
+
     mpfr_var::setup();
 
     mpfr_var xl(x.first, MPFR_RNDD);
@@ -67,9 +76,15 @@ mpfr_flavor<T>::add(mpfr_flavor<T>::representation const& x,
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::sub(mpfr_flavor<T>::representation const&,
-                    mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::sub(mpfr_flavor<T>::representation const& x,
+                    mpfr_flavor<T>::representation const& y)
 {
+    if (is_empty(x))
+        return x;
+
+    if (is_empty(y))
+        return y;
+
     mpfr_var::setup();
 
     mpfr_var xl(x.first, MPFR_RNDD);
@@ -87,49 +102,215 @@ mpfr_flavor<T>::sub(mpfr_flavor<T>::representation const&,
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const&,
-                    mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const& x,
+                    mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
+
+    if (is_empty(y))
+        return y;
+
+    if (x.first == 0.0 && x.second == 0.0)
+        return x;
+
+    if (y.first == 0.0 && y.second == 0.0)
+        return y;
+
+    if (is_entire(x))
+        return x;
+
+    if (is_entire(y))
+        return y;
+
+
+    mpfr_var::setup();
+    mpfr_var l;
+    mpfr_var u;
+
+
+    if (y.second <= 0.0) {
+        if (x.second <= 0.0) {
+            mpfr_var xl(x.first, MPFR_RNDD);
+            mpfr_var xu(x.second, MPFR_RNDU);
+
+            mpfr_var yl(y.first, MPFR_RNDD);
+            mpfr_var yu(y.second, MPFR_RNDU);
+
+            mpfr_mul(l(), xu(), yu(), MPFR_RNDD);
+            mpfr_mul(u(), xl(), yl(), MPFR_RNDU);
+        } else if (x.first >= 0.0) {
+            mpfr_var xl(x.first, MPFR_RNDD);
+            mpfr_var xu(x.second, MPFR_RNDU);
+
+            mpfr_var yl(y.first, MPFR_RNDD);
+            mpfr_var yu(y.second, MPFR_RNDU);
+
+            mpfr_mul(l(), xu(), yl(), MPFR_RNDD);
+            mpfr_mul(u(), xl(), yu(), MPFR_RNDU);
+        } else {
+            mpfr_var xl(x.first, MPFR_RNDD);
+            mpfr_var xu(x.second, MPFR_RNDU);
+
+            mpfr_var yl(y.first, MPFR_RNDD);
+
+            mpfr_mul(l(), xu(), yl(), MPFR_RNDD);
+            mpfr_mul(u(), xl(), yl(), MPFR_RNDU);
+        }
+    } else if (y.first >= 0.0) {
+        if (x.second <= 0.0) {
+            mpfr_var xl(x.first, MPFR_RNDD);
+            mpfr_var xu(x.second, MPFR_RNDU);
+
+            mpfr_var yl(y.first, MPFR_RNDD);
+            mpfr_var yu(y.second, MPFR_RNDU);
+
+            mpfr_mul(l(), xl(), yu(), MPFR_RNDD);
+            mpfr_mul(u(), xu(), yl(), MPFR_RNDU);
+        } else if (x.first >= 0.0) {
+            mpfr_var xl(x.first, MPFR_RNDD);
+            mpfr_var xu(x.second, MPFR_RNDU);
+
+            mpfr_var yl(y.first, MPFR_RNDD);
+            mpfr_var yu(y.second, MPFR_RNDU);
+
+            mpfr_mul(l(), xl(), yl(), MPFR_RNDD);
+            mpfr_mul(u(), xu(), yu(), MPFR_RNDU);
+        } else {
+            mpfr_var xl(x.first, MPFR_RNDD);
+            mpfr_var xu(x.second, MPFR_RNDU);
+
+            mpfr_var yu(y.second, MPFR_RNDU);
+
+            mpfr_mul(l(), xl(), yu(), MPFR_RNDD);
+            mpfr_mul(u(), xu(), yu(), MPFR_RNDU);
+        }
+    } else {
+        if (x.second <= 0.0) {
+            mpfr_var xl(x.first, MPFR_RNDD);
+
+            mpfr_var yl(y.first, MPFR_RNDD);
+            mpfr_var yu(y.second, MPFR_RNDU);
+
+            mpfr_mul(l(), xl(), yu(), MPFR_RNDD);
+            mpfr_mul(u(), xl(), yl(), MPFR_RNDU);
+        } else if (x.first >= 0.0) {
+            mpfr_var xu(x.second, MPFR_RNDU);
+
+            mpfr_var yl(y.first, MPFR_RNDD);
+            mpfr_var yu(y.second, MPFR_RNDU);
+
+            mpfr_mul(l(), xu(), yl(), MPFR_RNDD);
+            mpfr_mul(u(), xu(), yu(), MPFR_RNDU);
+        } else {
+            mpfr_var xl(x.first, MPFR_RNDD);
+            mpfr_var xu(x.second, MPFR_RNDU);
+
+            mpfr_var yl(y.first, MPFR_RNDD);
+            mpfr_var yu(y.second, MPFR_RNDU);
+
+            mpfr_var tmp;
+
+            mpfr_mul(l(), xl(), yu(), MPFR_RNDD);
+            mpfr_mul(tmp(), xu(), yl(), MPFR_RNDD);
+            mpfr_min(l(), l(), tmp(), MPFR_RNDD);
+
+            mpfr_mul(u(), xl(), yl(), MPFR_RNDU);
+            mpfr_mul(tmp(), xu(), yu(), MPFR_RNDU);
+            mpfr_max(u(), u(), tmp(), MPFR_RNDU);
+        }
+    }
+
+    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+}
+
+template<typename T>
+typename mpfr_flavor<T>::representation
+mpfr_flavor<T>::div(mpfr_flavor<T>::representation const& x,
+                    mpfr_flavor<T>::representation const& y)
+{
+    if (is_empty(x))
+        return x;
+
+    if (is_empty(y))
+        return y;
+
+    if ((y.first < 0.0 && y.second > 0.0)
+            || (x.first <= 0.0 && x.second >= 0.0
+                && (y.first == 0.0 || y.second == 0.0)))
+        return static_method_entire();
+
+
+    if (x.second <= 0.0) {
+        if (y.second < 0.0) {
+
+        } else if (y.first > 0.0) {
+
+        } else {
+            return static_method_empty();
+        }
+    } else if (x.first >= 0.0) {
+            if (y.second < 0.0) {
+
+        } else if (y.first > 0.0) {
+
+        } else {
+            return static_method_empty();
+        }
+    } else {
+            if (y.second < 0.0) {
+
+        } else if (y.first > 0.0) {
+
+        }
+    }
+
 
     return mpfr_flavor<T>::static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::div(mpfr_flavor<T>::representation const&,
-                    mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::inv(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T>::static_method_entire();
+    return div(representation(1.0, 1.0), x);
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::inv(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::sqrt(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (x.second < 0.0)
+        return static_method_empty();
+
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first < 0.0 ? 0.0 : x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_sqrt(xl(), xl(), MPFR_RNDD);
+    mpfr_sqrt(xu(), xu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::sqrt(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
+                    mpfr_flavor<T>::representation const& y,
+                    mpfr_flavor<T>::representation const& z)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
-}
+    if (is_empty(y))
+        return y;
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const&,
-                    mpfr_flavor<T>::representation const&,
-                    mpfr_flavor<T>::representation const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(z))
+        return z;
 
     return mpfr_flavor<T>::static_method_entire();
 }
