@@ -28,7 +28,7 @@
 
 #include <utility>
 #include <limits>
-
+#include <cfenv>
 #include <mpfr.h>
 
 //------------------------------------------------------------------------------
