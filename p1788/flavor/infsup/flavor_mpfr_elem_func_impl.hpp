@@ -755,13 +755,13 @@ mpfr_flavor<T>::log2(mpfr_flavor<T>::representation const& x)
         return xx;
 
     mpfr_var::setup();
-    mpfr_var l(x.first, MPFR_RNDD);
-    mpfr_var u(x.second, MPFR_RNDU);
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_log2(l(), l(), MPFR_RNDD);
-    mpfr_log2(u(), u(), MPFR_RNDU);
+    mpfr_log2(xl(), xl(), MPFR_RNDD);
+    mpfr_log2(xu(), xu(), MPFR_RNDU);
 
-    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
@@ -774,67 +774,232 @@ mpfr_flavor<T>::log10(mpfr_flavor<T>::representation const& x)
         return xx;
 
     mpfr_var::setup();
-    mpfr_var l(x.first, MPFR_RNDD);
-    mpfr_var u(x.second, MPFR_RNDU);
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_log10(l(), l(), MPFR_RNDD);
-    mpfr_log10(u(), u(), MPFR_RNDU);
+    mpfr_log10(xl(), xl(), MPFR_RNDD);
+    mpfr_log10(xu(), xu(), MPFR_RNDU);
 
-    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::sin(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::sin(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    // pi
+    mpfr_var pi(-1.0, MPFR_RNDD);
+    mpfr_acos(pi(), pi(), MPFR_RNDD);
+
+    mpfr_var w;
+    mpfr_sub(w(), xu(), xl(), MPFR_RNDU);
+
+    mpfr_var tmp;
+
+    // cos(lower)
+    mpfr_cos(tmp(), xl(), MPFR_RNDD);
+    int df_lower = mpfr_sgn(tmp());
+
+    // cos(upper)
+    mpfr_cos(tmp(), xu(), MPFR_RNDU);
+    int df_upper = mpfr_sgn(tmp());
+
+    if (df_lower != df_upper) {
+        if (df_lower == 0) {
+            if (mpfr_cmp(w(), pi()) > 0)
+                return representation(-1.0, 1.0);
+        } else if (df_upper == 0) {
+            if (mpfr_cmp(w(), pi()) > 0)
+                return representation(-1.0, 1.0);
+        } else {
+            mpfr_var pi2;
+            mpfr_mul_si(pi2(), pi(), 2, MPFR_RNDD);
+
+            if (mpfr_cmp(w(), pi2()) > 0)
+                return representation(-1.0, 1.0);
+
+            if (df_lower > 0) {
+                mpfr_var l1;
+                mpfr_var l2;
+                mpfr_sin(l1(), xl(), MPFR_RNDD);
+                mpfr_sin(l2(), xu(), MPFR_RNDD);
+
+                return representation(std::min(l1.get(MPFR_RNDD), l2.get(MPFR_RNDD)), 1.0);
+            }
+
+            mpfr_var u1;
+            mpfr_var u2;
+            mpfr_sin(u1(), xl(), MPFR_RNDU);
+            mpfr_sin(u2(), xu(), MPFR_RNDU);
+
+            return representation(-1.0, std::max(u1.get(MPFR_RNDU), u2.get(MPFR_RNDU)));
+        }
+    } else if (mpfr_cmp(w(), pi()) > 0)
+        return representation(-1.0, 1.0);
+
+    mpfr_var l1;
+    mpfr_var l2;
+    mpfr_sin(l1(), xl(), MPFR_RNDD);
+    mpfr_sin(l2(), xu(), MPFR_RNDD);
+
+    mpfr_var u1;
+    mpfr_var u2;
+    mpfr_sin(u1(), xl(), MPFR_RNDU);
+    mpfr_sin(u2(), xu(), MPFR_RNDU);
+
+    return representation(std::min(l1.get(MPFR_RNDD), l2.get(MPFR_RNDD)),
+                          std::max(u1.get(MPFR_RNDU), u2.get(MPFR_RNDU)));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::cos(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::cos(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    // pi
+    mpfr_var pi(-1.0, MPFR_RNDD);
+    mpfr_acos(pi(), pi(), MPFR_RNDD);
+
+    mpfr_var w;
+    mpfr_sub(w(), xu(), xl(), MPFR_RNDU);
+
+    mpfr_var tmp;
+
+    // -sin(lower)
+    mpfr_sin(tmp(), xl(), MPFR_RNDD);
+    mpfr_neg(tmp(), tmp(), MPFR_RNDD);
+    int df_lower = mpfr_sgn(tmp());
+
+    // -sin(upper)
+    mpfr_cos(tmp(), xu(), MPFR_RNDU);
+    mpfr_neg(tmp(), tmp(), MPFR_RNDU);
+    int df_upper = mpfr_sgn(tmp());
+
+    if (df_lower != df_upper) {
+        if (df_lower == 0) {
+            if (mpfr_cmp(w(), pi()) > 0)
+                return representation(-1.0, 1.0);
+        } else if (df_upper == 0) {
+            if (mpfr_cmp(w(), pi()) > 0)
+                return representation(-1.0, 1.0);
+        } else {
+            mpfr_var pi2;
+            mpfr_mul_si(pi2(), pi(), 2, MPFR_RNDD);
+
+            if (mpfr_cmp(w(), pi2()) > 0)
+                return representation(-1.0, 1.0);
+
+            if (df_lower > 0) {
+                mpfr_var l1;
+                mpfr_var l2;
+                mpfr_cos(l1(), xl(), MPFR_RNDD);
+                mpfr_cos(l2(), xu(), MPFR_RNDD);
+
+                return representation(std::min(l1.get(MPFR_RNDD), l2.get(MPFR_RNDD)), 1.0);
+            }
+
+            mpfr_var u1;
+            mpfr_var u2;
+            mpfr_cos(u1(), xl(), MPFR_RNDU);
+            mpfr_cos(u2(), xu(), MPFR_RNDU);
+
+            return representation(-1.0, std::max(u1.get(MPFR_RNDU), u2.get(MPFR_RNDU)));
+        }
+    } else if (mpfr_cmp(w(), pi()) > 0)
+        return representation(-1.0, 1.0);
+
+    mpfr_var l1;
+    mpfr_var l2;
+    mpfr_cos(l1(), xl(), MPFR_RNDD);
+    mpfr_cos(l2(), xu(), MPFR_RNDD);
+
+    mpfr_var u1;
+    mpfr_var u2;
+    mpfr_cos(u1(), xl(), MPFR_RNDU);
+    mpfr_cos(u2(), xu(), MPFR_RNDU);
+
+    return representation(std::min(l1.get(MPFR_RNDD), l2.get(MPFR_RNDD)),
+                          std::max(u1.get(MPFR_RNDU), u2.get(MPFR_RNDU)));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::tan(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::tan(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T>::static_method_entire();
+    return div(sin(x), cos(x));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::asin(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::asin(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    representation xx = intersect(x, representation(-1.0, 1.0));
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(xx))
+        return xx;
+
+    mpfr_var::setup();
+
+    mpfr_var xl(xx.first, MPFR_RNDD);
+    mpfr_var xu(xx.second, MPFR_RNDU);
+
+    mpfr_asin(xl(), xl(), MPFR_RNDD);
+    mpfr_asin(xu(), xu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::acos(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::acos(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    representation xx = intersect(x, representation(-1.0, 1.0));
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(xx))
+        return xx;
+
+    mpfr_var::setup();
+
+    mpfr_var xl(xx.first, MPFR_RNDD);
+    mpfr_var xu(xx.second, MPFR_RNDU);
+
+    mpfr_asin(xu(), xu(), MPFR_RNDD);
+    mpfr_asin(xl(), xl(), MPFR_RNDU);
+
+    return representation(xu.get(MPFR_RNDD), xl.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::atan(mpfr_flavor<T>::representation const&)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_atan(xl(), xl(), MPFR_RNDD);
+    mpfr_atan(xu(), xu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
@@ -945,7 +1110,8 @@ mpfr_flavor<T>::round_ties_to_even(mpfr_flavor<T>::representation const& x)
     if (is_empty(x))
         return x;
 
-    class rnd_controll {
+    class rnd_controll
+    {
         int rnd_;
 
         rnd_controll() : rnd_(std::fegetround()) {

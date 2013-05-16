@@ -35,7 +35,7 @@ int main()
     //typedef p1788::infsup::interval<double, p1788::flavor::infsup::ieee754_flavor>  interval;
 
 
-    interval<double> a(1,2);
+    interval<double> a(0,5);
     std::cout << a << std::endl;
     std::cout << inf(a) << std::endl;
     std::cout << sup(a) << std::endl;
@@ -43,7 +43,9 @@ int main()
     std::cout << rad(a) << std::endl;
     std::cout << wid(a) << std::endl;
     std::cout << mag(a) << std::endl;
-    std::cout << mig(a) << std::endl;
+    std::cout << mig(a) << std::endl << std::endl;
+
+    std::cout << sin(a) << std::endl;
 
 
 //    interval i1(1.2);
