@@ -986,7 +986,7 @@ mpfr_flavor<T>::acos(mpfr_flavor<T>::representation const& x)
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::atan(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::atan(mpfr_flavor<T>::representation const& x)
 {
     if (is_empty(x))
         return x;
