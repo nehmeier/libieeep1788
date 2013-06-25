@@ -69,7 +69,7 @@ mpfr_flavor<T>::add(mpfr_flavor<T>::representation const& x,
 
 
     mpfr_add(xl(), xl(), yl(), MPFR_RNDD);
-    mpfr_add(xu(), xu(), yu, MPFR_RNDU);
+    mpfr_add(xu(), xu(), yu(), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
@@ -95,7 +95,7 @@ mpfr_flavor<T>::sub(mpfr_flavor<T>::representation const& x,
 
 
     mpfr_sub(xl(), xl(), yu(), MPFR_RNDD);
-    mpfr_sub(xu(), xu(), yl, MPFR_RNDU);
+    mpfr_sub(xu(), xu(), yl(), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
@@ -1004,65 +1004,133 @@ mpfr_flavor<T>::atan(mpfr_flavor<T>::representation const& x)
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::atan2(mpfr_flavor<T>::representation const&,
-                      mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::atan2(mpfr_flavor<T>::representation const& y,
+                      mpfr_flavor<T>::representation const& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T>::static_method_entire();
+
+    if (is_empty(y) || is_empty(x) ||
+            (y.first == 0.0 && y.second == 0.0 && x.first == 0.0 && y.second == 0.0))
+        return static_method_empty();
+
+    return static_method_entire();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::sinh(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::sinh(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_sinh(xl(), xl(), MPFR_RNDD);
+    mpfr_sinh(xu(), xu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::cosh(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::cosh(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(x))
+        return x;
+
+    mpfr_var::setup();
+
+    if (x.first < 0.0 && x.second > 0.0) {
+        mpfr_var xu(std::max(-x.first, x.second), MPFR_RNDU);
+
+        mpfr_cosh(xu(), xu(), MPFR_RNDU);
+
+        return representation(1.0, xu.get(MPFR_RNDU));
+    }
+
+    mpfr_var xl(std::min(std::abs(x.first), std::abs(x.second)), MPFR_RNDD);
+    mpfr_var xu(std::max(std::abs(x.first), std::abs(x.second)), MPFR_RNDU);
+
+    mpfr_cosh(xl(), xl(), MPFR_RNDD);
+    mpfr_cosh(xu(), xu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::tanh(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::tanh(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_tanh(xl(), xl(), MPFR_RNDD);
+    mpfr_tanh(xu(), xu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::asinh(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::asinh(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_asinh(xl(), xl(), MPFR_RNDD);
+    mpfr_asinh(xu(), xu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::acosh(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::acosh(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x) || x.second < 1.0)
+        return static_method_empty();
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first < 1.0 ? 1.0 : x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_acosh(xl(), xl(), MPFR_RNDD);
+    mpfr_acosh(xu(), xu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::atanh(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::atanh(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x) || x.second <= -1.0 || x.first >= 1.0)
+        return static_method_empty();
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first < -1.0 ? -1.0 : x.first, MPFR_RNDD);
+    mpfr_var xu(x.second > 1.0 ? 1.0 : x.second, MPFR_RNDU);
+
+    mpfr_atanh(xl(), xl(), MPFR_RNDD);
+    mpfr_atanh(xu(), xu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
@@ -1113,7 +1181,7 @@ mpfr_flavor<T>::round_ties_to_even(mpfr_flavor<T>::representation const& x)
     class rnd_controll
     {
         int rnd_;
-
+    public:
         rnd_controll() : rnd_(std::fegetround()) {
             std::fesetround(FE_TONEAREST);
         }
@@ -1160,8 +1228,8 @@ mpfr_flavor<T>::min(ConstRandomAccessIterator first, ConstRandomAccessIterator l
     representation r(std::numeric_limits<T>::max(), std::numeric_limits<T>::infinity());
 
     for(auto iter = first; iter != last; iter++) {
-        r.first = std::min(r.first, iter.first);
-        r.second = std::min(r.second, iter.second);
+        r.first = std::min(r.first, (*iter).first);
+        r.second = std::min(r.second, (*iter).second);
     }
 
     return r;
@@ -1179,8 +1247,8 @@ mpfr_flavor<T>::max(ConstRandomAccessIterator first,
     representation r(-std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::max());
 
     for(auto iter = first; iter != last; iter++) {
-        r.first = std::max(r.first, iter.first);
-        r.second = std::max(r.second, iter.second);
+        r.first = std::max(r.first, (*iter).first);
+        r.second = std::max(r.second, (*iter).second);
     }
 
     return r;
