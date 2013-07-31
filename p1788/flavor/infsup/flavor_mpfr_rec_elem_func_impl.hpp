@@ -37,65 +37,159 @@ namespace infsup
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::rootn(mpfr_flavor<T>::representation const&, int)
+mpfr_flavor<T>::rootn(mpfr_flavor<T>::representation const& x, int q)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+
+    if (q > 0) {
+        if (q % 2 == 1) {
+            mpfr_var xl(x.first , MPFR_RNDD);
+            mpfr_var xu(x.second, MPFR_RNDU);
+
+            mpfr_root(xl(), xl(), q, MPFR_RNDD);
+            mpfr_root(xu(), xu(), q, MPFR_RNDU);
+
+            return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
+        } else {
+            if (x.second < 0.0)
+                return mpfr_flavor<T>::static_method_empty();
+
+            mpfr_var xl(x.first < 0.0 ? 0.0 : x.first , MPFR_RNDD);
+            mpfr_var xu(x.second, MPFR_RNDU);
+
+            mpfr_root(xl(), xl(), q, MPFR_RNDD);
+            mpfr_root(xu(), xu(), q, MPFR_RNDU);
+
+            return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
+        }
+    } else if (q < 0) {
+        return inv(rootn(x, -q));
+    }
+
+    // TODO, check ?
+    // In case of q == 0, function not defined
+    return mpfr_flavor<T>::static_method_empty();
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::expm1(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::expm1(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+    mpfr_var l(x.first, MPFR_RNDD);
+    mpfr_var u(x.second, MPFR_RNDU);
+
+    mpfr_expm1(l(), l(), MPFR_RNDD);
+    mpfr_expm1(u(), u(), MPFR_RNDU);
+
+    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::exp2m1(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::exp2m1(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+    mpfr_var l(x.first, MPFR_RNDD);
+    mpfr_var u(x.second, MPFR_RNDU);
+
+    mpfr_exp2(l(), l(), MPFR_RNDD);
+    mpfr_sub_si(l(), l(), 1, MPFR_RNDD);
+    mpfr_exp2(u(), u(), MPFR_RNDU);
+    mpfr_sub_si(u(), u(), 1, MPFR_RNDU);
+
+    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::exp10m1(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::exp10m1(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+    mpfr_var l(x.first, MPFR_RNDD);
+    mpfr_var u(x.second, MPFR_RNDU);
+
+    mpfr_exp10(l(), l(), MPFR_RNDD);
+    mpfr_sub_si(l(), l(), 1, MPFR_RNDD);
+    mpfr_exp10(u(), u(), MPFR_RNDU);
+    mpfr_sub_si(u(), u(), 1, MPFR_RNDU);
+
+    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::logp1(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::logp1(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    representation xx = intersect(x, representation(-1.0, std::numeric_limits<T>::infinity()));
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(xx))
+        return xx;
+
+    mpfr_var::setup();
+    mpfr_var l(x.first, MPFR_RNDD);
+    mpfr_var u(x.second, MPFR_RNDU);
+
+    mpfr_log1p(l(), l(), MPFR_RNDD);
+    mpfr_log1p(u(), u(), MPFR_RNDU);
+
+    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::log2p1(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::log2p1(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    representation xx = intersect(x, representation(-1.0, std::numeric_limits<T>::infinity()));
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(xx))
+        return xx;
+
+    mpfr_var::setup();
+    mpfr_var l(x.first, MPFR_RNDD);
+    mpfr_var u(x.second, MPFR_RNDU);
+
+    mpfr_add_si(l(), l(), 1, MPFR_RNDD);
+    mpfr_add_si(u(), u(), 1, MPFR_RNDU);
+
+    mpfr_log2(l(), l(), MPFR_RNDD);
+    mpfr_log2(u(), u(), MPFR_RNDU);
+
+    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::log10p1(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::log10p1(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    representation xx = intersect(x, representation(-1.0, std::numeric_limits<T>::infinity()));
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(xx))
+        return xx;
+
+    mpfr_var::setup();
+    mpfr_var l(x.first, MPFR_RNDD);
+    mpfr_var u(x.second, MPFR_RNDU);
+
+    mpfr_add_si(l(), l(), 1, MPFR_RNDD);
+    mpfr_add_si(u(), u(), 1, MPFR_RNDU);
+
+    mpfr_log10(l(), l(), MPFR_RNDD);
+    mpfr_log10(u(), u(), MPFR_RNDU);
+
+    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
 template<typename T>
@@ -110,21 +204,57 @@ mpfr_flavor<T>::compoundm1(mpfr_flavor<T>::representation const&,
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::hypot(mpfr_flavor<T>::representation const&,
-                      mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::hypot(mpfr_flavor<T>::representation const& x,
+                      mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(y))
+        return y;
+
+    mpfr_var::setup();
+
+    mpfr_var xl((x.first < 0.0 && x.second > 0.0) ? 0.0 : std::min(std::abs(x.first), std::abs(x.second)), MPFR_RNDD);
+    mpfr_var xu(std::max(std::abs(x.first), std::abs(x.second)), MPFR_RNDU);
+
+    mpfr_var yl((y.first < 0.0 && y.second > 0.0) ? 0.0 : std::min(std::abs(y.first), std::abs(y.second)), MPFR_RNDD);
+    mpfr_var yu(std::max(std::abs(y.first), std::abs(y.second)), MPFR_RNDU);
+
+
+    mpfr_hypot(xl(), xl(), yl(), MPFR_RNDD);
+    mpfr_hypot(xu(), xu(), yu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::r_sqrt(mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::r_sqrt(mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (x.second < 0.0)
+        return static_method_empty();
+
+    mpfr_var::setup();
+
+    if (x.first < 0.0) {
+        mpfr_var xu(x.second, MPFR_RNDU);
+
+        mpfr_rec_sqrt(xu(), xu(), MPFR_RNDD);
+
+        return representation(xu.get(MPFR_RNDD), std::numeric_limits<T>::infinity());
+    }
+
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_rec_sqrt(xu(), xu(), MPFR_RNDD);
+    mpfr_rec_sqrt(xl(), xl(), MPFR_RNDU);
+
+    return representation(xu.get(MPFR_RNDD), xl.get(MPFR_RNDU));
 }
 
 template<typename T>

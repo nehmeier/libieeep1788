@@ -37,22 +37,46 @@ namespace infsup
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::cancel_plus(mpfr_flavor<T>::representation const&,
-                            mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::cancel_plus(mpfr_flavor<T>::representation const& x,
+                            mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T>::static_method_entire();
+    return cancel_minus(x, -y);
 }
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::cancel_minus(mpfr_flavor<T>::representation const&,
-                             mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::cancel_minus(mpfr_flavor<T>::representation const& x,
+                             mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x)) {
+        return x;
+    } else {
+        if (is_empty(y))
+            return static_method_entire();
 
-    return mpfr_flavor<T>::static_method_entire();
+        if (x.first == -std::numeric_limits<T>::infinity()
+                || x.second == +std::numeric_limits<T>::infinity()
+                || y.first == -std::numeric_limits<T>::infinity()
+                || y.second == +std::numeric_limits<T>::infinity())
+            return static_method_entire();
+
+        if (wid(x) < wid(y))
+            return static_method_entire();
+
+        mpfr_var::setup();
+
+        mpfr_var xl(x.first, MPFR_RNDD);
+        mpfr_var xu(x.second, MPFR_RNDU);
+
+        mpfr_var yl(y.first, MPFR_RNDD);
+        mpfr_var yu(y.second, MPFR_RNDU);
+
+
+        mpfr_sub(xl(), xl(), yl(), MPFR_RNDD);
+        mpfr_sub(xu(), xu(), yu(), MPFR_RNDU);
+
+        return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
+    }
 }
 
 } // namespace infsup

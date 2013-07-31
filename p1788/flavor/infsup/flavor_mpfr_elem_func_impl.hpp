@@ -796,8 +796,11 @@ mpfr_flavor<T>::sin(mpfr_flavor<T>::representation const& x)
     mpfr_var xu(x.second, MPFR_RNDU);
 
     // pi
-    mpfr_var pi(-1.0, MPFR_RNDD);
-    mpfr_acos(pi(), pi(), MPFR_RNDD);
+//    mpfr_var pi(-1.0, MPFR_RNDD);
+//    mpfr_acos(pi(), pi(), MPFR_RNDD);
+    mpfr_var pi;
+    mpfr_const_pi(pi(), MPFR_RNDD);
+
 
     mpfr_var w;
     mpfr_sub(w(), xu(), xl(), MPFR_RNDU);
@@ -872,8 +875,10 @@ mpfr_flavor<T>::cos(mpfr_flavor<T>::representation const& x)
     mpfr_var xu(x.second, MPFR_RNDU);
 
     // pi
-    mpfr_var pi(-1.0, MPFR_RNDD);
-    mpfr_acos(pi(), pi(), MPFR_RNDD);
+//    mpfr_var pi(-1.0, MPFR_RNDD);
+//    mpfr_acos(pi(), pi(), MPFR_RNDD);
+    mpfr_var pi;
+    mpfr_const_pi(pi(), MPFR_RNDD);
 
     mpfr_var w;
     mpfr_sub(w(), xu(), xl(), MPFR_RNDU);
@@ -978,8 +983,8 @@ mpfr_flavor<T>::acos(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(xx.first, MPFR_RNDD);
     mpfr_var xu(xx.second, MPFR_RNDU);
 
-    mpfr_asin(xu(), xu(), MPFR_RNDD);
-    mpfr_asin(xl(), xl(), MPFR_RNDU);
+    mpfr_acos(xu(), xu(), MPFR_RNDD);
+    mpfr_acos(xl(), xl(), MPFR_RNDU);
 
     return representation(xu.get(MPFR_RNDD), xl.get(MPFR_RNDU));
 }

@@ -36,12 +36,60 @@ namespace infsup
 {
 
 template<typename T>
-p1788::overlapping::overlapping_state mpfr_flavor<T>::overlap(mpfr_flavor<T>::representation const&,
-        mpfr_flavor<T>::representation const&)
+p1788::overlapping::overlapping_state mpfr_flavor<T>::overlap(mpfr_flavor<T>::representation const& x,
+        mpfr_flavor<T>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        if (is_empty(y))
+            return p1788::overlapping::overlapping_state::both_empty;
+        else;
+    return p1788::overlapping::overlapping_state::first_empty;
 
-    return p1788::overlapping::overlapping_state::both_empty;
+    if (is_empty(y))
+        return p1788::overlapping::overlapping_state::second_empty;
+
+    // !before
+    if (x.second >= y.first) {
+
+        if (x.second <= y.second) {
+            if (x.first == y.first)
+                if (x.second < y.second)
+                    return p1788::overlapping::overlapping_state::starts;
+                else
+                    return p1788::overlapping::overlapping_state::equal;
+
+            if (x.second == y.second)
+                if (x.first < y.first)
+                    return p1788::overlapping::overlapping_state::finished_by;
+                else
+                    return p1788::overlapping::overlapping_state::finishes;
+
+            if (x.second > y.first)
+                if (x.first < y.first)
+                    return p1788::overlapping::overlapping_state::overlaps;
+                else
+                    return p1788::overlapping::overlapping_state::contained_by;
+
+            return p1788::overlapping::overlapping_state::meets;
+        }
+
+        if (x.first <= y.second) {
+            if (x.first <= y.first)
+                if (x.first < y.first)
+                    return p1788::overlapping::overlapping_state::contains;
+                else
+                    return p1788::overlapping::overlapping_state::started_by;
+
+            if (x.first < y.second)
+                return p1788::overlapping::overlapping_state::overlapped_by;
+
+            return p1788::overlapping::overlapping_state::met_by;
+        }
+
+        return p1788::overlapping::overlapping_state::after;
+    }
+    // before
+    return p1788::overlapping::overlapping_state::before;
 }
 
 } // namespace infsup
