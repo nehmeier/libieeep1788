@@ -449,7 +449,6 @@ public:
 
 private:
 
-
     class mpfr_var
     {
     public:
@@ -470,11 +469,26 @@ private:
 
         T get(mpfr_rnd_t rnd);
 
-        mpfr_t& operator() ();
+        std::string get_str(mpfr_rnd_t rnd, int b = 10, size_t n = 0);
 
+        mpfr_t& operator() ();
 
     private:
         mpfr_t var_;
+
+
+        class mpfr_str
+        {
+        public:
+            mpfr_str(mpfr_t var, mpfr_rnd_t rnd, int b, size_t n);
+
+            ~mpfr_str();
+
+            std::string operator() () const;
+        private:
+            char * char_;
+            std::string str_;
+        };
     };
 
 
@@ -499,7 +513,6 @@ private:
 #include "p1788/flavor/infsup/flavor_mpfr_rec_elem_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rec_overlap_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rec_slope_func_impl.hpp"
-
 
 #include "p1788/flavor/infsup/flavor_mpfr_class_mpfr_var_impl.hpp"
 

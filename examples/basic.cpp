@@ -56,10 +56,10 @@ int main()
 //    interval i6 = interval::empty();
 //    interval i7 = interval::entire();
 //
-//    interval i8;
-//    std::cin >> i8;
-//
-//    std::cout << std::endl;
+    interval<double> i8(0x123456789p-16, 0x123456799p-16);
+    //std::cin >> i8;
+
+    std::cout << i8 << std::endl;
 //
 //    std::cout << i1 << std::endl;
 //    std::cout << i2 << std::endl;
@@ -75,5 +75,20 @@ int main()
 //    std::cout << i2.mid() << std::endl;
 //    std::cout << i2.rad() << std::endl;
 
+
+    double x = 0x4024000000000000;
+    std::cout << x << std::endl<< std::endl;
+    interval<double> xx(x,x);
+    std::cout << xx << std::endl << std::endl;
+
+    std::cout << rootn(a, -3) << std::endl;
+    std::cout << expm1(a) << std::endl;
+    std::cout << exp2m1(a) << std::endl;
+    std::cout << exp10m1(a) << std::endl;
+    std::cout << logp1(a) << std::endl;
+    std::cout << log2p1(a) << std::endl;
+    std::cout << log10p1(a) << std::endl;
+    std::cout << r_sqrt(a) << std::endl;
+    std::cout << hypot(a, a) << std::endl;
     return 0;
 }

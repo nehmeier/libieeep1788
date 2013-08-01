@@ -146,6 +146,13 @@ T mpfr_flavor<T>::mpfr_var::get(mpfr_rnd_t rnd)
     return p1788::util::mpfr_get_trait<T>::apply(var_, rnd);
 }
 
+template<typename T>
+std::string mpfr_flavor<T>::mpfr_var::get_str(mpfr_rnd_t rnd, int b, size_t n)
+{
+    mpfr_str str(var_, rnd, b, n);
+
+    return str();
+}
 
 
 template<typename T>
@@ -153,6 +160,60 @@ mpfr_t& mpfr_flavor<T>::mpfr_var::operator() ()
 {
     return var_;
 }
+
+
+// TODO current local decimal point!!!!
+// TODO Hex etc
+// TODO Check
+template<typename T>
+mpfr_flavor<T>::mpfr_var::mpfr_str::mpfr_str(mpfr_t var, mpfr_rnd_t rnd, int b, size_t n)
+    : char_(nullptr), str_()
+{
+    mpfr_exp_t exp;
+
+    char_ = mpfr_get_str(nullptr, &exp, b, n, var, rnd);
+    str_ = char_;
+
+    if (mpfr_regular_p(var)) {
+        if (exp > str_.length()) {
+                str_.insert(mpfr_sgn(var) > 0 ? 1 : 2, ".");
+                str_ = str_ + "e" + std::to_string(exp - 1);
+        } else if (exp) {
+            str_.insert(mpfr_sgn(var) > 0 ? exp : exp + 1, ".");
+        } else {
+            str_.insert(mpfr_sgn(var) < 0 ? 1 : 0, "0.");
+        }
+    }
+
+    if (mpfr_zero_p(var)) {
+        if (str_[0] == '-') {
+            str_.replace(0, 2, "0.");
+        } else {
+            str_.insert(1, ".");
+        }
+    }
+
+    if (mpfr_nan_p(var)) {
+        str_ = "nan";
+    }
+
+    if (mpfr_inf_p(var)) {
+        str_ = mpfr_sgn(var) > 0 ? "Inf" : "-Inf";
+    }
+}
+
+template<typename T>
+mpfr_flavor<T>::mpfr_var::mpfr_str::~mpfr_str()
+{
+    mpfr_free_str(char_);
+}
+
+template<typename T>
+std::string mpfr_flavor<T>::mpfr_var::mpfr_str::operator() () const
+{
+    return str_;
+}
+
 
 
 } // namespace infsup

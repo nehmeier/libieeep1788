@@ -30,6 +30,7 @@
 
 #include "p1788/util/assert.hpp"
 
+
 namespace p1788
 {
 
@@ -47,9 +48,13 @@ std::basic_ostream<CharT, Traits>&
 mpfr_flavor<T>::operator_output(std::basic_ostream<CharT, Traits>& os,
                                 mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return os << "[Empty]";
 
-    return os << "[" << x.first << "," << x.second << "]";
+    mpfr_var xl(x.first , MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    return os << "[" << xl.get_str(MPFR_RNDD) << "," << xu.get_str(MPFR_RNDU) << "]";
 }
 
 template<typename T>
