@@ -97,6 +97,18 @@ mpfr_flavor<T>::mpfr_var::mpfr_var()
 }
 
 template<typename T>
+mpfr_flavor<T>::mpfr_var::mpfr_var(unsigned long int op, mpfr_rnd_t rnd) : mpfr_var()
+{
+    set(op, rnd);
+}
+
+template<typename T>
+mpfr_flavor<T>::mpfr_var::mpfr_var(long int op, mpfr_rnd_t rnd) : mpfr_var()
+{
+    set(op, rnd);
+}
+
+template<typename T>
 mpfr_flavor<T>::mpfr_var::mpfr_var(float op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
@@ -118,6 +130,18 @@ template<typename T>
 mpfr_flavor<T>::mpfr_var::~mpfr_var()
 {
     mpfr_clear(var_);
+}
+
+template<typename T>
+void mpfr_flavor<T>::mpfr_var::set(unsigned long int op, mpfr_rnd_t rnd)
+{
+    mpfr_set_ui(var_, op, rnd);
+}
+
+template<typename T>
+void mpfr_flavor<T>::mpfr_var::set(long int op, mpfr_rnd_t rnd)
+{
+    mpfr_set_si(var_, op, rnd);
 }
 
 template<typename T>

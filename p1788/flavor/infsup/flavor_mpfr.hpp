@@ -457,12 +457,16 @@ private:
 
 
         mpfr_var();
+        mpfr_var(unsigned long int op, mpfr_rnd_t rnd);
+        mpfr_var(long int op, mpfr_rnd_t rnd);
         mpfr_var(float op, mpfr_rnd_t rnd);
         mpfr_var(double op, mpfr_rnd_t rnd);
         mpfr_var(long double op, mpfr_rnd_t rnd);
 
         ~mpfr_var();
 
+        void set(unsigned long int op, mpfr_rnd_t rnd);
+        void set(long int op, mpfr_rnd_t rnd);
         void set(float op, mpfr_rnd_t rnd);
         void set(double op, mpfr_rnd_t rnd);
         void set(long double op, mpfr_rnd_t rnd);
