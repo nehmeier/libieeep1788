@@ -229,12 +229,116 @@ mpfr_flavor<T>::sin_rev(mpfr_flavor<T>::representation const& c)
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::cos_rev(mpfr_flavor<T>::representation const&,
-                        mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::cos_rev(mpfr_flavor<T>::representation const& c,
+                        mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+   representation cc = intersect(c, representation(-1.0, 1.0));
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(cc))
+        return cc;
+
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_var cld(cc.second, MPFR_RNDU);
+    mpfr_var cuu(cc.first, MPFR_RNDD);
+
+    mpfr_acos(cld(), cld(), MPFR_RNDD);
+    mpfr_acos(cuu(), cuu(), MPFR_RNDU);
+
+    mpfr_var pid;
+    mpfr_var piu;
+    mpfr_const_pi(pid(), MPFR_RNDD);
+    mpfr_const_pi(piu(), MPFR_RNDU);
+
+    mpfr_var rl;
+    mpfr_var ru;
+
+    mpfr_var tmp;
+    long nu;
+
+    // left bound of x
+    mpfr_remquo(tmp(), &nu, xl(), pid(), MPFR_RNDD);
+
+    // normalize
+    if (tmp.get(MPFR_RNDA) < 0.0)
+        --nu;
+
+    if (nu % 2 == 0) {
+        tmp.set(nu, MPFR_RNDN);
+        mpfr_fma(rl(), tmp(), piu(), cuu(), MPFR_RNDU);
+    } else {
+        tmp.set(nu + 1, MPFR_RNDN);
+        mpfr_fms(rl(), tmp(), piu(), cld(), MPFR_RNDU);
+    }
+
+    if (rl.get(MPFR_RNDU) >= x.first) {
+        if (nu % 2 == 0)
+            mpfr_fma(rl(), tmp(), pid(), cld(), MPFR_RNDD);
+        else
+            mpfr_fms(rl(), tmp(), pid(), cuu(), MPFR_RNDD);
+
+        if (rl.get(MPFR_RNDD) > x.second)
+            return static_method_empty();
+
+        mpfr_max(rl(), rl(), xl(), MPFR_RNDD);
+    } else {
+        ++nu;
+
+        if (nu % 2 == 0) {
+            tmp.set(nu, MPFR_RNDN);
+            mpfr_fma(rl(), tmp(), pid(), cld(), MPFR_RNDD);
+        } else {
+            tmp.set(nu + 1, MPFR_RNDN);
+            mpfr_fms(rl(), tmp(), pid(), cuu(), MPFR_RNDD);
+        }
+
+        if (rl.get(MPFR_RNDD) > x.second)
+            return static_method_empty();
+
+        mpfr_max(rl(), rl(), xl(), MPFR_RNDD);
+    }
+
+
+    // right bound of x
+    mpfr_remquo(tmp(), &nu, xu(), piu(), MPFR_RNDU);
+
+    // normalize
+    if (tmp.get(MPFR_RNDA) < 0.0)
+        --nu;
+
+    if (nu % 2 == 0) {
+        tmp.set(nu, MPFR_RNDN);
+        mpfr_fma(ru(), tmp(), pid(), cld(), MPFR_RNDD);
+    } else {
+        tmp.set(nu + 1, MPFR_RNDN);
+        mpfr_fms(ru(), tmp(), pid(), cuu(), MPFR_RNDD);
+    }
+
+    if (ru.get(MPFR_RNDD) <= x.second) {
+        if (nu % 2 == 0)
+            mpfr_fma(ru(), tmp(), piu(), cuu(), MPFR_RNDU);
+        else
+            mpfr_fms(ru(), tmp(), piu(), cld(), MPFR_RNDU);
+
+        mpfr_min(ru(), ru(), xu(), MPFR_RNDU);
+    } else {
+        --nu;
+
+        if (nu % 2 == 0) {
+            tmp.set(nu, MPFR_RNDN);
+            mpfr_fma(ru(), tmp(), piu(), cuu(), MPFR_RNDU);
+        } else {
+            tmp.set(nu + 1, MPFR_RNDN);
+            mpfr_fms(ru(), tmp(), piu(), cld(), MPFR_RNDU);
+        }
+
+        mpfr_min(ru(), ru(), xu(), MPFR_RNDU);
+    }
+
+    return representation(rl.get(MPFR_RNDD), ru.get(MPFR_RNDU));
 }
 
 template<typename T>
@@ -246,12 +350,90 @@ mpfr_flavor<T>::cos_rev(mpfr_flavor<T>::representation const& c)
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::tan_rev(mpfr_flavor<T>::representation const&,
-                        mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::tan_rev(mpfr_flavor<T>::representation const& c,
+                        mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(c))
+        return c;
 
-    return mpfr_flavor<T>::static_method_entire();
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_var cld(c.first, MPFR_RNDD);
+    mpfr_var cuu(c.second, MPFR_RNDU);
+
+    mpfr_atan(cld(), cld(), MPFR_RNDD);
+    mpfr_atan(cuu(), cuu(), MPFR_RNDU);
+
+    mpfr_var pid;
+    mpfr_var piu;
+    mpfr_const_pi(pid(), MPFR_RNDD);
+    mpfr_const_pi(piu(), MPFR_RNDU);
+
+    mpfr_var rl;
+    mpfr_var ru;
+
+    mpfr_var tmp;
+    long nu;
+
+    // left bound of x
+    mpfr_remquo(tmp(), &nu, xl(), pid(), MPFR_RNDD);
+
+    // normalize
+    if (tmp.get(MPFR_RNDA) < 0.0)
+        --nu;
+
+    tmp.set(nu, MPFR_RNDN);
+
+    mpfr_fma(rl(), tmp(), piu(), cuu(), MPFR_RNDU);
+
+    if (rl.get(MPFR_RNDU) >= x.first) {
+        mpfr_fma(rl(), tmp(), pid(), cld(), MPFR_RNDD);
+
+        if (rl.get(MPFR_RNDD) > x.second)
+            return static_method_empty();
+
+        mpfr_max(rl(), rl(), xl(), MPFR_RNDD);
+    } else {
+        tmp.set(++nu, MPFR_RNDN);
+
+        mpfr_fma(rl(), tmp(), piu(), cuu(), MPFR_RNDU);
+
+        if (rl.get(MPFR_RNDU) < x.first)
+            return static_method_empty();
+
+        mpfr_fma(rl(), tmp(), pid(), cld(), MPFR_RNDD);
+
+        mpfr_max(rl(), rl(), xl(), MPFR_RNDD);
+    }
+
+
+    // right bound of x
+    mpfr_remquo(tmp(), &nu, xu(), piu(), MPFR_RNDU);
+
+    // normalize
+    if (tmp.get(MPFR_RNDA) > 0.0)
+        ++nu;
+
+    tmp.set(nu, MPFR_RNDN);
+
+    mpfr_fma(ru(), tmp(), pid(), cld(), MPFR_RNDD);
+
+    if (ru.get(MPFR_RNDD) <= x.second) {
+        mpfr_fma(ru(), tmp(), piu(), cuu(), MPFR_RNDU);
+
+        mpfr_min(ru(), ru(), xu(), MPFR_RNDU);
+    } else {
+        tmp.set(--nu, MPFR_RNDN);
+
+        mpfr_fma(ru(), tmp(), piu(), cuu(), MPFR_RNDU);
+
+        mpfr_min(ru(), ru(), xu(), MPFR_RNDU);
+    }
+
+    return representation(rl.get(MPFR_RNDD), ru.get(MPFR_RNDU));
 }
 
 template<typename T>
@@ -263,12 +445,13 @@ mpfr_flavor<T>::tan_rev(mpfr_flavor<T>::representation const& c)
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::cosh_rev(mpfr_flavor<T>::representation const&,
-                         mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::cosh_rev(mpfr_flavor<T>::representation const& c,
+                         mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    representation p = acosh(c);
+    representation n = neg(p);
 
-    return mpfr_flavor<T>::static_method_entire();
+    return hull(intersect(p, x), intersect(n, x));
 }
 
 template<typename T>
