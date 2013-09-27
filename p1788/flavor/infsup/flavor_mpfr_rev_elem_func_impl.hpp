@@ -40,6 +40,9 @@ typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::sqr_rev(mpfr_flavor<T>::representation const& c,
                         mpfr_flavor<T>::representation const& x)
 {
+    if (is_empty(x))
+        return x;
+
     representation p = sqrt(c);
     representation n = neg(p);
 
@@ -58,6 +61,9 @@ typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::inv_rev(mpfr_flavor<T>::representation const& c,
                         mpfr_flavor<T>::representation const& x)
 {
+    if (is_empty(x))
+        return x;
+
     return intersect(inv(c), x);
 }
 
@@ -73,6 +79,9 @@ typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::abs_rev(mpfr_flavor<T>::representation const& c,
                         mpfr_flavor<T>::representation const& x)
 {
+    if (is_empty(x))
+        return x;
+
     if (c.second < 0.0)
         return static_method_empty();
 
@@ -114,6 +123,9 @@ typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::sin_rev(mpfr_flavor<T>::representation const& c,
                         mpfr_flavor<T>::representation const& x)
 {
+    if (is_empty(x))
+        return x;
+
     representation cc = intersect(c, representation(-1.0, 1.0));
 
     if (is_empty(cc))
@@ -232,7 +244,10 @@ typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::cos_rev(mpfr_flavor<T>::representation const& c,
                         mpfr_flavor<T>::representation const& x)
 {
-   representation cc = intersect(c, representation(-1.0, 1.0));
+    if (is_empty(x))
+        return x;
+
+    representation cc = intersect(c, representation(-1.0, 1.0));
 
     if (is_empty(cc))
         return cc;
@@ -353,6 +368,9 @@ typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::tan_rev(mpfr_flavor<T>::representation const& c,
                         mpfr_flavor<T>::representation const& x)
 {
+    if (is_empty(x))
+        return x;
+
     if (is_empty(c))
         return c;
 
@@ -448,6 +466,9 @@ typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::cosh_rev(mpfr_flavor<T>::representation const& c,
                          mpfr_flavor<T>::representation const& x)
 {
+    if (is_empty(x))
+        return x;
+
     representation p = acosh(c);
     representation n = neg(p);
 
@@ -463,13 +484,109 @@ mpfr_flavor<T>::cosh_rev(mpfr_flavor<T>::representation const& c)
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::mul_rev(mpfr_flavor<T>::representation const&,
-                        mpfr_flavor<T>::representation const&,
-                        mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::mul_rev(mpfr_flavor<T>::representation const& b,
+                        mpfr_flavor<T>::representation const& c,
+                        mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    if (is_empty(x))
+        return x;
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(b))
+        return b;
+
+    if (is_empty(c))
+        return c;
+
+    // b == entire  or  c == entire
+    if (is_entire(b) || is_entire(c))
+        return x;                               // intersect(entire, x)
+
+    // c contains 0.0
+    if (c.first <= 0.0 && c.second >= 0.0) {
+        // and b contains 0.0
+        if (b.first <= 0.0 && b.second >= 0.0)
+            return x;                           // intersect(entire, x)
+
+
+        mpfr_var::setup();
+
+        mpfr_var bl(b.first == 0.0 ? +0.0 : b.first , MPFR_RNDD);
+        mpfr_var bu(b.second == 0.0 ? -0.0 : b.second, MPFR_RNDU);
+
+        mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
+        mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
+
+        if (b.second < 0.0) {
+            mpfr_div(cu(), cu(), bu(), MPFR_RNDD);
+            mpfr_div(cl(), cl(), bu(), MPFR_RNDU);
+
+            return intersect(representation(cu.get(MPFR_RNDD), cl.get(MPFR_RNDU)), x);
+        }
+
+        // b.first > 0.0
+        mpfr_div(cl(), cl(), bl(), MPFR_RNDD);
+        mpfr_div(cu(), cu(), bl(), MPFR_RNDU);
+
+        return intersect(representation(cl.get(MPFR_RNDD), cu.get(MPFR_RNDU)), x);
+    }
+
+
+    if (c.second < 0.0) {
+        if (b.first == 0.0 && b.second == 0.0)
+            return static_method_empty();
+
+        mpfr_var::setup();
+
+        mpfr_var bl(b.first == 0.0 ? +0.0 : b.first , MPFR_RNDD);
+        mpfr_var bu(b.second == 0.0 ? -0.0 : b.second, MPFR_RNDU);
+
+        mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
+        mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
+
+        if (b.second <= 0.0) {
+            mpfr_div(cu(), cu(), bl(), MPFR_RNDD);
+            mpfr_div(cl(), cl(), bu(), MPFR_RNDU);
+
+            return intersect(representation(cu.get(MPFR_RNDD), cl.get(MPFR_RNDU)), x);
+        }
+
+        if (b.first >= 0.0) {
+            mpfr_div(cl(), cl(), bl(), MPFR_RNDD);
+            mpfr_div(cu(), cu(), bu(), MPFR_RNDU);
+
+            return intersect(representation(cl.get(MPFR_RNDD), cu.get(MPFR_RNDU)), x);
+        }
+
+        return x;                           // intersect(entire, x)
+    }
+
+    // c.first > 0.0
+    if (b.first == 0.0 && b.second == 0.0)
+        return static_method_empty();
+
+    mpfr_var::setup();
+
+    mpfr_var bl(b.first == 0.0 ? +0.0 : b.first , MPFR_RNDD);
+    mpfr_var bu(b.second == 0.0 ? -0.0 : b.second, MPFR_RNDU);
+
+    mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
+    mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
+
+    if (b.second <= 0.0) {
+        mpfr_div(cu(), cu(), bu(), MPFR_RNDD);
+        mpfr_div(cl(), cl(), bl(), MPFR_RNDU);
+
+        return intersect(representation(cu.get(MPFR_RNDD), cl.get(MPFR_RNDU)), x);
+    }
+
+    if (b.first >= 0.0) {
+        mpfr_div(cl(), cl(), bu(), MPFR_RNDD);
+        mpfr_div(cu(), cu(), bl(), MPFR_RNDU);
+
+        return intersect(representation(cl.get(MPFR_RNDD), cu.get(MPFR_RNDU)), x);
+    }
+
+    return x;                           // intersect(entire, x)
 }
 
 template<typename T>
@@ -482,13 +599,129 @@ mpfr_flavor<T>::mul_rev(mpfr_flavor<T>::representation const& b,
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::div_rev1(mpfr_flavor<T>::representation const&,
-                         mpfr_flavor<T>::representation const&,
-                         mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::div_rev1(mpfr_flavor<T>::representation const& b,
+                         mpfr_flavor<T>::representation const& c,
+                         mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    // same as b * c, except b == 0.0 or c == 0.0 !!!!
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(x))
+        return x;
+
+    if (is_empty(b))
+        return b;
+
+    if (is_empty(c))
+        return c;
+
+    if (b.first == 0.0 && b.second == 0.0)
+        return static_method_empty();
+
+    if (c.first == 0.0 && c.second == 0.0)
+        return intersect(c, x);
+
+    // a == entire  or  c == entire
+    if (is_entire(b) || is_entire(c))
+        return x;                               // intersect(entire, x)
+
+
+    mpfr_var::setup();
+    mpfr_var l;
+    mpfr_var u;
+
+    if (c.second <= 0.0) {
+        if (b.second <= 0.0) {
+            mpfr_var bl(b.first, MPFR_RNDD);
+            mpfr_var bu(b.second, MPFR_RNDU);
+
+            mpfr_var cl(c.first, MPFR_RNDD);
+            mpfr_var cu(c.second, MPFR_RNDU);
+
+            mpfr_mul(l(), bu(), cu(), MPFR_RNDD);
+            mpfr_mul(u(), bl(), cl(), MPFR_RNDU);
+        } else if (b.first >= 0.0) {
+            mpfr_var bl(b.first, MPFR_RNDD);
+            mpfr_var bu(b.second, MPFR_RNDU);
+
+            mpfr_var cl(c.first, MPFR_RNDD);
+            mpfr_var cu(c.second, MPFR_RNDU);
+
+            mpfr_mul(l(), bu(), cl(), MPFR_RNDD);
+            mpfr_mul(u(), bl(), cu(), MPFR_RNDU);
+        } else {
+            mpfr_var bl(b.first, MPFR_RNDD);
+            mpfr_var bu(b.second, MPFR_RNDU);
+
+            mpfr_var cl(c.first, MPFR_RNDD);
+
+            mpfr_mul(l(), bu(), cl(), MPFR_RNDD);
+            mpfr_mul(u(), bl(), cl(), MPFR_RNDU);
+        }
+    } else if (c.first >= 0.0) {
+        if (b.second <= 0.0) {
+            mpfr_var bl(b.first, MPFR_RNDD);
+            mpfr_var bu(b.second, MPFR_RNDU);
+
+            mpfr_var cl(c.first, MPFR_RNDD);
+            mpfr_var cu(c.second, MPFR_RNDU);
+
+            mpfr_mul(l(), bl(), cu(), MPFR_RNDD);
+            mpfr_mul(u(), bu(), cl(), MPFR_RNDU);
+        } else if (b.first >= 0.0) {
+            mpfr_var bl(b.first, MPFR_RNDD);
+            mpfr_var bu(b.second, MPFR_RNDU);
+
+            mpfr_var cl(c.first, MPFR_RNDD);
+            mpfr_var cu(c.second, MPFR_RNDU);
+
+            mpfr_mul(l(), bl(), cl(), MPFR_RNDD);
+            mpfr_mul(u(), bu(), cu(), MPFR_RNDU);
+        } else {
+            mpfr_var bl(b.first, MPFR_RNDD);
+            mpfr_var bu(b.second, MPFR_RNDU);
+
+            mpfr_var cu(c.second, MPFR_RNDU);
+
+            mpfr_mul(l(), bl(), cu(), MPFR_RNDD);
+            mpfr_mul(u(), bu(), cu(), MPFR_RNDU);
+        }
+    } else {
+        if (b.second <= 0.0) {
+            mpfr_var bl(b.first, MPFR_RNDD);
+
+            mpfr_var cl(c.first, MPFR_RNDD);
+            mpfr_var cu(c.second, MPFR_RNDU);
+
+            mpfr_mul(l(), bl(), cu(), MPFR_RNDD);
+            mpfr_mul(u(), bl(), cl(), MPFR_RNDU);
+        } else if (b.first >= 0.0) {
+            mpfr_var bu(b.second, MPFR_RNDU);
+
+            mpfr_var cl(c.first, MPFR_RNDD);
+            mpfr_var cu(c.second, MPFR_RNDU);
+
+            mpfr_mul(l(), bu(), cl(), MPFR_RNDD);
+            mpfr_mul(u(), bu(), cu(), MPFR_RNDU);
+        } else {
+            mpfr_var bl(b.first, MPFR_RNDD);
+            mpfr_var bu(b.second, MPFR_RNDU);
+
+            mpfr_var cl(c.first, MPFR_RNDD);
+            mpfr_var cu(c.second, MPFR_RNDU);
+
+            mpfr_var tmp;
+
+            mpfr_mul(l(), bl(), cu(), MPFR_RNDD);
+            mpfr_mul(tmp(), bu(), cl(), MPFR_RNDD);
+            mpfr_min(l(), l(), tmp(), MPFR_RNDD);
+
+            mpfr_mul(u(), bl(), cl(), MPFR_RNDU);
+            mpfr_mul(tmp(), bu(), cu(), MPFR_RNDU);
+            mpfr_max(u(), u(), tmp(), MPFR_RNDU);
+        }
+    }
+
+    return intersect(representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU)), x);
 }
 
 template<typename T>
@@ -501,13 +734,146 @@ mpfr_flavor<T>::div_rev1(mpfr_flavor<T>::representation const& b,
 
 template<typename T>
 typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::div_rev2(mpfr_flavor<T>::representation const&,
-                         mpfr_flavor<T>::representation const&,
-                         mpfr_flavor<T>::representation const&)
+mpfr_flavor<T>::div_rev2(mpfr_flavor<T>::representation const& a,
+                         mpfr_flavor<T>::representation const& c,
+                         mpfr_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    // TODO same as a/c ?????
 
-    return mpfr_flavor<T>::static_method_entire();
+    if (is_empty(x))
+        return x;
+
+    if (is_empty(a))
+        return a;
+
+    if (is_empty(c))
+        return c;
+
+    // a == entire  or  c == entire
+    if (is_entire(a) || is_entire(c))
+        return x;                               // intersect(entire, x)
+
+    // c contains 0.0
+    if (c.first <= 0.0 && c.second >= 0.0) {
+        // and a contains 0.0
+        if (a.first <= 0.0 && a.second >= 0.0)
+            return x;                           // intersect(entire, x)
+
+        // c == 0.0 and a !contains 0.0
+        if (c.first == 0.0 && c.second == 0.0)
+            return static_method_empty();
+
+
+        if (a.second < 0.0 && c.second == 0.0) {
+            mpfr_var::setup();
+
+            mpfr_var au(a.second == 0.0 ? -0.0 : a.second, MPFR_RNDU);
+            mpfr_var cl(c.first == 0.0 ? +0.0 : c.first, MPFR_RNDD);
+
+            mpfr_div(au(), au(), cl(), MPFR_RNDD);
+
+            return intersect(representation(au.get(MPFR_RNDD), std::numeric_limits<T>::infinity()), x);
+        }
+
+        if (a.second < 0.0 && c.first == 0.0) {
+            mpfr_var::setup();
+
+            mpfr_var au(a.second == 0.0 ? -0.0 : a.second, MPFR_RNDU);
+            mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
+
+            mpfr_div(au(), au(), cu(), MPFR_RNDU);
+
+            return intersect(representation(-std::numeric_limits<T>::infinity(), au.get(MPFR_RNDU)), x);
+        }
+
+        if (a.first > 0.0 && c.second == 0.0) {
+            mpfr_var::setup();
+
+            mpfr_var al(a.first == 0.0 ? +0.0 : a.first, MPFR_RNDD);
+            mpfr_var cl(c.first == 0.0 ? +0.0 : c.first, MPFR_RNDD);
+
+            mpfr_div(al(), al(), cl(), MPFR_RNDU);
+
+            return intersect(representation(-std::numeric_limits<T>::infinity(), al.get(MPFR_RNDU)), x);
+        }
+
+        if (a.first > 0.0 && c.first == 0.0) {
+            mpfr_var::setup();
+
+            mpfr_var al(a.first == 0.0 ? +0.0 : a.first, MPFR_RNDD);
+            mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
+
+            mpfr_div(al(), al(), cu(), MPFR_RNDD);
+
+            return intersect(representation(al.get(MPFR_RNDD), std::numeric_limits<T>::infinity()), x);
+        }
+
+        return x;                               // intersect(entire, x)
+    }
+
+
+    if (c.second < 0.0) {
+        if (a.first == 0.0 && a.second == 0.0)
+            return static_method_empty();
+
+        mpfr_var::setup();
+
+        mpfr_var al(a.first == 0.0 ? +0.0 : a.first , MPFR_RNDD);
+        mpfr_var au(a.second == 0.0 ? -0.0 : a.second, MPFR_RNDU);
+
+        mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
+        mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
+
+        if (a.second <= 0.0) {
+            mpfr_div(au(), au(), cl(), MPFR_RNDD);
+            mpfr_div(al(), al(), cu(), MPFR_RNDU);
+
+            return intersect(representation(au.get(MPFR_RNDD), al.get(MPFR_RNDU)), x);
+        }
+
+        if (a.first >= 0.0) {
+            mpfr_div(au(), au(), cu(), MPFR_RNDD);
+            mpfr_div(al(), al(), cl(), MPFR_RNDU);
+
+            return intersect(representation(au.get(MPFR_RNDD), al.get(MPFR_RNDU)), x);
+        }
+
+        mpfr_div(au(), au(), cu(), MPFR_RNDD);
+        mpfr_div(al(), al(), cu(), MPFR_RNDU);
+
+        return intersect(representation(au.get(MPFR_RNDD), al.get(MPFR_RNDU)), x);
+    }
+
+    // c.first > 0.0
+    if (a.first == 0.0 && a.second == 0.0)
+        return static_method_empty();
+
+    mpfr_var::setup();
+
+    mpfr_var al(a.first == 0.0 ? +0.0 : a.first , MPFR_RNDD);
+    mpfr_var au(a.second == 0.0 ? -0.0 : a.second, MPFR_RNDU);
+
+    mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
+    mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
+
+    if (a.second <= 0.0) {
+        mpfr_div(al(), al(), cl(), MPFR_RNDD);
+        mpfr_div(au(), au(), cu(), MPFR_RNDU);
+
+        return intersect(representation(al.get(MPFR_RNDD), au.get(MPFR_RNDU)), x);
+    }
+
+    if (a.first >= 0.0) {
+        mpfr_div(al(), al(), cu(), MPFR_RNDD);
+        mpfr_div(au(), au(), cl(), MPFR_RNDU);
+
+        return intersect(representation(al.get(MPFR_RNDD), au.get(MPFR_RNDU)), x);
+    }
+
+    mpfr_div(al(), al(), cl(), MPFR_RNDD);
+    mpfr_div(au(), au(), cl(), MPFR_RNDU);
+
+    return intersect(representation(al.get(MPFR_RNDD), au.get(MPFR_RNDU)), x);
 }
 
 template<typename T>
