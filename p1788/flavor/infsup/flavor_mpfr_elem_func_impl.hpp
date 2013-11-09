@@ -946,7 +946,32 @@ template<typename T>
 typename mpfr_flavor<T>::representation
 mpfr_flavor<T>::tan(mpfr_flavor<T>::representation const& x)
 {
-    return div(sin(x), cos(x));
+//    return div(sin(x), cos(x));
+
+    if (is_empty(x))
+        return x;
+
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_var pi;
+    mpfr_const_pi(pi(), MPFR_RNDD);
+
+    mpfr_var w;
+    mpfr_sub(w(), xu(), xl(), MPFR_RNDU);
+
+    if (mpfr_cmp(w(), pi()) > 0)
+        return static_method_entire();
+
+    mpfr_cos(xl(), xl(), MPFR_RNDD);
+    mpfr_cos(xu(), xu(), MPFR_RNDU);
+
+    if (mpfr_cmp(xl(), xu()) > 0)
+        return static_method_entire();
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T>
