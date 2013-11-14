@@ -35,18 +35,18 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::cancel_plus(mpfr_flavor<T>::representation const& x,
-                            mpfr_flavor<T>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                            mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return cancel_minus(x, -y);
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::cancel_minus(mpfr_flavor<T>::representation const& x,
-                             mpfr_flavor<T>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                             mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     if (is_empty(x)) {
         return x;

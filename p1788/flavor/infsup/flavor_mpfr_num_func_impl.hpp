@@ -35,9 +35,9 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::inf(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::inf(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::infinity();
@@ -45,9 +45,9 @@ mpfr_flavor<T>::inf(mpfr_flavor<T>::representation const& x)
     return method_lower(x);
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::sup(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::sup(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return -std::numeric_limits<T>::infinity();
@@ -55,9 +55,9 @@ mpfr_flavor<T>::sup(mpfr_flavor<T>::representation const& x)
     return method_upper(x);
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::mid(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::mid(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -70,14 +70,14 @@ mpfr_flavor<T>::mid(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_add(xl(), xl(), xu(), MPFR_RNDN);
-    mpfr_div_si(xl(), xl(), 2l, MPFR_RNDN);
+    xl.subnormalize(mpfr_add(xl(), xl(), xu(), MPFR_RNDN), MPFR_RNDN);
+    xl.subnormalize(mpfr_div_si(xl(), xl(), 2l, MPFR_RNDN), MPFR_RNDN);
     return xl.get(MPFR_RNDN);
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::rad(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::rad(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -87,22 +87,22 @@ mpfr_flavor<T>::rad(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_sub(xl(), xu(), xl(), MPFR_RNDU);
-    mpfr_div_si(xl(), xl(), 2l, MPFR_RNDU);
+    xl.subnormalize(mpfr_sub(xl(), xu(), xl(), MPFR_RNDU), MPFR_RNDU);
+    xl.subnormalize(mpfr_div_si(xl(), xl(), 2l, MPFR_RNDU), MPFR_RNDU);
 
     return xl.get(MPFR_RNDU);
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 std::pair<T, T>
-mpfr_flavor<T>::mid_rad(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::mid_rad(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     return std::pair<T,T>(mid(x), rad(x));
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::wid(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::wid(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -112,14 +112,14 @@ mpfr_flavor<T>::wid(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_sub(xl(), xu(), xl(), MPFR_RNDU);
+    xl.subnormalize(mpfr_sub(xl(), xu(), xl(), MPFR_RNDU), MPFR_RNDU);
 
     return xl.get(MPFR_RNDU);
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::mag(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::mag(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -130,9 +130,9 @@ mpfr_flavor<T>::mag(mpfr_flavor<T>::representation const& x)
     return xl > xu ? xl : xu;
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::mig(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::mig(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();

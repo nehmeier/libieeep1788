@@ -35,9 +35,9 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T>
-p1788::overlapping::overlapping_state mpfr_flavor<T>::overlap(mpfr_flavor<T>::representation const& x,
-        mpfr_flavor<T>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE>
+p1788::overlapping::overlapping_state mpfr_flavor<T, SUBNORMALIZE>::overlap(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+        mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     if (is_empty(x)) {
         if (is_empty(y)) {

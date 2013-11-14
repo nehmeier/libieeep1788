@@ -44,7 +44,15 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T>
+
+enum class subnormalize : bool
+{
+    yes = true,
+    no = false
+};
+
+
+template<typename T, subnormalize SUBNORMALIZE = subnormalize::yes>
 class mpfr_flavor
 {
 
@@ -418,7 +426,7 @@ public:
 // -----------------------------------------------------------------------------
 
     static p1788::overlapping::overlapping_state overlap(representation const&,
-                                            representation const&);
+            representation const&);
 
 
 // -----------------------------------------------------------------------------
@@ -473,6 +481,8 @@ private:
 
         mpfr_t& operator() ();
 
+        void subnormalize(int t, mpfr_rnd_t rnd);
+
     private:
         mpfr_t var_;
 
@@ -490,7 +500,6 @@ private:
             std::string str_;
         };
     };
-
 
 };
 

@@ -40,35 +40,35 @@ namespace infsup
 
 // Constructors
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::constructor_infsup()
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup()
 {
     return static_method_empty();
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::constructor_infsup(T lower, T upper)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(T lower, T upper)
 {
 //TODO  invalid arguments => exception?
 
     return representation(lower, upper);
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::constructor_infsup(T point)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(T point)
 {
 //TODO  invalid argument => exception?
 
     return representation(point, point);
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 template<typename ConstRandomAccessIterator>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::constructor_infsup(ConstRandomAccessIterator first,
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(ConstRandomAccessIterator first,
                                    ConstRandomAccessIterator last)
 {
     //TODO check iterator
@@ -78,9 +78,9 @@ mpfr_flavor<T>::constructor_infsup(ConstRandomAccessIterator first,
     return representation(*result.first, *result.second);
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::constructor_infsup(std::string const& str)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(std::string const& str)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -98,17 +98,17 @@ mpfr_flavor<T>::constructor_infsup(std::string const& str)
     return representation(0.0, 0.0);
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::constructor_infsup(representation const& other)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(representation const& other)
 {
     return other;
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 template<typename TT>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::constructor_infsup(representation_type<TT> const& other)
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(representation_type<TT> const& other)
 {
     mpfr_var::setup();
 
@@ -121,37 +121,32 @@ mpfr_flavor<T>::constructor_infsup(representation_type<TT> const& other)
 
 // Methods
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::method_lower(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::method_lower(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     return x.first;
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::method_upper(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::method_upper(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     return x.second;
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::method_mid(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::method_mid(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    mpfr_var::setup();
-
-    mpfr_var lower(x.first, MPFR_RNDD);
-    mpfr_var upper(x.second, MPFR_RNDU);
 
     return (x.first + x.second) / 2.0;
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T>::method_rad(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::method_rad(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -160,17 +155,17 @@ mpfr_flavor<T>::method_rad(mpfr_flavor<T>::representation const& x)
 
 // Static Methods
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::static_method_empty()
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::static_method_empty()
 {
     return representation(std::numeric_limits<T>::quiet_NaN(),
                           std::numeric_limits<T>::quiet_NaN());
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::static_method_entire()
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::static_method_entire()
 {
     return representation(-std::numeric_limits<T>::infinity(),
                           std::numeric_limits<T>::infinity());

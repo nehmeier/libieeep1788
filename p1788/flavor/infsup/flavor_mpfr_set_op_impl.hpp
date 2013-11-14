@@ -37,10 +37,10 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::intersect(mpfr_flavor<T>::representation const& x,
-                          mpfr_flavor<T>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::intersect(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                          mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     if (are_disjoint(x, y))
         return static_method_empty();
@@ -49,10 +49,10 @@ mpfr_flavor<T>::intersect(mpfr_flavor<T>::representation const& x,
                               std::min(x.second, y.second));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::hull(mpfr_flavor<T>::representation const& x,
-                     mpfr_flavor<T>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::hull(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                     mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     if (is_empty(x))
         return y;

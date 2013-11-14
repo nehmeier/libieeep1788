@@ -38,59 +38,59 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T>::is_empty(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::is_empty(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     return std::isnan(x.first) && std::isnan(x.second);
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T>::is_entire(mpfr_flavor<T>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE>::is_entire(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     return x.first == -std::numeric_limits<T>::infinity()
            && x.second == std::numeric_limits<T>::infinity();
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T>::is_equal(mpfr_flavor<T>::representation const& x,
-                         mpfr_flavor<T>::representation const& y)
+mpfr_flavor<T, SUBNORMALIZE>::is_equal(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                         mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return (is_empty(x) && is_empty(y))
            || (x.first == y.first && x.second == y.second);
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T>::contained_in(mpfr_flavor<T>::representation const& x,
-                             mpfr_flavor<T>::representation const& y)
+mpfr_flavor<T, SUBNORMALIZE>::contained_in(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                             mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return is_empty(x) || (y.first <= x.first && x.second <= y.second);
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T>::less(mpfr_flavor<T>::representation const& x,
-                     mpfr_flavor<T>::representation const& y)
+mpfr_flavor<T, SUBNORMALIZE>::less(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                     mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return (is_empty(x) && is_empty(y))
            || (x.first <= y.first && x.second <= y.second);
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T>::precedes(mpfr_flavor<T>::representation const& x,
-                         mpfr_flavor<T>::representation const& y)
+mpfr_flavor<T, SUBNORMALIZE>::precedes(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                         mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return is_empty(x) || is_empty(y) || x.second <= y.first;
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T>::is_interior(mpfr_flavor<T>::representation const& x,
-                            mpfr_flavor<T>::representation const& y)
+mpfr_flavor<T, SUBNORMALIZE>::is_interior(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                            mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return is_empty(x)
            || ((y.first < x. first
@@ -101,10 +101,10 @@ mpfr_flavor<T>::is_interior(mpfr_flavor<T>::representation const& x,
                        && y.second == std::numeric_limits<T>::infinity())));
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T>::strictly_less(mpfr_flavor<T>::representation const& x,
-                              mpfr_flavor<T>::representation const& y)
+mpfr_flavor<T, SUBNORMALIZE>::strictly_less(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                              mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return (is_empty(x) && is_empty(y))
            || ((x.first < y. first
@@ -115,18 +115,18 @@ mpfr_flavor<T>::strictly_less(mpfr_flavor<T>::representation const& x,
                        && y.second == std::numeric_limits<T>::infinity())));
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T>::strictly_precedes(mpfr_flavor<T>::representation const& x,
-                                  mpfr_flavor<T>::representation const& y)
+mpfr_flavor<T, SUBNORMALIZE>::strictly_precedes(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                                  mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return is_empty(x) || is_empty(y) || x.second < y.first;
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T>::are_disjoint(mpfr_flavor<T>::representation const& x,
-                             mpfr_flavor<T>::representation const& y)
+mpfr_flavor<T, SUBNORMALIZE>::are_disjoint(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                             mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return is_empty(x) || is_empty(y) || x.second < y.first || y.second < x.first;
 }

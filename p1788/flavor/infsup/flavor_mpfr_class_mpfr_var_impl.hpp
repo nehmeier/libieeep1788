@@ -64,6 +64,27 @@ public:
 };
 
 
+
+template<p1788::flavor::infsup::subnormalize SN>
+class subnormalization_trait
+{
+public:
+    static void apply(mpfr_t& x, int t, mpfr_rnd_t rnd) {
+        // Nothing to do
+    }
+};
+
+
+template<>
+class subnormalization_trait<p1788::flavor::infsup::subnormalize::yes>
+{
+public:
+    static void apply(mpfr_t& x, int t, mpfr_rnd_t rnd) {
+        mpfr_subnormalize(x, t, rnd);
+    }
+};
+
+
 } // namespace util
 
 } // namespace p1788
@@ -78,8 +99,8 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T>
-void mpfr_flavor<T>::mpfr_var::setup()
+template<typename T, subnormalize SUBNORMALIZE>
+void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::setup()
 {
     //TODO Check!!!
     //TODO necessary???
@@ -90,64 +111,64 @@ void mpfr_flavor<T>::mpfr_var::setup()
 
 
 
-template<typename T>
-mpfr_flavor<T>::mpfr_var::mpfr_var()
+template<typename T, subnormalize SUBNORMALIZE>
+mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_var()
 {
     mpfr_init(var_);
 }
 
-template<typename T>
-mpfr_flavor<T>::mpfr_var::mpfr_var(float op, mpfr_rnd_t rnd) : mpfr_var()
+template<typename T, subnormalize SUBNORMALIZE>
+mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_var(float op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
-template<typename T>
-mpfr_flavor<T>::mpfr_var::mpfr_var(double op, mpfr_rnd_t rnd) : mpfr_var()
+template<typename T, subnormalize SUBNORMALIZE>
+mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_var(double op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
-template<typename T>
-mpfr_flavor<T>::mpfr_var::mpfr_var(long double op, mpfr_rnd_t rnd) : mpfr_var()
+template<typename T, subnormalize SUBNORMALIZE>
+mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_var(long double op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
-template<typename T>
-mpfr_flavor<T>::mpfr_var::~mpfr_var()
+template<typename T, subnormalize SUBNORMALIZE>
+mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::~mpfr_var()
 {
     mpfr_clear(var_);
 }
 
-template<typename T>
-void mpfr_flavor<T>::mpfr_var::set(float op, mpfr_rnd_t rnd)
+template<typename T, subnormalize SUBNORMALIZE>
+void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::set(float op, mpfr_rnd_t rnd)
 {
-    mpfr_set_flt(var_, op, rnd);
+    subnormalize(mpfr_set_flt(var_, op, rnd), rnd);
 }
 
-template<typename T>
-void mpfr_flavor<T>::mpfr_var::set(double op, mpfr_rnd_t rnd)
+template<typename T, subnormalize SUBNORMALIZE>
+void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::set(double op, mpfr_rnd_t rnd)
 {
-    mpfr_set_d(var_, op, rnd);
+    subnormalize(mpfr_set_flt(var_, op, rnd), rnd);
 }
 
-template<typename T>
-void mpfr_flavor<T>::mpfr_var::set(long double op, mpfr_rnd_t rnd)
+template<typename T, subnormalize SUBNORMALIZE>
+void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::set(long double op, mpfr_rnd_t rnd)
 {
-    mpfr_set_ld(var_, op, rnd);
+    subnormalize(mpfr_set_flt(var_, op, rnd), rnd);
 }
 
 
 
-template<typename T>
-T mpfr_flavor<T>::mpfr_var::get(mpfr_rnd_t rnd)
+template<typename T, subnormalize SUBNORMALIZE>
+T mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::get(mpfr_rnd_t rnd)
 {
     return p1788::util::mpfr_get_trait<T>::apply(var_, rnd);
 }
 
-template<typename T>
-std::string mpfr_flavor<T>::mpfr_var::get_str(mpfr_rnd_t rnd, int b, size_t n)
+template<typename T, subnormalize SUBNORMALIZE>
+std::string mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::get_str(mpfr_rnd_t rnd, int b, size_t n)
 {
     mpfr_str str(var_, rnd, b, n);
 
@@ -155,18 +176,26 @@ std::string mpfr_flavor<T>::mpfr_var::get_str(mpfr_rnd_t rnd, int b, size_t n)
 }
 
 
-template<typename T>
-mpfr_t& mpfr_flavor<T>::mpfr_var::operator() ()
+template<typename T, subnormalize SUBNORMALIZE>
+mpfr_t& mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::operator() ()
 {
     return var_;
 }
 
 
+template<typename T, subnormalize SUBNORMALIZE>
+void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::subnormalize(int t, mpfr_rnd_t rnd)
+{
+    p1788::util::subnormalization_trait<SUBNORMALIZE>::apply(var_, t, rnd);
+}
+
+
+
 // TODO current local decimal point!!!!
 // TODO Hex etc
 // TODO Check
-template<typename T>
-mpfr_flavor<T>::mpfr_var::mpfr_str::mpfr_str(mpfr_t var, mpfr_rnd_t rnd, int b, size_t n)
+template<typename T, subnormalize SUBNORMALIZE>
+mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_str::mpfr_str(mpfr_t var, mpfr_rnd_t rnd, int b, size_t n)
     : char_(nullptr), str_()
 {
     mpfr_exp_t exp;
@@ -176,8 +205,8 @@ mpfr_flavor<T>::mpfr_var::mpfr_str::mpfr_str(mpfr_t var, mpfr_rnd_t rnd, int b, 
 
     if (mpfr_regular_p(var)) {
         if (exp > str_.length()) {
-                str_.insert(mpfr_sgn(var) > 0 ? 1 : 2, ".");
-                str_ = str_ + "e" + std::to_string(exp - 1);
+            str_.insert(mpfr_sgn(var) > 0 ? 1 : 2, ".");
+            str_ = str_ + "e" + std::to_string(exp - 1);
         } else if (exp) {
             str_.insert(mpfr_sgn(var) > 0 ? exp : exp + 1, ".");
         } else {
@@ -202,14 +231,14 @@ mpfr_flavor<T>::mpfr_var::mpfr_str::mpfr_str(mpfr_t var, mpfr_rnd_t rnd, int b, 
     }
 }
 
-template<typename T>
-mpfr_flavor<T>::mpfr_var::mpfr_str::~mpfr_str()
+template<typename T, subnormalize SUBNORMALIZE>
+mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_str::~mpfr_str()
 {
     mpfr_free_str(char_);
 }
 
-template<typename T>
-std::string mpfr_flavor<T>::mpfr_var::mpfr_str::operator() () const
+template<typename T, subnormalize SUBNORMALIZE>
+std::string mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_str::operator() () const
 {
     return str_;
 }

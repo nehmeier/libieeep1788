@@ -38,9 +38,9 @@ namespace infsup
 {
 
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::neg(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::neg(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -48,10 +48,10 @@ mpfr_flavor<T>::neg(mpfr_flavor<T>::representation const& x)
     return representation(-x.second, -x.first);
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::add(mpfr_flavor<T>::representation const& x,
-                    mpfr_flavor<T>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::add(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                    mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     if (is_empty(x))
         return x;
@@ -68,16 +68,16 @@ mpfr_flavor<T>::add(mpfr_flavor<T>::representation const& x,
     mpfr_var yu(y.second, MPFR_RNDU);
 
 
-    mpfr_add(xl(), xl(), yl(), MPFR_RNDD);
-    mpfr_add(xu(), xu(), yu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_add(xl(), xl(), yl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_add(xu(), xu(), yu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::sub(mpfr_flavor<T>::representation const& x,
-                    mpfr_flavor<T>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::sub(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                    mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     if (is_empty(x))
         return x;
@@ -94,16 +94,16 @@ mpfr_flavor<T>::sub(mpfr_flavor<T>::representation const& x,
     mpfr_var yu(y.second, MPFR_RNDU);
 
 
-    mpfr_sub(xl(), xl(), yu(), MPFR_RNDD);
-    mpfr_sub(xu(), xu(), yl(), MPFR_RNDU);
+    xl.subnormalize(mpfr_sub(xl(), xl(), yu(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_sub(xu(), xu(), yl(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const& x,
-                    mpfr_flavor<T>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::mul(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                    mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     if (is_empty(x))
         return x;
@@ -137,8 +137,8 @@ mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const& x,
             mpfr_var yl(y.first, MPFR_RNDD);
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_mul(l(), xu(), yu(), MPFR_RNDD);
-            mpfr_mul(u(), xl(), yl(), MPFR_RNDU);
+            l.subnormalize(mpfr_mul(l(), xu(), yu(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_mul(u(), xl(), yl(), MPFR_RNDU), MPFR_RNDU);
         } else if (x.first >= 0.0) {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -146,16 +146,16 @@ mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const& x,
             mpfr_var yl(y.first, MPFR_RNDD);
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_mul(l(), xu(), yl(), MPFR_RNDD);
-            mpfr_mul(u(), xl(), yu(), MPFR_RNDU);
+            l.subnormalize(mpfr_mul(l(), xu(), yl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_mul(u(), xl(), yu(), MPFR_RNDU), MPFR_RNDU);
         } else {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
 
             mpfr_var yl(y.first, MPFR_RNDD);
 
-            mpfr_mul(l(), xu(), yl(), MPFR_RNDD);
-            mpfr_mul(u(), xl(), yl(), MPFR_RNDU);
+            l.subnormalize(mpfr_mul(l(), xu(), yl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_mul(u(), xl(), yl(), MPFR_RNDU), MPFR_RNDU);
         }
     } else if (y.first >= 0.0) {
         if (x.second <= 0.0) {
@@ -165,8 +165,8 @@ mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const& x,
             mpfr_var yl(y.first, MPFR_RNDD);
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_mul(l(), xl(), yu(), MPFR_RNDD);
-            mpfr_mul(u(), xu(), yl(), MPFR_RNDU);
+            l.subnormalize(mpfr_mul(l(), xl(), yu(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_mul(u(), xu(), yl(), MPFR_RNDU), MPFR_RNDU);
         } else if (x.first >= 0.0) {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -174,16 +174,16 @@ mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const& x,
             mpfr_var yl(y.first, MPFR_RNDD);
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_mul(l(), xl(), yl(), MPFR_RNDD);
-            mpfr_mul(u(), xu(), yu(), MPFR_RNDU);
+            l.subnormalize(mpfr_mul(l(), xl(), yl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_mul(u(), xu(), yu(), MPFR_RNDU), MPFR_RNDU);
         } else {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
 
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_mul(l(), xl(), yu(), MPFR_RNDD);
-            mpfr_mul(u(), xu(), yu(), MPFR_RNDU);
+            l.subnormalize(mpfr_mul(l(), xl(), yu(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_mul(u(), xu(), yu(), MPFR_RNDU), MPFR_RNDU);
         }
     } else {
         if (x.second <= 0.0) {
@@ -192,16 +192,16 @@ mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const& x,
             mpfr_var yl(y.first, MPFR_RNDD);
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_mul(l(), xl(), yu(), MPFR_RNDD);
-            mpfr_mul(u(), xl(), yl(), MPFR_RNDU);
+            l.subnormalize(mpfr_mul(l(), xl(), yu(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_mul(u(), xl(), yl(), MPFR_RNDU), MPFR_RNDU);
         } else if (x.first >= 0.0) {
             mpfr_var xu(x.second, MPFR_RNDU);
 
             mpfr_var yl(y.first, MPFR_RNDD);
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_mul(l(), xu(), yl(), MPFR_RNDD);
-            mpfr_mul(u(), xu(), yu(), MPFR_RNDU);
+            l.subnormalize(mpfr_mul(l(), xu(), yl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_mul(u(), xu(), yu(), MPFR_RNDU), MPFR_RNDU);
         } else {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -211,12 +211,12 @@ mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const& x,
 
             mpfr_var tmp;
 
-            mpfr_mul(l(), xl(), yu(), MPFR_RNDD);
-            mpfr_mul(tmp(), xu(), yl(), MPFR_RNDD);
+            l.subnormalize(mpfr_mul(l(), xl(), yu(), MPFR_RNDD), MPFR_RNDD);
+            tmp.subnormalize(mpfr_mul(tmp(), xu(), yl(), MPFR_RNDD), MPFR_RNDD);
             mpfr_min(l(), l(), tmp(), MPFR_RNDD);
 
-            mpfr_mul(u(), xl(), yl(), MPFR_RNDU);
-            mpfr_mul(tmp(), xu(), yu(), MPFR_RNDU);
+            u.subnormalize(mpfr_mul(u(), xl(), yl(), MPFR_RNDU), MPFR_RNDU);
+            tmp.subnormalize(mpfr_mul(tmp(), xu(), yu(), MPFR_RNDU), MPFR_RNDU);
             mpfr_max(u(), u(), tmp(), MPFR_RNDU);
         }
     }
@@ -224,10 +224,10 @@ mpfr_flavor<T>::mul(mpfr_flavor<T>::representation const& x,
     return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::div(mpfr_flavor<T>::representation const& x,
-                    mpfr_flavor<T>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::div(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                    mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     if (is_empty(x))
         return x;
@@ -255,8 +255,8 @@ mpfr_flavor<T>::div(mpfr_flavor<T>::representation const& x,
             mpfr_var yl(y.first, MPFR_RNDD);
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_div(l(), xu(), yl(), MPFR_RNDD);
-            mpfr_div(u(), xl(), yu(), MPFR_RNDU);
+            l.subnormalize(mpfr_div(l(), xu(), yl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_div(u(), xl(), yu(), MPFR_RNDU), MPFR_RNDU);
         } else if (y.first > 0.0) {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -264,14 +264,14 @@ mpfr_flavor<T>::div(mpfr_flavor<T>::representation const& x,
             mpfr_var yl(y.first, MPFR_RNDD);
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_div(l(), xl(), yl(), MPFR_RNDD);
-            mpfr_div(u(), xu(), yu(), MPFR_RNDU);
+            l.subnormalize(mpfr_div(l(), xl(), yl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_div(u(), xu(), yu(), MPFR_RNDU), MPFR_RNDU);
         } else if (y.second == 0.0) {
             mpfr_var xu(x.second, MPFR_RNDU);
 
             mpfr_var yl(y.first, MPFR_RNDD);
 
-            mpfr_div(l(), xu(), yl(), MPFR_RNDD);
+            l.subnormalize(mpfr_div(l(), xu(), yl(), MPFR_RNDD), MPFR_RNDD);
             mpfr_set_inf(u(), +1);
         } else if (y.first == 0.0) {
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -279,7 +279,7 @@ mpfr_flavor<T>::div(mpfr_flavor<T>::representation const& x,
             mpfr_var yu(y.second, MPFR_RNDU);
 
             mpfr_set_inf(l(), -1);
-            mpfr_div(u(), xu(), yu(), MPFR_RNDU);
+            u.subnormalize(mpfr_div(u(), xu(), yu(), MPFR_RNDU), MPFR_RNDU);
         }
     } else if (x.first >= 0.0) {
         if (y.second < 0.0) {
@@ -289,8 +289,8 @@ mpfr_flavor<T>::div(mpfr_flavor<T>::representation const& x,
             mpfr_var yl(y.first, MPFR_RNDD);
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_div(l(), xu(), yu(), MPFR_RNDD);
-            mpfr_div(u(), xl(), yl(), MPFR_RNDU);
+            l.subnormalize(mpfr_div(l(), xu(), yu(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_div(u(), xl(), yl(), MPFR_RNDU), MPFR_RNDU);
         } else if (y.first > 0.0) {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -298,21 +298,21 @@ mpfr_flavor<T>::div(mpfr_flavor<T>::representation const& x,
             mpfr_var yl(y.first, MPFR_RNDD);
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_div(l(), xl(), yu(), MPFR_RNDD);
-            mpfr_div(u(), xu(), yl(), MPFR_RNDU);
+            l.subnormalize(mpfr_div(l(), xl(), yu(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_div(u(), xu(), yl(), MPFR_RNDU), MPFR_RNDU);
         } else if (y.second == 0.0) {
             mpfr_var xl(x.first, MPFR_RNDD);
 
             mpfr_var yl(y.first, MPFR_RNDD);
 
             mpfr_set_inf(l(), -1);
-            mpfr_div(u(), xl(), yl(), MPFR_RNDU);
+            u.subnormalize(mpfr_div(u(), xl(), yl(), MPFR_RNDU), MPFR_RNDU);
         } else if (y.first == 0.0) {
             mpfr_var xl(x.first, MPFR_RNDD);
 
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_div(l(), xl(), yu(), MPFR_RNDD);
+            l.subnormalize(mpfr_div(l(), xl(), yu(), MPFR_RNDD), MPFR_RNDD);
             mpfr_set_inf(u(), +1);
         }
     } else {
@@ -322,32 +322,32 @@ mpfr_flavor<T>::div(mpfr_flavor<T>::representation const& x,
 
             mpfr_var yu(y.second, MPFR_RNDU);
 
-            mpfr_div(l(), xu(), yu(), MPFR_RNDD);
-            mpfr_div(u(), xl(), yu(), MPFR_RNDU);
+            l.subnormalize(mpfr_div(l(), xu(), yu(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_div(u(), xl(), yu(), MPFR_RNDU), MPFR_RNDU);
         } else if (y.first > 0.0) {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
 
             mpfr_var yl(y.first, MPFR_RNDD);
 
-            mpfr_div(l(), xl(), yl(), MPFR_RNDD);
-            mpfr_div(u(), xu(), yl(), MPFR_RNDU);
+            l.subnormalize(mpfr_div(l(), xl(), yl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_div(u(), xu(), yl(), MPFR_RNDU), MPFR_RNDU);
         }
     }
 
     return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::inv(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::inv(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     return div(representation(1.0, 1.0), x);
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::sqrt(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::sqrt(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -360,7 +360,7 @@ mpfr_flavor<T>::sqrt(mpfr_flavor<T>::representation const& x)
     if (x.first < 0.0) {
         mpfr_var xu(x.second, MPFR_RNDU);
 
-        mpfr_sqrt(xu(), xu(), MPFR_RNDU);
+        xu.subnormalize(mpfr_sqrt(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
         return representation(0.0, xu.get(MPFR_RNDU));
     }
@@ -368,17 +368,17 @@ mpfr_flavor<T>::sqrt(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_sqrt(xl(), xl(), MPFR_RNDD);
-    mpfr_sqrt(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_sqrt(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_sqrt(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
-                    mpfr_flavor<T>::representation const& y,
-                    mpfr_flavor<T>::representation const& z)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::fma(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                    mpfr_flavor<T, SUBNORMALIZE>::representation const& y,
+                    mpfr_flavor<T, SUBNORMALIZE>::representation const& z)
 {
     if (is_empty(x))
         return x;
@@ -418,8 +418,8 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
             mpfr_var zl(z.first, MPFR_RNDD);
             mpfr_var zu(z.second, MPFR_RNDU);
 
-            mpfr_fma(l(), xu(), yu(), zl(), MPFR_RNDD);
-            mpfr_fma(u(), xl(), yl(), zu(), MPFR_RNDU);
+            l.subnormalize(mpfr_fma(l(), xu(), yu(), zl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_fma(u(), xl(), yl(), zu(), MPFR_RNDU), MPFR_RNDU);
         } else if (x.first >= 0.0) {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -430,8 +430,8 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
             mpfr_var zl(z.first, MPFR_RNDD);
             mpfr_var zu(z.second, MPFR_RNDU);
 
-            mpfr_fma(l(), xu(), yl(), zl(), MPFR_RNDD);
-            mpfr_fma(u(), xl(), yu(), zu(), MPFR_RNDU);
+            l.subnormalize(mpfr_fma(l(), xu(), yl(), zl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_fma(u(), xl(), yu(), zu(), MPFR_RNDU), MPFR_RNDU);
         } else {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -441,8 +441,8 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
             mpfr_var zl(z.first, MPFR_RNDD);
             mpfr_var zu(z.second, MPFR_RNDU);
 
-            mpfr_fma(l(), xu(), yl(), zl(), MPFR_RNDD);
-            mpfr_fma(u(), xl(), yl(), zu(), MPFR_RNDU);
+            l.subnormalize(mpfr_fma(l(), xu(), yl(), zl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_fma(u(), xl(), yl(), zu(), MPFR_RNDU), MPFR_RNDU);
         }
     } else if (y.first >= 0.0) {
         if (x.second <= 0.0) {
@@ -455,8 +455,8 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
             mpfr_var zl(z.first, MPFR_RNDD);
             mpfr_var zu(z.second, MPFR_RNDU);
 
-            mpfr_fma(l(), xl(), yu(), zl(), MPFR_RNDD);
-            mpfr_fma(u(), xu(), yl(), zu(), MPFR_RNDU);
+            l.subnormalize(mpfr_fma(l(), xl(), yu(), zl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_fma(u(), xu(), yl(), zu(), MPFR_RNDU), MPFR_RNDU);
         } else if (x.first >= 0.0) {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -467,8 +467,8 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
             mpfr_var zl(z.first, MPFR_RNDD);
             mpfr_var zu(z.second, MPFR_RNDU);
 
-            mpfr_fma(l(), xl(), yl(), zl(), MPFR_RNDD);
-            mpfr_fma(u(), xu(), yu(), zu(), MPFR_RNDU);
+            l.subnormalize(mpfr_fma(l(), xl(), yl(), zl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_fma(u(), xu(), yu(), zu(), MPFR_RNDU), MPFR_RNDU);
         } else {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -478,8 +478,8 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
             mpfr_var zl(z.first, MPFR_RNDD);
             mpfr_var zu(z.second, MPFR_RNDU);
 
-            mpfr_fma(l(), xl(), yu(), zl(), MPFR_RNDD);
-            mpfr_fma(u(), xu(), yu(), zu(), MPFR_RNDU);
+            l.subnormalize(mpfr_fma(l(), xl(), yu(), zl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_fma(u(), xu(), yu(), zu(), MPFR_RNDU), MPFR_RNDU);
         }
     } else {
         if (x.second <= 0.0) {
@@ -491,8 +491,8 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
             mpfr_var zl(z.first, MPFR_RNDD);
             mpfr_var zu(z.second, MPFR_RNDU);
 
-            mpfr_fma(l(), xl(), yu(), zl(), MPFR_RNDD);
-            mpfr_fma(u(), xl(), yl(), zu(), MPFR_RNDU);
+            l.subnormalize(mpfr_fma(l(), xl(), yu(), zl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_fma(u(), xl(), yl(), zu(), MPFR_RNDU), MPFR_RNDU);
         } else if (x.first >= 0.0) {
             mpfr_var xu(x.second, MPFR_RNDU);
 
@@ -502,8 +502,8 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
             mpfr_var zl(z.first, MPFR_RNDD);
             mpfr_var zu(z.second, MPFR_RNDU);
 
-            mpfr_fma(l(), xu(), yl(), zl(), MPFR_RNDD);
-            mpfr_fma(u(), xu(), yu(), zu(), MPFR_RNDU);
+            l.subnormalize(mpfr_fma(l(), xu(), yl(), zl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_fma(u(), xu(), yu(), zu(), MPFR_RNDU), MPFR_RNDU);
         } else {
             mpfr_var xl(x.first, MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -516,12 +516,12 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
 
             mpfr_var tmp;
 
-            mpfr_fma(l(), xl(), yu(), zl(), MPFR_RNDD);
-            mpfr_fma(tmp(), xu(), yl(), zl(), MPFR_RNDD);
+            l.subnormalize(mpfr_fma(l(), xl(), yu(), zl(), MPFR_RNDD), MPFR_RNDD);
+            tmp.subnormalize(mpfr_fma(tmp(), xu(), yl(), zl(), MPFR_RNDD), MPFR_RNDD);
             mpfr_min(l(), l(), tmp(), MPFR_RNDD);
 
-            mpfr_fma(u(), xl(), yl(), zu(), MPFR_RNDU);
-            mpfr_fma(tmp(), xu(), yu(), zu(), MPFR_RNDU);
+            u.subnormalize(mpfr_fma(u(), xl(), yl(), zu(), MPFR_RNDU), MPFR_RNDU);
+            tmp.subnormalize(mpfr_fma(tmp(), xu(), yu(), zu(), MPFR_RNDU), MPFR_RNDU);
             mpfr_max(u(), u(), tmp(), MPFR_RNDU);
         }
     }
@@ -529,11 +529,11 @@ mpfr_flavor<T>::fma(mpfr_flavor<T>::representation const& x,
     return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::interval_case(mpfr_flavor<T>::representation const& c,
-                              mpfr_flavor<T>::representation const& g,
-                              mpfr_flavor<T>::representation const& h)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::interval_case(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
+                              mpfr_flavor<T, SUBNORMALIZE>::representation const& g,
+                              mpfr_flavor<T, SUBNORMALIZE>::representation const& h)
 {
     if (is_empty(c))
         return c;
@@ -547,9 +547,9 @@ mpfr_flavor<T>::interval_case(mpfr_flavor<T>::representation const& c,
     return hull(g, h);
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::sqr(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::sqr(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -558,7 +558,7 @@ mpfr_flavor<T>::sqr(mpfr_flavor<T>::representation const& x)
 
     if (x.first < 0.0 && x.second > 0.0) {
         mpfr_var u(std::abs(x.first) > x.second ? std::abs(x.first) : x.second, MPFR_RNDU);
-        mpfr_sqr(u(), u(), MPFR_RNDU);
+        u.subnormalize(mpfr_sqr(u(), u(), MPFR_RNDU), MPFR_RNDU);
 
         return representation(0.0, u.get(MPFR_RNDU));
     }
@@ -566,15 +566,15 @@ mpfr_flavor<T>::sqr(mpfr_flavor<T>::representation const& x)
     mpfr_var l(std::abs(x.first) < std::abs(x.second) ? std::abs(x.first) : std::abs(x.second), MPFR_RNDD);
     mpfr_var u(std::abs(x.first) > std::abs(x.second) ? std::abs(x.first) : std::abs(x.second), MPFR_RNDU);
 
-    mpfr_sqr(l(), l(), MPFR_RNDD);
-    mpfr_sqr(u(), u(), MPFR_RNDU);
+    l.subnormalize(mpfr_sqr(l(), l(), MPFR_RNDD), MPFR_RNDD);
+    u.subnormalize(mpfr_sqr(u(), u(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::pown(mpfr_flavor<T>::representation const& x,
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::pown(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
                      int p)
 {
     if (is_empty(x))
@@ -588,7 +588,7 @@ mpfr_flavor<T>::pown(mpfr_flavor<T>::representation const& x,
         if (p % 2 == 0) {
             if (x.first < 0.0 && x.second > 0.0) {
                 mpfr_var u(std::abs(x.first) > x.second ? std::abs(x.first) : x.second, MPFR_RNDU);
-                mpfr_pow_si(u(), u(), p, MPFR_RNDU);
+                u.subnormalize(mpfr_pow_si(u(), u(), p, MPFR_RNDU), MPFR_RNDU);
 
                 return representation(0.0, u.get(MPFR_RNDU));
             }
@@ -596,8 +596,8 @@ mpfr_flavor<T>::pown(mpfr_flavor<T>::representation const& x,
             mpfr_var l(std::abs(x.first) < std::abs(x.second) ? std::abs(x.first) : std::abs(x.second), MPFR_RNDD);
             mpfr_var u(std::abs(x.first) > std::abs(x.second) ? std::abs(x.first) : std::abs(x.second), MPFR_RNDU);
 
-            mpfr_pow_si(l(), l(), p, MPFR_RNDD);
-            mpfr_pow_si(u(), u(), p, MPFR_RNDU);
+            l.subnormalize(mpfr_pow_si(l(), l(), p, MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_pow_si(u(), u(), p, MPFR_RNDU), MPFR_RNDU);
 
             return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
         }
@@ -606,8 +606,8 @@ mpfr_flavor<T>::pown(mpfr_flavor<T>::representation const& x,
         mpfr_var l(x.first, MPFR_RNDD);
         mpfr_var u(x.second, MPFR_RNDU);
 
-        mpfr_pow_si(l(), l(), p, MPFR_RNDD);
-        mpfr_pow_si(u(), u(), p, MPFR_RNDU);
+        l.subnormalize(mpfr_pow_si(l(), l(), p, MPFR_RNDD), MPFR_RNDD);
+        u.subnormalize(mpfr_pow_si(u(), u(), p, MPFR_RNDU), MPFR_RNDU);
 
         return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
     }
@@ -618,7 +618,7 @@ mpfr_flavor<T>::pown(mpfr_flavor<T>::representation const& x,
         if (p % 2 == 0) {
             if (x.first < 0.0 && x.second > 0.0) {
                 mpfr_var l(std::abs(x.first) > x.second ? std::abs(x.first) : x.second, MPFR_RNDU);
-                mpfr_pow_si(l(), l(), p, MPFR_RNDD);
+                l.subnormalize(mpfr_pow_si(l(), l(), p, MPFR_RNDD), MPFR_RNDD);
 
                 return representation(l.get(MPFR_RNDD), std::numeric_limits<T>::infinity());
             }
@@ -626,8 +626,8 @@ mpfr_flavor<T>::pown(mpfr_flavor<T>::representation const& x,
             mpfr_var l(std::abs(x.first) > std::abs(x.second) ? std::abs(x.first) : std::abs(x.second), MPFR_RNDU);
             mpfr_var u(std::abs(x.first) < std::abs(x.second) ? std::abs(x.first) : std::abs(x.second), MPFR_RNDD);
 
-            mpfr_pow_si(l(), l(), p, MPFR_RNDD);
-            mpfr_pow_si(u(), u(), p, MPFR_RNDU);
+            l.subnormalize(mpfr_pow_si(l(), l(), p, MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_pow_si(u(), u(), p, MPFR_RNDU), MPFR_RNDU);
 
             return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
         }
@@ -640,16 +640,16 @@ mpfr_flavor<T>::pown(mpfr_flavor<T>::representation const& x,
             mpfr_var l(x.second, MPFR_RNDU);
             mpfr_var u(x.first, MPFR_RNDD);
 
-            mpfr_pow_si(l(), l(), p, MPFR_RNDD);
-            mpfr_pow_si(u(), u(), p, MPFR_RNDU);
+            l.subnormalize(mpfr_pow_si(l(), l(), p, MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_pow_si(u(), u(), p, MPFR_RNDU), MPFR_RNDU);
 
             return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
         } else {
             mpfr_var l(x.first, MPFR_RNDD);
             mpfr_var u(x.second, MPFR_RNDU);
 
-            mpfr_pow_si(l(), l(), p, MPFR_RNDD);
-            mpfr_pow_si(u(), u(), p, MPFR_RNDU);
+            l.subnormalize(mpfr_pow_si(l(), l(), p, MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_pow_si(u(), u(), p, MPFR_RNDU), MPFR_RNDU);
 
             return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
         }
@@ -659,10 +659,10 @@ mpfr_flavor<T>::pown(mpfr_flavor<T>::representation const& x,
     return representation(1.0, 1.0);
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::pow(mpfr_flavor<T>::representation const& x,
-                    mpfr_flavor<T>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::pow(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+                    mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     representation xx = intersect(x, representation(0.0, std::numeric_limits<T>::infinity()));
 
@@ -675,9 +675,9 @@ mpfr_flavor<T>::pow(mpfr_flavor<T>::representation const& x,
     return xx.first == 0.0 && y.second > 0.0 ? hull(exp(mul(y,log(xx))), representation(0.0, 0.0)) : exp(mul(y,log(xx)));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::exp(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::exp(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -686,15 +686,15 @@ mpfr_flavor<T>::exp(mpfr_flavor<T>::representation const& x)
     mpfr_var l(x.first, MPFR_RNDD);
     mpfr_var u(x.second, MPFR_RNDU);
 
-    mpfr_exp(l(), l(), MPFR_RNDD);
-    mpfr_exp(u(), u(), MPFR_RNDU);
+    l.subnormalize(mpfr_exp(l(), l(), MPFR_RNDD), MPFR_RNDD);
+    u.subnormalize(mpfr_exp(u(), u(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::exp2(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::exp2(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -703,15 +703,15 @@ mpfr_flavor<T>::exp2(mpfr_flavor<T>::representation const& x)
     mpfr_var l(x.first, MPFR_RNDD);
     mpfr_var u(x.second, MPFR_RNDU);
 
-    mpfr_exp2(l(), l(), MPFR_RNDD);
-    mpfr_exp2(u(), u(), MPFR_RNDU);
+    l.subnormalize(mpfr_exp2(l(), l(), MPFR_RNDD), MPFR_RNDD);
+    u.subnormalize(mpfr_exp2(u(), u(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::exp10(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::exp10(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -720,15 +720,15 @@ mpfr_flavor<T>::exp10(mpfr_flavor<T>::representation const& x)
     mpfr_var l(x.first, MPFR_RNDD);
     mpfr_var u(x.second, MPFR_RNDU);
 
-    mpfr_exp10(l(), l(), MPFR_RNDD);
-    mpfr_exp10(u(), u(), MPFR_RNDU);
+    l.subnormalize(mpfr_exp10(l(), l(), MPFR_RNDD), MPFR_RNDD);
+    u.subnormalize(mpfr_exp10(u(), u(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::log(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::log(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     representation xx = intersect(x, representation(0.0, std::numeric_limits<T>::infinity()));
 
@@ -739,34 +739,15 @@ mpfr_flavor<T>::log(mpfr_flavor<T>::representation const& x)
     mpfr_var l(x.first, MPFR_RNDD);
     mpfr_var u(x.second, MPFR_RNDU);
 
-    mpfr_log(l(), l(), MPFR_RNDD);
-    mpfr_log(u(), u(), MPFR_RNDU);
+    l.subnormalize(mpfr_log(l(), l(), MPFR_RNDD), MPFR_RNDD);
+    u.subnormalize(mpfr_log(u(), u(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::log2(mpfr_flavor<T>::representation const& x)
-{
-    representation xx = intersect(x, representation(0.0, std::numeric_limits<T>::infinity()));
-
-    if (is_empty(xx))
-        return xx;
-
-    mpfr_var::setup();
-    mpfr_var xl(x.first, MPFR_RNDD);
-    mpfr_var xu(x.second, MPFR_RNDU);
-
-    mpfr_log2(xl(), xl(), MPFR_RNDD);
-    mpfr_log2(xu(), xu(), MPFR_RNDU);
-
-    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
-}
-
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::log10(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::log2(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     representation xx = intersect(x, representation(0.0, std::numeric_limits<T>::infinity()));
 
@@ -777,15 +758,34 @@ mpfr_flavor<T>::log10(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_log10(xl(), xl(), MPFR_RNDD);
-    mpfr_log10(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_log2(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_log2(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::sin(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::log10(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+{
+    representation xx = intersect(x, representation(0.0, std::numeric_limits<T>::infinity()));
+
+    if (is_empty(xx))
+        return xx;
+
+    mpfr_var::setup();
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    xl.subnormalize(mpfr_log10(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_log10(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::sin(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -808,11 +808,11 @@ mpfr_flavor<T>::sin(mpfr_flavor<T>::representation const& x)
     mpfr_var tmp;
 
     // cos(lower)
-    mpfr_cos(tmp(), xl(), MPFR_RNDD);
+    tmp.subnormalize(mpfr_cos(tmp(), xl(), MPFR_RNDD), MPFR_RNDD);
     int df_lower = mpfr_sgn(tmp());
 
     // cos(upper)
-    mpfr_cos(tmp(), xu(), MPFR_RNDU);
+    tmp.subnormalize(mpfr_cos(tmp(), xu(), MPFR_RNDU), MPFR_RNDU);
     int df_upper = mpfr_sgn(tmp());
 
     if (df_lower != df_upper) {
@@ -832,16 +832,16 @@ mpfr_flavor<T>::sin(mpfr_flavor<T>::representation const& x)
             if (df_lower > 0) {
                 mpfr_var l1;
                 mpfr_var l2;
-                mpfr_sin(l1(), xl(), MPFR_RNDD);
-                mpfr_sin(l2(), xu(), MPFR_RNDD);
+                l1.subnormalize(mpfr_sin(l1(), xl(), MPFR_RNDD), MPFR_RNDD);
+                l2.subnormalize(mpfr_sin(l2(), xu(), MPFR_RNDD), MPFR_RNDD);
 
                 return representation(std::min(l1.get(MPFR_RNDD), l2.get(MPFR_RNDD)), 1.0);
             }
 
             mpfr_var u1;
             mpfr_var u2;
-            mpfr_sin(u1(), xl(), MPFR_RNDU);
-            mpfr_sin(u2(), xu(), MPFR_RNDU);
+            u1.subnormalize(mpfr_sin(u1(), xl(), MPFR_RNDU), MPFR_RNDU);
+            u2.subnormalize(mpfr_sin(u2(), xu(), MPFR_RNDU), MPFR_RNDU);
 
             return representation(-1.0, std::max(u1.get(MPFR_RNDU), u2.get(MPFR_RNDU)));
         }
@@ -850,21 +850,21 @@ mpfr_flavor<T>::sin(mpfr_flavor<T>::representation const& x)
 
     mpfr_var l1;
     mpfr_var l2;
-    mpfr_sin(l1(), xl(), MPFR_RNDD);
-    mpfr_sin(l2(), xu(), MPFR_RNDD);
+    l1.subnormalize(mpfr_sin(l1(), xl(), MPFR_RNDD), MPFR_RNDD);
+    l2.subnormalize(mpfr_sin(l2(), xu(), MPFR_RNDD), MPFR_RNDD);
 
     mpfr_var u1;
     mpfr_var u2;
-    mpfr_sin(u1(), xl(), MPFR_RNDU);
-    mpfr_sin(u2(), xu(), MPFR_RNDU);
+    u1.subnormalize(mpfr_sin(u1(), xl(), MPFR_RNDU), MPFR_RNDU);
+    u2.subnormalize(mpfr_sin(u2(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(std::min(l1.get(MPFR_RNDD), l2.get(MPFR_RNDD)),
                           std::max(u1.get(MPFR_RNDU), u2.get(MPFR_RNDU)));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::cos(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::cos(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -886,12 +886,12 @@ mpfr_flavor<T>::cos(mpfr_flavor<T>::representation const& x)
     mpfr_var tmp;
 
     // -sin(lower)
-    mpfr_sin(tmp(), xl(), MPFR_RNDD);
+    tmp.subnormalize(mpfr_sin(tmp(), xl(), MPFR_RNDD), MPFR_RNDD);
     mpfr_neg(tmp(), tmp(), MPFR_RNDD);
     int df_lower = mpfr_sgn(tmp());
 
     // -sin(upper)
-    mpfr_cos(tmp(), xu(), MPFR_RNDU);
+    tmp.subnormalize(mpfr_sin(tmp(), xu(), MPFR_RNDU), MPFR_RNDU);
     mpfr_neg(tmp(), tmp(), MPFR_RNDU);
     int df_upper = mpfr_sgn(tmp());
 
@@ -912,16 +912,16 @@ mpfr_flavor<T>::cos(mpfr_flavor<T>::representation const& x)
             if (df_lower > 0) {
                 mpfr_var l1;
                 mpfr_var l2;
-                mpfr_cos(l1(), xl(), MPFR_RNDD);
-                mpfr_cos(l2(), xu(), MPFR_RNDD);
+                l1.subnormalize(mpfr_cos(l1(), xl(), MPFR_RNDD), MPFR_RNDD);
+                l2.subnormalize(mpfr_cos(l2(), xu(), MPFR_RNDD), MPFR_RNDD);
 
                 return representation(std::min(l1.get(MPFR_RNDD), l2.get(MPFR_RNDD)), 1.0);
             }
 
             mpfr_var u1;
             mpfr_var u2;
-            mpfr_cos(u1(), xl(), MPFR_RNDU);
-            mpfr_cos(u2(), xu(), MPFR_RNDU);
+            u1.subnormalize(mpfr_cos(u1(), xl(), MPFR_RNDU), MPFR_RNDU);
+            u2.subnormalize(mpfr_cos(u2(), xu(), MPFR_RNDU), MPFR_RNDU);
 
             return representation(-1.0, std::max(u1.get(MPFR_RNDU), u2.get(MPFR_RNDU)));
         }
@@ -930,21 +930,21 @@ mpfr_flavor<T>::cos(mpfr_flavor<T>::representation const& x)
 
     mpfr_var l1;
     mpfr_var l2;
-    mpfr_cos(l1(), xl(), MPFR_RNDD);
-    mpfr_cos(l2(), xu(), MPFR_RNDD);
+    l1.subnormalize(mpfr_cos(l1(), xl(), MPFR_RNDD), MPFR_RNDD);
+    l2.subnormalize(mpfr_cos(l2(), xu(), MPFR_RNDD), MPFR_RNDD);
 
     mpfr_var u1;
     mpfr_var u2;
-    mpfr_cos(u1(), xl(), MPFR_RNDU);
-    mpfr_cos(u2(), xu(), MPFR_RNDU);
+    u1.subnormalize(mpfr_cos(u1(), xl(), MPFR_RNDU), MPFR_RNDU);
+    u2.subnormalize(mpfr_cos(u2(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(std::min(l1.get(MPFR_RNDD), l2.get(MPFR_RNDD)),
                           std::max(u1.get(MPFR_RNDU), u2.get(MPFR_RNDU)));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::tan(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::tan(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
 //    return div(sin(x), cos(x));
 
@@ -965,8 +965,8 @@ mpfr_flavor<T>::tan(mpfr_flavor<T>::representation const& x)
     if (mpfr_cmp(w(), pi()) > 0)
         return static_method_entire();
 
-    mpfr_cos(xl(), xl(), MPFR_RNDD);
-    mpfr_cos(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_tan(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_tan(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     if (mpfr_cmp(xl(), xu()) > 0)
         return static_method_entire();
@@ -974,9 +974,9 @@ mpfr_flavor<T>::tan(mpfr_flavor<T>::representation const& x)
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::asin(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::asin(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     representation xx = intersect(x, representation(-1.0, 1.0));
 
@@ -988,15 +988,15 @@ mpfr_flavor<T>::asin(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(xx.first, MPFR_RNDD);
     mpfr_var xu(xx.second, MPFR_RNDU);
 
-    mpfr_asin(xl(), xl(), MPFR_RNDD);
-    mpfr_asin(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_asin(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_asin(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::acos(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::acos(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     representation xx = intersect(x, representation(-1.0, 1.0));
 
@@ -1008,15 +1008,15 @@ mpfr_flavor<T>::acos(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(xx.first, MPFR_RNDD);
     mpfr_var xu(xx.second, MPFR_RNDU);
 
-    mpfr_acos(xu(), xu(), MPFR_RNDD);
-    mpfr_acos(xl(), xl(), MPFR_RNDU);
+    xu.subnormalize(mpfr_acos(xu(), xu(), MPFR_RNDD), MPFR_RNDD);
+    xl.subnormalize(mpfr_acos(xl(), xl(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xu.get(MPFR_RNDD), xl.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::atan(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::atan(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -1026,16 +1026,16 @@ mpfr_flavor<T>::atan(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_atan(xl(), xl(), MPFR_RNDD);
-    mpfr_atan(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_atan(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_atan(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::atan2(mpfr_flavor<T>::representation const& y,
-                      mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::atan2(mpfr_flavor<T, SUBNORMALIZE>::representation const& y,
+                      mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -1047,9 +1047,9 @@ mpfr_flavor<T>::atan2(mpfr_flavor<T>::representation const& y,
     return static_method_entire();
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::sinh(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::sinh(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -1059,15 +1059,15 @@ mpfr_flavor<T>::sinh(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_sinh(xl(), xl(), MPFR_RNDD);
-    mpfr_sinh(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_sinh(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_sinh(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::cosh(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::cosh(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -1085,15 +1085,15 @@ mpfr_flavor<T>::cosh(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(std::min(std::abs(x.first), std::abs(x.second)), MPFR_RNDD);
     mpfr_var xu(std::max(std::abs(x.first), std::abs(x.second)), MPFR_RNDU);
 
-    mpfr_cosh(xl(), xl(), MPFR_RNDD);
-    mpfr_cosh(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_cosh(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_cosh(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::tanh(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::tanh(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -1103,15 +1103,15 @@ mpfr_flavor<T>::tanh(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_tanh(xl(), xl(), MPFR_RNDD);
-    mpfr_tanh(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_tanh(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_tanh(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::asinh(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::asinh(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -1121,15 +1121,15 @@ mpfr_flavor<T>::asinh(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_asinh(xl(), xl(), MPFR_RNDD);
-    mpfr_asinh(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_asinh(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_asinh(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::acosh(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::acosh(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x) || x.second < 1.0)
         return static_method_empty();
@@ -1139,15 +1139,15 @@ mpfr_flavor<T>::acosh(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first < 1.0 ? 1.0 : x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_acosh(xl(), xl(), MPFR_RNDD);
-    mpfr_acosh(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_acosh(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_acosh(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::atanh(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::atanh(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x) || x.second <= -1.0 || x.first >= 1.0)
         return static_method_empty();
@@ -1157,23 +1157,23 @@ mpfr_flavor<T>::atanh(mpfr_flavor<T>::representation const& x)
     mpfr_var xl(x.first < -1.0 ? -1.0 : x.first, MPFR_RNDD);
     mpfr_var xu(x.second > 1.0 ? 1.0 : x.second, MPFR_RNDU);
 
-    mpfr_atanh(xl(), xl(), MPFR_RNDD);
-    mpfr_atanh(xu(), xu(), MPFR_RNDU);
+    xl.subnormalize(mpfr_atanh(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_atanh(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::sign(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::sign(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     return representation((x.first < 0.0) ? -1.0 : ((x.first == 0.0) ? 0.0 : 1.0),
                           (x.second < 0.0) ? -1.0 : ((x.second == 0.0) ? 0.0 : 1.0));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::ceil(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::ceil(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -1181,9 +1181,9 @@ mpfr_flavor<T>::ceil(mpfr_flavor<T>::representation const& x)
     return representation(std::ceil(x.first), std::ceil(x.second));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::floor(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::floor(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -1191,9 +1191,9 @@ mpfr_flavor<T>::floor(mpfr_flavor<T>::representation const& x)
     return representation(std::floor(x.first), std::floor(x.second));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::trunc(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::trunc(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -1201,9 +1201,9 @@ mpfr_flavor<T>::trunc(mpfr_flavor<T>::representation const& x)
     return representation(std::trunc(x.first), std::trunc(x.second));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::round_ties_to_even(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::round_ties_to_even(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -1224,9 +1224,9 @@ mpfr_flavor<T>::round_ties_to_even(mpfr_flavor<T>::representation const& x)
     return representation(std::nearbyint(x.first), std::nearbyint(x.second));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::round_ties_to_away(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::round_ties_to_away(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -1234,9 +1234,9 @@ mpfr_flavor<T>::round_ties_to_away(mpfr_flavor<T>::representation const& x)
     return representation(std::round(x.first), std::round(x.second));
 }
 
-template<typename T>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::abs(mpfr_flavor<T>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::abs(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x) || x.first >= 0.0)
         return x;
@@ -1247,10 +1247,10 @@ mpfr_flavor<T>::abs(mpfr_flavor<T>::representation const& x)
     return representation(0.0, std::max(std::abs(x.first), x.second));
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 template<typename ConstRandomAccessIterator>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::min(ConstRandomAccessIterator first, ConstRandomAccessIterator last)
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::min(ConstRandomAccessIterator first, ConstRandomAccessIterator last)
 {
     if (first >= last)
         return static_method_empty();
@@ -1265,10 +1265,10 @@ mpfr_flavor<T>::min(ConstRandomAccessIterator first, ConstRandomAccessIterator l
     return r;
 }
 
-template<typename T>
+template<typename T, subnormalize SUBNORMALIZE>
 template<typename ConstRandomAccessIterator>
-typename mpfr_flavor<T>::representation
-mpfr_flavor<T>::max(ConstRandomAccessIterator first,
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::max(ConstRandomAccessIterator first,
                     ConstRandomAccessIterator last)
 {
     if (first >= last)
