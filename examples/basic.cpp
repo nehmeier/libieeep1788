@@ -28,7 +28,10 @@
 #include "p1788/p1788.hpp"
 
 template<typename T>
-using interval = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor>;
+using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
+
+template<typename T>
+using interval = p1788::infsup::interval<T, flavor>;
 
 int main()
 {

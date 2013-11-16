@@ -4,6 +4,9 @@ cmake_minimum_required(VERSION 2.8)
 # gives the project a name.
 project(libieeep1788)
 
+find_library(MPFR_LIB mpfr)
+
+
 # activates c++11 extensions for g++ compiler.
 add_definitions(-std=c++11)
 
