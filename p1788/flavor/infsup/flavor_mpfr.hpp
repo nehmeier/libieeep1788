@@ -63,10 +63,13 @@ public:
     template<typename TT>
     using representation_type = std::pair<TT,TT>;
 
+    template<typename TT>
+    using representation_dec_type = std::pair<std::pair<TT,TT>, p1788::decoration::decoration>;
+
     // Internal representation
     typedef representation_type<T> representation;
 
-
+    typedef representation_dec_type<T> representation_dec;
 
 // -----------------------------------------------------------------------------
 // Class constructors and methods
@@ -74,29 +77,51 @@ public:
 
     // Constructors
     static representation constructor_infsup();
+    static representation_dec constructor_infsup_dec();
+
     static representation constructor_infsup(T lower, T upper);
+    static representation_dec constructor_infsup_dec(T lower, T upper);
+
     static representation constructor_infsup(T point);
+    static representation_dec constructor_infsup_dec(T point);
 
     template<typename ConstRandomAccessIterator>
     static representation constructor_infsup(ConstRandomAccessIterator first,
             ConstRandomAccessIterator last);
+    template<typename ConstRandomAccessIterator>
+    static representation_dec constructor_infsup_dec(ConstRandomAccessIterator first,
+            ConstRandomAccessIterator last);
 
     static representation constructor_infsup(std::string const& str);
+    static representation_dec constructor_infsup_dec(std::string const& str);
 
     static representation constructor_infsup(representation const& other);
+    static representation_dec constructor_infsup_dec(representation_dec const& other);
 
     template<typename TT>
     static representation constructor_infsup(representation_type<TT> const& other);
+    template<typename TT>
+    static representation_dec constructor_infsup_dec(representation_dec_type<TT> const& other);
 
     // Methods
     static T method_lower(representation const& x);
+    static T method_lower_dec(representation_dec const& x);
+
     static T method_upper(representation const& x);
+    static T method_upper_dec(representation_dec const& x);
+
     static T method_mid(representation const& x);
+    static T method_mid_dec(representation_dec const& x);
+
     static T method_rad(representation const& x);
+    static T method_rad_dec(representation_dec const& x);
 
     // Static Methods
     static representation static_method_empty();
+    static representation_dec static_method_empty_dec();
+
     static representation static_method_entire();
+    static representation_dec static_method_entire_dec();
 
 
 // -----------------------------------------------------------------------------
@@ -109,9 +134,19 @@ public:
         representation const& x);
 
     template< typename CharT, typename Traits >
+    static std::basic_ostream<CharT, Traits>& operator_output_dec(
+        std::basic_ostream<CharT, Traits>& os,
+        representation_dec const& x);
+
+    template< typename CharT, typename Traits >
     static std::basic_istream<CharT, Traits>& operator_input(
         std::basic_istream<CharT, Traits>& is,
         representation& x);
+
+    template< typename CharT, typename Traits >
+    static std::basic_istream<CharT, Traits>& operator_input_dec(
+        std::basic_istream<CharT, Traits>& is,
+        representation_dec& x);
 
 // -----------------------------------------------------------------------------
 // Non-arithmetic set operations
@@ -120,8 +155,14 @@ public:
     static representation intersect(representation const& x,
                                     representation const& y);
 
+    static representation_dec intersect_dec(representation_dec const& x,
+                                    representation_dec const& y);
+
     static representation hull(representation const& x,
                                representation const& y);
+
+    static representation_dec hull_dec(representation_dec const& x,
+                               representation_dec const& y);
 
 
 // -----------------------------------------------------------------------------
@@ -129,20 +170,28 @@ public:
 // -----------------------------------------------------------------------------
 
     static T inf(representation const& x);
+    static T inf_dec(representation_dec const& x);
 
     static T sup(representation const& x);
+    static T sup_dec(representation_dec const& x);
 
     static T mid(representation const& x);
+    static T mid_dec(representation_dec const& x);
 
     static T wid(representation const& x);
+    static T wid_dec(representation_dec const& x);
 
     static T rad(representation const& x);
+    static T rad_dec(representation_dec const& x);
 
     static T mag(representation const& x);
+    static T mag_dec(representation_dec const& x);
 
     static T mig(representation const& x);
+    static T mig_dec(representation_dec const& x);
 
     static std::pair<T, T> mid_rad(representation const& x);
+    static std::pair<T, T> mid_rad_dec(representation_dec const& x);
 
 // -----------------------------------------------------------------------------
 // Boolean functions on intervals
@@ -155,24 +204,34 @@ public:
     ///
     ///
     static bool is_empty(representation const& x);
+    static bool is_empty_dec(representation_dec const& x);
 
     static bool is_entire(representation const& x);
+    static bool is_entire_dec(representation_dec const& x);
 
     static bool is_equal(representation const& x, representation const& y);
+    static bool is_equal_dec(representation_dec const& x, representation_dec const& y);
 
     static bool contained_in(representation const& x, representation const& y);
+    static bool contained_in_dec(representation_dec const& x, representation_dec const& y);
 
     static bool less(representation const& x, representation const& y);
+    static bool less_dec(representation_dec const& x, representation_dec const& y);
 
     static bool precedes(representation const& x, representation const& y);
+    static bool precedes_dec(representation_dec const& x, representation_dec const& y);
 
     static bool is_interior(representation const& x, representation const& y);
+    static bool is_interior_dec(representation_dec const& x, representation_dec const& y);
 
     static bool strictly_less(representation const& x, representation const& y);
+    static bool strictly_less_dec(representation_dec const& x, representation_dec const& y);
 
     static bool strictly_precedes(representation const& x, representation const& y);
+    static bool strictly_precedes_dec(representation_dec const& x, representation_dec const& y);
 
     static bool are_disjoint(representation const& x, representation const& y);
+    static bool are_disjoint_dec(representation_dec const& x, representation_dec const& y);
 
 // -----------------------------------------------------------------------------
 // Forward elementary functions
@@ -180,97 +239,149 @@ public:
 
 
     static representation pos(representation const& x);
+    static representation_dec pos_dec(representation_dec const& x);
 
     static representation neg(representation const& x);
+    static representation_dec neg_dec(representation_dec const& x);
 
     static representation add(representation const& x, representation const& y);
+    static representation_dec add_dec(representation_dec const& x, representation_dec const& y);
 
     static representation sub(representation const& x, representation const& y);
+    static representation_dec sub_dec(representation_dec const& x, representation_dec const& y);
 
     static representation mul(representation const& x, representation const& y);
+    static representation_dec mul_dec(representation_dec const& x, representation_dec const& y);
 
     static representation div(representation const& x, representation const& y);
+    static representation_dec div_dec(representation_dec const& x, representation_dec const& y);
 
-    static representation inv(representation const& x);
+    static representation recip(representation const& x);
+    static representation_dec recip_dec(representation_dec const& x);
 
     static representation sqrt(representation const& x);
+    static representation_dec sqrt_dec(representation_dec const& x);
 
     static representation fma(representation const& x, representation const& y,
                               representation const& z );
+    static representation_dec fma_dec(representation_dec const& x, representation_dec const& y,
+                              representation_dec const& z );
 
     static representation interval_case(representation const& c,
                                         representation const& g,
                                         representation const& h );
+    static representation_dec interval_case_dec(representation_dec const& c,
+                                        representation_dec const& g,
+                                        representation_dec const& h );
 
     static representation sqr(representation const& x);
+    static representation_dec sqr_dec(representation_dec const& x);
 
     static representation pown(representation const& x, int p);
+    static representation_dec pown_dec(representation_dec const& x, int p);
 
     static representation pow(representation const& x, representation const& y);
+    static representation_dec pow_dec(representation_dec const& x, representation_dec const& y);
 
     static representation exp(representation const& x);
+    static representation_dec exp_dec(representation_dec const& x);
 
     static representation exp2(representation const& x);
+    static representation_dec exp2_dec(representation_dec const& x);
 
     static representation exp10(representation const& x);
+    static representation_dec exp10_dec(representation_dec const& x);
 
     static representation log(representation const& x);
+    static representation_dec log_dec(representation_dec const& x);
 
     static representation log2(representation const& x);
+    static representation_dec log2_dec(representation_dec const& x);
 
     static representation log10(representation const& x);
+    static representation_dec log10_dec(representation_dec const& x);
 
     static representation sin(representation const& x);
+    static representation_dec sin_dec(representation_dec const& x);
 
     static representation cos(representation const& x);
+    static representation_dec cos_dec(representation_dec const& x);
 
     static representation tan(representation const& x);
+    static representation_dec tan_dec(representation_dec const& x);
 
     static representation asin(representation const& x);
+    static representation_dec asin_dec(representation_dec const& x);
 
     static representation acos(representation const& x);
+    static representation_dec acos_dec(representation_dec const& x);
 
     static representation atan(representation const& x);
+    static representation_dec atan_dec(representation_dec const& x);
 
     static representation atan2(representation const& y,
                                 representation const& x);
+    static representation_dec atan2_dec(representation_dec const& y,
+                                representation_dec const& x);
 
     static representation sinh(representation const& x);
+    static representation_dec sinh_dec(representation_dec const& x);
 
     static representation cosh(representation const& x);
+    static representation_dec cosh_dec(representation_dec const& x);
 
     static representation tanh(representation const& x);
+    static representation_dec tanh_dec(representation_dec const& x);
 
     static representation asinh(representation const& x);
+    static representation_dec asinh_dec(representation_dec const& x);
 
     static representation acosh(representation const& x);
+    static representation_dec acosh_dec(representation_dec const& x);
 
     static representation atanh(representation const& x);
+    static representation_dec atanh_dec(representation_dec const& x);
 
     static representation sign(representation const& x);
+    static representation_dec sign_dec(representation_dec const& x);
 
     static representation ceil(representation const& x);
+    static representation_dec ceil_dec(representation_dec const& x);
 
     static representation floor(representation const& x);
+    static representation_dec floor_dec(representation_dec const& x);
 
     static representation trunc(representation const& x);
+    static representation_dec trunc_dec(representation_dec const& x);
 
     static representation round_ties_to_even(representation const& x);
+    static representation_dec round_ties_to_even_dec(representation_dec const& x);
 
     static representation round_ties_to_away(representation const& x);
+    static representation_dec round_ties_to_away_dec(representation_dec const& x);
 
     static representation abs(representation const& x);
+    static representation_dec abs_dec(representation_dec const& x);
 
-    template<typename ConstRandomAccessIterator>
-    static representation min(ConstRandomAccessIterator first,
-                              ConstRandomAccessIterator last);
+    static representation min(representation const& x,
+                              representation const& y);
+    static representation_dec min_dec(representation_dec const& x,
+                              representation_dec const& y);
 
-    template<typename ConstRandomAccessIterator>
-    static representation max(ConstRandomAccessIterator first,
-                              ConstRandomAccessIterator last);
+    static representation max(representation const& x,
+                              representation const& y);
+    static representation_dec max_dec(representation_dec const& x,
+                              representation_dec const& y);
 
 
+// -----------------------------------------------------------------------------
+// Reverse elementary functions
+// -----------------------------------------------------------------------------
 
+    static std::pair<representation,representation> div_to_pair(representation const& x,
+                                  representation const& y);
+    static std::pair<representation_dec,representation_dec> div_to_pair_dec(representation_dec const& x,
+                                  representation_dec const& y);
 
 // -----------------------------------------------------------------------------
 // Reverse elementary functions
@@ -278,94 +389,155 @@ public:
 
     static representation sqr_rev(representation const& c,
                                   representation const& x);
+    static representation_dec sqr_rev_dec(representation_dec const& c,
+                                  representation_dec const& x);
 
     static representation sqr_rev(representation const& x);
+    static representation_dec sqr_rev_dec(representation_dec const& x);
 
-    static representation inv_rev(representation const& c,
+    static representation recip_rev(representation const& c,
                                   representation const& x);
+    static representation_dec recip_rev_dec(representation_dec const& c,
+                                  representation_dec const& x);
 
-    static representation inv_rev(representation const& x);
+    static representation recip_rev(representation const& x);
+    static representation_dec recip_rev_dec(representation_dec const& x);
 
     static representation abs_rev(representation const& c,
                                   representation const& x);
+    static representation_dec abs_rev_dec(representation_dec const& c,
+                                  representation_dec const& x);
 
     static representation abs_rev(representation const& x);
+    static representation_dec abs_rev_dec(representation_dec const& x);
 
     static representation pown_rev(representation const& c,
                                    representation const& x,
                                    int n);
+    static representation_dec pown_rev_dec(representation_dec const& c,
+                                   representation_dec const& x,
+                                   int n);
 
     static representation pown_rev(representation const& x,
+                                   int n);
+    static representation_dec pown_rev_dec(representation_dec const& x,
                                    int n);
 
     static representation sin_rev(representation const& c,
                                   representation const& x);
+    static representation_dec sin_rev_dec(representation_dec const& c,
+                                  representation_dec const& x);
 
     static representation sin_rev(representation const& x);
+    static representation_dec sin_rev_dec(representation_dec const& x);
 
     static representation cos_rev(representation const& c,
                                   representation const& x);
+    static representation_dec cos_rev_dec(representation_dec const& c,
+                                  representation_dec const& x);
 
     static representation cos_rev(representation const& x);
+    static representation_dec cos_rev_dec(representation_dec const& x);
 
     static representation tan_rev(representation const& c,
                                   representation const& x);
+    static representation_dec tan_rev_dec(representation_dec const& c,
+                                  representation_dec const& x);
 
     static representation tan_rev(representation const& x);
+    static representation_dec tan_rev_dec(representation_dec const& x);
 
     static representation cosh_rev(representation const& c,
                                    representation const& x);
+    static representation_dec cosh_rev_dec(representation_dec const& c,
+                                   representation_dec const& x);
 
     static representation cosh_rev(representation const& x);
+    static representation_dec cosh_rev_dec(representation_dec const& x);
 
     static representation mul_rev(representation const& b,
                                   representation const& c,
                                   representation const& x);
+    static representation_dec mul_rev_dec(representation_dec const& b,
+                                  representation_dec const& c,
+                                  representation_dec const& x);
 
     static representation mul_rev(representation const& c,
                                   representation const& x);
+    static representation_dec mul_rev_dec(representation_dec const& c,
+                                  representation_dec const& x);
 
     static representation div_rev1(representation const& b,
                                    representation const& c,
                                    representation const& x);
+    static representation_dec div_rev1_dec(representation_dec const& b,
+                                   representation_dec const& c,
+                                   representation_dec const& x);
 
     static representation div_rev1(representation const& c,
                                    representation const& x);
+    static representation_dec div_rev1_dec(representation_dec const& c,
+                                   representation_dec const& x);
 
     static representation div_rev2(representation const& a,
                                    representation const& c,
                                    representation const& x);
+    static representation_dec div_rev2_dec(representation_dec const& a,
+                                   representation_dec const& c,
+                                   representation_dec const& x);
 
     static representation div_rev2(representation const& c,
                                    representation const& x);
+    static representation_dec div_rev2_dec(representation_dec const& c,
+                                   representation_dec const& x);
 
     static representation pow_rev1(representation const& b,
                                    representation const& c,
                                    representation const& x);
+    static representation_dec pow_rev1_dec(representation_dec const& b,
+                                   representation_dec const& c,
+                                   representation_dec const& x);
 
     static representation pow_rev1(representation const& c,
                                    representation const& x);
+    static representation_dec pow_rev1_dec(representation_dec const& c,
+                                   representation_dec const& x);
 
     static representation pow_rev2(representation const& a,
                                    representation const& c,
                                    representation const& x);
+    static representation_dec pow_rev2_dec(representation_dec const& a,
+                                   representation_dec const& c,
+                                   representation_dec const& x);
 
     static representation pow_rev2(representation const& c,
                                    representation const& x);
+    static representation_dec pow_rev2_dec(representation_dec const& c,
+                                   representation_dec const& x);
 
     static representation atan2_rev1(representation const& b,
                                      representation const& c,
                                      representation const& x);
+    static representation_dec atan2_rev1_dec(representation_dec const& b,
+                                     representation_dec const& c,
+                                     representation_dec const& x);
 
     static representation atan2_rev1(representation const& c,
                                      representation const& x);
+    static representation_dec atan2_rev1_dec(representation_dec const& c,
+                                     representation_dec const& x);
 
     static representation atan2_rev2(representation const& a,
                                      representation const& c,
                                      representation const& x);
+    static representation_dec atan2_rev2_dec(representation_dec const& a,
+                                     representation_dec const& c,
+                                     representation_dec const& x);
 
     static representation atan2_rev2(representation const& c,
                                      representation const& x);
+    static representation_dec atan2_rev2_dec(representation_dec const& c,
+                                     representation_dec  const& x);
 
 
 // -----------------------------------------------------------------------------
@@ -374,9 +546,13 @@ public:
 
     static representation cancel_plus(representation const& a,
                                       representation const& b);
+    static representation_dec cancel_plus_dec(representation_dec const& a,
+                                      representation_dec const& b);
 
     static representation cancel_minus(representation const& a,
                                        representation const& b);
+    static representation_dec cancel_minus_dec(representation_dec const& a,
+                                       representation_dec const& b);
 
 
 // -----------------------------------------------------------------------------
@@ -384,41 +560,61 @@ public:
 // -----------------------------------------------------------------------------
 
     static representation rootn(representation const&, int);
+    static representation_dec rootn_dec(representation_dec const&, int);
 
     static representation expm1(representation const&);
+    static representation_dec expm1_dec(representation_dec const&);
 
     static representation exp2m1(representation const&);
+    static representation_dec exp2m1_dec(representation_dec const&);
 
     static representation exp10m1(representation const&);
+    static representation_dec exp10m1_dec(representation_dec const&);
 
     static representation logp1(representation const&);
+    static representation_dec logp1_dec(representation_dec const&);
 
     static representation log2p1(representation const&);
+    static representation_dec log2p1_dec(representation_dec const&);
 
     static representation log10p1(representation const&);
+    static representation_dec log10p1_dec(representation_dec const&);
 
     static representation compoundm1(representation const&,
                                      representation const&);
+    static representation_dec compoundm1_dec(representation_dec const&,
+                                     representation_dec const&);
 
     static representation hypot(representation const&,
                                 representation const&);
+    static representation_dec hypot_dec(representation_dec const&,
+                                representation_dec const&);
 
     static representation r_sqrt(representation const&);
+    static representation_dec r_sqrt_dec(representation_dec const&);
 
     static representation sin_pi(representation const&);
+    static representation_dec sin_pi_dec(representation_dec const&);
 
     static representation cos_pi(representation const&);
+    static representation_dec cos_pi_dec(representation_dec const&);
 
     static representation tan_pi(representation const&);
+    static representation_dec tan_pi_dec(representation_dec const&);
 
     static representation asin_pi(representation const&);
+    static representation_dec asin_pi_dec(representation_dec const&);
 
     static representation acos_pi(representation const&);
+    static representation_dec acos_pi_dec(representation_dec const&);
 
     static representation atan_pi(representation const&);
+    static representation_dec atan_pi_dec(representation_dec const&);
 
     static representation atan2_pi(representation const&,
                                    representation const&);
+    static representation_dec atan2_pi_dec(representation_dec const&,
+                                   representation_dec const&);
 
 
 // -----------------------------------------------------------------------------
@@ -427,31 +623,55 @@ public:
 
     static p1788::overlapping::overlapping_state overlap(representation const&,
             representation const&);
+    static p1788::overlapping::overlapping_state overlap_dec(representation_dec const&,
+            representation_dec const&);
 
+// -----------------------------------------------------------------------------
+// Recommended boolean functions
+// -----------------------------------------------------------------------------
+
+    static bool is_common(representation const&);
+    static bool is_common_dec(representation_dec const&);
+
+    static bool is_singleton(representation const&);
+    static bool is_singleton_dec(representation_dec const&);
+
+    static bool is_member(T, representation const&);
+    static bool is_member_dec(T, representation_dec const&);
 
 // -----------------------------------------------------------------------------
 // Recommended slope functions
 // -----------------------------------------------------------------------------
 
     static representation exp_slope1(representation const&);
+    static representation_dec exp_slope1_dec(representation_dec const&);
 
     static representation exp_slope2(representation const&);
+    static representation_dec exp_slope2_dec(representation_dec const&);
 
     static representation log_slope1(representation const&);
+    static representation_dec log_slope1_dec(representation_dec const&);
 
     static representation log_slope2(representation const&);
+    static representation_dec log_slope2_dec(representation_dec const&);
 
     static representation cos_slope2(representation const&);
+    static representation_dec cos_slope2_dec(representation_dec const&);
 
     static representation sin_slope3(representation const&);
+    static representation_dec sin_slope3_dec(representation_dec const&);
 
     static representation asin_slope3(representation const&);
+    static representation_dec asin_slope3_dec(representation_dec const&);
 
     static representation atan_slope3(representation const&);
+    static representation_dec atan_slope3_dec(representation_dec const&);
 
     static representation cosh_slope2(representation const&);
+    static representation_dec cosh_slope2_dec(representation_dec const&);
 
     static representation sinh_slope3(representation const&);
+    static representation_dec sinh_slope3_dec(representation_dec const&);
 
 
 
@@ -487,6 +707,11 @@ private:
         mpfr_t var_;
 
 
+// Ignore effective C++ warnings
+// on GCC  push the last diagnostic state and disable -Weffc++
+//FIXME support other compiler
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
         class mpfr_str
         {
         public:
@@ -499,6 +724,9 @@ private:
             char * char_;
             std::string str_;
         };
+// on GCC  enable the diagnostic state -Weffc++ again
+#pragma GCC diagnostic pop
+
     };
 
 };
@@ -517,10 +745,12 @@ private:
 #include "p1788/flavor/infsup/flavor_mpfr_num_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_bool_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_elem_func_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_div_pair_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rev_elem_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_cancel_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rec_elem_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rec_overlap_impl.hpp"
+#include "p1788/flavor/infsup/flavor_mpfr_rec_bool_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rec_slope_func_impl.hpp"
 
 #include "p1788/flavor/infsup/flavor_mpfr_class_mpfr_var_impl.hpp"

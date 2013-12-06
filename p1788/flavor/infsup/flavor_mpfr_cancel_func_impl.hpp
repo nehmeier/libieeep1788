@@ -40,8 +40,19 @@ typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
                             mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
-    return cancel_minus(x, -y);
+    return cancel_minus(x, neg(y));
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::cancel_plus_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                            mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return representation_dec(cancel_plus(x, y), p1788::decoration::decoration::trv);
+}
+
 
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
@@ -78,6 +89,17 @@ mpfr_flavor<T, SUBNORMALIZE>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE>::represe
         return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
     }
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::cancel_minus_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                             mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return representation_dec(cancel_minus(x, y), p1788::decoration::decoration::trv);
+}
+
 
 } // namespace infsup
 

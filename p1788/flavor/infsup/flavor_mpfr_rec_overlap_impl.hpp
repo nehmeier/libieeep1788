@@ -103,6 +103,15 @@ p1788::overlapping::overlapping_state mpfr_flavor<T, SUBNORMALIZE>::overlap(mpfr
     return p1788::overlapping::overlapping_state::before;
 }
 
+template<typename T, subnormalize SUBNORMALIZE>
+p1788::overlapping::overlapping_state mpfr_flavor<T, SUBNORMALIZE>::overlap_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return overlap(x.first, y.first);
+}
+
 } // namespace infsup
 
 } // namespace flavor

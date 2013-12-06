@@ -31,6 +31,9 @@
 /// \brief This header includes all functionality provided by libieeep1788.
 ///
 
+#include "p1788/version.hpp"
+
+
 // Decorations, see P1788/D7.0 Sect. 10.2 and 10.10
 #include "p1788/decoration/decoration.hpp"
 
