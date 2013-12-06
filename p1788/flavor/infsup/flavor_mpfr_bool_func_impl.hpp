@@ -47,11 +47,31 @@ mpfr_flavor<T, SUBNORMALIZE>::is_empty(mpfr_flavor<T, SUBNORMALIZE>::representat
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
+mpfr_flavor<T, SUBNORMALIZE>::is_empty_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool
 mpfr_flavor<T, SUBNORMALIZE>::is_entire(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     return x.first == -std::numeric_limits<T>::infinity()
            && x.second == std::numeric_limits<T>::infinity();
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool
+mpfr_flavor<T, SUBNORMALIZE>::is_entire_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
+}
+
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
@@ -64,11 +84,33 @@ mpfr_flavor<T, SUBNORMALIZE>::is_equal(mpfr_flavor<T, SUBNORMALIZE>::representat
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
+mpfr_flavor<T, SUBNORMALIZE>::is_equal_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool
 mpfr_flavor<T, SUBNORMALIZE>::contained_in(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
                              mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return is_empty(x) || (y.first <= x.first && x.second <= y.second);
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool
+mpfr_flavor<T, SUBNORMALIZE>::contained_in_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                             mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
+}
+
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
@@ -81,11 +123,33 @@ mpfr_flavor<T, SUBNORMALIZE>::less(mpfr_flavor<T, SUBNORMALIZE>::representation 
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
+mpfr_flavor<T, SUBNORMALIZE>::less_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                     mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool
 mpfr_flavor<T, SUBNORMALIZE>::precedes(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
                          mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return is_empty(x) || is_empty(y) || x.second <= y.first;
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool
+mpfr_flavor<T, SUBNORMALIZE>::precedes_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
+}
+
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
@@ -103,6 +167,17 @@ mpfr_flavor<T, SUBNORMALIZE>::is_interior(mpfr_flavor<T, SUBNORMALIZE>::represen
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
+mpfr_flavor<T, SUBNORMALIZE>::is_interior_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                            mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool
 mpfr_flavor<T, SUBNORMALIZE>::strictly_less(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
                               mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
@@ -117,6 +192,17 @@ mpfr_flavor<T, SUBNORMALIZE>::strictly_less(mpfr_flavor<T, SUBNORMALIZE>::repres
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
+mpfr_flavor<T, SUBNORMALIZE>::strictly_less_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                              mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool
 mpfr_flavor<T, SUBNORMALIZE>::strictly_precedes(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
                                   mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
@@ -125,10 +211,31 @@ mpfr_flavor<T, SUBNORMALIZE>::strictly_precedes(mpfr_flavor<T, SUBNORMALIZE>::re
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
+mpfr_flavor<T, SUBNORMALIZE>::strictly_precedes_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                                  mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool
 mpfr_flavor<T, SUBNORMALIZE>::are_disjoint(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
                              mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return is_empty(x) || is_empty(y) || x.second < y.first || y.second < x.first;
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool
+mpfr_flavor<T, SUBNORMALIZE>::are_disjoint_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                             mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
 }
 
 } // namespace infsup

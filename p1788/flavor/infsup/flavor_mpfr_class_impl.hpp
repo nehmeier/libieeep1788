@@ -48,6 +48,14 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup()
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec()
+{
+    return static_method_empty_dec();
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(T lower, T upper)
 {
@@ -57,6 +65,16 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(T lower, T upper)
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(T lower, T upper)
+{
+//TODO  invalid arguments => exception?
+
+    return representation_dec(representation(lower, upper), p1788::decoration::decoration::trv);
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(T point)
 {
@@ -64,6 +82,16 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(T point)
 
     return representation(point, point);
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(T point)
+{
+//TODO  invalid argument => exception?
+
+    return representation_dec(representation(point, point), p1788::decoration::decoration::trv);
+}
+
 
 template<typename T, subnormalize SUBNORMALIZE>
 template<typename ConstRandomAccessIterator>
@@ -77,6 +105,20 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(ConstRandomAccessIterator first
 //TODO  invalid argument => exception?
     return representation(*result.first, *result.second);
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+template<typename ConstRandomAccessIterator>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(ConstRandomAccessIterator first,
+                                   ConstRandomAccessIterator last)
+{
+    //TODO check iterator
+    auto result = std::minmax_element(first, last);
+
+//TODO  invalid argument => exception?
+    return representation_dec(representation(*result.first, *result.second), p1788::decoration::decoration::trv);
+}
+
 
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
@@ -99,11 +141,40 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(std::string const& str)
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(std::string const& str)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    std::string tmp = str;
+
+    tmp.erase(remove_if(tmp.begin(), tmp.end(), ::isspace), tmp.end());
+    std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::toupper);
+
+    if (tmp == "ENTIRE")
+        return static_method_entire_dec();
+
+    if (tmp == "EMPTY")
+        return static_method_empty_dec();
+
+    return representation_dec(representation(0.0, 0.0), p1788::decoration::decoration::trv);
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(representation const& other)
 {
     return other;
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(representation_dec const& other)
+{
+    return other;
+}
+
 
 template<typename T, subnormalize SUBNORMALIZE>
 template<typename TT>
@@ -118,6 +189,19 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(representation_type<TT> const& 
     return representation(lower.get(MPFR_RNDD), upper.get(MPFR_RNDU));
 }
 
+template<typename T, subnormalize SUBNORMALIZE>
+template<typename TT>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(representation_dec_type<TT> const& other)
+{
+    mpfr_var::setup();
+
+    mpfr_var lower(other.first.first, MPFR_RNDD);
+    mpfr_var upper(other.first.second, MPFR_RNDU);
+
+    return representation_dec(representation(lower.get(MPFR_RNDD), upper.get(MPFR_RNDU)), other.second);
+}
+
 
 // Methods
 
@@ -130,10 +214,26 @@ mpfr_flavor<T, SUBNORMALIZE>::method_lower(mpfr_flavor<T, SUBNORMALIZE>::represe
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
+mpfr_flavor<T, SUBNORMALIZE>::method_lower_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return x.first.first;
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+T
 mpfr_flavor<T, SUBNORMALIZE>::method_upper(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     return x.second;
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+T
+mpfr_flavor<T, SUBNORMALIZE>::method_upper_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return x.first.second;
+}
+
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
@@ -146,12 +246,32 @@ mpfr_flavor<T, SUBNORMALIZE>::method_mid(mpfr_flavor<T, SUBNORMALIZE>::represent
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
+mpfr_flavor<T, SUBNORMALIZE>::method_mid_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return (x.first.first + x.first.second) / 2.0;
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+T
 mpfr_flavor<T, SUBNORMALIZE>::method_rad(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return (x.second - x.first) / 2.0;
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+T
+mpfr_flavor<T, SUBNORMALIZE>::method_rad_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return (x.first.second - x.first.first) / 2.0;
+}
+
 
 // Static Methods
 
@@ -164,11 +284,27 @@ mpfr_flavor<T, SUBNORMALIZE>::static_method_empty()
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::static_method_empty_dec()
+{
+    return representation_dec(representation(std::numeric_limits<T>::quiet_NaN(),
+                          std::numeric_limits<T>::quiet_NaN()), p1788::decoration::decoration::trv);
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::static_method_entire()
 {
     return representation(-std::numeric_limits<T>::infinity(),
                           std::numeric_limits<T>::infinity());
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec()
+{
+    return representation_dec(representation(-std::numeric_limits<T>::infinity(),
+                          std::numeric_limits<T>::infinity()), p1788::decoration::decoration::trv);
 }
 
 

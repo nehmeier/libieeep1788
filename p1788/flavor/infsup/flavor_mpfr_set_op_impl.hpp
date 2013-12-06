@@ -50,6 +50,17 @@ mpfr_flavor<T, SUBNORMALIZE>::intersect(mpfr_flavor<T, SUBNORMALIZE>::representa
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::intersect_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                          mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::hull(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
                      mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
@@ -63,6 +74,18 @@ mpfr_flavor<T, SUBNORMALIZE>::hull(mpfr_flavor<T, SUBNORMALIZE>::representation 
                               std::max(x.second, y.second));
 }
 
+template<typename T, subnormalize SUBNORMALIZE>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::hull_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+                     mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+}
+
+
+//TODO hull(s)   P1788/8.1 12.8.1
 
 } // namespace infsup
 

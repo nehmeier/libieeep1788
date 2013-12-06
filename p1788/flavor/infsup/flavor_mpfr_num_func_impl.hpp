@@ -47,6 +47,14 @@ mpfr_flavor<T, SUBNORMALIZE>::inf(mpfr_flavor<T, SUBNORMALIZE>::representation c
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
+mpfr_flavor<T, SUBNORMALIZE>::inf_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return inf(x.first);
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+T
 mpfr_flavor<T, SUBNORMALIZE>::sup(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
@@ -54,6 +62,14 @@ mpfr_flavor<T, SUBNORMALIZE>::sup(mpfr_flavor<T, SUBNORMALIZE>::representation c
 
     return method_upper(x);
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+T
+mpfr_flavor<T, SUBNORMALIZE>::sup_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return sup(x.first);
+}
+
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
@@ -77,6 +93,14 @@ mpfr_flavor<T, SUBNORMALIZE>::mid(mpfr_flavor<T, SUBNORMALIZE>::representation c
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
+mpfr_flavor<T, SUBNORMALIZE>::mid_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return mid(x.first);
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+T
 mpfr_flavor<T, SUBNORMALIZE>::rad(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
@@ -94,11 +118,27 @@ mpfr_flavor<T, SUBNORMALIZE>::rad(mpfr_flavor<T, SUBNORMALIZE>::representation c
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
+T
+mpfr_flavor<T, SUBNORMALIZE>::rad_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return rad(x.first);
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
 std::pair<T, T>
 mpfr_flavor<T, SUBNORMALIZE>::mid_rad(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     return std::pair<T,T>(mid(x), rad(x));
 }
+
+template<typename T, subnormalize SUBNORMALIZE>
+std::pair<T, T>
+mpfr_flavor<T, SUBNORMALIZE>::mid_rad_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return std::pair<T,T>(mid_dec(x), rad_dec(x));
+}
+
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
@@ -119,6 +159,14 @@ mpfr_flavor<T, SUBNORMALIZE>::wid(mpfr_flavor<T, SUBNORMALIZE>::representation c
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
+mpfr_flavor<T, SUBNORMALIZE>::wid_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return wid(x.first);
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+T
 mpfr_flavor<T, SUBNORMALIZE>::mag(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
@@ -132,6 +180,14 @@ mpfr_flavor<T, SUBNORMALIZE>::mag(mpfr_flavor<T, SUBNORMALIZE>::representation c
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
+mpfr_flavor<T, SUBNORMALIZE>::mag_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return mag(x.first);
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE>
+T
 mpfr_flavor<T, SUBNORMALIZE>::mig(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
     if (is_empty(x))
@@ -141,6 +197,13 @@ mpfr_flavor<T, SUBNORMALIZE>::mig(mpfr_flavor<T, SUBNORMALIZE>::representation c
     T xu = std::abs(x.second);
 
     return xl < xu ? xl : xu;
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
+T
+mpfr_flavor<T, SUBNORMALIZE>::mig_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return mig(x.first);
 }
 
 } // namespace infsup

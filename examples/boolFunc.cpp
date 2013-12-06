@@ -31,20 +31,22 @@
 //using interval = p1788::infsup::interval<T, p1788::flavor::infsup::ieee754_flavor>;
 
 template<typename T>
-using interval = p1788::infsup::interval<T, p1788::flavor::infsup::mpfr_flavor>;
+using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
+
+template<typename T>
+using interval = p1788::infsup::interval<T, flavor>;
 
 int main()
 {
 
-    typedef p1788::flavor::infsup::mpfr_flavor<double> flav;
-
-    interval<double> d_a(-2,1), d_b(0,4), d_c(5,6);
-    interval<float> f_a(1,2), f_b(3,4), f_c(5,6);
-
-
-// Boolean functions
-
-
+//    interval<double> d_a(-2,1), d_b(0,4), d_c(5,6);
+//    interval<float> f_a(1,2), f_b(3,4), f_c(5,6);
+//
+//
+//// Boolean functions
+//
+//
 
     return 0;
 }
+

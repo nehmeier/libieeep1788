@@ -37,6 +37,7 @@ namespace util
 //------------------------------------------------------------------------------
 
 
+//TODO noch notwendig ?
 template<typename... Args>
 class for_each;
 
@@ -74,6 +75,7 @@ public:
 // inserter_func
 //------------------------------------------------------------------------------
 
+//TODO noch notwendig ?
 /// \brief Functor to insert different types into a back insert sequence.
 ///        All types are converted to the type Target.
 ///

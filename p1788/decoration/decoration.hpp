@@ -37,12 +37,11 @@ namespace decoration
 ///
 enum class decoration
 {
-    com,    ///< common, see P1788/D7.0 Sect. 10.10
-    dac,    ///< defined and continuous
-    def,    ///< defined
-    trv,    ///< trivial
-    emp,    ///< empty
-    ill     ///< ill
+    ill = 0,    ///< ill
+    trv = 1,    ///< trivial
+    def = 2,    ///< defined
+    dac = 3,    ///< defined and continuous
+    com = 4    ///< common, see P1788/D7.0 Sect. 10.10
 };
 
 // TODO decorations, finish implementation, functions ...
