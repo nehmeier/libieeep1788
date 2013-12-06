@@ -51,6 +51,7 @@ mpfr_flavor<T, SUBNORMALIZE>::operator_output(std::basic_ostream<CharT, Traits>&
     if (is_empty(x))
         return os << "[Empty]";
 
+    mpfr_var::setup();
     mpfr_var xl(x.first , MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 

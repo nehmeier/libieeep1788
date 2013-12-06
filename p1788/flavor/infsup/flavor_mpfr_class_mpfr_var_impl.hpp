@@ -118,6 +118,18 @@ mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_var()
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
+mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_var(unsigned long int op, mpfr_rnd_t rnd) : mpfr_var()
+{
+    set(op, rnd);
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
+mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_var(long int op, mpfr_rnd_t rnd) : mpfr_var()
+{
+    set(op, rnd);
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
 mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::mpfr_var(float op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
@@ -142,6 +154,18 @@ mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::~mpfr_var()
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
+void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::set(unsigned long int op, mpfr_rnd_t rnd)
+{
+    subnormalize(mpfr_set_ui(var_, op, rnd), rnd);
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
+void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::set(long int op, mpfr_rnd_t rnd)
+{
+    subnormalize(mpfr_set_si(var_, op, rnd), rnd);
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
 void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::set(float op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_flt(var_, op, rnd), rnd);
@@ -150,13 +174,13 @@ void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::set(float op, mpfr_rnd_t rnd)
 template<typename T, subnormalize SUBNORMALIZE>
 void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::set(double op, mpfr_rnd_t rnd)
 {
-    subnormalize(mpfr_set_flt(var_, op, rnd), rnd);
+    subnormalize(mpfr_set_d(var_, op, rnd), rnd);
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
 void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::set(long double op, mpfr_rnd_t rnd)
 {
-    subnormalize(mpfr_set_flt(var_, op, rnd), rnd);
+    subnormalize(mpfr_set_ld(var_, op, rnd), rnd);
 }
 
 
