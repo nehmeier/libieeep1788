@@ -273,6 +273,14 @@ mpfr_flavor<T, SUBNORMALIZE>::method_rad(mpfr_flavor<T, SUBNORMALIZE>::represent
 }
 
 
+template<typename T, subnormalize SUBNORMALIZE>
+p1788::decoration::decoration
+mpfr_flavor<T, SUBNORMALIZE>::method_decoration_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return x.second;
+}
+
+
 // Static Methods
 
 template<typename T, subnormalize SUBNORMALIZE>

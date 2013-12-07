@@ -26,6 +26,7 @@
 
 # relevant header files of this directory
 set(P1788_HEADER_FILES
+    base_interval.hpp
     interval_bool_func_impl.hpp
     interval_cancel_func_impl.hpp
     interval_div_pair_func_impl.hpp

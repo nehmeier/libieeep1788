@@ -116,6 +116,9 @@ public:
     static T method_rad(representation const& x);
     static T method_rad(representation_dec const& x);
 
+    static p1788::decoration::decoration method_decoration_dec(representation_dec const& x);
+
+
     // Static Methods
     static representation static_method_empty();
     static representation_dec static_method_empty_dec();
