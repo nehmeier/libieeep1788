@@ -41,18 +41,6 @@ set(P1788_HEADER_FILES
     interval_set_op_impl.hpp
     compressed_interval.hpp
     decorated_interval.hpp
-    decorated_interval_bool_func_impl.hpp
-    decorated_interval_cancel_func_impl.hpp
-    decorated_interval_div_pair_func_impl.hpp
-    decorated_interval_elem_func_impl.hpp
-    decorated_interval_io_impl.hpp
-    decorated_interval_num_func_impl.hpp
-    decorated_interval_rec_bool_func_impl.hpp
-    decorated_interval_rec_elem_func_impl.hpp
-    decorated_interval_rec_overlap_impl.hpp
-    decorated_interval_rec_slope_func_impl.hpp
-    decorated_interval_rev_elem_func_impl.hpp
-    decorated_interval_set_op_impl.hpp
    )
 
 # relative path of this directory

@@ -45,7 +45,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE>::represen
 
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::cancel_plus_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+mpfr_flavor<T, SUBNORMALIZE>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
                             mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
@@ -92,7 +92,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE>::represe
 
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::cancel_minus_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+mpfr_flavor<T, SUBNORMALIZE>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
                              mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;

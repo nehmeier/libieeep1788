@@ -44,7 +44,7 @@ bool mpfr_flavor<T, SUBNORMALIZE>::is_common(mpfr_flavor<T, SUBNORMALIZE>::repre
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
-bool mpfr_flavor<T, SUBNORMALIZE>::is_common_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+bool mpfr_flavor<T, SUBNORMALIZE>::is_common(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -61,7 +61,7 @@ bool mpfr_flavor<T, SUBNORMALIZE>::is_singleton(mpfr_flavor<T, SUBNORMALIZE>::re
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
-bool mpfr_flavor<T, SUBNORMALIZE>::is_singleton_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+bool mpfr_flavor<T, SUBNORMALIZE>::is_singleton(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -78,7 +78,7 @@ bool mpfr_flavor<T, SUBNORMALIZE>::is_member(T, mpfr_flavor<T, SUBNORMALIZE>::re
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
-bool mpfr_flavor<T, SUBNORMALIZE>::is_member_dec(T, mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+bool mpfr_flavor<T, SUBNORMALIZE>::is_member(T, mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

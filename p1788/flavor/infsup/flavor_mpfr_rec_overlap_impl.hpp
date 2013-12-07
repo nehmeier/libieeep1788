@@ -104,7 +104,7 @@ p1788::overlapping::overlapping_state mpfr_flavor<T, SUBNORMALIZE>::overlap(mpfr
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
-p1788::overlapping::overlapping_state mpfr_flavor<T, SUBNORMALIZE>::overlap_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+p1788::overlapping::overlapping_state mpfr_flavor<T, SUBNORMALIZE>::overlap(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;

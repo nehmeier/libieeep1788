@@ -51,7 +51,7 @@ mpfr_flavor<T, SUBNORMALIZE>::intersect(mpfr_flavor<T, SUBNORMALIZE>::representa
 
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::intersect_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+mpfr_flavor<T, SUBNORMALIZE>::intersect(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
                           mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
@@ -76,7 +76,7 @@ mpfr_flavor<T, SUBNORMALIZE>::hull(mpfr_flavor<T, SUBNORMALIZE>::representation 
 
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::hull_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
+mpfr_flavor<T, SUBNORMALIZE>::hull(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
                      mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;

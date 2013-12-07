@@ -61,7 +61,7 @@ mpfr_flavor<T, SUBNORMALIZE>::operator_output(std::basic_ostream<CharT, Traits>&
 template<typename T, subnormalize SUBNORMALIZE>
 template< typename CharT, typename Traits >
 std::basic_ostream<CharT, Traits>&
-mpfr_flavor<T, SUBNORMALIZE>::operator_output_dec(std::basic_ostream<CharT, Traits>& os,
+mpfr_flavor<T, SUBNORMALIZE>::operator_output(std::basic_ostream<CharT, Traits>& os,
                                 mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
 {
 
@@ -88,7 +88,7 @@ mpfr_flavor<T, SUBNORMALIZE>::operator_input(std::basic_istream<CharT, Traits>& 
 template<typename T, subnormalize SUBNORMALIZE>
 template< typename CharT, typename Traits >
 std::basic_istream<CharT, Traits>&
-mpfr_flavor<T, SUBNORMALIZE>::operator_input_dec(std::basic_istream<CharT, Traits>& is,
+mpfr_flavor<T, SUBNORMALIZE>::operator_input(std::basic_istream<CharT, Traits>& is,
                                mpfr_flavor<T, SUBNORMALIZE>::representation_dec& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
@@ -96,7 +96,7 @@ mpfr_flavor<T, SUBNORMALIZE>::operator_input_dec(std::basic_istream<CharT, Trait
     std::string str;
     std::getline(std::cin, str);
 
-    x = constructor_infsup_dec(str);
+    x = constructor_infsup(str);
 
     return is;
 }

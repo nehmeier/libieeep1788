@@ -26,7 +26,7 @@
 #ifndef LIBIEEEP1788_P1788_INFSUP_DECORATED_INTERVAL_HPP
 #define LIBIEEEP1788_P1788_INFSUP_DECORATED_INTERVAL_HPP
 
-
+/*
 #include <initializer_list>
 #include <utility>
 #include <string>
@@ -854,5 +854,5 @@ private:
 #include "p1788/infsup/decorated_interval_rec_bool_func_impl.hpp"
 #include "p1788/infsup/decorated_interval_rec_slope_func_impl.hpp"
 
-
+*/
 #endif // LIBIEEEP1788_P1788_INFSUP_DECORATED_INTERVAL_HPP

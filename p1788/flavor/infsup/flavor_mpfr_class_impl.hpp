@@ -51,7 +51,7 @@ template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
 mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec()
 {
-    return static_method_empty_dec();
+    return static_method_empty();
 }
 
 
@@ -152,10 +152,10 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(std::string const& str)
     std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::toupper);
 
     if (tmp == "ENTIRE")
-        return static_method_entire_dec();
+        return static_method_entire();
 
     if (tmp == "EMPTY")
-        return static_method_empty_dec();
+        return static_method_empty();
 
     return representation_dec(representation(0.0, 0.0), p1788::decoration::decoration::trv);
 }
@@ -214,7 +214,7 @@ mpfr_flavor<T, SUBNORMALIZE>::method_lower(mpfr_flavor<T, SUBNORMALIZE>::represe
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T, SUBNORMALIZE>::method_lower_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE>::method_lower(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
 {
     return x.first.first;
 }
@@ -229,7 +229,7 @@ mpfr_flavor<T, SUBNORMALIZE>::method_upper(mpfr_flavor<T, SUBNORMALIZE>::represe
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T, SUBNORMALIZE>::method_upper_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE>::method_upper(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
 {
     return x.first.second;
 }
@@ -246,7 +246,7 @@ mpfr_flavor<T, SUBNORMALIZE>::method_mid(mpfr_flavor<T, SUBNORMALIZE>::represent
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T, SUBNORMALIZE>::method_mid_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE>::method_mid(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -265,7 +265,7 @@ mpfr_flavor<T, SUBNORMALIZE>::method_rad(mpfr_flavor<T, SUBNORMALIZE>::represent
 
 template<typename T, subnormalize SUBNORMALIZE>
 T
-mpfr_flavor<T, SUBNORMALIZE>::method_rad_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE>::method_rad(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
