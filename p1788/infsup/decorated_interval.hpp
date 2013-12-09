@@ -29,6 +29,82 @@
 #include "p1788/infsup/base_interval.hpp"
 
 
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//                        Forward declaration
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+namespace p1788
+{
+
+namespace infsup
+{
+
+
+template<typename T, template<typename> class Flavor>
+class decorated_interval;
+
+
+
+} // namespace infsup
+
+
+} // namespace p1788
+
+
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//                        Traits and meta TMP functions
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+namespace p1788
+{
+
+namespace util
+{
+
+//------------------------------------------------------------------------------
+// Trait is_infsup_base_interval_implementation
+//------------------------------------------------------------------------------
+
+// Ignore the warning about non-virtual destructors
+// on GCC  push the last diagnostic state and disable -Weffc++
+//TODO support other compiler
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+
+
+template<typename T, template<typename> class Flavor>
+class is_infsup_base_interval_implementation<p1788::infsup::decorated_interval<T,Flavor>>
+            : public std::integral_constant<bool, true>
+{ };
+
+// on GCC  enable the diagnostic state -Weffc++ again
+#pragma GCC diagnostic pop
+
+
+} // namespace util
+
+} // namespace p1788
+
+
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+//                       Definition of class base_interval
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
+
+
+
+
+
 namespace p1788
 {
 
@@ -38,15 +114,17 @@ namespace infsup
 
 template<typename T, template<typename> class Flavor>
 class decorated_interval final
-    : public base_interval<T, Flavor, typename Flavor<T>::rep_dec, decorated_interval<T, Flavor>>
+    : public base_interval<T, Flavor, typename Flavor<T>::representation_dec, decorated_interval<T, Flavor>>
 {
 
 private:
-    typedef base_interval<T, Flavor, typename Flavor<T>::rep_dec, decorated_interval<T, Flavor>> base_interval_type;
+    typedef base_interval<T, Flavor, typename Flavor<T>::representation_dec, decorated_interval<T, Flavor>> base_interval_type;
 
 
 
 public:
+
+
 
 // -----------------------------------------------------------------------------
 // Constructors
@@ -89,21 +167,21 @@ public:
 // -----------------------------------------------------------------------------
 
 
-    p1788::decoration::decoration lower() const {
+    p1788::decoration::decoration decoration() const {
         return Flavor<T>::method_decoration(base_interval_type::rep_);
     }
 
 
 private:
 
-    decorated_interval(typename Flavor<T>::rep_dec rep)
+    decorated_interval(typename Flavor<T>::representation_dec rep)
         : base_interval_type(rep)
     {}
 
 
 
 
-    friend class base_interval<T, Flavor, typename Flavor<T>::rep_dec, decorated_interval<T, Flavor>>;
+    friend class base_interval<T, Flavor, typename Flavor<T>::representation_dec, decorated_interval<T, Flavor>>;
 
     template<typename, template<typename> class>
     friend class interval;

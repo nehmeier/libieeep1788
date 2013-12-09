@@ -64,7 +64,7 @@ public:
     using representation_type = std::pair<TT,TT>;
 
     template<typename TT>
-    using representation_dec_type = std::pair<std::pair<TT,TT>, p1788::decoration::decoration>;
+    using representation_dec_type = std::pair<representation_type<TT>, p1788::decoration::decoration>;
 
     // Internal representation
     typedef representation_type<T> representation;
@@ -116,7 +116,7 @@ public:
     static T method_rad(representation const& x);
     static T method_rad(representation_dec const& x);
 
-    static p1788::decoration::decoration method_decoration_dec(representation_dec const& x);
+    static p1788::decoration::decoration method_decoration(representation_dec const& x);
 
 
     // Static Methods

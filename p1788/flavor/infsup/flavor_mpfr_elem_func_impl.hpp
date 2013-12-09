@@ -54,7 +54,7 @@ mpfr_flavor<T, SUBNORMALIZE>::neg(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(neg(x), p1788::decoration::decoration::trv);
+    return representation_dec(neg(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -91,7 +91,7 @@ mpfr_flavor<T, SUBNORMALIZE>::add(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(add(x, y), p1788::decoration::decoration::trv);
+    return representation_dec(add(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -128,7 +128,7 @@ mpfr_flavor<T, SUBNORMALIZE>::sub(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(sub(x, y), p1788::decoration::decoration::trv);
+    return representation_dec(sub(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -263,7 +263,7 @@ mpfr_flavor<T, SUBNORMALIZE>::mul(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(mul(x, y), p1788::decoration::decoration::trv);
+    return representation_dec(mul(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -388,7 +388,7 @@ mpfr_flavor<T, SUBNORMALIZE>::div(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(div(x, y), p1788::decoration::decoration::trv);
+    return representation_dec(div(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -405,7 +405,7 @@ mpfr_flavor<T, SUBNORMALIZE>::recip(mpfr_flavor<T, SUBNORMALIZE>::representation
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(recip(x), p1788::decoration::decoration::trv);
+    return representation_dec(recip(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -444,7 +444,7 @@ mpfr_flavor<T, SUBNORMALIZE>::sqrt(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(sqrt(x), p1788::decoration::decoration::trv);
+    return representation_dec(sqrt(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -611,7 +611,7 @@ mpfr_flavor<T, SUBNORMALIZE>::fma(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(fma(x, y, z), p1788::decoration::decoration::trv);}
+    return representation_dec(fma(x.first, y.first, z.first), p1788::decoration::decoration::trv);}
 
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -640,7 +640,7 @@ mpfr_flavor<T, SUBNORMALIZE>::interval_case(mpfr_flavor<T, SUBNORMALIZE>::repres
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(interval_case(c, g, h), p1788::decoration::decoration::trv);
+    return representation_dec(interval_case(c.first, g.first, h.first), p1788::decoration::decoration::trv);
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -674,7 +674,7 @@ mpfr_flavor<T, SUBNORMALIZE>::sqr(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(sqr(x), p1788::decoration::decoration::trv);
+    return representation_dec(sqr(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -772,7 +772,7 @@ mpfr_flavor<T, SUBNORMALIZE>::pown(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(pown(x, p), p1788::decoration::decoration::trv);
+    return representation_dec(pown(x.first, p), p1788::decoration::decoration::trv);
 }
 
 
@@ -799,7 +799,7 @@ mpfr_flavor<T, SUBNORMALIZE>::pow(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(pow(x, y), p1788::decoration::decoration::trv);
+    return representation_dec(pow(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -826,7 +826,7 @@ mpfr_flavor<T, SUBNORMALIZE>::exp(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(exp(x), p1788::decoration::decoration::trv);
+    return representation_dec(exp(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -853,7 +853,7 @@ mpfr_flavor<T, SUBNORMALIZE>::exp2(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(exp2(x), p1788::decoration::decoration::trv);
+    return representation_dec(exp2(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -880,7 +880,7 @@ mpfr_flavor<T, SUBNORMALIZE>::exp10(mpfr_flavor<T, SUBNORMALIZE>::representation
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(exp10(x), p1788::decoration::decoration::trv);
+    return representation_dec(exp10(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -909,7 +909,7 @@ mpfr_flavor<T, SUBNORMALIZE>::log(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(log(x), p1788::decoration::decoration::trv);
+    return representation_dec(log(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -938,7 +938,7 @@ mpfr_flavor<T, SUBNORMALIZE>::log2(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(log2(x), p1788::decoration::decoration::trv);
+    return representation_dec(log2(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -967,7 +967,7 @@ mpfr_flavor<T, SUBNORMALIZE>::log10(mpfr_flavor<T, SUBNORMALIZE>::representation
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(log10(x), p1788::decoration::decoration::trv);
+    return representation_dec(log10(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1057,7 +1057,7 @@ mpfr_flavor<T, SUBNORMALIZE>::sin(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(sin(x), p1788::decoration::decoration::trv);
+    return representation_dec(sin(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1147,7 +1147,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cos(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(cos(x), p1788::decoration::decoration::trv);
+    return representation_dec(cos(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1189,7 +1189,7 @@ mpfr_flavor<T, SUBNORMALIZE>::tan(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(tan(x), p1788::decoration::decoration::trv);
+    return representation_dec(tan(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1219,7 +1219,7 @@ mpfr_flavor<T, SUBNORMALIZE>::asin(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(asin(x), p1788::decoration::decoration::trv);
+    return representation_dec(asin(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1249,7 +1249,7 @@ mpfr_flavor<T, SUBNORMALIZE>::acos(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(acos(x), p1788::decoration::decoration::trv);
+    return representation_dec(acos(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1277,7 +1277,7 @@ mpfr_flavor<T, SUBNORMALIZE>::atan(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(atan(x), p1788::decoration::decoration::trv);
+    return representation_dec(atan(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1303,7 +1303,7 @@ mpfr_flavor<T, SUBNORMALIZE>::atan2(mpfr_flavor<T, SUBNORMALIZE>::representation
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(atan2(y, x), p1788::decoration::decoration::trv);
+    return representation_dec(atan2(y.first, x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1331,7 +1331,7 @@ mpfr_flavor<T, SUBNORMALIZE>::sinh(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(sinh(x), p1788::decoration::decoration::trv);
+    return representation_dec(sinh(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1367,7 +1367,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cosh(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(cosh(x), p1788::decoration::decoration::trv);
+    return representation_dec(cosh(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1395,7 +1395,7 @@ mpfr_flavor<T, SUBNORMALIZE>::tanh(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(tanh(x), p1788::decoration::decoration::trv);
+    return representation_dec(tanh(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1423,7 +1423,7 @@ mpfr_flavor<T, SUBNORMALIZE>::asinh(mpfr_flavor<T, SUBNORMALIZE>::representation
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(asinh(x), p1788::decoration::decoration::trv);
+    return representation_dec(asinh(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1451,7 +1451,7 @@ mpfr_flavor<T, SUBNORMALIZE>::acosh(mpfr_flavor<T, SUBNORMALIZE>::representation
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(acosh(x), p1788::decoration::decoration::trv);
+    return representation_dec(acosh(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1479,7 +1479,7 @@ mpfr_flavor<T, SUBNORMALIZE>::atanh(mpfr_flavor<T, SUBNORMALIZE>::representation
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(atanh(x), p1788::decoration::decoration::trv);
+    return representation_dec(atanh(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1497,7 +1497,7 @@ mpfr_flavor<T, SUBNORMALIZE>::sign(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(sign(x), p1788::decoration::decoration::trv);
+    return representation_dec(sign(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1517,7 +1517,7 @@ mpfr_flavor<T, SUBNORMALIZE>::ceil(mpfr_flavor<T, SUBNORMALIZE>::representation_
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(ceil(x), p1788::decoration::decoration::trv);
+    return representation_dec(ceil(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1537,7 +1537,7 @@ mpfr_flavor<T, SUBNORMALIZE>::floor(mpfr_flavor<T, SUBNORMALIZE>::representation
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(floor(x), p1788::decoration::decoration::trv);
+    return representation_dec(floor(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1557,7 +1557,7 @@ mpfr_flavor<T, SUBNORMALIZE>::trunc(mpfr_flavor<T, SUBNORMALIZE>::representation
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(trunc(x), p1788::decoration::decoration::trv);
+    return representation_dec(trunc(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1590,7 +1590,7 @@ mpfr_flavor<T, SUBNORMALIZE>::round_ties_to_even(mpfr_flavor<T, SUBNORMALIZE>::r
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(round_ties_to_even(x), p1788::decoration::decoration::trv);
+    return representation_dec(round_ties_to_even(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1610,7 +1610,7 @@ mpfr_flavor<T, SUBNORMALIZE>::round_ties_to_away(mpfr_flavor<T, SUBNORMALIZE>::r
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(round_ties_to_away(x), p1788::decoration::decoration::trv);
+    return representation_dec(round_ties_to_away(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1633,7 +1633,7 @@ mpfr_flavor<T, SUBNORMALIZE>::abs(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(abs(x), p1788::decoration::decoration::trv);
+    return representation_dec(abs(x.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1658,7 +1658,7 @@ mpfr_flavor<T, SUBNORMALIZE>::min(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(min(x, y), p1788::decoration::decoration::trv);
+    return representation_dec(min(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -1683,7 +1683,7 @@ mpfr_flavor<T, SUBNORMALIZE>::max(mpfr_flavor<T, SUBNORMALIZE>::representation_d
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(max(x, y), p1788::decoration::decoration::trv);
+    return representation_dec(max(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
 

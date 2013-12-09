@@ -51,6 +51,9 @@ mpfr_flavor<T, SUBNORMALIZE>::operator_output(std::basic_ostream<CharT, Traits>&
     if (is_empty(x))
         return os << "[Empty]";
 
+    if (is_entire(x))
+        return os << "[Entire]";
+
     mpfr_var::setup();
     mpfr_var xl(x.first , MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
@@ -64,8 +67,9 @@ std::basic_ostream<CharT, Traits>&
 mpfr_flavor<T, SUBNORMALIZE>::operator_output(std::basic_ostream<CharT, Traits>& os,
                                 mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
 {
+    operator_output(os, x.first);
 
-    return os << x.first << "_" << x.second;
+    return os << "_" << x.second;
 }
 
 
@@ -96,7 +100,7 @@ mpfr_flavor<T, SUBNORMALIZE>::operator_input(std::basic_istream<CharT, Traits>& 
     std::string str;
     std::getline(std::cin, str);
 
-    x = constructor_infsup(str);
+    x = constructor_infsup_dec(str);
 
     return is;
 }

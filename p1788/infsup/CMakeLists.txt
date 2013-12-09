@@ -27,6 +27,18 @@
 # relevant header files of this directory
 set(P1788_HEADER_FILES
     base_interval.hpp
+    base_interval_bool_func_impl.hpp
+    base_interval_cancel_func_impl.hpp
+    base_interval_div_pair_func_impl.hpp
+    base_interval_elem_func_impl.hpp
+    base_interval_io_impl.hpp
+    base_interval_num_func_impl.hpp
+    base_interval_rec_bool_func_impl.hpp
+    base_interval_rec_elem_func_impl.hpp
+    base_interval_rec_overlap_impl.hpp
+    base_interval_rec_slope_func_impl.hpp
+    base_interval_rev_elem_func_impl.hpp
+    base_interval_set_op_impl.hpp
     interval_bool_func_impl.hpp
     interval_cancel_func_impl.hpp
     interval_div_pair_func_impl.hpp
@@ -55,5 +67,4 @@ add_custom_target("header${P1788_HEADERS_TARGET_SUFFIX}" SOURCES ${P1788_HEADER_
 
 # install header files
 install(FILES ${P1788_HEADER_FILES} DESTINATION "include${P1788_RELATIVE_PATH}")
-
 

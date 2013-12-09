@@ -47,7 +47,7 @@ mpfr_flavor<T, SUBNORMALIZE>::is_empty(mpfr_flavor<T, SUBNORMALIZE>::representat
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T, SUBNORMALIZE>::is_empty(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE>::is_empty(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -84,8 +84,8 @@ mpfr_flavor<T, SUBNORMALIZE>::is_equal(mpfr_flavor<T, SUBNORMALIZE>::representat
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T, SUBNORMALIZE>::is_equal(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+mpfr_flavor<T, SUBNORMALIZE>::is_equal(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -103,8 +103,8 @@ mpfr_flavor<T, SUBNORMALIZE>::contained_in(mpfr_flavor<T, SUBNORMALIZE>::represe
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T, SUBNORMALIZE>::contained_in(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
-                             mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+mpfr_flavor<T, SUBNORMALIZE>::contained_in(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
+                             mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -123,8 +123,8 @@ mpfr_flavor<T, SUBNORMALIZE>::less(mpfr_flavor<T, SUBNORMALIZE>::representation 
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T, SUBNORMALIZE>::less(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
-                     mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+mpfr_flavor<T, SUBNORMALIZE>::less(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
+                     mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

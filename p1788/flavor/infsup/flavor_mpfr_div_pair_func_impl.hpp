@@ -59,7 +59,7 @@ mpfr_flavor<T, SUBNORMALIZE>::div_to_pair(mpfr_flavor<T, SUBNORMALIZE>::represen
               div(x, representation_dec(representation(0.0, y.first.second), y.second)));
 
         return std::pair<typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec, typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec>
-            (div(x, y), static_method_empty());
+            (div(x, y), static_method_empty_dec());
 }
 
 

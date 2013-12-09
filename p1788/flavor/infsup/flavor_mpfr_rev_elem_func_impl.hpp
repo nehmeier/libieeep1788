@@ -56,7 +56,7 @@ mpfr_flavor<T, SUBNORMALIZE>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -73,7 +73,7 @@ mpfr_flavor<T, SUBNORMALIZE>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -95,7 +95,7 @@ mpfr_flavor<T, SUBNORMALIZE>::recip_rev(mpfr_flavor<T, SUBNORMALIZE>::representa
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -112,7 +112,7 @@ mpfr_flavor<T, SUBNORMALIZE>::recip_rev(mpfr_flavor<T, SUBNORMALIZE>::representa
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -140,7 +140,7 @@ mpfr_flavor<T, SUBNORMALIZE>::abs_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -157,7 +157,7 @@ mpfr_flavor<T, SUBNORMALIZE>::abs_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -180,7 +180,7 @@ mpfr_flavor<T, SUBNORMALIZE>::pown_rev(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -199,7 +199,7 @@ mpfr_flavor<T, SUBNORMALIZE>::pown_rev(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -324,7 +324,7 @@ mpfr_flavor<T, SUBNORMALIZE>::sin_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -341,7 +341,7 @@ mpfr_flavor<T, SUBNORMALIZE>::sin_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -469,7 +469,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cos_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -486,7 +486,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cos_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -588,7 +588,7 @@ mpfr_flavor<T, SUBNORMALIZE>::tan_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -605,7 +605,7 @@ mpfr_flavor<T, SUBNORMALIZE>::tan_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -630,7 +630,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -647,7 +647,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -766,7 +766,7 @@ mpfr_flavor<T, SUBNORMALIZE>::mul_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -785,7 +785,7 @@ mpfr_flavor<T, SUBNORMALIZE>::mul_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -924,7 +924,7 @@ mpfr_flavor<T, SUBNORMALIZE>::div_rev1(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -943,7 +943,7 @@ mpfr_flavor<T, SUBNORMALIZE>::div_rev1(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -1099,7 +1099,7 @@ mpfr_flavor<T, SUBNORMALIZE>::div_rev2(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -1118,7 +1118,7 @@ mpfr_flavor<T, SUBNORMALIZE>::div_rev2(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -1141,7 +1141,7 @@ mpfr_flavor<T, SUBNORMALIZE>::pow_rev1(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -1162,7 +1162,7 @@ mpfr_flavor<T, SUBNORMALIZE>::pow_rev1(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -1185,7 +1185,7 @@ mpfr_flavor<T, SUBNORMALIZE>::pow_rev2(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -1206,7 +1206,7 @@ mpfr_flavor<T, SUBNORMALIZE>::pow_rev2(mpfr_flavor<T, SUBNORMALIZE>::representat
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -1229,7 +1229,7 @@ mpfr_flavor<T, SUBNORMALIZE>::atan2_rev1(mpfr_flavor<T, SUBNORMALIZE>::represent
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -1250,7 +1250,7 @@ mpfr_flavor<T, SUBNORMALIZE>::atan2_rev1(mpfr_flavor<T, SUBNORMALIZE>::represent
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -1273,7 +1273,7 @@ mpfr_flavor<T, SUBNORMALIZE>::atan2_rev2(mpfr_flavor<T, SUBNORMALIZE>::represent
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 
@@ -1294,7 +1294,7 @@ mpfr_flavor<T, SUBNORMALIZE>::atan2_rev2(mpfr_flavor<T, SUBNORMALIZE>::represent
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
 }
 
 } // namespace infsup

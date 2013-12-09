@@ -131,10 +131,10 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(std::string const& str)
     tmp.erase(remove_if(tmp.begin(), tmp.end(), ::isspace), tmp.end());
     std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::toupper);
 
-    if (tmp == "ENTIRE")
+    if (tmp == "[ENTIRE]")
         return static_method_entire();
 
-    if (tmp == "EMPTY")
+    if (tmp == "[EMPTY]")
         return static_method_empty();
 
     return representation(0.0, 0.0);
@@ -151,11 +151,11 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(std::string const& str)
     tmp.erase(remove_if(tmp.begin(), tmp.end(), ::isspace), tmp.end());
     std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::toupper);
 
-    if (tmp == "ENTIRE")
-        return static_method_entire();
+    if (tmp == "[ENTIRE]")
+        return static_method_entire_dec();
 
-    if (tmp == "EMPTY")
-        return static_method_empty();
+    if (tmp == "[EMPTY]")
+        return static_method_empty_dec();
 
     return representation_dec(representation(0.0, 0.0), p1788::decoration::decoration::trv);
 }
@@ -275,7 +275,7 @@ mpfr_flavor<T, SUBNORMALIZE>::method_rad(mpfr_flavor<T, SUBNORMALIZE>::represent
 
 template<typename T, subnormalize SUBNORMALIZE>
 p1788::decoration::decoration
-mpfr_flavor<T, SUBNORMALIZE>::method_decoration_dec(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE>::method_decoration(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
 {
     return x.second;
 }

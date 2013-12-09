@@ -72,7 +72,7 @@ namespace util
 {
 
 //------------------------------------------------------------------------------
-// Trait is_infsup_base_interval
+// Trait is_infsup_base_interval_implementation
 //------------------------------------------------------------------------------
 
 // Ignore the warning about non-virtual destructors
@@ -89,13 +89,15 @@ namespace util
 ///
 ///
 template<typename T>
-class is_infsup_base_interval
+class is_infsup_base_interval_implementation
     : public std::integral_constant<bool, false>
 { };
 
+
+// only true for subclasses
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-class is_infsup_base_interval<p1788::infsup::base_interval<T,Flavor,RepType,ConcreteInterval>>
-            : public std::integral_constant<bool, true>
+class is_infsup_base_interval_implementation<p1788::infsup::base_interval<T, Flavor, RepType, ConcreteInterval>>
+    : public std::integral_constant<bool, false>
 { };
 
 // on GCC  enable the diagnostic state -Weffc++ again
@@ -144,16 +146,16 @@ namespace infsup
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 class base_interval
 {
-    static_assert(
-    std::is_same<typename Flavor<T>::representation_type, RepType>::value
-        || std::is_same<typename Flavor<T>::representation_dec_type, RepType>::value,
-        "Representation is not supported!");
-
-    static_assert(p1788::util::is_infsup_base_interval<ConcreteInterval>::value, "Concrete interval type is not supported!");
-
-    static_assert(std::is_same<typename ConcreteInterval::bound_type, T>::value, "Bound types are different!");
-
-    static_assert(std::is_same<typename ConcreteInterval::flavor_type, Flavor<T>>::value, "Flavor types are different!");
+//    static_assert(
+//    std::is_same<typename Flavor<T>::representation, RepType>::value
+//        || std::is_same<typename Flavor<T>::representation_dec, RepType>::value,
+//        "Representation is not supported!");
+//
+//    static_assert(p1788::util::is_infsup_base_interval_implementation<ConcreteInterval>::value, "Concrete interval type is not supported!");
+//
+//    static_assert(std::is_same<typename ConcreteInterval::bound_type, T>::value, "Bound types are different!");
+//
+//    static_assert(std::is_same<typename ConcreteInterval::flavor_type, Flavor<T>>::value, "Flavor types are different!");
 
 
 
@@ -242,8 +244,7 @@ protected:
 // Static methods
 // -----------------------------------------------------------------------------
 
-    static ConcreteInterval concrete_interval(representation_type rep)
-    {
+    static ConcreteInterval concrete_interval(representation_type rep) {
         return ConcreteInterval(rep);
     }
 
@@ -263,11 +264,505 @@ protected:
 
 
 
+// -----------------------------------------------------------------------------
+// IO operators
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_, typename CharT, typename Traits>
+    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_, typename CharT, typename Traits>
+    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_>&);
+
+
+// -----------------------------------------------------------------------------
+// Non-arithmetic set operations
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_
+    intersect(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_
+    hull(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+
+// -----------------------------------------------------------------------------
+// Numeric functions on intervals
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend T_ inf(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend T_ sup(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend T_ mid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend T_ rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend std::pair<T_, T_> mid_rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend T_ wid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend T_ mag(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend T_ mig(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+
+// -----------------------------------------------------------------------------
+// Boolean functions on intervals
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool is_empty(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool is_entire(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool is_equal(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool contained_in(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool contains(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool less(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool greater(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool precedes(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool succeeds(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool is_interior(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool contains_interior(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool strictly_less(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool strictly_greater(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool strictly_precedes(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool strictly_succeeds(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool are_disjoint(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+
+// -----------------------------------------------------------------------------
+// Forward elementary functions
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ pos(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ neg(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ add (base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sub(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ mul(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ div(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ recip(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sqr(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sqrt(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ fma(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                 base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                 base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ interval_case(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                           base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                           base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ pown(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, int p);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ pow(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ exp(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ exp2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ exp10(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ log(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ log2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ log10(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sin(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cos(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ tan(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ asin(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ acos(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ atan(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ atan2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sinh(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cosh(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ tanh(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ asinh(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ acosh(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ atanh(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sign(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ ceil(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ floor(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ trunc(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ round_ties_to_even(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ round_ties_to_away(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ abs(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ min(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ max(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+
+// -----------------------------------------------------------------------------
+//  Recommended div to pair function
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend std::pair<ConcreteInterval_, ConcreteInterval_>
+    div_to_pair(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+
+// -----------------------------------------------------------------------------
+// Reverse elementary functions
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sqr_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sqr_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ recip_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ recip_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ abs_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ abs_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ pown_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, int);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ pown_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, int);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sin_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sin_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cos_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cos_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ tan_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ tan_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cosh_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cosh_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ mul_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                       base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                       base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ mul_rev(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ div_rev1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                        base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                        base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ div_rev1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ div_rev2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                        base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                        base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ div_rev2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ pow_rev1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                        base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                        base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ pow_rev1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ pow_rev2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                        base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                        base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ pow_rev2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ atan2_rev1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                          base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                          base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ atan2_rev1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ atan2_rev2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                          base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+                                          base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ atan2_rev2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+
+// -----------------------------------------------------------------------------
+// Cancellative addition and subtraction
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cancel_plus(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cancel_minus(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+
+// -----------------------------------------------------------------------------
+// Recommended boolean functions on intervals
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool is_common(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool is_singleton(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool is_member(T_ m, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+
+// -----------------------------------------------------------------------------
+// Recommended forward elementary functions on intervals
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ rootn(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, int);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ expm1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ exp2m1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ exp10m1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ logp1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ log2p1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ log10p1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ compoundm1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ hypot(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ r_sqrt(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sin_pi(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cos_pi(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ tan_pi(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ asin_pi(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ acos_pi(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ atan_pi(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ atan2_pi(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+
+// -----------------------------------------------------------------------------
+// Recommended interval overlapping
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend p1788::overlapping::overlapping_state overlap(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
+            base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+
+// -----------------------------------------------------------------------------
+// Recommended slope functions
+// -----------------------------------------------------------------------------
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ exp_slope1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ exp_slope2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ log_slope1(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ log_slope2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cos_slope2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sin_slope3(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ asin_slope3(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ atan_slope3(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ cosh_slope2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend ConcreteInterval_ sinh_slope3(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
 
 };
 
 } // namespace infsup
 
 } // namespace p1788
+
+
+#include "p1788/infsup/base_interval_io_impl.hpp"
+#include "p1788/infsup/base_interval_set_op_impl.hpp"
+#include "p1788/infsup/base_interval_num_func_impl.hpp"
+#include "p1788/infsup/base_interval_bool_func_impl.hpp"
+#include "p1788/infsup/base_interval_elem_func_impl.hpp"
+#include "p1788/infsup/base_interval_div_pair_func_impl.hpp"
+#include "p1788/infsup/base_interval_rev_elem_func_impl.hpp"
+#include "p1788/infsup/base_interval_cancel_func_impl.hpp"
+#include "p1788/infsup/base_interval_rec_bool_func_impl.hpp"
+#include "p1788/infsup/base_interval_rec_elem_func_impl.hpp"
+#include "p1788/infsup/base_interval_rec_overlap_impl.hpp"
+#include "p1788/infsup/base_interval_rec_slope_func_impl.hpp"
 
 #endif // LIBIEEEP1788_P1788_INFSUP_BASE_INTERVAL_HPP

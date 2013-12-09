@@ -26,6 +26,10 @@
 #ifndef LIBIEEEP1788_P1788_DECORATION_DECORATION_HPP
 #define LIBIEEEP1788_P1788_DECORATION_DECORATION_HPP
 
+#include <algorithm>
+
+#include "p1788/util/assert.hpp"
+
 namespace p1788
 {
 
@@ -44,7 +48,41 @@ enum class decoration
     com = 4    ///< common, see P1788/D7.0 Sect. 10.10
 };
 
-// TODO decorations, finish implementation, functions ...
+std::string decoration_map[] = { "ill", "trv", "def", "dac", "com" };
+
+
+
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& operator<<(
+    std::basic_ostream<CharT, Traits>& os,
+    decoration dec)
+{
+    return os << decoration_map[static_cast<typename std::underlying_type<decoration>::type>(dec)];
+
+}
+
+template<typename CharT, typename Traits>
+std::basic_istream<CharT, Traits>& operator>>(
+    std::basic_istream<CharT, Traits>& is,
+    decoration& dec )
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    std::string s;
+    s.resize(3);
+
+    is.read(&s[0], 3);
+
+    auto i = std::find(begin(decoration_map), end(decoration_map), s);
+
+    if (i != end(decoration_map))
+        dec =  static_cast<decoration>(i - begin(decoration_map));
+    else
+        dec = decoration::trv;
+
+    return is;
+}
+
 
 } // namespace decoration
 

@@ -50,7 +50,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE>::represen
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(cancel_plus(x, y), p1788::decoration::decoration::trv);
+    return representation_dec(cancel_plus(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
 
@@ -97,7 +97,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE>::represe
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return representation_dec(cancel_minus(x, y), p1788::decoration::decoration::trv);
+    return representation_dec(cancel_minus(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
 
