@@ -52,14 +52,14 @@ BOOST_AUTO_TEST_CASE(minimal_neg_test)
 BOOST_AUTO_TEST_CASE(minimal_add_test)
 {
     BOOST_CHECK_EQUAL( add(I<double>(1.0,2.0), I<double>(3.0,4.0)), I<double>(4.0,6.0) );
-    BOOST_CHECK_EQUAL( p1788::infsup::add<I<float>>(I<double>(1.0,2.0), I<float>(3.0,4.0)), I<float>(4.0,6.0) );
+//    BOOST_CHECK_EQUAL( p1788::infsup::add<I<float>>(I<double>(1.0,2.0), I<float>(3.0,4.0)), I<float>(4.0,6.0) );
     BOOST_CHECK_EQUAL( I<double>(1.0,2.0) + I<double>(3.0,4.0), I<double>(4.0,6.0) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_sub_test)
 {
     BOOST_CHECK_EQUAL( sub(I<double>(1.0,2.0), I<double>(3.0,4.0)), I<double>(-3.0,-1.0) );
-    BOOST_CHECK_EQUAL( p1788::infsup::sub<I<float>>(I<double>(1.0,2.0), I<float>(3.0,4.0)), I<float>(-3.0,-1.0) );
+//    BOOST_CHECK_EQUAL( p1788::infsup::sub<I<float>>(I<double>(1.0,2.0), I<float>(3.0,4.0)), I<float>(-3.0,-1.0) );
     BOOST_CHECK_EQUAL( I<double>(1.0,2.0) - I<double>(3.0,4.0), I<double>(-3.0,-1.0) );
 }
 

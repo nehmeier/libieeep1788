@@ -53,99 +53,99 @@ BOOST_AUTO_TEST_CASE(minimal_is_entire_test)
 BOOST_AUTO_TEST_CASE(minimal_is_equal_test)
 {
     BOOST_CHECK_EQUAL( is_equal(I<double>(1.0,2.0), I<double>(1.0,2.0)), true);
-    BOOST_CHECK_EQUAL( is_equal(I<double>(1.0,2.0), I<float>(1.0,2.0)), true);
+//    BOOST_CHECK_EQUAL( is_equal(I<double>(1.0,2.0), I<float>(1.0,2.0)), true);
     BOOST_CHECK_EQUAL( I<double>(1.0,2.0) == I<double>(1.0,2.0), true);
-    BOOST_CHECK_EQUAL( I<double>(1.0,2.0) == I<float>(1.0,2.0), true);
+//    BOOST_CHECK_EQUAL( I<double>(1.0,2.0) == I<float>(1.0,2.0), true);
     BOOST_CHECK_EQUAL( I<double>(1.0,2.4) != I<double>(1.0,2.0), true);
-    BOOST_CHECK_EQUAL( I<double>(1.0,2.4) != I<float>(1.0,2.0), true);
+//    BOOST_CHECK_EQUAL( I<double>(1.0,2.4) != I<float>(1.0,2.0), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_contained_in_test)
 {
     BOOST_CHECK_EQUAL( contained_in(I<double>(1.0,2.0), I<double>(0.0,4.0)), true);
-    BOOST_CHECK_EQUAL( contained_in(I<double>(1.0,2.0), I<float>(0.0,4.0)), true);
+//    BOOST_CHECK_EQUAL( contained_in(I<double>(1.0,2.0), I<float>(0.0,4.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_contains_test)
 {
     BOOST_CHECK_EQUAL( contains(I<double>(0.0,4.0), I<double>(1.0,2.0)), true);
-    BOOST_CHECK_EQUAL( contains(I<double>(0.0,4.0), I<float>(1.0,2.0)), true);
+//    BOOST_CHECK_EQUAL( contains(I<double>(0.0,4.0), I<float>(1.0,2.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_less_test)
 {
     BOOST_CHECK_EQUAL( less(I<double>(1.0,2.0), I<double>(3.0,4.0)), true);
-    BOOST_CHECK_EQUAL( less(I<double>(1.0,2.0), I<float>(3.0,4.0)), true);
+//    BOOST_CHECK_EQUAL( less(I<double>(1.0,2.0), I<float>(3.0,4.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_greater_test)
 {
     BOOST_CHECK_EQUAL( greater(I<double>(3.0,4.0), I<double>(1.0,2.0)), true);
-    BOOST_CHECK_EQUAL( greater(I<float>(3.0,4.0), I<double>(1.0,2.0)), true);
+//    BOOST_CHECK_EQUAL( greater(I<float>(3.0,4.0), I<double>(1.0,2.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_precedes_test)
 {
     BOOST_CHECK_EQUAL( precedes(I<double>(1.0,2.0), I<double>(3.0,4.0)), true);
-    BOOST_CHECK_EQUAL( precedes(I<double>(1.0,2.0), I<float>(3.0,4.0)), true);
+//    BOOST_CHECK_EQUAL( precedes(I<double>(1.0,2.0), I<float>(3.0,4.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_succeeds_test)
 {
     BOOST_CHECK_EQUAL( succeeds(I<double>(3.0,4.0), I<double>(1.0,2.0)), true);
-    BOOST_CHECK_EQUAL( succeeds(I<float>(3.0,4.0), I<double>(1.0,2.0)), true);
+//    BOOST_CHECK_EQUAL( succeeds(I<float>(3.0,4.0), I<double>(1.0,2.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_is_interior_test)
 {
     BOOST_CHECK_EQUAL( is_interior(I<double>(1.0,2.0), I<double>(0.0,4.0)), true);
-    BOOST_CHECK_EQUAL( is_interior(I<double>(1.0,2.0), I<float>(0.0,4.0)), true);
+//    BOOST_CHECK_EQUAL( is_interior(I<double>(1.0,2.0), I<float>(0.0,4.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_contains_interior_test)
 {
     BOOST_CHECK_EQUAL( contains_interior(I<double>(0.0,4.0), I<double>(1.0,2.0)), true);
-    BOOST_CHECK_EQUAL( contains_interior(I<float>(0.0,4.0), I<double>(1.0,2.0)), true);
+//    BOOST_CHECK_EQUAL( contains_interior(I<float>(0.0,4.0), I<double>(1.0,2.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_less_test)
 {
     BOOST_CHECK_EQUAL( strictly_less(I<double>(1.0,2.0), I<double>(3.0,4.0)), true);
-    BOOST_CHECK_EQUAL( strictly_less(I<double>(1.0,2.0), I<float>(3.0,4.0)), true);
+//    BOOST_CHECK_EQUAL( strictly_less(I<double>(1.0,2.0), I<float>(3.0,4.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_greater_test)
 {
     BOOST_CHECK_EQUAL( strictly_greater(I<double>(3.0,4.0), I<double>(1.0,2.0)), true);
-    BOOST_CHECK_EQUAL( strictly_greater(I<float>(3.0,4.0), I<double>(1.0,2.0)), true);
+//    BOOST_CHECK_EQUAL( strictly_greater(I<float>(3.0,4.0), I<double>(1.0,2.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_test)
 {
     BOOST_CHECK_EQUAL( strictly_precedes(I<double>(1.0,2.0), I<double>(3.0,4.0)), true);
-    BOOST_CHECK_EQUAL( strictly_precedes(I<double>(1.0,2.0), I<float>(3.0,4.0)), true);
+//    BOOST_CHECK_EQUAL( strictly_precedes(I<double>(1.0,2.0), I<float>(3.0,4.0)), true);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_succeeds_test)
 {
     BOOST_CHECK_EQUAL( strictly_succeeds(I<double>(3.0,4.0), I<double>(1.0,2.0)), true);
-    BOOST_CHECK_EQUAL( strictly_succeeds(I<float>(3.0,4.0), I<double>(1.0,2.0)), true);
+//    BOOST_CHECK_EQUAL( strictly_succeeds(I<float>(3.0,4.0), I<double>(1.0,2.0)), true);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_are_disjoint_test)
 {
     BOOST_CHECK_EQUAL( are_disjoint(I<double>(3.0,4.0), I<double>(1.0,2.0)), true);
-    BOOST_CHECK_EQUAL( are_disjoint(I<float>(3.0,4.0), I<double>(1.0,2.0)), true);
+//    BOOST_CHECK_EQUAL( are_disjoint(I<float>(3.0,4.0), I<double>(1.0,2.0)), true);
 }

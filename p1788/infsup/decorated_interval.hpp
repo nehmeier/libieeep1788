@@ -172,6 +172,22 @@ public:
     }
 
 
+// -----------------------------------------------------------------------------
+// Static methods
+// -----------------------------------------------------------------------------
+
+// Required, Creates an empty interval, see P1788/D8.1 Sect. 10.6.2
+
+    static decorated_interval empty() {
+        return decorated_interval(Flavor<T>::static_method_empty_dec());
+    }
+
+// Required, Creates an entire interval, see P1788/D8.1 Sect. 10.6.2
+    static decorated_interval entire() {
+        return decorated_interval(Flavor<T>::static_method_entire_dec());
+    }
+
+
 private:
 
     decorated_interval(typename Flavor<T>::representation_dec rep)

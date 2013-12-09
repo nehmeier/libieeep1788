@@ -54,31 +54,31 @@ int main()
 
     std::cout << "add: " << add(d_a, d_b) << std::endl;
     std::cout << "x + y: " << d_a + d_b << std::endl;
-    std::cout << "add mt: " << add<I<float>>(d_a, f_b) << std::endl << std::endl;
+//    std::cout << "add mt: " << add<I<float>>(d_a, f_b) << std::endl << std::endl;
 
     std::cout << "sub: " << sub(d_a, d_b) << std::endl;
     std::cout << "x - y: " << d_a - d_b << std::endl;
-    std::cout << "sub mt: " << sub<I<float>>(d_a, f_b) << std::endl << std::endl;
+//    std::cout << "sub mt: " << sub<I<float>>(d_a, f_b) << std::endl << std::endl;
 
     std::cout << "mul: " << mul(d_a, d_b) << std::endl;
     std::cout << "x * y: " << d_a * d_b << std::endl;
-    std::cout << "mul mt: " << mul<I<float>>(d_a, f_b) << std::endl << std::endl;
+//    std::cout << "mul mt: " << mul<I<float>>(d_a, f_b) << std::endl << std::endl;
 
     std::cout << "div: " << div(d_a, d_b) << std::endl;
     std::cout << "x / y: " << d_a / d_b << std::endl;
-    std::cout << "div mt: " << div<I<float>>(d_a, f_b) << std::endl << std::endl;
+//    std::cout << "div mt: " << div<I<float>>(d_a, f_b) << std::endl << std::endl;
 
     std::cout << "recip: " << recip(d_a) << std::endl;
-    std::cout << "recip mt: " << recip<I<float>>(d_a) << std::endl << std::endl;
+//    std::cout << "recip mt: " << recip<I<float>>(d_a) << std::endl << std::endl;
 
     std::cout << "sqr: " << sqr(d_a) << std::endl;
-    std::cout << "sqr mt: " << sqr<I<float>>(d_a) << std::endl << std::endl;
+//    std::cout << "sqr mt: " << sqr<I<float>>(d_a) << std::endl << std::endl;
 
     std::cout << "sqrt: " << sqrt(d_a) << std::endl;
-    std::cout << "sqrt mt: " << sqrt<I<float>>(d_a) << std::endl << std::endl;
+//    std::cout << "sqrt mt: " << sqrt<I<float>>(d_a) << std::endl << std::endl;
 
     std::cout << "fma: " << fma(d_a, d_b, d_c) << std::endl;
-    std::cout << "fma mt: " << fma<I<float>>(d_a, f_b, d_c) << std::endl << std::endl;
+//    std::cout << "fma mt: " << fma<I<float>>(d_a, f_b, d_c) << std::endl << std::endl;
 
     std::cout << "case: " << interval_case(d_a, d_b, d_c) << std::endl;
 

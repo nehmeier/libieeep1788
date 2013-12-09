@@ -204,24 +204,6 @@ public:
 
 
 // -----------------------------------------------------------------------------
-// Static methods
-// -----------------------------------------------------------------------------
-
-// Required, Creates an empty interval, see P1788/D8.1 Sect. 10.6.2
-
-    static interval<T, Flavor> empty() {
-        return interval<T, Flavor>(Flavor<T>::static_method_empty());
-    }
-
-// Required, Creates an entire interval, see P1788/D8.1 Sect. 10.6.2
-    static interval<T, Flavor> entire() {
-        return interval<T, Flavor>(Flavor<T>::static_method_entire());
-    }
-
-
-
-
-// -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
 // protected
 // -----------------------------------------------------------------------------
