@@ -51,7 +51,7 @@ template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
 mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec()
 {
-    return static_method_empty();
+    return static_method_empty_dec();
 }
 
 

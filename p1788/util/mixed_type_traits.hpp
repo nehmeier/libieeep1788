@@ -25,13 +25,61 @@
 
 #include <type_traits>
 
-#include "p1788/infsup/interval.hpp"
+#include "p1788/infsup/forward_declaration.hpp"
 
 namespace p1788
 {
 
 namespace util
 {
+
+
+//------------------------------------------------------------------------------
+// Trait is_infsup_base_interval_implementation
+//------------------------------------------------------------------------------
+
+// Ignore the warning about non-virtual destructors
+// on GCC  push the last diagnostic state and disable -Weffc++
+//TODO support other compiler
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Weffc++"
+
+
+/// \brief Trait to check if type T is an p1788::infsup::base_interval
+///
+/// \param T type
+/// \return field value contains boolean result of the check
+///
+///
+template<typename T>
+class is_infsup_base_interval_implementation
+    : public std::integral_constant<bool, false>
+{ };
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+class is_infsup_base_interval_implementation<p1788::infsup::base_interval<T, Flavor, RepType, ConcreteInterval>>
+    : public std::integral_constant<bool, true>
+{ };
+
+
+template<typename T, template<typename> class Flavor>
+class is_infsup_base_interval_implementation<p1788::infsup::interval<T,Flavor>>
+            : public std::integral_constant<bool, true>
+{ };
+
+
+template<typename T, template<typename> class Flavor>
+class is_infsup_base_interval_implementation<p1788::infsup::decorated_interval<T,Flavor>>
+            : public std::integral_constant<bool, true>
+{ };
+
+
+// on GCC  enable the diagnostic state -Weffc++ again
+#pragma GCC diagnostic pop
+
+
+
 
 //------------------------------------------------------------------------------
 //  Traits type_precision_order and max_precision_type
@@ -58,24 +106,24 @@ class type_precision_order
 };
 
 
-template<typename... Types> class max_precision_type
+template<typename... Types> class max_precision_interval_type
 {
     static_assert(sizeof...(Types) > 0,
-                  "max_precision_type for an empty argument list!");
+                  "max_precision_interval_type for an empty argument list!");
 };
 
 
 template<typename First, typename Second, typename... Tail>
-class max_precision_type<First, Second, Tail...>
+class max_precision_interval_type<First, Second, Tail...>
 {
 public:
-    static_assert(std::is_same<typename type_precision_order<First>::value_type,
-                  typename type_precision_order<Second>::value_type>::value,
+    static_assert(std::is_same<typename type_precision_order<typename First::bound_type>::value_type,
+                  typename type_precision_order<typename Second::bound_type>::value_type>::value,
                   "Different type groups!");
 
-    typedef typename max_precision_type<
+    typedef typename max_precision_interval_type<
     typename std::conditional<
-    (type_precision_order<First>::value > type_precision_order<Second>::value),
+    (type_precision_order<typename First::bound_type>::value > type_precision_order<typename Second::bound_type>::value),
     First,
     Second
     >::type,
@@ -84,13 +132,11 @@ public:
 };
 
 template<typename Type>
-class max_precision_type<Type>
+class max_precision_interval_type<Type>
 {
 public:
     typedef Type type;
 };
-
-
 
 
 

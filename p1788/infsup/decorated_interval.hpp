@@ -26,32 +26,9 @@
 #ifndef LIBIEEEP1788_P1788_INFSUP_DECORATED_INTERVAL_HPP
 #define LIBIEEEP1788_P1788_INFSUP_DECORATED_INTERVAL_HPP
 
+#include "p1788/infsup/forward_declaration.hpp"
 #include "p1788/infsup/base_interval.hpp"
 
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//                        Forward declaration
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-
-namespace p1788
-{
-
-namespace infsup
-{
-
-
-template<typename T, template<typename> class Flavor>
-class decorated_interval;
-
-
-
-} // namespace infsup
-
-
-} // namespace p1788
 
 
 
@@ -79,10 +56,7 @@ namespace util
 #pragma GCC diagnostic ignored "-Weffc++"
 
 
-template<typename T, template<typename> class Flavor>
-class is_infsup_base_interval_implementation<p1788::infsup::decorated_interval<T,Flavor>>
-            : public std::integral_constant<bool, true>
-{ };
+
 
 // on GCC  enable the diagnostic state -Weffc++ again
 #pragma GCC diagnostic pop
@@ -157,7 +131,7 @@ public:
     { }
 
     template<typename T_>
-    explicit decorated_interval(decorated_interval<T_, Flavor> const& other)  ///< Copy-constructor
+    explicit decorated_interval(base_interval<T_, Flavor, typename Flavor<T_>::representation_dec, decorated_interval<T_, Flavor>> const& other)  ///< Copy-constructor
         : base_interval_type(Flavor<T>::constructor_infsup_dec(other.rep_))
     { }
 
@@ -190,7 +164,7 @@ public:
 
 private:
 
-    decorated_interval(typename Flavor<T>::representation_dec rep)
+    explicit decorated_interval(typename Flavor<T>::representation_dec rep)
         : base_interval_type(rep)
     {}
 

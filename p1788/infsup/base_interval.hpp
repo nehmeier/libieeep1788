@@ -27,86 +27,7 @@
 #define LIBIEEEP1788_P1788_INFSUP_BASE_INTERVAL_HPP
 
 
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//                        Forward declaration
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-
-namespace p1788
-{
-
-namespace infsup
-{
-
-
-//TODO hull, see P1788/D7.0 Sect. 9.3
-
-
-// Forward declaration
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-class base_interval;
-
-
-
-} // namespace infsup
-
-
-} // namespace p1788
-
-
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//                        Traits and meta TMP functions
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-
-namespace p1788
-{
-
-namespace util
-{
-
-//------------------------------------------------------------------------------
-// Trait is_infsup_base_interval_implementation
-//------------------------------------------------------------------------------
-
-// Ignore the warning about non-virtual destructors
-// on GCC  push the last diagnostic state and disable -Weffc++
-//TODO support other compiler
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-
-
-/// \brief Trait to check if type T is an p1788::infsup::base_interval
-///
-/// \param T type
-/// \return field value contains boolean result of the check
-///
-///
-template<typename T>
-class is_infsup_base_interval_implementation
-    : public std::integral_constant<bool, false>
-{ };
-
-
-// only true for subclasses
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-class is_infsup_base_interval_implementation<p1788::infsup::base_interval<T, Flavor, RepType, ConcreteInterval>>
-    : public std::integral_constant<bool, false>
-{ };
-
-// on GCC  enable the diagnostic state -Weffc++ again
-#pragma GCC diagnostic pop
-
-
-} // namespace util
-
-} // namespace p1788
+#include "p1788/infsup/forward_declaration.hpp"
 
 
 
@@ -172,6 +93,8 @@ public:
 
     typedef Flavor<T> flavor_type;
 
+    typedef RepType representation_type;
+
 
 // -----------------------------------------------------------------------------
 // Methods
@@ -211,14 +134,12 @@ public:
 
 protected:
 
-    typedef RepType representation_type;
-
 
 // -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
 
-    base_interval(representation_type const& rep) : rep_(rep)
+    explicit base_interval(representation_type const& rep) : rep_(rep)
     { }
 
 
@@ -244,6 +165,14 @@ protected:
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
+    template<typename, template<typename> class, typename, class>
+    friend class base_interval;
+
+    template<typename, template<typename> class>
+    friend class interval;
+
+    template<typename, template<typename> class>
+    friend class decorated_interval;
 
 
 // -----------------------------------------------------------------------------

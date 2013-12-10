@@ -26,6 +26,9 @@
 #ifndef LIBIEEEP1788_P1788_INFSUP_BASE_INTERVAL_ELEM_FUNC_IMPL_HPP
 #define LIBIEEEP1788_P1788_INFSUP_BASE_INTERVAL_ELEM_FUNC_IMPL_HPP
 
+#include "p1788/util/mixed_type_traits.hpp"
+
+
 namespace p1788
 {
 
@@ -109,26 +112,40 @@ ConcreteInterval add (base_interval<T, Flavor, RepType, ConcreteInterval> const&
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::add(x.rep_, y.rep_));
 }
 
-//TODO Mixed Type!!!!
-//template<typename Interval, typename T, typename Ty, template<typename> class Flavor>
-//Interval add(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
-//                    interval<Ty, Flavor> const& y) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T,
-//             Ty
-//             >::type Tmax;
-//
-//    return Interval(add(static_cast<interval<Tmax, Flavor>>(x),
-//                        static_cast<interval<Tmax, Flavor>>(y)));
-//}
+template<typename Interval, typename T, typename T_y, template<typename> class Flavor,
+    typename RepType, class ConcreteInterval, typename RepType_y, class ConcreteInterval_y>
+Interval add(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+             base_interval<T_y, Flavor, RepType_y, ConcreteInterval_y> const& y) {
+    // assert that Interval is an implementation of base_interval
+    static_assert(p1788::util::is_infsup_base_interval_implementation<Interval>::value,
+                  "Return type is not supported by mixed type operations!");
+    // assert that Interval uses the same flavor
+    static_assert(std::is_same<typename Interval::flavor_type,
+                  Flavor<typename Interval::bound_type>>::value,
+                  "Different flavors are not supported by "
+                  "mixed type operations!");
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_y>::representation, RepType_y>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation,
+                        typename Interval::representation_type>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_y>::representation_dec, RepType_y>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation_dec,
+                        typename Interval::representation_type>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    typedef typename p1788::util::max_precision_interval_type<
+        Interval,
+        ConcreteInterval,
+        ConcreteInterval_y
+             >::type Interval_max;
+
+    return Interval(add(static_cast<Interval_max>(x),
+                        static_cast<Interval_max>(y)));
+}
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval operator+(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
@@ -145,26 +162,40 @@ ConcreteInterval sub(base_interval<T, Flavor, RepType, ConcreteInterval> const& 
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::sub(x.rep_, y.rep_));
 }
 
-//TODO Mixed Type!!!!
-//template<typename Interval, typename T, typename Ty, template<typename> class Flavor>
-//Interval sub(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
-//                    interval<Ty, Flavor> const& y) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T,
-//             Ty
-//             >::type Tmax;
-//
-//    return Interval(sub(static_cast<interval<Tmax, Flavor>>(x),
-//                        static_cast<interval<Tmax, Flavor>>(y)));
-//}
+template<typename Interval, typename T, typename T_y, template<typename> class Flavor,
+    typename RepType, class ConcreteInterval, typename RepType_y, class ConcreteInterval_y>
+Interval sub(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+             base_interval<T_y, Flavor, RepType_y, ConcreteInterval_y> const& y) {
+    // assert that Interval is an implementation of base_interval
+    static_assert(p1788::util::is_infsup_base_interval_implementation<Interval>::value,
+                  "Return type is not supported by mixed type operations!");
+    // assert that Interval uses the same flavor
+    static_assert(std::is_same<typename Interval::flavor_type,
+                  Flavor<typename Interval::bound_type>>::value,
+                  "Different flavors are not supported by "
+                  "mixed type operations!");
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_y>::representation, RepType_y>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation,
+                        typename Interval::representation_type>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_y>::representation_dec, RepType_y>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation_dec,
+                        typename Interval::representation_type>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    typedef typename p1788::util::max_precision_interval_type<
+        Interval,
+        ConcreteInterval,
+        ConcreteInterval_y
+             >::type Interval_max;
+
+    return Interval(sub(static_cast<Interval_max>(x),
+                        static_cast<Interval_max>(y)));
+}
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval operator-(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
@@ -181,26 +212,40 @@ ConcreteInterval mul(base_interval<T, Flavor, RepType, ConcreteInterval> const& 
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::mul(x.rep_, y.rep_));
 }
 
-//TODO Mixed Type!!!!
-//template<typename Interval, typename T, typename Ty, template<typename> class Flavor>
-//Interval mul(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
-//                    interval<Ty, Flavor> const& y) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T,
-//             Ty
-//             >::type Tmax;
-//
-//    return Interval(mul(static_cast<interval<Tmax, Flavor>>(x),
-//                        static_cast<interval<Tmax, Flavor>>(y)));
-//}
+template<typename Interval, typename T, typename T_y, template<typename> class Flavor,
+    typename RepType, class ConcreteInterval, typename RepType_y, class ConcreteInterval_y>
+Interval mul(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+             base_interval<T_y, Flavor, RepType_y, ConcreteInterval_y> const& y) {
+    // assert that Interval is an implementation of base_interval
+    static_assert(p1788::util::is_infsup_base_interval_implementation<Interval>::value,
+                  "Return type is not supported by mixed type operations!");
+    // assert that Interval uses the same flavor
+    static_assert(std::is_same<typename Interval::flavor_type,
+                  Flavor<typename Interval::bound_type>>::value,
+                  "Different flavors are not supported by "
+                  "mixed type operations!");
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_y>::representation, RepType_y>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation,
+                        typename Interval::representation_type>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_y>::representation_dec, RepType_y>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation_dec,
+                        typename Interval::representation_type>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    typedef typename p1788::util::max_precision_interval_type<
+        Interval,
+        ConcreteInterval,
+        ConcreteInterval_y
+             >::type Interval_max;
+
+    return Interval(mul(static_cast<Interval_max>(x),
+                        static_cast<Interval_max>(y)));
+}
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval operator*(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
@@ -217,26 +262,40 @@ ConcreteInterval div(base_interval<T, Flavor, RepType, ConcreteInterval> const& 
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::div(x.rep_, y.rep_));
 }
 
-//TODO Mixed Type!!!!
-//template<typename Interval, typename T, typename Ty, template<typename> class Flavor>
-//Interval div(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
-//                    interval<Ty, Flavor> const& y) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T,
-//             Ty
-//             >::type Tmax;
-//
-//    return Interval(div(static_cast<interval<Tmax, Flavor>>(x),
-//                        static_cast<interval<Tmax, Flavor>>(y)));
-//}
+template<typename Interval, typename T, typename T_y, template<typename> class Flavor,
+    typename RepType, class ConcreteInterval, typename RepType_y, class ConcreteInterval_y>
+Interval div(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+             base_interval<T_y, Flavor, RepType_y, ConcreteInterval_y> const& y) {
+    // assert that Interval is an implementation of base_interval
+    static_assert(p1788::util::is_infsup_base_interval_implementation<Interval>::value,
+                  "Return type is not supported by mixed type operations!");
+    // assert that Interval uses the same flavor
+    static_assert(std::is_same<typename Interval::flavor_type,
+                  Flavor<typename Interval::bound_type>>::value,
+                  "Different flavors are not supported by "
+                  "mixed type operations!");
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_y>::representation, RepType_y>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation,
+                        typename Interval::representation_type>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_y>::representation_dec, RepType_y>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation_dec,
+                        typename Interval::representation_type>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    typedef typename p1788::util::max_precision_interval_type<
+        Interval,
+        ConcreteInterval,
+        ConcreteInterval_y
+             >::type Interval_max;
+
+    return Interval(div(static_cast<Interval_max>(x),
+                        static_cast<Interval_max>(y)));
+}
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval operator/(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
@@ -252,23 +311,34 @@ ConcreteInterval recip(base_interval<T, Flavor, RepType, ConcreteInterval> const
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::recip(x.rep_));
 }
 
-//TODO Mixed Type!!!!
-//template<typename Interval, typename T, template<typename> class Flavor>
-//Interval recip(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T
-//             >::type Tmax;
-//
-//    return Interval(recip(static_cast<interval<Tmax, Flavor>>(x)));
-//}
+template<typename Interval, typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+Interval recip(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
+    // assert that Interval is an implementation of base_interval
+    static_assert(p1788::util::is_infsup_base_interval_implementation<Interval>::value,
+                  "Return type is not supported by mixed type operations!");
+    // assert that Interval uses the same flavor
+    static_assert(std::is_same<typename Interval::flavor_type,
+                  Flavor<typename Interval::bound_type>>::value,
+                  "Different flavors are not supported by "
+                  "mixed type operations!");
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation,
+                        typename Interval::representation_type>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation_dec,
+                        typename Interval::representation_type>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    typedef typename p1788::util::max_precision_interval_type<
+        Interval,
+        ConcreteInterval
+             >::type Interval_max;
+
+    return Interval(recip(static_cast<Interval_max>(x)));
+}
 
 
 // sqr
@@ -278,23 +348,34 @@ ConcreteInterval sqr(base_interval<T, Flavor, RepType, ConcreteInterval> const& 
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::sqr(x.rep_));
 }
 
-//TODO Mixed Type!!!!
-//template<typename Interval, typename T, template<typename> class Flavor>
-//Interval sqr(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T
-//             >::type Tmax;
-//
-//    return Interval(sqr(static_cast<interval<Tmax, Flavor>>(x)));
-//}
+template<typename Interval, typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+Interval sqr(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
+    // assert that Interval is an implementation of base_interval
+    static_assert(p1788::util::is_infsup_base_interval_implementation<Interval>::value,
+                  "Return type is not supported by mixed type operations!");
+    // assert that Interval uses the same flavor
+    static_assert(std::is_same<typename Interval::flavor_type,
+                  Flavor<typename Interval::bound_type>>::value,
+                  "Different flavors are not supported by "
+                  "mixed type operations!");
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation,
+                        typename Interval::representation_type>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation_dec,
+                        typename Interval::representation_type>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    typedef typename p1788::util::max_precision_interval_type<
+        Interval,
+        ConcreteInterval
+             >::type Interval_max;
+
+    return Interval(sqr(static_cast<Interval_max>(x)));
+}
 
 
 // sqrt
@@ -304,23 +385,34 @@ ConcreteInterval sqrt(base_interval<T, Flavor, RepType, ConcreteInterval> const&
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::sqrt(x.rep_));
 }
 
-//TODO Mixed Type!!!!
-//template<typename Interval, typename T, template<typename> class Flavor>
-//Interval sqrt(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T
-//             >::type Tmax;
-//
-//    return Interval(sqrt(static_cast<interval<Tmax, Flavor>>(x)));
-//}
+template<typename Interval, typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+Interval sqrt(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
+    // assert that Interval is an implementation of base_interval
+    static_assert(p1788::util::is_infsup_base_interval_implementation<Interval>::value,
+                  "Return type is not supported by mixed type operations!");
+    // assert that Interval uses the same flavor
+    static_assert(std::is_same<typename Interval::flavor_type,
+                  Flavor<typename Interval::bound_type>>::value,
+                  "Different flavors are not supported by "
+                  "mixed type operations!");
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation,
+                        typename Interval::representation_type>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation_dec,
+                        typename Interval::representation_type>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    typedef typename p1788::util::max_precision_interval_type<
+        Interval,
+        ConcreteInterval
+             >::type Interval_max;
+
+    return Interval(recip(static_cast<Interval_max>(x)));
+}
 
 
 // fma
@@ -332,29 +424,45 @@ ConcreteInterval fma(base_interval<T, Flavor, RepType, ConcreteInterval> const& 
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::fma(x.rep_, y.rep_, z.rep_));
 }
 
-//TODO Mixed Type!!!!
-//template<typename Interval, typename T, typename Ty, typename Tz, template<typename> class Flavor>
-//Interval fma(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
-//                    interval<Ty, Flavor> const& y,
-//                    interval<Tz, Flavor> const& z) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T,
-//             Ty,
-//             Tz
-//             >::type Tmax;
-//
-//    return Interval(fma(static_cast<interval<Tmax, Flavor>>(x),
-//                        static_cast<interval<Tmax, Flavor>>(y),
-//                        static_cast<interval<Tmax, Flavor>>(z)));
-//}
+template<typename Interval, typename T, typename T_y, typename T_z, template<typename> class Flavor,
+    typename RepType, class ConcreteInterval, typename RepType_y, class ConcreteInterval_y,
+    typename RepType_z, class ConcreteInterval_z>
+Interval fma(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+             base_interval<T_y, Flavor, RepType_y, ConcreteInterval_y> const& y,
+             base_interval<T_z, Flavor, RepType_z, ConcreteInterval_z> const& z) {
+    // assert that Interval is an implementation of base_interval
+    static_assert(p1788::util::is_infsup_base_interval_implementation<Interval>::value,
+                  "Return type is not supported by mixed type operations!");
+    // assert that Interval uses the same flavor
+    static_assert(std::is_same<typename Interval::flavor_type,
+                  Flavor<typename Interval::bound_type>>::value,
+                  "Different flavors are not supported by "
+                  "mixed type operations!");
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_y>::representation, RepType_y>::value
+                    && std::is_same<typename Flavor<T_z>::representation, RepType_z>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation,
+                        typename Interval::representation_type>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_y>::representation_dec, RepType_y>::value
+                    && std::is_same<typename Flavor<T_z>::representation_dec, RepType_z>::value
+                    && std::is_same<typename Flavor<typename Interval::bound_type>::representation_dec,
+                        typename Interval::representation_type>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    typedef typename p1788::util::max_precision_interval_type<
+        Interval,
+        ConcreteInterval,
+        ConcreteInterval_y
+             >::type Interval_max;
+
+    return Interval(fma(static_cast<Interval_max>(x),
+                        static_cast<Interval_max>(y),
+                        static_cast<Interval_max>(z)));
+}
 
 
 // interval case
@@ -375,24 +483,6 @@ ConcreteInterval pown(base_interval<T, Flavor, RepType, ConcreteInterval> const&
                                 int p) {
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::pown(x.rep_, p));
 }
-
-//template<typename Interval, typename T, template<typename> class Flavor>
-//Interval pown(interval<T, Flavor> const& x,
-//                     int p) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T
-//             >::type Tmax;
-//
-//    return Interval(pown(static_cast<interval<Tmax, Flavor>>(x), p));
-//}
 
 
 // pow

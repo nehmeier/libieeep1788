@@ -95,6 +95,8 @@ public:
     static representation constructor_infsup(std::string const& str);
     static representation_dec constructor_infsup_dec(std::string const& str);
 
+
+    // _dec not necessary
     static representation constructor_infsup(representation const& other);
     static representation_dec constructor_infsup_dec(representation_dec const& other);
 

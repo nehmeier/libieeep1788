@@ -26,71 +26,10 @@
 #ifndef LIBIEEEP1788_P1788_INFSUP_INTERVAL_HPP
 #define LIBIEEEP1788_P1788_INFSUP_INTERVAL_HPP
 
+#include "p1788/infsup/forward_declaration.hpp"
 #include "p1788/infsup/base_interval.hpp"
 
 
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//                        Forward declaration
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-
-namespace p1788
-{
-
-namespace infsup
-{
-
-
-template<typename T, template<typename> class Flavor>
-class interval;
-
-
-
-} // namespace infsup
-
-
-} // namespace p1788
-
-
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//                        Traits and meta TMP functions
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-
-namespace p1788
-{
-
-namespace util
-{
-
-//------------------------------------------------------------------------------
-// Trait is_infsup_base_interval_implementation
-//------------------------------------------------------------------------------
-
-// Ignore the warning about non-virtual destructors
-// on GCC  push the last diagnostic state and disable -Weffc++
-//TODO support other compiler
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-
-
-template<typename T, template<typename> class Flavor>
-class is_infsup_base_interval_implementation<p1788::infsup::interval<T,Flavor>>
-            : public std::integral_constant<bool, true>
-{ };
-
-// on GCC  enable the diagnostic state -Weffc++ again
-#pragma GCC diagnostic pop
-
-
-} // namespace util
-
-} // namespace p1788
 
 
 
@@ -180,7 +119,7 @@ public:
 
 private:
 
-    interval(typename Flavor<T>::representation rep)
+    explicit interval(typename Flavor<T>::representation rep)
         : base_interval_type(rep)
     {}
 

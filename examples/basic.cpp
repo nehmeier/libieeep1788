@@ -95,6 +95,10 @@ using namespace p1788::infsup;
     std::cout << asin_slope3(d_a) << std::endl;
 
 
+    std::cout << add<I<double>>(f_a, d_b) << std::endl;
+    std::cout << sqrt<I<double>>(f_a) << std::endl;
+    std::cout << fma<I<double>>(f_a, d_b, d_a) << std::endl;
+
     return 0;
 }
 
