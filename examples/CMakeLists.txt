@@ -30,6 +30,8 @@ if(MPFR_FOUND)
         basic.cpp
         boolFunc.cpp
         elementaryFunc.cpp
+        ia_newton.cpp
+        ia_bisection.cpp
        )
 
     # relative path of this directory

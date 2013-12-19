@@ -70,11 +70,9 @@ bool mpfr_flavor<T, SUBNORMALIZE>::is_singleton(mpfr_flavor<T, SUBNORMALIZE>::re
 
 
 template<typename T, subnormalize SUBNORMALIZE>
-bool mpfr_flavor<T, SUBNORMALIZE>::is_member(T, mpfr_flavor<T, SUBNORMALIZE>::representation const&)
+bool mpfr_flavor<T, SUBNORMALIZE>::is_member(T x, mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
+    return y.first <= x && x <= y.second;
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
