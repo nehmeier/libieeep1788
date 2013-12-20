@@ -26,6 +26,9 @@
 #ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_BOOL_FUNC_IMPL_HPP
 #define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_BOOL_FUNC_IMPL_HPP
 
+#include <limits>
+#include <cmath>
+
 namespace p1788
 {
 
@@ -36,51 +39,46 @@ namespace infsup
 {
 
 template<typename T, subnormalize SUBNORMALIZE>
-bool mpfr_flavor<T, SUBNORMALIZE>::is_common(mpfr_flavor<T, SUBNORMALIZE>::representation const&)
+bool mpfr_flavor<T, SUBNORMALIZE>::is_common(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
+    //TODO ist das in D8.1 7.2 so gemeint?
+    return !is_empty(x)
+        && x.first > -std::numeric_limits<T>::infinity()
+        && x.second < std::numeric_limits<T>::infinity();
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
-bool mpfr_flavor<T, SUBNORMALIZE>::is_common(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+bool mpfr_flavor<T, SUBNORMALIZE>::is_common(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
-}
-
-
-template<typename T, subnormalize SUBNORMALIZE>
-bool mpfr_flavor<T, SUBNORMALIZE>::is_singleton(mpfr_flavor<T, SUBNORMALIZE>::representation const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
-}
-
-template<typename T, subnormalize SUBNORMALIZE>
-bool mpfr_flavor<T, SUBNORMALIZE>::is_singleton(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
+    //TODO ist das in D8.1 7.2 so gemeint? oder hier die decoration verwenden?
+    return is_common(x.first);
 }
 
 
 template<typename T, subnormalize SUBNORMALIZE>
-bool mpfr_flavor<T, SUBNORMALIZE>::is_member(T x, mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
+bool mpfr_flavor<T, SUBNORMALIZE>::is_singleton(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
-    return y.first <= x && x <= y.second;
+    return x.first == x.second;
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
-bool mpfr_flavor<T, SUBNORMALIZE>::is_member(T, mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+bool mpfr_flavor<T, SUBNORMALIZE>::is_singleton(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    return is_singleton(x.first);
+}
 
-    return false;
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool mpfr_flavor<T, SUBNORMALIZE>::is_member(T m, mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+{
+    return x.first <= m && m <= x.second
+        && std::abs(m) != std::numeric_limits<T>::infinity();
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
+bool mpfr_flavor<T, SUBNORMALIZE>::is_member(T m, mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+{
+    return is_member(m, x.first);
 }
 
 } // namespace infsup
