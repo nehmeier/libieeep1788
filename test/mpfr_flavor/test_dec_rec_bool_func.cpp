@@ -23,7 +23,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#define BOOST_TEST_MODULE "Recommended boolean functions on intervals [inf-sup-interval, mpfr_flavor]"
+#define BOOST_TEST_MODULE "Recommended boolean functions on intervals [inf-sup-decorated_interval, mpfr_flavor]"
 #include "test/util/boost_test_wrapper.hpp"
 
 
@@ -35,13 +35,13 @@ template<typename T>
 using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
 
 template<typename T>
-using I = p1788::infsup::interval<T, flavor>;
+using I = p1788::infsup::decorated_interval<T, flavor>;
 
 
 
 BOOST_AUTO_TEST_CASE(minimal_is_common_test)
 {
-    //TODO ist das in D8.1 7.2 so gemeint?
+    //TODO ist das in D8.1 7.2 so gemeint? oder hier die decoration verwenden?
     BOOST_CHECK_EQUAL(is_common(I<double>(-27.0)), true);
     BOOST_CHECK_EQUAL(is_common(I<double>(-27.0, 0.0)), true);
     BOOST_CHECK_EQUAL(is_common(I<double>(0.0)), true);
@@ -106,3 +106,4 @@ BOOST_AUTO_TEST_CASE(minimal_is_member_test)
     BOOST_CHECK_EQUAL(is_member(std::numeric_limits<double>::infinity(), I<double>::entire()), false);
     BOOST_CHECK_EQUAL(is_member(std::numeric_limits<double>::quiet_NaN(), I<double>::entire()), false);
 }
+

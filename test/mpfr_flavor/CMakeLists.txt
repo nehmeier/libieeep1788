@@ -54,6 +54,7 @@ if(Boost_FOUND)
             test_rec_slope_func.cpp
             test_rev_elem_func.cpp
             test_set_op.cpp
+            test_dec_rec_bool_func.cpp
            )
 
         # relative path of this directory
