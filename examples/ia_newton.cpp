@@ -115,11 +115,11 @@ int main()
 //using namespace p1788::infsup;
 
 
-    ia_newton(f1, df1, I<double>(-3,5), 0.0001, false);
+    ia_newton(f1, df1, I<double>(-3.0,5.0), 0.0001, false);
     std::cout << std::endl;
-    ia_newton(f2, df2, I<double>(-3,5), 0.0001, false);
+    ia_newton(f2, df2, I<double>(-3.0,5.0), 0.0001, false);
     std::cout << std::endl;
-    ia_newton(f3, df3, I<double>(-3,5), 0.0001, false);
+    ia_newton(f3, df3, I<double>(-3.0,5.0), 0.0001, false);
 
     return 0;
 }

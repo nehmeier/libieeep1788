@@ -40,9 +40,8 @@ int main()
 using namespace p1788::infsup;
 
 
-    I<double> d_a(-1,2), d_b(3,4), d_c(1,6);
-    I<float> f_a(1,2), f_b(3,4), f_c(5,6);
-
+    I<double> d_a(-1.0,2.0), d_b(3.0,4.0), d_c(1.0,6.0);
+    I<float> f_a(1.0f,2.0f), f_b(3.0f,4.0f), f_c(5.0f,6.0f);
 
     std::cout << d_a << std::endl;
     std::cout << d_a.rad() << std::endl;

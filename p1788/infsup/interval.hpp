@@ -69,34 +69,64 @@ public:
 // Constructors
 // -----------------------------------------------------------------------------
 
-// TODO Constructor specification
 
+    // Implementation specific; Empty interval
     interval()
         : base_interval_type(Flavor<T>::constructor_infsup())
     { }
 
+    // Required see numsToInterval(l,u) P1788/D8.1 Sect. 12.12.8.
     interval(T lower, T upper)
         : base_interval_type(Flavor<T>::constructor_infsup(lower, upper))
     { }
 
+    // Implementation specific, Singleton
     explicit interval(T point)
         : base_interval_type(Flavor<T>::constructor_infsup(point))
     { }
 
-    explicit interval(std::initializer_list<T> points)
-        : base_interval_type(Flavor<T>::constructor_infsup(points.begin(), points.end()))
-    { }
+    // Required for 754-conforming, see numsToInterval(l,u) formatOf P1788/D8.1 Sect. 12.12.8.
+    template<typename L, typename U>
+    interval(L lower, U upper)
+        : base_interval_type(Flavor<T>::constructor_infsup(lower, upper))
+    {
+        //TODO static_assert hier oder im Flavor?
+        //TODO int-werte landen hier und funktionieren somit nicht
+        static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+        static_assert(std::numeric_limits<L>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+        static_assert(std::numeric_limits<U>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    }
 
+    // Implementation specificfor 754-conforming, Singleton formatOf
+    template<typename T_>
+    explicit interval(T_ point)
+        : base_interval_type(Flavor<T>::constructor_infsup(point))
+    {
+        //TODO static_assert hier oder im Flavor?
+        //TODO int-werte landen hier und funktionieren somit nicht
+        static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+        static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    }
+
+
+    // Required see textToInterval(l,u) P1788/D8.1 Sect. 12.12.8.
     explicit interval(std::string const& str)
         : base_interval_type(Flavor<T>::constructor_infsup(str))
     { }
 
-    interval(interval<T, Flavor> const& other)  ///< Copy-constructor
+// Todo necessary? initializer list
+//    explicit interval(std::initializer_list<T> points)
+//        : base_interval_type(Flavor<T>::constructor_infsup(points.begin(), points.end()))
+//    { }
+
+    // Implementation specific Copy-constructor
+    interval(base_interval_type const& other)  ///< Copy-constructor
         : base_interval_type(Flavor<T>::constructor_infsup(other.rep_))
     { }
 
+    //Todo P1788/D8.1 Sect. ? Copy-constructor/Conversion
     template<typename T_>
-    explicit interval(interval<T_, Flavor> const& other)  ///< Copy-constructor
+    explicit interval(base_interval<T_, Flavor, typename Flavor<T_>::representation, interval<T_, Flavor>> const& other)
         : base_interval_type(Flavor<T>::constructor_infsup(other.rep_))
     { }
 

@@ -85,18 +85,27 @@ public:
     static representation constructor_infsup(T point);
     static representation_dec constructor_infsup_dec(T point);
 
-    template<typename ConstRandomAccessIterator>
-    static representation constructor_infsup(ConstRandomAccessIterator first,
-            ConstRandomAccessIterator last);
-    template<typename ConstRandomAccessIterator>
-    static representation_dec constructor_infsup_dec(ConstRandomAccessIterator first,
-            ConstRandomAccessIterator last);
+    template<typename L, typename U>
+    static representation constructor_infsup(L lower, U upper);
+    template<typename L, typename U>
+    static representation_dec constructor_infsup_dec(L lower, U upper);
+
+    template<typename T_>
+    static representation constructor_infsup(T_ point);
+    template<typename T_>
+    static representation_dec constructor_infsup_dec(T_ point);
 
     static representation constructor_infsup(std::string const& str);
     static representation_dec constructor_infsup_dec(std::string const& str);
 
+//TODO Points constructor necessary? initializer list?
+//    template<typename ConstRandomAccessIterator>
+//    static representation constructor_infsup(ConstRandomAccessIterator first,
+//            ConstRandomAccessIterator last);
+//    template<typename ConstRandomAccessIterator>
+//    static representation_dec constructor_infsup_dec(ConstRandomAccessIterator first,
+//            ConstRandomAccessIterator last);
 
-    // _dec not necessary
     static representation constructor_infsup(representation const& other);
     static representation_dec constructor_infsup_dec(representation_dec const& other);
 

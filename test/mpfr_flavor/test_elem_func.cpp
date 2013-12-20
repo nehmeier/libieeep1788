@@ -142,16 +142,16 @@ BOOST_AUTO_TEST_CASE(minimal_log10_test)
 BOOST_AUTO_TEST_CASE(minimal_sin_test)
 {
     BOOST_CHECK_EQUAL( sin(I<double>::empty()), I<double>::empty() );
-    BOOST_CHECK_EQUAL( sin(I<double>::entire()), I<double>(-1,1) );
+    BOOST_CHECK_EQUAL( sin(I<double>::entire()), I<double>(-1.0,1.0) );
 
-    BOOST_CHECK_EQUAL( sin(I<double>(0, 3.14)), I<double>(0,1) );
-    BOOST_CHECK_EQUAL( sin(I<double>(-3.14, 0)), I<double>(-1,0) );
+    BOOST_CHECK_EQUAL( sin(I<double>(0.0, 3.14)), I<double>(0.0,1.0) );
+    BOOST_CHECK_EQUAL( sin(I<double>(-3.14, 0.0)), I<double>(-1.0,0.0) );
 
-    BOOST_CHECK_EQUAL( sin(I<double>(0, 6.29)), I<double>(-1,1) );
-    BOOST_CHECK_EQUAL( sin(I<double>(-6.29, 0)), I<double>(-1,1) );
+    BOOST_CHECK_EQUAL( sin(I<double>(0.0, 6.29)), I<double>(-1.0,1.0) );
+    BOOST_CHECK_EQUAL( sin(I<double>(-6.29, 0.0)), I<double>(-1.0,1.0) );
 
-    BOOST_CHECK_EQUAL( sin(I<double>(0, 6.28)), I<double>(-1,1) );
-    BOOST_CHECK_EQUAL( sin(I<double>(-6.28, 0)), I<double>(-1,1) );
+    BOOST_CHECK_EQUAL( sin(I<double>(0.0, 6.28)), I<double>(-1.0,1.0) );
+    BOOST_CHECK_EQUAL( sin(I<double>(-6.28, 0.0)), I<double>(-1.0,1.0) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_cos_test)

@@ -92,33 +92,38 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(T point)
     return representation_dec(representation(point, point), p1788::decoration::decoration::trv);
 }
 
-
 template<typename T, subnormalize SUBNORMALIZE>
-template<typename ConstRandomAccessIterator>
+template<typename L, typename U>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(ConstRandomAccessIterator first,
-                                   ConstRandomAccessIterator last)
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(L lower, U upper)
 {
-    //TODO check iterator
-    auto result = std::minmax_element(first, last);
-
-//TODO  invalid argument => exception?
-    return representation(*result.first, *result.second);
+    return representation(lower, upper);
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
-template<typename ConstRandomAccessIterator>
+template<typename L, typename U>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(ConstRandomAccessIterator first,
-                                   ConstRandomAccessIterator last)
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(L lower, U upper)
 {
-    //TODO check iterator
-    auto result = std::minmax_element(first, last);
-
-//TODO  invalid argument => exception?
-    return representation_dec(representation(*result.first, *result.second), p1788::decoration::decoration::trv);
+    return representation_dec(representation(lower, upper));
 }
 
+
+template<typename T, subnormalize SUBNORMALIZE>
+template<typename T_>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(T_ point)
+{
+    return representation(point, point);
+}
+
+template<typename T, subnormalize SUBNORMALIZE>
+template<typename T_>
+typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(T_ point)
+{
+    return representation_dec(representation(point, point));
+}
 
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
@@ -159,6 +164,35 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(std::string const& str)
 
     return representation_dec(representation(0.0, 0.0), p1788::decoration::decoration::trv);
 }
+
+
+//TODO necessary?
+//template<typename T, subnormalize SUBNORMALIZE>
+//template<typename ConstRandomAccessIterator>
+//typename mpfr_flavor<T, SUBNORMALIZE>::representation
+//mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(ConstRandomAccessIterator first,
+//                                   ConstRandomAccessIterator last)
+//{
+//    //TODO check iterator
+//    auto result = std::minmax_element(first, last);
+//
+////TODO  invalid argument => exception?
+//    return representation(*result.first, *result.second);
+//}
+//
+//template<typename T, subnormalize SUBNORMALIZE>
+//template<typename ConstRandomAccessIterator>
+//typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+//mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(ConstRandomAccessIterator first,
+//                                   ConstRandomAccessIterator last)
+//{
+//    //TODO check iterator
+//    auto result = std::minmax_element(first, last);
+//
+////TODO  invalid argument => exception?
+//    return representation_dec(representation(*result.first, *result.second), p1788::decoration::decoration::trv);
+//}
+
 
 
 template<typename T, subnormalize SUBNORMALIZE>
