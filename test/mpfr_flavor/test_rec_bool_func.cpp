@@ -44,6 +44,7 @@ using DI = p1788::infsup::decorated_interval<T, flavor>;
 
 BOOST_AUTO_TEST_CASE(minimal_is_common_test)
 {
+    //TODO ist das in D8.1 7.2 so gemeint?
     BOOST_CHECK_EQUAL(is_common(I<double>(-27.0)), true);
     BOOST_CHECK_EQUAL(is_common(I<double>(-27.0, 0.0)), true);
     BOOST_CHECK_EQUAL(is_common(I<double>(0.0)), true);
@@ -58,6 +59,7 @@ BOOST_AUTO_TEST_CASE(minimal_is_common_test)
 
 BOOST_AUTO_TEST_CASE(minimal_is_common_test_dec)
 {
+    //TODO ist das in D8.1 7.2 so gemeint? oder hier die decoration verwenden?
     BOOST_CHECK_EQUAL(is_common(DI<double>(-27.0)), true);
     BOOST_CHECK_EQUAL(is_common(DI<double>(-27.0, 0.0)), true);
     BOOST_CHECK_EQUAL(is_common(DI<double>(0.0)), true);
