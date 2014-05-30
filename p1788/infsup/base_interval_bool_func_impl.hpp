@@ -32,7 +32,6 @@ namespace p1788
 namespace infsup
 {
 
-//TODO Mixed-Type????
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
@@ -201,13 +200,13 @@ bool operator!=(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, ba
 ///
 /// The computation is delegated to the static function
 /// \code
-/// Flavor<T>::contained_in(Flavor<T>::representation const&, Flavor<T>::representation const&)
+/// Flavor<T>::subset(Flavor<T>::representation const&, Flavor<T>::representation const&)
 /// \endcode
 /// of the policy class <TT>Flavor<T></TT> by passing only the internal
 /// representation of the intervals.
 ///
 ///
-/// \see #contained_in(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+/// \see #subset(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
 ///
 /// \param x interval
 /// \param y interval
@@ -215,13 +214,13 @@ bool operator!=(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, ba
 /// \retval false   otherwise
 ///
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-bool contained_in(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {
-    return Flavor<T>::contained_in(x.rep_, y.rep_);
+bool subset(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {
+    return Flavor<T>::subset(x.rep_, y.rep_);
 }
 
 ///// \brief Check if intervals <B>x</B> is a subset of interval <B>y</B>
 /////
-///// <B>Mixed type operation of</B> #contained_in(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+///// <B>Mixed type operation of</B> #subset(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
 /////
 ///// <B>Required by IEEE P1788</B>
 /////
@@ -230,43 +229,43 @@ bool contained_in(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, 
 ///// using template meta programming. Then the intervals
 ///// <B>x</B> and <B>y</B> are converted to intervals of type
 ///// <TT>interval<Tmax,Flavor></TT> and are passed to the function
-///// #contained_in(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
+///// #subset(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
 /////
 //template<typename T, typename Ty, template<typename> class Flavor>
-//bool contained_in(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+//bool subset(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
 //    typedef typename p1788::util::max_precision_type<
 //    T,
 //    Ty
 //    >::type TMax;
 //
-//    return contained_in(static_cast<interval<TMax, Flavor>>(x),
+//    return subset(static_cast<interval<TMax, Flavor>>(x),
 //                        static_cast<interval<TMax, Flavor>>(y));
 //}
 
 /// \brief Check if interval <B>x</B> is a superset of interval <B>y</B>
 ///
-/// <B>Calls</B> #contained_in(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+/// <B>Calls</B> #subset(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
 /// <B>with swapped arguments.</B>
 ///
 /// <B>Implementation specific</B>
 ///
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-bool contains(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {
-    return contained_in(y, x);
+bool superset(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {
+    return subset(y, x);
 }
 
 ///// \brief Check if interval <B>x</B> is a superset of interval <B>y</B>
 /////
-///// <B>Mixed type operation of</B> #contains(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
+///// <B>Mixed type operation of</B> #superset(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
 /////
-///// <B>Calls</B> #contained_in(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+///// <B>Calls</B> #subset(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
 ///// <B>with swapped arguments.</B>
 /////
 ///// <B>Implementation specific</B>
 /////
 //template<typename T, typename Ty, template<typename> class Flavor>
-//bool contains(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
-//    return contained_in(y, x);
+//bool superset(interval<T, Flavor> const& x, interval<Ty, Flavor> const& y) {
+//    return subset(y, x);
 //}
 
 

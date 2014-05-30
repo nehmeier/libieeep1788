@@ -205,6 +205,17 @@ private:
     friend class interval;
 
 
+
+// -----------------------------------------------------------------------------
+// Boolean functions on intervals
+// -----------------------------------------------------------------------------
+
+//TODO 12.12.9
+    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+    friend bool is_nai(decorated_interval<T_, Flavor_> const&);
+
+
+
 }; // class decorated_interval
 
 

@@ -226,8 +226,8 @@ public:
     static bool is_equal(representation const& x, representation const& y);
     static bool is_equal(representation_dec const& x, representation_dec const& y);
 
-    static bool contained_in(representation const& x, representation const& y);
-    static bool contained_in(representation_dec const& x, representation_dec const& y);
+    static bool subset(representation const& x, representation const& y);
+    static bool subset(representation_dec const& x, representation_dec const& y);
 
     static bool less(representation const& x, representation const& y);
     static bool less(representation_dec const& x, representation_dec const& y);

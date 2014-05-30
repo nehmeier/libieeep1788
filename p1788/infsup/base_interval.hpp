@@ -238,14 +238,17 @@ protected:
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend bool is_entire(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+//TODO operator==?
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend bool is_equal(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+//TODO subset oder contained_in?
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool contained_in(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+    friend bool subset(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+//TODO superset oder contains?
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool contains(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+    friend bool superset(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend bool less(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);

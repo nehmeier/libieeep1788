@@ -95,7 +95,7 @@ mpfr_flavor<T, SUBNORMALIZE>::is_equal(mpfr_flavor<T, SUBNORMALIZE>::representat
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T, SUBNORMALIZE>::contained_in(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
+mpfr_flavor<T, SUBNORMALIZE>::subset(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
                              mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return is_empty(x) || (y.first <= x.first && x.second <= y.second);
@@ -103,7 +103,7 @@ mpfr_flavor<T, SUBNORMALIZE>::contained_in(mpfr_flavor<T, SUBNORMALIZE>::represe
 
 template<typename T, subnormalize SUBNORMALIZE>
 bool
-mpfr_flavor<T, SUBNORMALIZE>::contained_in(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
+mpfr_flavor<T, SUBNORMALIZE>::subset(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
                              mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
@@ -157,7 +157,7 @@ mpfr_flavor<T, SUBNORMALIZE>::is_interior(mpfr_flavor<T, SUBNORMALIZE>::represen
                             mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return is_empty(x)
-           || ((y.first < x. first
+           || ((y.first < x.first
                 || (y.first == -std::numeric_limits<T>::infinity()
                     && x.first == -std::numeric_limits<T>::infinity()))
                && (x.second < y.second
@@ -182,7 +182,7 @@ mpfr_flavor<T, SUBNORMALIZE>::strictly_less(mpfr_flavor<T, SUBNORMALIZE>::repres
                               mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return (is_empty(x) && is_empty(y))
-           || ((x.first < y. first
+           || ((x.first < y.first
                 || (x.first == -std::numeric_limits<T>::infinity()
                     && y.first == -std::numeric_limits<T>::infinity()))
                && (x.second < y.second

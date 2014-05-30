@@ -39,14 +39,17 @@ using I = p1788::infsup::interval<T, flavor>;
 BOOST_AUTO_TEST_CASE(minimal_intersect_test)
 {
     BOOST_CHECK_EQUAL( intersect(I<double>(1.0,3.0), I<double>(2.1,4.0)), I<double>(2.1,3.0) );
-    BOOST_CHECK_EQUAL( intersect(I<float>(1.0,3.0), I<float>(2.1,4.0)), I<float>(2.1,3.0) );
-    //BOOST_CHECK_EQUAL( intersect<I<float>>(I<double>(1.0,3.0), I<double>(2.1,4.0)), I<float>(2.1,3.0) );
-    //BOOST_CHECK_EQUAL( intersect<I<double>>(I<double>(1.0,3.0), I<float>(2.0,4.0)), I<double>(2.0,3.0) );
+    BOOST_CHECK_EQUAL( intersect(I<double>(1.0,3.0), I<double>(3.0,4.0)), I<double>(3.0) );
+    BOOST_CHECK_EQUAL( intersect(I<double>(1.0,3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( intersect(I<double>::entire(), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( intersect(I<double>(1.0,3.0), I<double>::entire()), I<double>(1.0,3.0) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_hull_test)
 {
     BOOST_CHECK_EQUAL( hull(I<double>(1.0,3.0), I<double>(2.1,4.0)), I<double>(1.0,4.0) );
-    //BOOST_CHECK_EQUAL( hull<I<float>>(I<double>(1.0,3.0), I<double>(2.1,4.0)), I<float>(1.0,4.0) );
-    //BOOST_CHECK_EQUAL( hull<I<double>>(I<double>(1.0,3.0), I<double>(2.1,4.0)), I<double>(1.0,4.0));
+    BOOST_CHECK_EQUAL( hull(I<double>(1.0), I<double>(2.1,4.0)), I<double>(1.0,4.0) );
+    BOOST_CHECK_EQUAL( hull(I<double>(1.0,3.0), I<double>::empty()), I<double>(1.0,3.0) );
+    BOOST_CHECK_EQUAL( hull(I<double>::empty(), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( hull(I<double>(1.0,3.0), I<double>::entire()), I<double>::entire() );
 }

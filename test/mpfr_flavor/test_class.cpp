@@ -159,6 +159,7 @@ BOOST_AUTO_TEST_CASE(minimal_text_to_interval_constructor_test)
     BOOST_CHECK(false);
 }
 
+//TODO necessary?
 BOOST_AUTO_TEST_CASE(minimal_points_to_interval_constructor_test)
 {
     BOOST_CHECK(false);

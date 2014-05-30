@@ -131,7 +131,7 @@ ADD_CUSTOM_COMMAND(TARGET coverage
     COMMAND mkdir -p coverage
     COMMAND lcov --directory . --zerocounters
     COMMAND lcov --capture --initial --directory . --output-file coverage/p1788_base.info
-    COMMAND make test
+    COMMAND make --keep-going test
     COMMAND lcov --capture --directory . --output-file coverage/p1788_test.info
     COMMAND lcov -a coverage/p1788_base.info -a coverage/p1788_test.info -o coverage/p1788_coverage.info
     COMMAND lcov --remove coverage/p1788_coverage.info 'opt/*' '/usr/*' --output-file coverage/p1788_coverage.info

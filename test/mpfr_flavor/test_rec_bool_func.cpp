@@ -52,6 +52,8 @@ BOOST_AUTO_TEST_CASE(minimal_is_common_test)
     BOOST_CHECK_EQUAL(is_common(I<double>::empty()), false);
     BOOST_CHECK_EQUAL(is_common(I<double>(-std::numeric_limits<double>::infinity(), 0.0)), false);
     BOOST_CHECK_EQUAL(is_common(I<double>(0.0, std::numeric_limits<double>::infinity())), false);
+
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_singleton_test)
@@ -71,6 +73,8 @@ BOOST_AUTO_TEST_CASE(minimal_is_singleton_test)
     BOOST_CHECK_EQUAL(is_singleton(I<double>(1.0, 2.0)), false);
     BOOST_CHECK_EQUAL(is_singleton(I<double>(-std::numeric_limits<double>::infinity())), false);
     BOOST_CHECK_EQUAL(is_singleton(I<double>(-1.0,std::numeric_limits<double>::infinity())), false);
+
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_member_test)
@@ -105,4 +109,6 @@ BOOST_AUTO_TEST_CASE(minimal_is_member_test)
     BOOST_CHECK_EQUAL(is_member(-std::numeric_limits<double>::infinity(), I<double>::entire()), false);
     BOOST_CHECK_EQUAL(is_member(std::numeric_limits<double>::infinity(), I<double>::entire()), false);
     BOOST_CHECK_EQUAL(is_member(std::numeric_limits<double>::quiet_NaN(), I<double>::entire()), false);
+
+    BOOST_CHECK(false);
 }

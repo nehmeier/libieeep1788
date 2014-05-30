@@ -23,9 +23,11 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#define BOOST_TEST_MODULE "Recommended interval overlapping [inf-sup-interval, mpfr_flavor]"
+#define BOOST_TEST_MODULE "Class members [inf-sup-decorated_interval, mpfr_flavor]"
 #include "test/util/boost_test_wrapper.hpp"
 
+
+#include <limits>
 
 #include "p1788/p1788.hpp"
 
@@ -33,10 +35,51 @@ template<typename T>
 using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
 
 template<typename T>
-using interval = p1788::infsup::interval<T, flavor>;
+using I = p1788::infsup::decorated_interval<T, flavor>;
 
 
-BOOST_AUTO_TEST_CASE(minimal_overlap_test)
+
+BOOST_AUTO_TEST_CASE(minimal_default_constructor_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_nums_to_interval_constructor_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_singleton_constructor_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_format_of_nums_to_interval_constructor_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_format_of_singleton_constructor_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_text_to_interval_constructor_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_points_to_interval_constructor_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_copy_constructor_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_conversion_constructor_test)
 {
     BOOST_CHECK(false);
 }

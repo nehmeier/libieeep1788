@@ -38,75 +38,75 @@ using interval = p1788::infsup::interval<T, flavor>;
 
 BOOST_AUTO_TEST_CASE(minimal_sqr_rev_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_recip_rev_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_abs_rev_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_pown_rev_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_sin_rev_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_cos_rev_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_tan_rev_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_cosh_rev_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_mul_rev_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_div_rev1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_div_rev2_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_pow_rev1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_pow_rev2_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_atan2_rev1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_atan2_rev2_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }

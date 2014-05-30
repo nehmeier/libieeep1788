@@ -38,51 +38,51 @@ using interval = p1788::infsup::interval<T, flavor>;
 
 BOOST_AUTO_TEST_CASE(minimal_exp_slope1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_exp_slope2_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_log_slope1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_log_slope2_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_cos_slope2_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_sin_slope3_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_asin_slope3_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_atan_slope3_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_cosh_slope2_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_sinh_slope3_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 

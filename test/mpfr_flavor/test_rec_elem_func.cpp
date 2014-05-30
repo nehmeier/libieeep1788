@@ -38,85 +38,85 @@ using interval = p1788::infsup::interval<T, flavor>;
 
 BOOST_AUTO_TEST_CASE(minimal_rootn_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_expm1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_exp2m1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_exp10m1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_logp1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_log2p1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_log10p1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_compoundm1_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_hypot_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_r_sqrt_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_sin_pi_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_cos_pi_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_tan_pi_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_asin_pi_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_acos_pi_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_atan_pi_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_atan2_pi_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }

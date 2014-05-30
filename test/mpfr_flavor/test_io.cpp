@@ -29,11 +29,6 @@
 
 #include "p1788/p1788.hpp"
 
-template<typename T>
-using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
-
-template<typename T>
-using interval = p1788::infsup::interval<T, flavor>;
 
 template<typename T>
 using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
@@ -44,11 +39,11 @@ using I = p1788::infsup::interval<T, flavor>;
 
 BOOST_AUTO_TEST_CASE(minimal_ostream_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_istream_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 

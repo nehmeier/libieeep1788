@@ -42,7 +42,10 @@ mpfr_flavor<T, SUBNORMALIZE>::inf(mpfr_flavor<T, SUBNORMALIZE>::representation c
     if (is_empty(x))
         return std::numeric_limits<T>::infinity();
 
-    return method_lower(x);
+    if (x.first == 0.0)
+        return -0.0;
+
+    return x.first;
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -60,7 +63,10 @@ mpfr_flavor<T, SUBNORMALIZE>::sup(mpfr_flavor<T, SUBNORMALIZE>::representation c
     if (is_empty(x))
         return -std::numeric_limits<T>::infinity();
 
-    return method_upper(x);
+    if (x.second == 0.0)
+        return 0.0;
+
+    return x.second;
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -80,6 +86,12 @@ mpfr_flavor<T, SUBNORMALIZE>::mid(mpfr_flavor<T, SUBNORMALIZE>::representation c
 
     if (is_entire(x))
         return 0;
+
+    if (x.first == -std::numeric_limits<T>::infinity())
+        return -std::numeric_limits<T>::max();
+
+    if (x.second == std::numeric_limits<T>::infinity())
+        return std::numeric_limits<T>::max();
 
     mpfr_var::setup();
 
@@ -192,6 +204,10 @@ mpfr_flavor<T, SUBNORMALIZE>::mig(mpfr_flavor<T, SUBNORMALIZE>::representation c
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
+
+    if (x.first < 0.0 && x.second > 0.0)
+        return 0.0;
+
 
     T xl = std::abs(x.first);
     T xu = std::abs(x.second);

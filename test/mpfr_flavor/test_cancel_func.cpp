@@ -39,10 +39,10 @@ using I = p1788::infsup::interval<T, flavor>;
 
 BOOST_AUTO_TEST_CASE(minimal_cancel_plus_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_cancel_minus_test)
 {
-    BOOST_CHECK(true);
+    BOOST_CHECK(false);
 }

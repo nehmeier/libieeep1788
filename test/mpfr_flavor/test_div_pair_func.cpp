@@ -40,4 +40,6 @@ BOOST_AUTO_TEST_CASE(minimal_div_to_pair_test)
 {
     BOOST_CHECK_EQUAL( div_to_pair(I<double>(1.0,1.0), I<double>(-1.0,1.0)).first, I<double>(-std::numeric_limits<double>::infinity(),-1.0) );
     BOOST_CHECK_EQUAL( div_to_pair(I<double>(1.0,1.0), I<double>(-1.0,1.0)).second, I<double>(1.0, std::numeric_limits<double>::infinity()) );
+
+    BOOST_CHECK(false);
 }
