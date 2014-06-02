@@ -466,7 +466,7 @@ Interval fma(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
 
 
 // interval case
-
+//TODO notwendig?
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval interval_case(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
         base_interval<T, Flavor, RepType, ConcreteInterval> const& g,

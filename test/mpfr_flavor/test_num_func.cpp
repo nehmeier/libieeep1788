@@ -36,12 +36,14 @@ using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subn
 template<typename T>
 using I = p1788::infsup::interval<T, flavor>;
 
+const double INF = std::numeric_limits<double>::infinity();
+const double MAX = std::numeric_limits<double>::max();
 
 BOOST_AUTO_TEST_CASE(minimal_inf_test)
 {
     BOOST_CHECK_EQUAL( inf(I<double>(1.0,2.0)), 1.0 );
-    BOOST_CHECK_EQUAL( inf(I<double>::entire()), -std::numeric_limits<double>::infinity() );
-    BOOST_CHECK_EQUAL( inf(I<double>::empty()), std::numeric_limits<double>::infinity() );
+    BOOST_CHECK_EQUAL( inf(I<double>::entire()), -INF );
+    BOOST_CHECK_EQUAL( inf(I<double>::empty()), INF );
 
     BOOST_CHECK_EQUAL( inf(I<double>(-0.0,2.0)), 0.0 );
     BOOST_CHECK( std::signbit(inf(I<double>(-0.0,2.0))) );
@@ -52,8 +54,8 @@ BOOST_AUTO_TEST_CASE(minimal_inf_test)
 BOOST_AUTO_TEST_CASE(minimal_sup_test)
 {
     BOOST_CHECK_EQUAL( sup(I<double>(1.0,2.0)), 2.0 );
-    BOOST_CHECK_EQUAL( sup(I<double>::entire()), std::numeric_limits<double>::infinity() );
-    BOOST_CHECK_EQUAL( sup(I<double>::empty()), -std::numeric_limits<double>::infinity() );
+    BOOST_CHECK_EQUAL( sup(I<double>::entire()), INF );
+    BOOST_CHECK_EQUAL( sup(I<double>::empty()), -INF );
 
     BOOST_CHECK_EQUAL( sup(I<double>(-3.0,0.0)), 0.0 );
     BOOST_CHECK( !std::signbit(sup(I<double>(-3.0,0.0))) );
@@ -70,8 +72,8 @@ BOOST_AUTO_TEST_CASE(minimal_mid_test)
     BOOST_CHECK( !std::signbit(mid(I<double>::entire())) );
     BOOST_CHECK_EQUAL( mid(I<double>(-2.0,2.0)), 0.0 );
     BOOST_CHECK( !std::signbit(mid(I<double>(-2.0,2.0))) );
-    BOOST_CHECK_EQUAL( mid(I<double>(0.0,std::numeric_limits<double>::infinity())), std::numeric_limits<double>::max() );
-    BOOST_CHECK_EQUAL( mid(I<double>(-std::numeric_limits<double>::infinity(), 1.2)), -std::numeric_limits<double>::max() );
+    BOOST_CHECK_EQUAL( mid(I<double>(0.0,INF)), MAX );
+    BOOST_CHECK_EQUAL( mid(I<double>(-INF, 1.2)), -MAX );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_rad_test)
@@ -80,9 +82,9 @@ BOOST_AUTO_TEST_CASE(minimal_rad_test)
     BOOST_CHECK_EQUAL( rad(I<double>(2.0,2.0)), 0.0 );
     BOOST_CHECK( !std::signbit(rad(I<double>(2.0,2.0))) );
     BOOST_CHECK( std::isnan(rad(I<double>::empty())) );
-    BOOST_CHECK_EQUAL( rad(I<double>::entire()), std::numeric_limits<double>::infinity() );
-    BOOST_CHECK_EQUAL( rad(I<double>(0.0,std::numeric_limits<double>::infinity())), std::numeric_limits<double>::infinity() );
-    BOOST_CHECK_EQUAL( rad(I<double>(-std::numeric_limits<double>::infinity(), 1.2)), std::numeric_limits<double>::infinity() );
+    BOOST_CHECK_EQUAL( rad(I<double>::entire()), INF );
+    BOOST_CHECK_EQUAL( rad(I<double>(0.0,INF)), INF );
+    BOOST_CHECK_EQUAL( rad(I<double>(-INF, 1.2)), INF );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_mid_rad_test)
@@ -94,16 +96,16 @@ BOOST_AUTO_TEST_CASE(minimal_mid_rad_test)
     BOOST_CHECK( !std::signbit(mid_rad(I<double>::entire()).first) );
     BOOST_CHECK_EQUAL( mid_rad(I<double>(-2.0,2.0)).first, 0.0 );
     BOOST_CHECK( !std::signbit(mid_rad(I<double>(-2.0,2.0)).first) );
-    BOOST_CHECK_EQUAL( mid_rad(I<double>(0.0,std::numeric_limits<double>::infinity())).first, std::numeric_limits<double>::max() );
-    BOOST_CHECK_EQUAL( mid_rad(I<double>(-std::numeric_limits<double>::infinity(), 1.2)).first, -std::numeric_limits<double>::max() );
+    BOOST_CHECK_EQUAL( mid_rad(I<double>(0.0,INF)).first, MAX );
+    BOOST_CHECK_EQUAL( mid_rad(I<double>(-INF, 1.2)).first, -MAX );
 
     BOOST_CHECK_EQUAL( mid_rad(I<double>(0.0,2.0)).second, 1.0 );
     BOOST_CHECK_EQUAL( mid_rad(I<double>(2.0,2.0)).second, 0.0 );
     BOOST_CHECK( !std::signbit(mid_rad(I<double>(2.0,2.0)).second) );
     BOOST_CHECK( std::isnan(mid_rad(I<double>::empty()).second) );
-    BOOST_CHECK_EQUAL( mid_rad(I<double>::entire()).second, std::numeric_limits<double>::infinity() );
-    BOOST_CHECK_EQUAL( mid_rad(I<double>(0.0,std::numeric_limits<double>::infinity())).second, std::numeric_limits<double>::infinity() );
-    BOOST_CHECK_EQUAL( mid_rad(I<double>(-std::numeric_limits<double>::infinity(), 1.2)).second, std::numeric_limits<double>::infinity() );
+    BOOST_CHECK_EQUAL( mid_rad(I<double>::entire()).second, INF );
+    BOOST_CHECK_EQUAL( mid_rad(I<double>(0.0,INF)).second, INF );
+    BOOST_CHECK_EQUAL( mid_rad(I<double>(-INF, 1.2)).second, INF );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_wid_test)
@@ -111,9 +113,9 @@ BOOST_AUTO_TEST_CASE(minimal_wid_test)
     BOOST_CHECK_EQUAL( wid(I<double>(2.0,2.0)), 0.0 );
     BOOST_CHECK( !std::signbit(wid(I<double>(2.0,2.0))) );
     BOOST_CHECK_EQUAL( wid(I<double>(1.0,2.0)), 1.0 );
-    BOOST_CHECK_EQUAL( wid(I<double>(1.0,std::numeric_limits<double>::infinity())), std::numeric_limits<double>::infinity() );
-    BOOST_CHECK_EQUAL( wid(I<double>(-std::numeric_limits<double>::infinity(),2.0)), std::numeric_limits<double>::infinity() );
-    BOOST_CHECK_EQUAL( wid(I<double>::entire()), std::numeric_limits<double>::infinity() );
+    BOOST_CHECK_EQUAL( wid(I<double>(1.0,INF)), INF );
+    BOOST_CHECK_EQUAL( wid(I<double>(-INF,2.0)), INF );
+    BOOST_CHECK_EQUAL( wid(I<double>::entire()), INF );
     BOOST_CHECK( std::isnan(wid(I<double>::empty())) );
 }
 
@@ -121,9 +123,9 @@ BOOST_AUTO_TEST_CASE(minimal_mag_test)
 {
     BOOST_CHECK_EQUAL( mag(I<double>(1.0,2.0)), 2.0 );
     BOOST_CHECK_EQUAL( mag(I<double>(-4.0,2.0)), 4.0 );
-    BOOST_CHECK_EQUAL( mag(I<double>(-std::numeric_limits<double>::infinity(),2.0)), std::numeric_limits<double>::infinity() );
-    BOOST_CHECK_EQUAL( mag(I<double>(1.0,std::numeric_limits<double>::infinity())), std::numeric_limits<double>::infinity() );
-    BOOST_CHECK_EQUAL( mag(I<double>::entire()), std::numeric_limits<double>::infinity() );
+    BOOST_CHECK_EQUAL( mag(I<double>(-INF,2.0)), INF );
+    BOOST_CHECK_EQUAL( mag(I<double>(1.0,INF)), INF );
+    BOOST_CHECK_EQUAL( mag(I<double>::entire()), INF );
     BOOST_CHECK( std::isnan(mag(I<double>::empty())) );
     BOOST_CHECK_EQUAL( mag(I<double>(-0.0,0.0)), 0.0 );
     BOOST_CHECK( !std::signbit(mag(I<double>(-0.0,0.0))) );
@@ -137,10 +139,10 @@ BOOST_AUTO_TEST_CASE(minimal_mig_test)
     BOOST_CHECK_EQUAL( mig(I<double>(-4.0,2.0)), 0.0 );
     BOOST_CHECK( !std::signbit(mig(I<double>(-4.0,2.0))) );
     BOOST_CHECK_EQUAL( mig(I<double>(-4.0,-2.0)), 2.0 );
-    BOOST_CHECK_EQUAL( mig(I<double>(-std::numeric_limits<double>::infinity(),2.0)), 0.0 );
-    BOOST_CHECK_EQUAL( mig(I<double>(-std::numeric_limits<double>::infinity(),-2.0)), 2.0 );
-    BOOST_CHECK_EQUAL( mig(I<double>(-1.0,std::numeric_limits<double>::infinity())), 0.0 );
-    BOOST_CHECK_EQUAL( mig(I<double>(1.0,std::numeric_limits<double>::infinity())), 1.0 );
+    BOOST_CHECK_EQUAL( mig(I<double>(-INF,2.0)), 0.0 );
+    BOOST_CHECK_EQUAL( mig(I<double>(-INF,-2.0)), 2.0 );
+    BOOST_CHECK_EQUAL( mig(I<double>(-1.0,INF)), 0.0 );
+    BOOST_CHECK_EQUAL( mig(I<double>(1.0,INF)), 1.0 );
     BOOST_CHECK_EQUAL( mig(I<double>::entire()), 0.0 );
     BOOST_CHECK( !std::signbit(mig(I<double>::entire())) );
     BOOST_CHECK( std::isnan(mig(I<double>::empty())) );

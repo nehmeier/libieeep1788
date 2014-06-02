@@ -320,6 +320,7 @@ protected:
                                  base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
                                  base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+//TODO notwendig?
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend ConcreteInterval_ interval_case(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
                                            base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,

@@ -281,6 +281,7 @@ public:
     static representation_dec fma(representation_dec const& x, representation_dec const& y,
                               representation_dec const& z );
 
+//TODO notwendig?
     static representation interval_case(representation const& c,
                                         representation const& g,
                                         representation const& h );

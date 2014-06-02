@@ -614,6 +614,7 @@ mpfr_flavor<T, SUBNORMALIZE>::fma(mpfr_flavor<T, SUBNORMALIZE>::representation_d
     return representation_dec(fma(x.first, y.first, z.first), p1788::decoration::decoration::trv);}
 
 
+//TODO notwendig?
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::interval_case(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
@@ -632,6 +633,7 @@ mpfr_flavor<T, SUBNORMALIZE>::interval_case(mpfr_flavor<T, SUBNORMALIZE>::repres
     return hull(g, h);
 }
 
+//TODO notwendig?
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
 mpfr_flavor<T, SUBNORMALIZE>::interval_case(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& c,
@@ -1487,6 +1489,9 @@ template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::sign(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
 {
+    if (is_empty(x))
+        return x;
+
     return representation((x.first < 0.0) ? -1.0 : ((x.first == 0.0) ? 0.0 : 1.0),
                           (x.second < 0.0) ? -1.0 : ((x.second == 0.0) ? 0.0 : 1.0));
 }

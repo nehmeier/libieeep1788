@@ -35,6 +35,7 @@ using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subn
 template<typename T>
 using I = p1788::infsup::interval<T, flavor>;
 
+const double INF = std::numeric_limits<double>::infinity();
 
 BOOST_AUTO_TEST_CASE(minimal_is_empty_test)
 {
@@ -43,8 +44,8 @@ BOOST_AUTO_TEST_CASE(minimal_is_empty_test)
     BOOST_CHECK( !is_empty(I<double>(1.0,2.0)) );
     BOOST_CHECK( !is_empty(I<double>(-1.0,2.0)) );
     BOOST_CHECK( !is_empty(I<double>(-3.0,-2.0)) );
-    BOOST_CHECK( !is_empty(I<double>(-std::numeric_limits<double>::infinity(),2.0)) );
-    BOOST_CHECK( !is_empty(I<double>(0.0,std::numeric_limits<double>::infinity())) );
+    BOOST_CHECK( !is_empty(I<double>(-INF,2.0)) );
+    BOOST_CHECK( !is_empty(I<double>(0.0,INF)) );
 }
 
 
@@ -55,8 +56,8 @@ BOOST_AUTO_TEST_CASE(minimal_is_entire_test)
     BOOST_CHECK( !is_entire(I<double>(1.0,2.0)) );
     BOOST_CHECK( !is_entire(I<double>(-1.0,2.0)) );
     BOOST_CHECK( !is_entire(I<double>(-3.0,-2.0)) );
-    BOOST_CHECK( !is_entire(I<double>(-std::numeric_limits<double>::infinity(),2.0)) );
-    BOOST_CHECK( !is_entire(I<double>(0.0,std::numeric_limits<double>::infinity())) );
+    BOOST_CHECK( !is_entire(I<double>(-INF,2.0)) );
+    BOOST_CHECK( !is_entire(I<double>(0.0,INF)) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_equal_test)
@@ -73,13 +74,13 @@ BOOST_AUTO_TEST_CASE(minimal_is_equal_test)
     BOOST_CHECK( I<double>::entire() == I<double>::entire() );
     BOOST_CHECK( I<double>(1.0,2.4) != I<double>::entire() );
 
-    BOOST_CHECK( is_equal(I<double>(1.0,std::numeric_limits<double>::infinity()), I<double>(1.0,std::numeric_limits<double>::infinity())) );
-    BOOST_CHECK( I<double>(1.0,std::numeric_limits<double>::infinity()) == I<double>(1.0,std::numeric_limits<double>::infinity()) );
-    BOOST_CHECK( I<double>(1.0,2.4) != I<double>(1.0,std::numeric_limits<double>::infinity()) );
+    BOOST_CHECK( is_equal(I<double>(1.0,INF), I<double>(1.0,INF)) );
+    BOOST_CHECK( I<double>(1.0,INF) == I<double>(1.0,INF) );
+    BOOST_CHECK( I<double>(1.0,2.4) != I<double>(1.0,INF) );
 
-    BOOST_CHECK( is_equal(I<double>(-std::numeric_limits<double>::infinity(),2.0), I<double>(-std::numeric_limits<double>::infinity(),2.0)) );
-    BOOST_CHECK( I<double>(-std::numeric_limits<double>::infinity(),2.0) == I<double>(-std::numeric_limits<double>::infinity(),2.0) );
-    BOOST_CHECK( I<double>(-std::numeric_limits<double>::infinity(),2.4) != I<double>(-std::numeric_limits<double>::infinity(),2.0) );
+    BOOST_CHECK( is_equal(I<double>(-INF,2.0), I<double>(-INF,2.0)) );
+    BOOST_CHECK( I<double>(-INF,2.0) == I<double>(-INF,2.0) );
+    BOOST_CHECK( I<double>(-INF,2.4) != I<double>(-INF,2.0) );
 
     BOOST_CHECK( I<double>(-0.0,2.0) == I<double>(0.0,2.0) );
 }
