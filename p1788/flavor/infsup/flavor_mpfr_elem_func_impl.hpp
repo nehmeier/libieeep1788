@@ -614,36 +614,36 @@ mpfr_flavor<T, SUBNORMALIZE>::fma(mpfr_flavor<T, SUBNORMALIZE>::representation_d
     return representation_dec(fma(x.first, y.first, z.first), p1788::decoration::decoration::trv);}
 
 
-//TODO notwendig?
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::interval_case(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                              mpfr_flavor<T, SUBNORMALIZE>::representation const& g,
-                              mpfr_flavor<T, SUBNORMALIZE>::representation const& h)
-{
-    if (is_empty(c))
-        return c;
-
-    if (c.second < 0.0)
-        return g;
-
-    if (c.first > 0.0)
-        return h;
-
-    return hull(g, h);
-}
-
-//TODO notwendig?
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::interval_case(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& c,
-                              mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& g,
-                              mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& h)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return representation_dec(interval_case(c.first, g.first, h.first), p1788::decoration::decoration::trv);
-}
+////TODO notwendig?
+//template<typename T, subnormalize SUBNORMALIZE>
+//typename mpfr_flavor<T, SUBNORMALIZE>::representation
+//mpfr_flavor<T, SUBNORMALIZE>::interval_case(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
+//                              mpfr_flavor<T, SUBNORMALIZE>::representation const& g,
+//                              mpfr_flavor<T, SUBNORMALIZE>::representation const& h)
+//{
+//    if (is_empty(c))
+//        return c;
+//
+//    if (c.second < 0.0)
+//        return g;
+//
+//    if (c.first > 0.0)
+//        return h;
+//
+//    return hull(g, h);
+//}
+//
+////TODO notwendig?
+//template<typename T, subnormalize SUBNORMALIZE>
+//typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
+//mpfr_flavor<T, SUBNORMALIZE>::interval_case(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& c,
+//                              mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& g,
+//                              mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& h)
+//{
+//    LIBIEEEP1788_NOT_IMPLEMENTED;
+//
+//    return representation_dec(interval_case(c.first, g.first, h.first), p1788::decoration::decoration::trv);
+//}
 
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation

@@ -465,15 +465,15 @@ Interval fma(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
 }
 
 
-// interval case
-//TODO notwendig?
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval interval_case(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-        base_interval<T, Flavor, RepType, ConcreteInterval> const& g,
-        base_interval<T, Flavor, RepType, ConcreteInterval> const& h) {
-    return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::interval_case(c.rep_,
-                               g.rep_, h.rep_));
-}
+//// interval case
+////TODO notwendig?
+//template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+//ConcreteInterval interval_case(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
+//        base_interval<T, Flavor, RepType, ConcreteInterval> const& g,
+//        base_interval<T, Flavor, RepType, ConcreteInterval> const& h) {
+//    return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::interval_case(c.rep_,
+//                               g.rep_, h.rep_));
+//}
 
 
 // pown

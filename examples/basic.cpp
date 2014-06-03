@@ -64,7 +64,7 @@ using namespace p1788::infsup;
     std::cout << is_equal(d_a, d_b) << std::endl;
     std::cout << (d_a != d_b) << std::endl;
     std::cout << less(d_a, d_b) << std::endl;
-    std::cout << contains(d_a, d_b) << std::endl;
+    std::cout << subset(d_a, d_b) << std::endl;
 
     std::cout << d_a + d_b << std::endl;
     std::cout << div(d_a, d_b) << std::endl;
@@ -97,7 +97,5 @@ using namespace p1788::infsup;
     std::cout << add<I<double>>(f_a, d_b) << std::endl;
     std::cout << sqrt<I<double>>(f_a) << std::endl;
     std::cout << fma<I<double>>(f_a, d_b, d_a) << std::endl;
-
-    return 0;
 }
 

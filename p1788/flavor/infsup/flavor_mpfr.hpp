@@ -281,13 +281,13 @@ public:
     static representation_dec fma(representation_dec const& x, representation_dec const& y,
                               representation_dec const& z );
 
-//TODO notwendig?
-    static representation interval_case(representation const& c,
-                                        representation const& g,
-                                        representation const& h );
-    static representation_dec interval_case(representation_dec const& c,
-                                        representation_dec const& g,
-                                        representation_dec const& h );
+////TODO notwendig?
+//    static representation interval_case(representation const& c,
+//                                        representation const& g,
+//                                        representation const& h );
+//    static representation_dec interval_case(representation_dec const& c,
+//                                        representation_dec const& g,
+//                                        representation_dec const& h );
 
     static representation sqr(representation const& x);
     static representation_dec sqr(representation_dec const& x);
