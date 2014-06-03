@@ -278,13 +278,19 @@ mpfr_flavor<T, SUBNORMALIZE>::div(mpfr_flavor<T, SUBNORMALIZE>::representation c
     if (is_empty(y))
         return y;
 
+    if (y.first == 0.0 && y.second == 0.0)
+        return static_method_empty();
+
+    if (x.first == 0.0 && x.second == 0.0)
+        return x;
+
     if ((y.first < 0.0 && y.second > 0.0)
             || (x.first <= 0.0 && x.second >= 0.0
                 && (y.first == 0.0 || y.second == 0.0)))
         return static_method_entire();
 
-    if ((x.second < 0.0 || x.first > 0.0) && y.first == 0.0 && y.second == 0.0)
-        return static_method_empty();
+//    if ((x.second < 0.0 || x.first > 0.0) && y.first == 0.0 && y.second == 0.0)
+//        return static_method_empty();
 
     mpfr_var::setup();
     mpfr_var l;
