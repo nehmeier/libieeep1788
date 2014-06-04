@@ -360,7 +360,7 @@ BOOST_AUTO_TEST_CASE(minimal_mul_test)
     BOOST_CHECK_EQUAL( I<double>(-1.0,5.0) * I<double>(-1.0, 10.0), I<double>(-10.0,50.0) );
     BOOST_CHECK_EQUAL( mul(I<double>(-2.0,2.0), I<double>(-5.0, 3.0)), I<double>(-10.0,10.0) );
     BOOST_CHECK_EQUAL( I<double>(-2.0,2.0) * I<double>(-5.0, 3.0), I<double>(-10.0,10.0) );
-
+    //end min max
     BOOST_CHECK_EQUAL( mul(I<double>(-1.0,5.0), I<double>(1.0, 3.0)), I<double>(-3.0,15.0) );
     BOOST_CHECK_EQUAL( I<double>(-1.0,5.0) * I<double>(1.0, 3.0), I<double>(-3.0,15.0) );
     BOOST_CHECK_EQUAL( mul(I<double>(-1.0,5.0), I<double>(-INF, -1.0)), I<double>::entire() );
@@ -408,140 +408,266 @@ BOOST_AUTO_TEST_CASE(minimal_mul_test)
 BOOST_AUTO_TEST_CASE(minimal_div_test)
 {
     BOOST_CHECK_EQUAL( div(I<double>::empty(), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>::empty() / I<double>::empty(), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>(-1.0,1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(-1.0,1.0) / I<double>::empty(), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>::empty(), I<double>(-1.0,1.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>::empty() / I<double>(-1.0,1.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>::empty(), I<double>(0.1,1.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>::empty() / I<double>(0.1,1.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>::empty(), I<double>(-1.0,-0.1)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>::empty() / I<double>(-1.0,-0.1), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>::empty(), I<double>::entire()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>::empty() / I<double>::entire(), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>::empty(), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>::empty(), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>::empty(), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>::empty() / I<double>(0.0), I<double>::empty() );
 
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(-5.0, -3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(-5.0, -3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(3.0, 5.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(3.0, 5.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(-INF, -3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(-INF, -3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(3.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(3.0,INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(0.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(-3.0, 0.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(-3.0, 0.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(-3.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(0.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(0.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(-INF, 0.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(-INF, 0.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(-INF, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(-3.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>(0.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>(0.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>::entire(), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::entire() / I<double>::entire(), I<double>::entire() );
 
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(-5.0, -3.0)), I<double>(3.0,10.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(-5.0, -3.0), I<double>(3.0,10.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(3.0, 5.0)), I<double>(-10.0,-3.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(3.0, 5.0), I<double>(-10.0,-3.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(-INF, -3.0)), I<double>(0.0,10.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(-INF, -3.0), I<double>(0.0,10.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(3.0,INF)), I<double>(-10.0,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(3.0,INF), I<double>(-10.0,0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(0.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(-3.0, 0.0)), I<double>(5.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(-3.0, 0.0), I<double>(5.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(-3.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(0.0, 3.0)), I<double>(-INF,-5.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(0.0, 3.0), I<double>(-INF,-5.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(-INF, 0.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(-INF, 0.0), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(-INF, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(-3.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>(0.0, INF)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>(0.0, INF), I<double>(-INF,0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,-15.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,-15.0) / I<double>::entire(), I<double>::entire() );
 
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(-5.0, -3.0)), I<double>(-5.0,10.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(-5.0, -3.0), I<double>(-5.0,10.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(3.0, 5.0)), I<double>(-10.0,5.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(3.0, 5.0), I<double>(-10.0,5.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(-INF, -3.0)), I<double>(-5.0,10.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(-INF, -3.0), I<double>(-5.0,10.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(3.0,INF)), I<double>(-10.0,5.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(3.0,INF), I<double>(-10.0,5.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(0.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(-3.0, 0.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(-3.0, 0.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(-3.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(0.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(0.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(-INF, 0.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(-INF, 0.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(-INF, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(-3.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>(0.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>(0.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-30.0,15.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,15.0) / I<double>::entire(), I<double>::entire() );
 
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(-5.0, -3.0)), I<double>(-10.0,-3.0) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(-5.0, -3.0), I<double>(-10.0,-3.0) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(3.0, 5.0)), I<double>(3.0,10.0) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(3.0, 5.0), I<double>(3.0,10.0) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(-INF, -3.0)), I<double>(-10.0,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(-INF, -3.0), I<double>(-10.0,0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(3.0,INF)), I<double>(0.0,10.0) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(3.0,INF), I<double>(0.0,10.0) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(0.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(-3.0, 0.0)), I<double>(-INF,-5.0) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(-3.0, 0.0), I<double>(-INF,-5.0) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(-3.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(0.0, 3.0)), I<double>(5.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(0.0, 3.0), I<double>(5.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(-INF, 0.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(-INF, 0.0), I<double>(-INF,0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(-INF, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(-3.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>(0.0, INF)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>(0.0, INF), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,30.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(15.0,30.0) / I<double>::entire(), I<double>::entire() );
 
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(-5.0, -3.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(-5.0, -3.0), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(3.0, 5.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(3.0, 5.0), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(-INF, -3.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(-INF, -3.0), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(3.0,INF)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(3.0,INF), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(0.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(-3.0, 0.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(-3.0, 0.0), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(-3.0, 3.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(-3.0, 3.0), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(0.0, 3.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(0.0, 3.0), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(-INF, 0.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(-INF, 0.0), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(-INF, 3.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(-INF, 3.0), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(-3.0, INF)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(-3.0, INF), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>(0.0, INF)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>(0.0, INF), I<double>(0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(0.0), I<double>::entire()), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0) / I<double>::entire(), I<double>(0.0) );
 
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(-5.0, -3.0)), I<double>(3.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(-5.0, -3.0), I<double>(3.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(3.0, 5.0)), I<double>(-INF,-3.0) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(3.0, 5.0), I<double>(-INF,-3.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(-INF, -3.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(-INF, -3.0), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(3.0,INF)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(3.0,INF), I<double>(-INF,0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(0.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(-3.0, 0.0)), I<double>(5.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(-3.0, 0.0), I<double>(5.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(-3.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(0.0, 3.0)), I<double>(-INF,-5.0) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(0.0, 3.0), I<double>(-INF,-5.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(-INF, 0.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(-INF, 0.0), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(-INF, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(-3.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>(0.0, INF)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>(0.0, INF), I<double>(-INF,0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,-15.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-15.0) / I<double>::entire(), I<double>::entire() );
 
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(-5.0, -3.0)), I<double>(-5.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(-5.0, -3.0), I<double>(-5.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(3.0, 5.0)), I<double>(-INF,5.0) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(3.0, 5.0), I<double>(-INF,5.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(-INF, -3.0)), I<double>(-5.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(-INF, -3.0), I<double>(-5.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(3.0,INF)), I<double>(-INF,5.0) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(3.0,INF), I<double>(-INF,5.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(0.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(-3.0, 0.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(-3.0, 0.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(-3.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(0.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(0.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(-INF, 0.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(-INF, 0.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(-INF, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(-3.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>(0.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>(0.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-INF,15.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,15.0) / I<double>::entire(), I<double>::entire() );
 
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(-5.0, -3.0)), I<double>(-INF,5.0) );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(-5.0, -3.0), I<double>(-INF,5.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(3.0, 5.0)), I<double>(-5.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(3.0, 5.0), I<double>(-5.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(-INF, -3.0)), I<double>(-INF,5.0) );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(-INF, -3.0), I<double>(-INF,5.0) );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(3.0,INF)), I<double>(-5.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(3.0,INF), I<double>(-5.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(0.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(-3.0, 0.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(-3.0, 0.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(-3.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(0.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(0.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(-INF, 0.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(-INF, 0.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(-INF, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(-3.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>(0.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>(0.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(-15.0,INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-15.0,INF) / I<double>::entire(), I<double>::entire() );
 
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(-5.0, -3.0)), I<double>(-INF,-3.0) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(-5.0, -3.0), I<double>(-INF,-3.0) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(3.0, 5.0)), I<double>(3.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(3.0, 5.0), I<double>(3.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(-INF, -3.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(-INF, -3.0), I<double>(-INF,0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(3.0,INF)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(3.0,INF), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(0.0), I<double>::empty() );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(-3.0, 0.0)), I<double>(-INF,-5.0) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(-3.0, 0.0), I<double>(-INF,-5.0) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(-3.0, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(0.0, 3.0)), I<double>(5.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(0.0, 3.0), I<double>(5.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(-INF, 0.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(-INF, 0.0), I<double>(-INF,0.0) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(-INF, 3.0), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(-3.0, INF), I<double>::entire() );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>(0.0, INF)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>(0.0, INF), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( div(I<double>(15.0,INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>::entire(), I<double>::entire() );
 
 
 
@@ -553,7 +679,21 @@ BOOST_AUTO_TEST_CASE(minimal_div_test)
 
 BOOST_AUTO_TEST_CASE(minimal_recip_test)
 {
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL( recip(I<double>(-50.0, -10.0)), I<double>(-0X1.999999999999AP-4,-0X1.47AE147AE147AP-6) );
+    BOOST_CHECK_EQUAL( recip(I<double>(10.0, 50.0)), I<double>(0X1.47AE147AE147AP-6,0X1.999999999999AP-4) );
+    BOOST_CHECK_EQUAL( recip(I<double>(-INF, -10.0)), I<double>(-0X1.999999999999AP-4,0.0) );
+    BOOST_CHECK_EQUAL( recip(I<double>(10.0,INF)), I<double>(0.0,0X1.999999999999AP-4) );
+    BOOST_CHECK_EQUAL( recip(I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( recip(I<double>(-10.0, 0.0)), I<double>(-INF,-0X1.9999999999999P-4) );
+    BOOST_CHECK_EQUAL( recip(I<double>(-10.0, 10.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( recip(I<double>(0.0, 10.0)), I<double>(0X1.9999999999999P-4,INF) );
+    BOOST_CHECK_EQUAL( recip(I<double>(-INF, 0.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( recip(I<double>(-INF, 10.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( recip(I<double>(-10.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( recip(I<double>(0.0, INF)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( recip(I<double>::entire()), I<double>::entire() );
+
+//TODO Tests mit Rundung
 }
 
 BOOST_AUTO_TEST_CASE(minimal_sqr_test)
@@ -582,7 +722,530 @@ BOOST_AUTO_TEST_CASE(minimal_sqrt_test)
 
 BOOST_AUTO_TEST_CASE(minimal_fma_test)
 {
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>::empty(), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,1.0), I<double>::empty(), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>(-1.0,1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>::entire(), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>::empty(), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>::empty(), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>(0.0), I<double>::empty()), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(0.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(1.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-INF, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-INF, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(1.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>::entire(), I<double>::empty()), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(0.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(1.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-INF, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-INF, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(1.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>::entire(), I<double>::empty()), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(0.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(1.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-INF, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-INF, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(1.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>::entire(), I<double>::empty()), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(0.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(1.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-INF, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-INF, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(1.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>::entire(), I<double>::empty()), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(0.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(1.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-INF, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-INF, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(1.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>::entire(), I<double>::empty()), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(0.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(1.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-INF, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-INF, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(1.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>::entire(), I<double>::empty()), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(0.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(1.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-INF, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-INF, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(1.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>::entire(), I<double>::empty()), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(0.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, -1.0), I<double>::empty()), I<double>::empty() );
+    //min max
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,2.0), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-1.0, 10.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-2.0,2.0), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    //end min max
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(1.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-INF, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-INF, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(1.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>::entire(), I<double>::empty()), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(0.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-INF, -1.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-INF, 3.0), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, INF), I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>::entire(), I<double>::empty()), I<double>::empty() );
+
+
+
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>::empty(), I<double>(-INF,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,1.0), I<double>::empty(), I<double>(-INF,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>(-1.0,1.0), I<double>(-INF,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>::entire(), I<double>(-INF,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>::empty(), I<double>(-INF,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>::empty(), I<double>(-INF,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>(0.0), I<double>(-INF,2.0)), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(0.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, -1.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(1.0, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-INF, -1.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-INF, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(1.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>::entire(), I<double>(-INF,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(0.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, -1.0), I<double>(-INF,2.0)), I<double>(-INF,1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(1.0, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-INF, -1.0), I<double>(-INF,2.0)), I<double>(-INF,1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-INF, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(1.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>::entire(), I<double>(-INF,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(0.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, -1.0), I<double>(-INF,2.0)), I<double>(-INF,7.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(1.0, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-INF, -1.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-INF, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(1.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>::entire(), I<double>(-INF,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(0.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, -1.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(1.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,11.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-INF, -1.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-INF, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(1.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>::entire(), I<double>(-INF,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(0.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, -1.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(1.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,-1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-INF, -1.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-INF, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(1.0, INF), I<double>(-INF,2.0)), I<double>(-INF,-1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>::entire(), I<double>(-INF,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(0.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, -1.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(1.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-INF, -1.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-INF, 3.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, INF), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(1.0, INF), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>::entire(), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(0.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, -1.0), I<double>(-INF,2.0)), I<double>(-INF,1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,17.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(1.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,17.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-INF, -1.0), I<double>(-INF,2.0)), I<double>(-INF,1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-INF, 3.0), I<double>(-INF,2.0)), I<double>(-INF,17.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(1.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>::entire(), I<double>(-INF,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(0.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, -1.0), I<double>(-INF,2.0)), I<double>(-INF,7.0) );
+    //min max
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,17.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,2.0), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,52.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-1.0, 10.0), I<double>(-INF,2.0)), I<double>(-INF,52.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-2.0,2.0), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,12.0) );
+    //end min max
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(1.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,17.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-INF, -1.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-INF, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(1.0, INF), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>::entire(), I<double>(-INF,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(0.0), I<double>(-INF,2.0)), I<double>(-INF,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, -1.0), I<double>(-INF,2.0)), I<double>(-INF,52.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,52.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, 3.0), I<double>(-INF,2.0)), I<double>(-INF,-3.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-INF, -1.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-INF, 3.0), I<double>(-INF,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, INF), I<double>(-INF,2.0)), I<double>(-INF,52.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, INF), I<double>(-INF,2.0)), I<double>(-INF,-3.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>::entire(), I<double>(-INF,2.0)), I<double>::entire() );
+
+
+
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>::empty(), I<double>(-2.0,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,1.0), I<double>::empty(), I<double>(-2.0,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>(-1.0,1.0), I<double>(-2.0,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>::entire(), I<double>(-2.0,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>::empty(), I<double>(-2.0,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>::empty(), I<double>(-2.0,2.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>(0.0), I<double>(-2.0,2.0)), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(0.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, -1.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(1.0, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-INF, -1.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-INF, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, INF), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(1.0, INF), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>::entire(), I<double>(-2.0,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(0.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, -1.0), I<double>(-2.0,2.0)), I<double>(-INF,1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(1.0, 3.0), I<double>(-2.0,2.0)), I<double>(-1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-INF, -1.0), I<double>(-2.0,2.0)), I<double>(-INF,1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-INF, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, INF), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(1.0, INF), I<double>(-2.0,2.0)), I<double>(-1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>::entire(), I<double>(-2.0,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(0.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, -1.0), I<double>(-2.0,2.0)), I<double>(-INF,7.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(1.0, 3.0), I<double>(-2.0,2.0)), I<double>(-5.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-INF, -1.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-INF, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, INF), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(1.0, INF), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>::entire(), I<double>(-2.0,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(0.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, -1.0), I<double>(-2.0,2.0)), I<double>(-17.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(1.0, 3.0), I<double>(-2.0,2.0)), I<double>(-INF,11.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-INF, -1.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-INF, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, INF), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(1.0, INF), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>::entire(), I<double>(-2.0,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(0.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, -1.0), I<double>(-2.0,2.0)), I<double>(1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(1.0, 3.0), I<double>(-2.0,2.0)), I<double>(-INF,-1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-INF, -1.0), I<double>(-2.0,2.0)), I<double>(1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-INF, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, INF), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(1.0, INF), I<double>(-2.0,2.0)), I<double>(-INF,-1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>::entire(), I<double>(-2.0,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(0.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, -1.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(1.0, 3.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-INF, -1.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-INF, 3.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, INF), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(1.0, INF), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>::entire(), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(0.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, -1.0), I<double>(-2.0,2.0)), I<double>(-27.0,1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>(-27.0,17.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(1.0, 3.0), I<double>(-2.0,2.0)), I<double>(-1.0,17.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-INF, -1.0), I<double>(-2.0,2.0)), I<double>(-INF,1.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-INF, 3.0), I<double>(-2.0,2.0)), I<double>(-INF,17.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, INF), I<double>(-2.0,2.0)), I<double>(-27.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(1.0, INF), I<double>(-2.0,2.0)), I<double>(-1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>::entire(), I<double>(-2.0,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(0.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, -1.0), I<double>(-2.0,2.0)), I<double>(-27.0,7.0) );
+    //min max
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>(-27.0,17.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,2.0), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>(-32.0,52.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-1.0, 10.0), I<double>(-2.0,2.0)), I<double>(-12.0,52.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-2.0,2.0), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>(-12.0,12.0) );
+    //end min max
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(1.0, 3.0), I<double>(-2.0,2.0)), I<double>(-5.0,17.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-INF, -1.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-INF, 3.0), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, INF), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(1.0, INF), I<double>(-2.0,2.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>::entire(), I<double>(-2.0,2.0)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(0.0), I<double>(-2.0,2.0)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, -1.0), I<double>(-2.0,2.0)), I<double>(3.0,52.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, 3.0), I<double>(-2.0,2.0)), I<double>(-32.0,52.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, 3.0), I<double>(-2.0,2.0)), I<double>(-32.0,-3.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-INF, -1.0), I<double>(-2.0,2.0)), I<double>(3.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-INF, 3.0), I<double>(-2.0,2.0)), I<double>(-32.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, INF), I<double>(-2.0,2.0)), I<double>(-INF,52.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, INF), I<double>(-2.0,2.0)), I<double>(-INF,-3.0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>::entire(), I<double>(-2.0,2.0)), I<double>::entire() );
+
+
+
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>::empty(), I<double>(-2.0,INF)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,1.0), I<double>::empty(), I<double>(-2.0,INF)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>(-1.0,1.0), I<double>(-2.0,INF)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>::entire(), I<double>(-2.0,INF)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>::empty(), I<double>(-2.0,INF)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>::empty(), I<double>(-2.0,INF)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>(0.0), I<double>(-2.0,INF)), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(0.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, -1.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(1.0, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-INF, -1.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-INF, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(1.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>::entire(), I<double>(-2.0,INF)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(0.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, -1.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(1.0, 3.0), I<double>(-2.0,INF)), I<double>(-1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-INF, -1.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-INF, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(1.0, INF), I<double>(-2.0,INF)), I<double>(-1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>::entire(), I<double>(-2.0,INF)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(0.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, -1.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(1.0, 3.0), I<double>(-2.0,INF)), I<double>(-5.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-INF, -1.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-INF, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(1.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>::entire(), I<double>(-2.0,INF)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(0.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, -1.0), I<double>(-2.0,INF)), I<double>(-17.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(1.0, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-INF, -1.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-INF, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(1.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>::entire(), I<double>(-2.0,INF)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(0.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, -1.0), I<double>(-2.0,INF)), I<double>(1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(1.0, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-INF, -1.0), I<double>(-2.0,INF)), I<double>(1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-INF, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(1.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>::entire(), I<double>(-2.0,INF)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(0.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, -1.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(1.0, 3.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-INF, -1.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-INF, 3.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, INF), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(1.0, INF), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>::entire(), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(0.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, -1.0), I<double>(-2.0,INF)), I<double>(-27.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>(-27.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(1.0, 3.0), I<double>(-2.0,INF)), I<double>(-1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-INF, -1.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-INF, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, INF), I<double>(-2.0,INF)), I<double>(-27.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(1.0, INF), I<double>(-2.0,INF)), I<double>(-1.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>::entire(), I<double>(-2.0,INF)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(0.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, -1.0), I<double>(-2.0,INF)), I<double>(-27.0,INF) );
+    //min max
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>(-27.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,2.0), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>(-32.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-1.0, 10.0), I<double>(-2.0,INF)), I<double>(-12.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-2.0,2.0), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>(-12.0,INF) );
+    //end min max
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(1.0, 3.0), I<double>(-2.0,INF)), I<double>(-5.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-INF, -1.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-INF, 3.0), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(1.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>::entire(), I<double>(-2.0,INF)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(0.0), I<double>(-2.0,INF)), I<double>(-2.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, -1.0), I<double>(-2.0,INF)), I<double>(3.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, 3.0), I<double>(-2.0,INF)), I<double>(-32.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, 3.0), I<double>(-2.0,INF)), I<double>(-32.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-INF, -1.0), I<double>(-2.0,INF)), I<double>(3.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-INF, 3.0), I<double>(-2.0,INF)), I<double>(-32.0,INF) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, INF), I<double>(-2.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>::entire(), I<double>(-2.0,INF)), I<double>::entire() );
+
+
+
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>::empty(), I<double>::entire()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,1.0), I<double>::empty(), I<double>::entire()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>(-1.0,1.0), I<double>::entire()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>::entire(), I<double>::entire()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>::empty(), I<double>::entire()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>::empty(), I<double>::entire()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( fma(I<double>::empty(), I<double>(0.0), I<double>::entire()), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(1.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-INF, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-INF, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(-5.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>(1.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>::entire(), I<double>::entire(), I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(1.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-INF, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-INF, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(-5.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>(1.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,INF), I<double>::entire(), I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(1.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-INF, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-INF, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(-5.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>(1.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,INF), I<double>::entire(), I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(1.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-INF, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-INF, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(-5.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>(1.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,3.0), I<double>::entire(), I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(1.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-INF, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-INF, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(-5.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>(1.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-INF,-3.0), I<double>::entire(), I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(1.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-INF, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-INF, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(-5.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>(1.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(0.0), I<double>::entire(), I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(1.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-INF, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-INF, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(-5.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>(1.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(1.0,5.0), I<double>::entire(), I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, -1.0), I<double>::entire()), I<double>::entire() );
+    //min max
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,2.0), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-1.0, 10.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-2.0,2.0), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    //end min max
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(1.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-INF, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-INF, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(-5.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>(1.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-1.0,5.0), I<double>::entire(), I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-INF, -1.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-INF, 3.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(-5.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>::entire(), I<double>::entire()), I<double>::entire() );
+
+//TODO Tests mit Rundung
 }
 
 //BOOST_AUTO_TEST_CASE(minimal_interval_case_test)
