@@ -670,11 +670,126 @@ BOOST_AUTO_TEST_CASE(minimal_div_test)
     BOOST_CHECK_EQUAL( I<double>(15.0,INF) / I<double>::entire(), I<double>::entire() );
 
 
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(-5.0, -3.0)), I<double>(0.0,10.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(-5.0, -3.0), I<double>(0.0,10.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(3.0, 5.0)), I<double>(-10.0,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(3.0, 5.0), I<double>(-10.0,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(-INF, -3.0)), I<double>(0.0,10.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(-INF, -3.0), I<double>(0.0,10.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(3.0,INF)), I<double>(-10.0,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(3.0,INF), I<double>(-10.0,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(0.0), I<double>::empty() );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(-3.0, 0.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(-3.0, 0.0), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(-3.0, 3.0), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(0.0, 3.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(0.0, 3.0), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(-INF, 0.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(-INF, 0.0), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(-INF, 3.0), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(-3.0, INF), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>(0.0, INF)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>(0.0, INF), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-30.0,0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-30.0,0.0) / I<double>::entire(), I<double>::entire() );
 
-//TODO Tests mit Rundung
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(-5.0, -3.0)), I<double>(-10.0,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(-5.0, -3.0), I<double>(-10.0,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(3.0, 5.0)), I<double>(0.0,10.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(3.0, 5.0), I<double>(0.0,10.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(-INF, -3.0)), I<double>(-10.0,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(-INF, -3.0), I<double>(-10.0,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(3.0,INF)), I<double>(0.0,10.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(3.0,INF), I<double>(0.0,10.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(0.0), I<double>::empty() );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(-3.0, 0.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(-3.0, 0.0), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(-3.0, 3.0), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(0.0, 3.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(0.0, 3.0), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(-INF, 0.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(-INF, 0.0), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(-INF, 3.0), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(-3.0, INF), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>(0.0, INF)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>(0.0, INF), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,30.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(0.0,30.0) / I<double>::entire(), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(-5.0, -3.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(-5.0, -3.0), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(3.0, 5.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(3.0, 5.0), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(-INF, -3.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(-INF, -3.0), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(3.0,INF)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(3.0,INF), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(0.0), I<double>::empty() );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(-3.0, 0.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(-3.0, 0.0), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(-3.0, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(-3.0, 3.0), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(0.0, 3.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(0.0, 3.0), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(-INF, 0.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(-INF, 0.0), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(-INF, 3.0), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(-3.0, INF), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>(0.0, INF)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>(0.0, INF), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,0.0), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(-INF,0.0) / I<double>::entire(), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(-5.0, -3.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(-5.0, -3.0), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(3.0, 5.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(3.0, 5.0), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(-INF, -3.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(-INF, -3.0), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(3.0,INF)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(3.0,INF), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(0.0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(0.0), I<double>::empty() );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(-3.0, 0.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(-3.0, 0.0), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(-3.0, 3.0)), I<double>::entire()  );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(-3.0, 3.0), I<double>::entire()  );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(0.0, 3.0)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(0.0, 3.0), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(-INF, 0.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(-INF, 0.0), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(-INF, 3.0)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(-INF, 3.0), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(-3.0, INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(-3.0, INF), I<double>::entire() );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>(0.0, INF)), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>(0.0, INF), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( div(I<double>(0.0,INF), I<double>::entire()), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>(0.0,INF) / I<double>::entire(), I<double>::entire() );
 
 
 
+    BOOST_CHECK_EQUAL( div(I<double>(-2.0,-1.0), I<double>(-10.0, -3.0)), I<double>(0X1.9999999999999P-4,0X1.5555555555556P-1) );
+    BOOST_CHECK_EQUAL( I<double>(-2.0,-1.0) / I<double>(-10.0, -3.0), I<double>(0X1.9999999999999P-4,0X1.5555555555556P-1) );
+    BOOST_CHECK_EQUAL( div(I<double>(-2.0,-1.0), I<double>(0.0, 10.0)), I<double>(-INF,-0X1.9999999999999P-4) );
+    BOOST_CHECK_EQUAL( I<double>(-2.0,-1.0) / I<double>(0.0, 10.0), I<double>(-INF,-0X1.9999999999999P-4) );
+    BOOST_CHECK_EQUAL( div(I<double>(-1.0,2.0), I<double>(10.0,INF)), I<double>(-0X1.999999999999AP-4,0X1.999999999999AP-3) );
+    BOOST_CHECK_EQUAL( I<double>(-1.0,2.0) / I<double>(10.0,INF), I<double>(-0X1.999999999999AP-4,0X1.999999999999AP-3) );
+    BOOST_CHECK_EQUAL( div(I<double>(1.0,3.0), I<double>(-INF, -10.0)), I<double>(-0X1.3333333333334P-2,0.0) );
+    BOOST_CHECK_EQUAL( I<double>(1.0,3.0) / I<double>(-INF, -10.0), I<double>(-0X1.3333333333334P-2,0.0) );
+    BOOST_CHECK_EQUAL( div(I<double>(-INF,-1.0), I<double>(1.0, 3.0)), I<double>(-INF,-0X1.5555555555555P-2) );
+    BOOST_CHECK_EQUAL( I<double>(-INF,-1.0) / I<double>(1.0, 3.0), I<double>(-INF,-0X1.5555555555555P-2) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_recip_test)
@@ -692,8 +807,6 @@ BOOST_AUTO_TEST_CASE(minimal_recip_test)
     BOOST_CHECK_EQUAL( recip(I<double>(-10.0, INF)), I<double>::entire() );
     BOOST_CHECK_EQUAL( recip(I<double>(0.0, INF)), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( recip(I<double>::entire()), I<double>::entire() );
-
-//TODO Tests mit Rundung
 }
 
 BOOST_AUTO_TEST_CASE(minimal_sqr_test)
@@ -715,6 +828,7 @@ BOOST_AUTO_TEST_CASE(minimal_sqrt_test)
     BOOST_CHECK_EQUAL( sqrt(I<double>(-INF,-MIN)), I<double>::empty() );
     BOOST_CHECK_EQUAL( sqrt(I<double>(-1.0,1.0)), I<double>(0.0,1.0) );
     BOOST_CHECK_EQUAL( sqrt(I<double>(-5.0,25.0)), I<double>(0.0,5.0) );
+    BOOST_CHECK_EQUAL( sqrt(I<double>(-5.0,INF)), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( sqrt(I<double>(0X1.999999999999AP-4)), I<double>(0X1.43D136248490FP-2,0X1.43D136248491P-2) );
     BOOST_CHECK_EQUAL( sqrt(I<double>(-0X1.FFFFFFFFFFFFP+0,0X1.999999999999AP-4)), I<double>(0.0,0X1.43D136248491P-2) );
     BOOST_CHECK_EQUAL( sqrt(I<double>(0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0)), I<double>(0X1.43D136248490FP-2,0X1.6A09E667F3BC7P+0) );
@@ -1245,7 +1359,11 @@ BOOST_AUTO_TEST_CASE(minimal_fma_test)
     BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>(1.0, INF), I<double>::entire()), I<double>::entire() );
     BOOST_CHECK_EQUAL( fma(I<double>(-10.0,-5.0), I<double>::entire(), I<double>::entire()), I<double>::entire() );
 
-//TODO Tests mit Rundung
+
+    BOOST_CHECK_EQUAL( fma(I<double>(0.1,0.5), I<double>(-5.0, 3.0), I<double>(-0.1,0.1)), I<double>(-0X1.4CCCCCCCCCCCDP+1,0X1.999999999999AP+0) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-0.5,0.2), I<double>(-5.0, 3.0), I<double>(-0.1,0.1)), I<double>(-0X1.999999999999AP+0,0X1.4CCCCCCCCCCCDP+1) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-0.5,-0.1), I<double>(2.0, 3.0), I<double>(-0.1,0.1)), I<double>(-0X1.999999999999AP+0,-0X1.999999999999AP-4) );
+    BOOST_CHECK_EQUAL( fma(I<double>(-0.5,-0.1), I<double>(-INF, 3.0), I<double>(-0.1,0.1)), I<double>(-0X1.999999999999AP+0,INF) );
 }
 
 //BOOST_AUTO_TEST_CASE(minimal_interval_case_test)
@@ -1255,122 +1373,122 @@ BOOST_AUTO_TEST_CASE(minimal_fma_test)
 //}
 
 
-//BOOST_AUTO_TEST_CASE(minimal_pown_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_pow_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_exp_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_exp2_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_exp10_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_log_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_log2_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_log10_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_sin_test)
-//{
-//    BOOST_CHECK_EQUAL( sin(I<double>::empty()), I<double>::empty() );
-//    BOOST_CHECK_EQUAL( sin(I<double>::entire()), I<double>(-1.0,1.0) );
-//
-//    BOOST_CHECK_EQUAL( sin(I<double>(0.0, 3.14)), I<double>(0.0,1.0) );
-//    BOOST_CHECK_EQUAL( sin(I<double>(-3.14, 0.0)), I<double>(-1.0,0.0) );
-//
-//    BOOST_CHECK_EQUAL( sin(I<double>(0.0, 6.29)), I<double>(-1.0,1.0) );
-//    BOOST_CHECK_EQUAL( sin(I<double>(-6.29, 0.0)), I<double>(-1.0,1.0) );
-//
-//    BOOST_CHECK_EQUAL( sin(I<double>(0.0, 6.28)), I<double>(-1.0,1.0) );
-//    BOOST_CHECK_EQUAL( sin(I<double>(-6.28, 0.0)), I<double>(-1.0,1.0) );
-//
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_cos_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_tan_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_asin_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_acos_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_atan_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_atan2_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_sinh_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_cosh_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_tanh_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_asinh_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_acosh_test)
-//{
-//    BOOST_CHECK(false);
-//}
-//
-//BOOST_AUTO_TEST_CASE(minimal_atanh_test)
-//{
-//    BOOST_CHECK(false);
-//}
+BOOST_AUTO_TEST_CASE(minimal_pown_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_pow_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_exp_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_exp2_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_exp10_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_log_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_log2_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_log10_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_sin_test)
+{
+    BOOST_CHECK_EQUAL( sin(I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( sin(I<double>::entire()), I<double>(-1.0,1.0) );
+
+    BOOST_CHECK_EQUAL( sin(I<double>(0.0, 3.14)), I<double>(0.0,1.0) );
+    BOOST_CHECK_EQUAL( sin(I<double>(-3.14, 0.0)), I<double>(-1.0,0.0) );
+
+    BOOST_CHECK_EQUAL( sin(I<double>(0.0, 6.29)), I<double>(-1.0,1.0) );
+    BOOST_CHECK_EQUAL( sin(I<double>(-6.29, 0.0)), I<double>(-1.0,1.0) );
+
+    BOOST_CHECK_EQUAL( sin(I<double>(0.0, 6.28)), I<double>(-1.0,1.0) );
+    BOOST_CHECK_EQUAL( sin(I<double>(-6.28, 0.0)), I<double>(-1.0,1.0) );
+
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_cos_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_tan_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_asin_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_acos_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_atan_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_atan2_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_sinh_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_cosh_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_tanh_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_asinh_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_acosh_test)
+{
+    BOOST_CHECK(false);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_atanh_test)
+{
+    BOOST_CHECK(false);
+}
 
 BOOST_AUTO_TEST_CASE(minimal_sign_test)
 {

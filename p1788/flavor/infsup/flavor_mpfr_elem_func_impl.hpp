@@ -285,7 +285,7 @@ mpfr_flavor<T, SUBNORMALIZE>::div(mpfr_flavor<T, SUBNORMALIZE>::representation c
         return x;
 
     if ((y.first < 0.0 && y.second > 0.0)
-            || (x.first <= 0.0 && x.second >= 0.0
+            || (x.first < 0.0 && x.second > 0.0
                 && (y.first == 0.0 || y.second == 0.0)))
         return static_method_entire();
 
