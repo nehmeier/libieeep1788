@@ -30,8 +30,6 @@
 #include "p1788/p1788.hpp"
 
 const double INF = std::numeric_limits<double>::infinity();
-const double MAX = std::numeric_limits<double>::max();
-const double MIN = std::numeric_limits<double>::min();
 
 template<typename T>
 using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
