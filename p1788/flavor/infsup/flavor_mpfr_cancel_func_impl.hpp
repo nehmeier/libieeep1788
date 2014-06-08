@@ -38,7 +38,7 @@ namespace infsup
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
-                            mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
+        mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
     return cancel_minus(x, neg(y));
 }
@@ -46,7 +46,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE>::represen
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
 mpfr_flavor<T, SUBNORMALIZE>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
-                            mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -57,43 +57,43 @@ mpfr_flavor<T, SUBNORMALIZE>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE>::represen
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
-                             mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
+        mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
 {
-    if (is_empty(x)) {
+    if (x.first == -std::numeric_limits<T>::infinity()
+            || x.second == +std::numeric_limits<T>::infinity()
+            || y.first == -std::numeric_limits<T>::infinity()
+            || y.second == +std::numeric_limits<T>::infinity())
+        return static_method_entire();
+
+    if (is_empty(x))
         return x;
-    } else {
-        if (is_empty(y))
-            return static_method_entire();
 
-        if (x.first == -std::numeric_limits<T>::infinity()
-                || x.second == +std::numeric_limits<T>::infinity()
-                || y.first == -std::numeric_limits<T>::infinity()
-                || y.second == +std::numeric_limits<T>::infinity())
-            return static_method_entire();
+    if (is_empty(y))
+        return static_method_entire();
 
-        if (wid(x) < wid(y))
-            return static_method_entire();
-
-        mpfr_var::setup();
-
-        mpfr_var xl(x.first, MPFR_RNDD);
-        mpfr_var xu(x.second, MPFR_RNDU);
-
-        mpfr_var yl(y.first, MPFR_RNDD);
-        mpfr_var yu(y.second, MPFR_RNDU);
+    if (wid(x) < wid(y))
+        return static_method_entire();
 
 
-        mpfr_sub(xl(), xl(), yl(), MPFR_RNDD);
-        mpfr_sub(xu(), xu(), yu(), MPFR_RNDU);
+    mpfr_var::setup();
 
-        return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
-    }
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    mpfr_var yl(y.first, MPFR_RNDD);
+    mpfr_var yu(y.second, MPFR_RNDU);
+
+
+    mpfr_sub(xl(), xl(), yl(), MPFR_RNDD);
+    mpfr_sub(xu(), xu(), yu(), MPFR_RNDU);
+
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
 mpfr_flavor<T, SUBNORMALIZE>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
-                             mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
