@@ -37,78 +37,79 @@ using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subn
 template<typename T>
 using I = p1788::infsup::interval<T, flavor>;
 
-
+const double INF = std::numeric_limits<double>::infinity();
+const double MAX = std::numeric_limits<double>::max();
+const double MIN = std::numeric_limits<double>::min();
+const double NaN = std::numeric_limits<double>::quiet_NaN();
 
 BOOST_AUTO_TEST_CASE(minimal_is_common_test)
 {
-    //TODO ist das in D8.1 7.2 so gemeint?
-    BOOST_CHECK_EQUAL(is_common(I<double>(-27.0)), true);
-    BOOST_CHECK_EQUAL(is_common(I<double>(-27.0, 0.0)), true);
-    BOOST_CHECK_EQUAL(is_common(I<double>(0.0)), true);
-    BOOST_CHECK_EQUAL(is_common(I<double>(-0.0)), true);
-    BOOST_CHECK_EQUAL(is_common(I<double>(5.0, 12.4)), true);
+    BOOST_CHECK(is_common(I<double>(-27.0)));
+    BOOST_CHECK(is_common(I<double>(-27.0, 0.0)));
+    BOOST_CHECK(is_common(I<double>(0.0)));
+    BOOST_CHECK(is_common(I<double>(-0.0)));
+    BOOST_CHECK(is_common(I<double>(5.0, 12.4)));
+    BOOST_CHECK(is_common(I<double>(-MAX, MAX)));
 
-    BOOST_CHECK_EQUAL(is_common(I<double>::entire()), false);
-    BOOST_CHECK_EQUAL(is_common(I<double>::empty()), false);
-    BOOST_CHECK_EQUAL(is_common(I<double>(-std::numeric_limits<double>::infinity(), 0.0)), false);
-    BOOST_CHECK_EQUAL(is_common(I<double>(0.0, std::numeric_limits<double>::infinity())), false);
-
-    BOOST_CHECK(false);
+    BOOST_CHECK(!is_common(I<double>::entire()));
+    BOOST_CHECK(!is_common(I<double>::empty()));
+    BOOST_CHECK(!is_common(I<double>(-INF, 0.0)));
+    BOOST_CHECK(!is_common(I<double>(0.0, INF)));
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_singleton_test)
 {
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(-27.0)), true);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(-2.0, -2.0)), true);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(12.0)), true);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(17.1, 17.1)), true);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(-0.0)), true);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(0.0)), true);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(-0.0, 0.0)), true);
+    BOOST_CHECK(is_singleton(I<double>(-27.0)));
+    BOOST_CHECK(is_singleton(I<double>(-2.0, -2.0)));
+    BOOST_CHECK(is_singleton(I<double>(12.0)));
+    BOOST_CHECK(is_singleton(I<double>(17.1, 17.1)));
+    BOOST_CHECK(is_singleton(I<double>(-0.0)));
+    BOOST_CHECK(is_singleton(I<double>(0.0)));
+    BOOST_CHECK(is_singleton(I<double>(-0.0, 0.0)));
 
-    BOOST_CHECK_EQUAL(is_singleton(I<double>::entire()), false);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>::empty()), false);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(-1.0, 0.0)), false);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(-1.0, -0.5)), false);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(1.0, 2.0)), false);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(-std::numeric_limits<double>::infinity())), false);
-    BOOST_CHECK_EQUAL(is_singleton(I<double>(-1.0,std::numeric_limits<double>::infinity())), false);
-
-    BOOST_CHECK(false);
+    BOOST_CHECK(!is_singleton(I<double>::entire()));
+    BOOST_CHECK(!is_singleton(I<double>::empty()));
+    BOOST_CHECK(!is_singleton(I<double>(-1.0, 0.0)));
+    BOOST_CHECK(!is_singleton(I<double>(-1.0, -0.5)));
+    BOOST_CHECK(!is_singleton(I<double>(1.0, 2.0)));
+    BOOST_CHECK(!is_singleton(I<double>(-INF,-MAX)));
+    BOOST_CHECK(!is_singleton(I<double>(-1.0,INF)));
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_member_test)
 {
-    BOOST_CHECK_EQUAL(is_member(-27.0, I<double>(-27.0)), true);
-    BOOST_CHECK_EQUAL(is_member(-27.0, I<double>(-27.0, 0.0)), true);
-    BOOST_CHECK_EQUAL(is_member(-7.0, I<double>(-27.0, 0.0)), true);
-    BOOST_CHECK_EQUAL(is_member(0.0, I<double>(-27.0, 0.0)), true);
-    BOOST_CHECK_EQUAL(is_member(-0.0, I<double>(0.0)), true);
-    BOOST_CHECK_EQUAL(is_member(0.0, I<double>(0.0)), true);
-    BOOST_CHECK_EQUAL(is_member(0.0, I<double>(-0.0)), true);
-    BOOST_CHECK_EQUAL(is_member(5.0, I<double>(5.0, 12.4)), true);
-    BOOST_CHECK_EQUAL(is_member(6.3, I<double>(5.0, 12.4)), true);
-    BOOST_CHECK_EQUAL(is_member(12.4, I<double>(5.0, 12.4)), true);
-    BOOST_CHECK_EQUAL(is_member(0.0, I<double>::entire()), true);
-    BOOST_CHECK_EQUAL(is_member(5.0, I<double>::entire()), true);
-    BOOST_CHECK_EQUAL(is_member(6.3, I<double>::entire()), true);
-    BOOST_CHECK_EQUAL(is_member(12.4, I<double>::entire()), true);
+    BOOST_CHECK(is_member(-27.0, I<double>(-27.0)));
+    BOOST_CHECK(is_member(-27.0, I<double>(-27.0, 0.0)));
+    BOOST_CHECK(is_member(-7.0, I<double>(-27.0, 0.0)));
+    BOOST_CHECK(is_member(0.0, I<double>(-27.0, 0.0)));
+    BOOST_CHECK(is_member(-0.0, I<double>(0.0)));
+    BOOST_CHECK(is_member(0.0, I<double>(0.0)));
+    BOOST_CHECK(is_member(0.0, I<double>(-0.0)));
+    BOOST_CHECK(is_member(5.0, I<double>(5.0, 12.4)));
+    BOOST_CHECK(is_member(6.3, I<double>(5.0, 12.4)));
+    BOOST_CHECK(is_member(12.4, I<double>(5.0, 12.4)));
+    BOOST_CHECK(is_member(0.0, I<double>::entire()));
+    BOOST_CHECK(is_member(5.0, I<double>::entire()));
+    BOOST_CHECK(is_member(6.3, I<double>::entire()));
+    BOOST_CHECK(is_member(12.4, I<double>::entire()));
+    BOOST_CHECK(is_member(MAX, I<double>::entire()));
+    BOOST_CHECK(is_member(-MAX, I<double>::entire()));
+    BOOST_CHECK(is_member(MIN, I<double>::entire()));
+    BOOST_CHECK(is_member(-MIN, I<double>::entire()));
 
-    BOOST_CHECK_EQUAL(is_member(-71.0, I<double>(-27.0, 0.0)), false);
-    BOOST_CHECK_EQUAL(is_member(0.1, I<double>(-27.0, 0.0)), false);
-    BOOST_CHECK_EQUAL(is_member(-0.01, I<double>(0.0)), false);
-    BOOST_CHECK_EQUAL(is_member(0.000001, I<double>(0.0)), false);
-    BOOST_CHECK_EQUAL(is_member(111110.0, I<double>(-0.0)), false);
-    BOOST_CHECK_EQUAL(is_member(4.9, I<double>(5.0, 12.4)), false);
-    BOOST_CHECK_EQUAL(is_member(-6.3, I<double>(5.0, 12.4)), false);
-    BOOST_CHECK_EQUAL(is_member(0.0, I<double>::empty()), false);
-    BOOST_CHECK_EQUAL(is_member(-4535.3, I<double>::empty()), false);
-    BOOST_CHECK_EQUAL(is_member(-std::numeric_limits<double>::infinity(), I<double>::empty()), false);
-    BOOST_CHECK_EQUAL(is_member(std::numeric_limits<double>::infinity(), I<double>::empty()), false);
-    BOOST_CHECK_EQUAL(is_member(std::numeric_limits<double>::quiet_NaN(), I<double>::empty()), false);
-    BOOST_CHECK_EQUAL(is_member(-std::numeric_limits<double>::infinity(), I<double>::entire()), false);
-    BOOST_CHECK_EQUAL(is_member(std::numeric_limits<double>::infinity(), I<double>::entire()), false);
-    BOOST_CHECK_EQUAL(is_member(std::numeric_limits<double>::quiet_NaN(), I<double>::entire()), false);
-
-    BOOST_CHECK(false);
+    BOOST_CHECK(!is_member(-71.0, I<double>(-27.0, 0.0)));
+    BOOST_CHECK(!is_member(0.1, I<double>(-27.0, 0.0)));
+    BOOST_CHECK(!is_member(-0.01, I<double>(0.0)));
+    BOOST_CHECK(!is_member(0.000001, I<double>(0.0)));
+    BOOST_CHECK(!is_member(111110.0, I<double>(-0.0)));
+    BOOST_CHECK(!is_member(4.9, I<double>(5.0, 12.4)));
+    BOOST_CHECK(!is_member(-6.3, I<double>(5.0, 12.4)));
+    BOOST_CHECK(!is_member(0.0, I<double>::empty()));
+    BOOST_CHECK(!is_member(-4535.3, I<double>::empty()));
+    BOOST_CHECK(!is_member(-INF, I<double>::empty()));
+    BOOST_CHECK(!is_member(INF, I<double>::empty()));
+    BOOST_CHECK(!is_member(NaN, I<double>::empty()));
+    BOOST_CHECK(!is_member(-INF, I<double>::entire()));
+    BOOST_CHECK(!is_member(INF, I<double>::entire()));
+    BOOST_CHECK(!is_member(NaN, I<double>::entire()));
 }
