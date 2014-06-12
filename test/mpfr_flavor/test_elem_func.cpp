@@ -1400,17 +1400,80 @@ BOOST_AUTO_TEST_CASE(minimal_exp10_test)
 
 BOOST_AUTO_TEST_CASE(minimal_log_test)
 {
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL( log(I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( log(I<double>(-INF,0.0)), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( log(I<double>(0.0,1.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( log(I<double>(1.0,INF)), I<double>(0.0,INF) );
+
+    BOOST_CHECK_EQUAL( log(I<double>(0.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( log(I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( log(I<double>(0.0,MAX)), I<double>(-INF,0X1.62E42FEFA39FP+9) );
+    BOOST_CHECK_EQUAL( log(I<double>(1.0,MAX)), I<double>(0.0,0X1.62E42FEFA39FP+9) );
+    BOOST_CHECK_EQUAL( log(I<double>(MIN,MAX)), I<double>(-0X1.6232BDD7ABCD3P+9,0X1.62E42FEFA39FP+9) );
+    BOOST_CHECK_EQUAL( log(I<double>(MIN,1.0)), I<double>(-0X1.6232BDD7ABCD3P+9,0.0) );
+
+    BOOST_CHECK_EQUAL( log(I<double>(0X1.5BF0A8B145769P+1)), I<double>(0X1.FFFFFFFFFFFFFP-1,0X1P+0) );
+    BOOST_CHECK_EQUAL( log(I<double>(0X1.5BF0A8B14576AP+1)), I<double>(0X1P+0,0X1.0000000000001P+0) );
+
+    BOOST_CHECK_EQUAL( log(I<double>(MIN,0X1.5BF0A8B14576AP+1)), I<double>(-0X1.6232BDD7ABCD3P+9,0X1.0000000000001P+0) );
+
+    BOOST_CHECK_EQUAL( log(I<double>(0X1.5BF0A8B145769P+1,32.0)), I<double>(0X1.FFFFFFFFFFFFFP-1,0X1.BB9D3BEB8C86CP+1) );
+
+    BOOST_CHECK_EQUAL( log(I<double>(0X1.999999999999AP-4,0X1.CP+1)), I<double>(-0X1.26BB1BBB55516P+1,0X1.40B512EB53D6P+0) );
+    BOOST_CHECK_EQUAL( log(I<double>(0X1.B333333333333P+0,0X1.C81FD88228B2FP+98)), I<double>(0X1.0FAE81914A99P-1,0X1.120627F6AE7F1P+6) );
+    BOOST_CHECK_EQUAL( log(I<double>(0X1.AEA0000721861P+11,0X1.FCA055555554CP+25)), I<double>(0X1.04A1363DB1E63P+3,0X1.203E52C0256B5P+4) );
 }
+
 
 BOOST_AUTO_TEST_CASE(minimal_log2_test)
 {
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL( log2(I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( log2(I<double>(-INF,0.0)), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( log2(I<double>(0.0,1.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( log2(I<double>(1.0,INF)), I<double>(0.0,INF) );
+
+    BOOST_CHECK_EQUAL( log2(I<double>(0.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( log2(I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( log2(I<double>(0.0,MAX)), I<double>(-INF,1024.0) );
+    BOOST_CHECK_EQUAL( log2(I<double>(1.0,MAX)), I<double>(0.0,1024.0) );
+    BOOST_CHECK_EQUAL( log2(I<double>(MIN,MAX)), I<double>(-1022.0,1024.0) );
+    BOOST_CHECK_EQUAL( log2(I<double>(MIN,1.0)), I<double>(-1022.0,0.0) );
+    BOOST_CHECK_EQUAL( log2(I<double>(MIN,2.0)), I<double>(-1022.0,1.0) );
+
+    BOOST_CHECK_EQUAL( log2(I<double>(2.0,32.0)), I<double>(1.0,5.0) );
+
+    BOOST_CHECK_EQUAL( log2(I<double>(0X1.999999999999AP-4,0X1.CP+1)), I<double>(-0X1.A934F0979A372P+1,0X1.CEAECFEA8085AP+0) );
+    BOOST_CHECK_EQUAL( log2(I<double>(0X1.B333333333333P+0,0X1.C81FD88228B2FP+98)), I<double>(0X1.87F42B972949CP-1,0X1.8B55484710029P+6) );
+    BOOST_CHECK_EQUAL( log2(I<double>(0X1.AEA0000721861P+11,0X1.FCA055555554CP+25)), I<double>(0X1.78025C8B3FD39P+3,0X1.9FD8EEF3FA79BP+4) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_log10_test)
 {
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL( log10(I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( log10(I<double>(-INF,0.0)), I<double>::empty() );
+
+    BOOST_CHECK_EQUAL( log10(I<double>(0.0,1.0)), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( log10(I<double>(1.0,INF)), I<double>(0.0,INF) );
+
+    BOOST_CHECK_EQUAL( log10(I<double>(0.0,INF)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( log10(I<double>::entire()), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( log10(I<double>(0.0,MAX)), I<double>(-INF,0X1.34413509F79FFP+8) );
+    BOOST_CHECK_EQUAL( log10(I<double>(1.0,MAX)), I<double>(0.0,0X1.34413509F79FFP+8) );
+    BOOST_CHECK_EQUAL( log10(I<double>(MIN,MAX)), I<double>(-0X1.33A7146F72A42P+8 ,0X1.34413509F79FFP+8) );
+    BOOST_CHECK_EQUAL( log10(I<double>(MIN,1.0)), I<double>(-0X1.33A7146F72A42P+8 ,0.0) );
+    BOOST_CHECK_EQUAL( log10(I<double>(MIN,10.0)), I<double>(-0X1.33A7146F72A42P+8 ,1.0) );
+
+    BOOST_CHECK_EQUAL( log10(I<double>(10.0,100000.0)), I<double>(1.0,5.0) );
+
+    BOOST_CHECK_EQUAL( log10(I<double>(0X1.999999999999AP-4,0X1.CP+1)), I<double>(-0X1P+0,0X1.1690163290F4P-1) );
+    BOOST_CHECK_EQUAL( log10(I<double>(0X1.999999999999AP-4,0X1.999999999999AP-4)), I<double>(-0X1P+0,-0X1.FFFFFFFFFFFFFP-1) );
+    BOOST_CHECK_EQUAL( log10(I<double>(0X1.B333333333333P+0,0X1.C81FD88228B2FP+98)), I<double>(0X1.D7F59AA5BECB9P-3,0X1.DC074D84E5AABP+4) );
+    BOOST_CHECK_EQUAL( log10(I<double>(0X1.AEA0000721861P+11,0X1.FCA055555554CP+25)), I<double>(0X1.C4C29DD829191P+1,0X1.F4BAEBBA4FA4P+2) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_sin_test)

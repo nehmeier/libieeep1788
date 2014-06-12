@@ -901,14 +901,17 @@ mpfr_flavor<T, SUBNORMALIZE>::log(mpfr_flavor<T, SUBNORMALIZE>::representation c
     if (is_empty(xx))
         return xx;
 
+    if (x.second <= 0.0)
+        return static_method_empty();
+
     mpfr_var::setup();
-    mpfr_var l(x.first, MPFR_RNDD);
-    mpfr_var u(x.second, MPFR_RNDU);
+    mpfr_var xl(x.first <= 0.0 ? 0.0 : x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
 
-    l.subnormalize(mpfr_log(l(), l(), MPFR_RNDD), MPFR_RNDD);
-    u.subnormalize(mpfr_log(u(), u(), MPFR_RNDU), MPFR_RNDU);
+    xl.subnormalize(mpfr_log(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_log(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
-    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -930,8 +933,11 @@ mpfr_flavor<T, SUBNORMALIZE>::log2(mpfr_flavor<T, SUBNORMALIZE>::representation 
     if (is_empty(xx))
         return xx;
 
+    if (x.second <= 0.0)
+        return static_method_empty();
+
     mpfr_var::setup();
-    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xl(x.first <= 0.0 ? 0.0 : x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
     xl.subnormalize(mpfr_log2(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
@@ -959,8 +965,11 @@ mpfr_flavor<T, SUBNORMALIZE>::log10(mpfr_flavor<T, SUBNORMALIZE>::representation
     if (is_empty(xx))
         return xx;
 
+    if (x.second <= 0.0)
+        return static_method_empty();
+
     mpfr_var::setup();
-    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xl(x.first <= 0.0 ? 0.0 : x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
     xl.subnormalize(mpfr_log10(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
