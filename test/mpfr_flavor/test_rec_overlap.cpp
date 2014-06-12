@@ -27,16 +27,96 @@
 #include "test/util/boost_test_wrapper.hpp"
 
 
+#include <limits>
 #include "p1788/p1788.hpp"
 
 template<typename T>
 using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
 
 template<typename T>
-using interval = p1788::infsup::interval<T, flavor>;
+using I = p1788::infsup::interval<T, flavor>;
 
+const double INF = std::numeric_limits<double>::infinity();
+
+
+using p1788::overlapping::overlapping_state;
 
 BOOST_AUTO_TEST_CASE(minimal_overlap_test)
 {
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL(overlap(I<double>::empty(), I<double>::empty()), overlapping_state::both_empty);
+    BOOST_CHECK_EQUAL(overlap(I<double>::empty(), I<double>(1.0,2.0)), overlapping_state::first_empty);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>::empty()), overlapping_state::second_empty);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(-2.0,-1.0), I<double>(1.0,2.0)), overlapping_state::before);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-2.0,-1.0), I<double>(1.0,1.0)), overlapping_state::before);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-1.0,-1.0), I<double>(1.0,2.0)), overlapping_state::before);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-1.0,-1.0), I<double>(1.0,1.0)), overlapping_state::before);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-INF,-1.0), I<double>(1.0,1.0)), overlapping_state::before);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-1.0,-1.0), I<double>(1.0,INF)), overlapping_state::before);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-INF,-1.0), I<double>(1.0,INF)), overlapping_state::before);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(-2.0,1.0), I<double>(1.0,2.0)), overlapping_state::meets);
+    BOOST_CHECK_EQUAL(overlap(I<double>(0.0,1.0), I<double>(1.0,2.0)), overlapping_state::meets);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-INF,1.0), I<double>(1.0,2.0)), overlapping_state::meets);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-1.0,1.0), I<double>(1.0,INF)), overlapping_state::meets);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-INF,1.0), I<double>(1.0,INF)), overlapping_state::meets);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(-2.0,1.0), I<double>(0.0,2.0)), overlapping_state::overlaps);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-INF,1.0), I<double>(-1.0,2.0)), overlapping_state::overlaps);
+    BOOST_CHECK_EQUAL(overlap(I<double>(0.0,2.0), I<double>(1.0,INF)), overlapping_state::overlaps);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-INF,2.0), I<double>(1.0,INF)), overlapping_state::overlaps);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(-2.0,1.0), I<double>(-2.0,2.0)), overlapping_state::starts);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,1.0), I<double>(1.0,2.0)), overlapping_state::starts);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>(1.0,INF)), overlapping_state::starts);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(-1.0,1.0), I<double>(-2.0,2.0)), overlapping_state::contained_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,1.0), I<double>(0.0,2.0)), overlapping_state::contained_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-1.0,1.0), I<double>(-INF,2.0)), overlapping_state::contained_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,1.0), I<double>(0.0,INF)), overlapping_state::contained_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,1.0), I<double>::entire()), overlapping_state::contained_by);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>(-2.0,2.0)), overlapping_state::finishes);
+    BOOST_CHECK_EQUAL(overlap(I<double>(2.0,2.0), I<double>(1.0,2.0)), overlapping_state::finishes);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>(-INF,2.0)), overlapping_state::finishes);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>(1.0,2.0)), overlapping_state::equal);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-INF,2.0), I<double>(-INF,2.0)), overlapping_state::equal);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,INF), I<double>(1.0,INF)), overlapping_state::equal);
+    BOOST_CHECK_EQUAL(overlap(I<double>::entire(), I<double>::entire()), overlapping_state::equal);
+
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>(-2.0,-1.0)), overlapping_state::after);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,1.0), I<double>(-2.0,-1.0)), overlapping_state::after);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>(-1.0,-1.0)), overlapping_state::after);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,1.0), I<double>(-1.0,-1.0)), overlapping_state::after);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,1.0), I<double>(-INF,-1.0)), overlapping_state::after);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,INF), I<double>(-1.0,-1.0)), overlapping_state::after);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,INF), I<double>(-INF,-1.0)), overlapping_state::after);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>(-2.0,1.0)), overlapping_state::met_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>(-INF,1.0)), overlapping_state::met_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,INF), I<double>(-1.0,1.0)), overlapping_state::met_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,INF), I<double>(-INF,1.0)), overlapping_state::met_by);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(0.0,2.0), I<double>(-2.0,1.0)), overlapping_state::overlapped_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-1.0,2.0), I<double>(-INF,1.0)), overlapping_state::overlapped_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,INF), I<double>(0.0,2.0)), overlapping_state::overlapped_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,INF), I<double>(-INF,2.0)), overlapping_state::overlapped_by);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(-2.0,2.0), I<double>(-2.0,1.0)), overlapping_state::started_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>(1.0,1.0)), overlapping_state::started_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,INF), I<double>(1.0,2.0)), overlapping_state::started_by);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(-2.0,2.0), I<double>(-1.0,1.0)), overlapping_state::contains);
+    BOOST_CHECK_EQUAL(overlap(I<double>(0.0,2.0), I<double>(1.0,1.0)), overlapping_state::contains);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-INF,2.0), I<double>(-1.0,1.0)), overlapping_state::contains);
+    BOOST_CHECK_EQUAL(overlap(I<double>(0.0,INF), I<double>(1.0,1.0)), overlapping_state::contains);
+    BOOST_CHECK_EQUAL(overlap(I<double>::entire(), I<double>(1.0,1.0)), overlapping_state::contains);
+
+    BOOST_CHECK_EQUAL(overlap(I<double>(-2.0,2.0), I<double>(1.0,2.0)), overlapping_state::finished_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(1.0,2.0), I<double>(2.0,2.0)), overlapping_state::finished_by);
+    BOOST_CHECK_EQUAL(overlap(I<double>(-INF,2.0), I<double>(1.0,2.0)), overlapping_state::finished_by);
+
+
 }

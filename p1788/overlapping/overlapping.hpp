@@ -27,6 +27,8 @@
 #ifndef LIBIEEEP1788_P1788_OVERLAPPING_OVERLAPPING_HPP
 #define LIBIEEEP1788_P1788_OVERLAPPING_OVERLAPPING_HPP
 
+#include <iostream>
+
 namespace p1788
 {
 
@@ -56,6 +58,16 @@ enum class overlapping_state
     met_by,
     after
 };
+
+
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& operator<<(
+    std::basic_ostream<CharT, Traits>& os, overlapping_state o) {
+    return os << static_cast<unsigned int>(o);
+
+}
+
+
 
 // TODO overlapping relation, finish implementation, functions ...
 
