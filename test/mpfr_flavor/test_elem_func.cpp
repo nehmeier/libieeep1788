@@ -1676,17 +1676,51 @@ BOOST_AUTO_TEST_CASE(minimal_tan_test)
 
 BOOST_AUTO_TEST_CASE(minimal_asin_test)
 {
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL( asin(I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( asin(I<double>(0.0,INF)), I<double>(0.0,0X1.921FB54442D19P+0) );
+    BOOST_CHECK_EQUAL( asin(I<double>(-INF,0.0)), I<double>(-0X1.921FB54442D19P+0,0.0) );
+    BOOST_CHECK_EQUAL( asin(I<double>::entire()), I<double>(-0X1.921FB54442D19P+0,0X1.921FB54442D19P+0) );
+    BOOST_CHECK_EQUAL( asin(I<double>(-1.0,1.0)), I<double>(-0X1.921FB54442D19P+0,0X1.921FB54442D19P+0) );
+    BOOST_CHECK_EQUAL( asin(I<double>(-INF,-1.0)), I<double>(-0X1.921FB54442D19P+0,-0X1.921FB54442D18P+0) );
+    BOOST_CHECK_EQUAL( asin(I<double>(1.0,INF)), I<double>(0X1.921FB54442D18P+0,0X1.921FB54442D19P+0) );
+    BOOST_CHECK_EQUAL( asin(I<double>(-1.0)), I<double>(-0X1.921FB54442D19P+0,-0X1.921FB54442D18P+0) );
+    BOOST_CHECK_EQUAL( asin(I<double>(1.0)), I<double>(0X1.921FB54442D18P+0,0X1.921FB54442D19P+0) );
+    BOOST_CHECK_EQUAL( asin(I<double>(0.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( asin(I<double>(-INF,-0X1.0000000000001P+0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( asin(I<double>(0X1.0000000000001P+0,INF)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( asin(I<double>(-0X1.999999999999AP-4,0X1.999999999999AP-4)), I<double>(-0X1.9A49276037885P-4,0X1.9A49276037885P-4) );
+    BOOST_CHECK_EQUAL( asin(I<double>(-0X1.51EB851EB851FP-2,0X1.FFFFFFFFFFFFFP-1)), I<double>(-0X1.585FF6E341C3FP-2,0X1.921FB50442D19P+0) );
+    BOOST_CHECK_EQUAL( asin(I<double>(-0X1.FFFFFFFFFFFFFP-1,0X1.FFFFFFFFFFFFFP-1)), I<double>(-0X1.921FB50442D19P+0,0X1.921FB50442D19P+0) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_acos_test)
 {
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL( acos(I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( acos(I<double>(0.0,INF)), I<double>(0.0,0X1.921FB54442D19P+0) );
+    BOOST_CHECK_EQUAL( acos(I<double>(-INF,0.0)), I<double>(0X1.921FB54442D18P+0,0X1.921FB54442D19P+1) );
+    BOOST_CHECK_EQUAL( acos(I<double>::entire()), I<double>(0.0,0X1.921FB54442D19P+1) );
+    BOOST_CHECK_EQUAL( acos(I<double>(-1.0,1.0)), I<double>(0.0,0X1.921FB54442D19P+1) );
+    BOOST_CHECK_EQUAL( acos(I<double>(-INF,-1.0)), I<double>(0X1.921FB54442D18P+1,0X1.921FB54442D19P+1) );
+    BOOST_CHECK_EQUAL( acos(I<double>(1.0,INF)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( acos(I<double>(-1.0)), I<double>(0X1.921FB54442D18P+1,0X1.921FB54442D19P+1) );
+    BOOST_CHECK_EQUAL( acos(I<double>(1.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( acos(I<double>(0.0)), I<double>(0X1.921FB54442D18P+0,0X1.921FB54442D19P+0) );
+    BOOST_CHECK_EQUAL( acos(I<double>(-INF,-0X1.0000000000001P+0)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( acos(I<double>(0X1.0000000000001P+0,INF)), I<double>::empty() );
+    BOOST_CHECK_EQUAL( acos(I<double>(-0X1.999999999999AP-4,0X1.999999999999AP-4)), I<double>(0X1.787B22CE3F59P+0,0X1.ABC447BA464A1P+0) );
+    BOOST_CHECK_EQUAL( acos(I<double>(-0X1.51EB851EB851FP-2,0X1.FFFFFFFFFFFFFP-1)), I<double>(0X1P-26,0X1.E837B2FD13428P+0) );
+    BOOST_CHECK_EQUAL( acos(I<double>(-0X1.FFFFFFFFFFFFFP-1,0X1.FFFFFFFFFFFFFP-1)), I<double>(0X1P-26,0X1.921FB52442D19P+1) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_atan_test)
 {
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL( atan(I<double>::empty()), I<double>::empty() );
+    BOOST_CHECK_EQUAL( atan(I<double>(0.0,INF)), I<double>(0.0,0X1.921FB54442D19P+0) );
+    BOOST_CHECK_EQUAL( atan(I<double>(-INF,0.0)), I<double>(-0X1.921FB54442D19P+0,0.0) );
+    BOOST_CHECK_EQUAL( atan(I<double>::entire()), I<double>(-0X1.921FB54442D19P+0,0X1.921FB54442D19P+0) );
+    BOOST_CHECK_EQUAL( atan(I<double>(0.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( atan(I<double>(1.0,0X1.4C2463567C5ACP+25)), I<double>(0X1.921FB54442D18P-1,0X1.921FB4E19ABD7P+0) );
+    BOOST_CHECK_EQUAL( atan(I<double>(-0X1.FD219490EAAC1P+38,-0X1.1AF1C9D74F06DP+9)), I<double>(-0X1.921FB54440CEBP+0,-0X1.91ABE5C1E4C6DP+0) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_atan2_test)
