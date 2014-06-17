@@ -27,6 +27,7 @@
 # relevant header files of this directory
 set(P1788_HEADER_FILES
     assert.hpp
+    eft.hpp
     mixed_type_traits.hpp
     variadic_templates.hpp
    )

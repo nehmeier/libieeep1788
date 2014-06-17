@@ -26,6 +26,9 @@
 #ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_CANCEL_FUNC_IMPL_HPP
 #define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_CANCEL_FUNC_IMPL_HPP
 
+#include "p1788/util/eft.hpp"
+
+
 namespace p1788
 {
 
@@ -54,6 +57,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE>::represen
 }
 
 
+
 template<typename T, subnormalize SUBNORMALIZE>
 typename mpfr_flavor<T, SUBNORMALIZE>::representation
 mpfr_flavor<T, SUBNORMALIZE>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
@@ -71,7 +75,10 @@ mpfr_flavor<T, SUBNORMALIZE>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE>::represe
     if (is_empty(y))
         return static_method_entire();
 
-    if (wid(x) < wid(y))
+//    if (wid(x) < wid(y))
+    auto x_wid = p1788::util::two_sum(x.second, -x.first);
+    auto y_wid = p1788::util::two_sum(y.second, -y.first);
+    if (x_wid.first < y_wid.first || (x_wid.first == y_wid.first && x_wid.second < y_wid.second))
         return static_method_entire();
 
 
