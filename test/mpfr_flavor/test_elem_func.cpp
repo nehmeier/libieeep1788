@@ -1375,7 +1375,149 @@ BOOST_AUTO_TEST_CASE(minimal_fma_test)
 
 BOOST_AUTO_TEST_CASE(minimal_pown_test)
 {
-    BOOST_CHECK(false);
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), 0), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), 0), I<double>(1.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), 0), I<double>(1.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), 0), I<double>(1.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), 0), I<double>(1.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), 0), I<double>(1.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), 0), I<double>(1.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), 0), I<double>(1.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), 0), I<double>(1.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), 0), I<double>(1.0) );
+
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), 2), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), 2), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), 2), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), 2), I<double>(0X1.573851EB851EBP+7,0X1.573851EB851ECP+7) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), 2), I<double>(0X1.A794A4E7CFAADP+25,0X1.A794A4E7CFAAEP+25) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), 2), I<double>(MAX,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), 2), I<double>(MAX,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), 2), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), 2), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), 2), I<double>(0.0,0X1.9AD27D70A3D72P+16) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.01,2.33), 2), I<double>(0X1.A36E2EB1C432CP-14,0X1.5B7318FC50482P+2) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-1.9,-0.33), 2), I<double>(0X1.BE0DED288CE7P-4,0X1.CE147AE147AE1P+1) );
+
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), 8), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), 8), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), 8), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), 8), I<double>(0X1.9D8FD495853F5P+29,0X1.9D8FD495853F6P+29) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), 8), I<double>(0X1.DFB1BB622E70DP+102,0X1.DFB1BB622E70EP+102) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), 8), I<double>(MAX,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), 8), I<double>(MAX,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), 8), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), 8), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), 8), I<double>(0.0,0X1.A87587109655P+66) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.01,2.33), 8), I<double>(0X1.CD2B297D889BDP-54,0X1.B253D9F33CE4DP+9) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-1.9,-0.33), 8), I<double>(0X1.26F1FCDD502A3P-13,0X1.53ABD7BFC4FC6P+7) );
+
+
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), 1), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), 1), I<double>::entire() );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), 1), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), 1), I<double>(13.1) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), 1), I<double>(-7451.145) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), 1), I<double>(MAX) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), 1), I<double>(-MAX) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), 1), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), 1), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), 1), I<double>(-324.3,2.5) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.01,2.33), 1), I<double>(0.01,2.33) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-1.9,-0.33), 1), I<double>(-1.9,-0.33) );
+
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), 3), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), 3), I<double>::entire() );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), 3), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), 3), I<double>(0X1.1902E978D4FDEP+11,0X1.1902E978D4FDFP+11) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), 3), I<double>(-0X1.81460637B9A3DP+38,-0X1.81460637B9A3CP+38) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), 3), I<double>(MAX,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), 3), I<double>(-INF,-MAX) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), 3), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), 3), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), 3), I<double>(-0X1.0436D2F418938P+25,0X1.F4P+3) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.01,2.33), 3), I<double>(0X1.0C6F7A0B5ED8DP-20,0X1.94C75E6362A6P+3) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-1.9,-0.33), 3), I<double>(-0X1.B6F9DB22D0E55P+2,-0X1.266559F6EC5B1P-5) );
+
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), 7), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), 7), I<double>::entire() );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), 7), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), 7), I<double>(0X1.F91D1B185493BP+25,0X1.F91D1B185493CP+25) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), 7), I<double>(-0X1.07B1DA32F9B59P+90,-0X1.07B1DA32F9B58P+90) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), 7), I<double>(MAX,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), 7), I<double>(-INF,-MAX) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), 7), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), 7), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), 7), I<double>(-0X1.4F109959E6D7FP+58,0X1.312DP+9) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.01,2.33), 7), I<double>(0X1.6849B86A12B9BP-47,0X1.74D0373C76313P+8) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-1.9,-0.33), 7), I<double>(-0X1.658C775099757P+6,-0X1.BEE30301BF47AP-12) );
+
+
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), -2), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), -2), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), -2), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), -2), I<double>(0X1.7DE3A077D1568P-8,0X1.7DE3A077D1569P-8) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), -2), I<double>(0X1.3570290CD6E14P-26,0X1.3570290CD6E15P-26) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -2), I<double>(0X0P+0,0X1P-1022) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -2), I<double>(0X0P+0,0X1P-1022) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), -2), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), -2), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), -2), I<double>(0X1.3F0C482C977C9P-17,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.01,2.33), -2), I<double>(0X1.793D85EF38E47P-3,0X1.388P+13) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-1.9,-0.33), -2), I<double>(0X1.1BA81104F6C8P-2,0X1.25D8FA1F801E1P+3) );
+
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), -8), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), -8), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), -8), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), -8), I<double>(0X1.3CEF39247CA6DP-30,0X1.3CEF39247CA6EP-30) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), -8), I<double>(0X1.113D9EF0A99ACP-103,0X1.113D9EF0A99ADP-103) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -8), I<double>(0X0P+0,0X1P-1022) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -8), I<double>(0X0P+0,0X1P-1022) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), -8), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), -8), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), -8), I<double>(0X1.34CC3764D1E0CP-67,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.01,2.33), -8), I<double>(0X1.2DC80DB11AB7CP-10,0X1.1C37937E08P+53) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-1.9,-0.33), -8), I<double>(0X1.81E104E61630DP-8,0X1.BC64F21560E34P+12) );
+
+
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), -1), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), -1), I<double>::entire() );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), -1), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), -1), I<double>(0X1.38ABF82EE6986P-4,0X1.38ABF82EE6987P-4) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), -1), I<double>(-0X1.197422C9048BFP-13,-0X1.197422C9048BEP-13) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -1), I<double>(0X0P+0,0X1P-1022) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -1), I<double>(-0X1P-1022,-0X0P+0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), -1), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), -1), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), -1), I<double>::entire() );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.01,2.33), -1), I<double>(0X1.B77C278DBBE13P-2,0X1.9P+6) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-1.9,-0.33), -1), I<double>(-0X1.83E0F83E0F83EP+1,-0X1.0D79435E50D79P-1) );
+
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), -3), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), -3), I<double>::entire() );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), -3), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), -3), I<double>(0X1.D26DF4D8B1831P-12,0X1.D26DF4D8B1832P-12) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), -3), I<double>(-0X1.54347DED91B19P-39,-0X1.54347DED91B18P-39) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -3), I<double>(0X0P+0,0X1P-1022) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -3), I<double>(-0X1P-1022,-0X0P+0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), -3), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), -3), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), -3), I<double>::entire() );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.01,2.33), -3), I<double>(0X1.43CFBA61AACABP-4,0X1.E848P+19) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-1.9,-0.33), -3), I<double>(-0X1.BD393CE9E8E7CP+4,-0X1.2A95F6F7C066CP-3) );
+
+    BOOST_CHECK_EQUAL( pown(I<double>::empty(), -7), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>::entire(), -7), I<double>::entire() );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0), -7), I<double>::empty() );
+    BOOST_CHECK_EQUAL( pown(I<double>(13.1), -7), I<double>(0X1.037D76C912DBCP-26,0X1.037D76C912DBDP-26) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), -7), I<double>(-0X1.F10F41FB8858FP-91,-0X1.F10F41FB8858EP-91) );
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -7), I<double>(0X0P+0,0X1P-1022) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -7), I<double>(-0X1P-1022,-0X0P+0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), -7), I<double>(0.0,INF) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), -7), I<double>(-INF,0.0) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), -7), I<double>::entire() );
+    BOOST_CHECK_EQUAL( pown(I<double>(0.01,2.33), -7), I<double>(0X1.5F934D64162A9P-9,0X1.6BCC41E9P+46) );
+    BOOST_CHECK_EQUAL( pown(I<double>(-1.9,-0.33), -7), I<double>(-0X1.254CDD3711DDBP+11,-0X1.6E95C4A761E19P-7) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_pow_test)

@@ -728,6 +728,9 @@ mpfr_flavor<T, SUBNORMALIZE>::pown(mpfr_flavor<T, SUBNORMALIZE>::representation 
 
     // negative
     if (p < 0) {
+        if (x.first == 0.0 && x.second == 0.0)
+            return static_method_empty();
+
         // even
         if (p % 2 == 0) {
             if (x.first < 0.0 && x.second > 0.0) {
@@ -746,27 +749,34 @@ mpfr_flavor<T, SUBNORMALIZE>::pown(mpfr_flavor<T, SUBNORMALIZE>::representation 
             return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
         }
 
+
         // odd
+
         if (x.first < 0.0 && x.second > 0.0)
             return static_method_entire();
 
-        if (x.first > 0.0) {
+        if (x.first == 0.0) {
             mpfr_var l(x.second, MPFR_RNDU);
-            mpfr_var u(x.first, MPFR_RNDD);
-
             l.subnormalize(mpfr_pow_si(l(), l(), p, MPFR_RNDD), MPFR_RNDD);
-            u.subnormalize(mpfr_pow_si(u(), u(), p, MPFR_RNDU), MPFR_RNDU);
 
-            return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
-        } else {
-            mpfr_var l(x.first, MPFR_RNDD);
-            mpfr_var u(x.second, MPFR_RNDU);
-
-            l.subnormalize(mpfr_pow_si(l(), l(), p, MPFR_RNDD), MPFR_RNDD);
-            u.subnormalize(mpfr_pow_si(u(), u(), p, MPFR_RNDU), MPFR_RNDU);
-
-            return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+            return representation(l.get(MPFR_RNDD), std::numeric_limits<T>::infinity());
         }
+
+        if (x.second == 0.0) {
+            mpfr_var u(x.first, MPFR_RNDD);
+            u.subnormalize(mpfr_pow_si(u(), u(), p, MPFR_RNDU), MPFR_RNDU);
+
+            return representation(-std::numeric_limits<T>::infinity(), u.get(MPFR_RNDU));
+        }
+
+
+        mpfr_var l(x.second, MPFR_RNDU);
+        mpfr_var u(x.first, MPFR_RNDD);
+
+        l.subnormalize(mpfr_pow_si(l(), l(), p, MPFR_RNDD), MPFR_RNDD);
+        u.subnormalize(mpfr_pow_si(u(), u(), p, MPFR_RNDU), MPFR_RNDU);
+
+        return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
     }
 
     // p == 0.0
