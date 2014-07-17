@@ -31,6 +31,7 @@
 
 const double INF = std::numeric_limits<double>::infinity();
 const double MAX = std::numeric_limits<double>::max();
+const double MIN = std::numeric_limits<double>::min();
 
 template<typename T>
 using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
@@ -96,6 +97,12 @@ BOOST_AUTO_TEST_CASE(minimal_cancel_plus_test)
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(-0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0), I<double>(-0X1.999999999999AP-4,0.01)), I<double>(-0X1.70A3D70A3D70BP-4,0X1.E666666666657P+0) );
 
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(MAX), I<double>(MAX)), I<double>(MAX,INF) );
+    BOOST_CHECK_EQUAL( cancel_plus(I<double>(-MAX,MAX), I<double>(-MAX,MAX)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( cancel_plus(I<double>(-MAX,MAX), I<double>(-0X1.FFFFFFFFFFFFEP+1023,MAX)), I<double>(0.0,0X1P+971) );
+    BOOST_CHECK_EQUAL( cancel_plus(I<double>(-MAX,MAX), I<double>(-MAX,0X1.FFFFFFFFFFFFEP+1023)), I<double>(-0X1P+971,0.0) );
+    BOOST_CHECK_EQUAL( cancel_plus(I<double>(-MAX,0X1.FFFFFFFFFFFFEP+1023), I<double>(-MAX,MAX)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( cancel_plus(I<double>(-0X1.FFFFFFFFFFFFEP+1023,MAX), I<double>(-MAX,MAX)), I<double>::entire() );
+
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(-0X1P+0,0X1.FFFFFFFFFFFFFP-53), I<double>(-0X1P+0,0X1.FFFFFFFFFFFFEP-53)), I<double>(-0X1.FFFFFFFFFFFFFP-1,-0X1.FFFFFFFFFFFFEP-1) );
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(-0X1P+0,0X1.FFFFFFFFFFFFEP-53), I<double>(-0X1P+0,0X1.FFFFFFFFFFFFFP-53)), I<double>::entire() );
 }
@@ -158,6 +165,18 @@ BOOST_AUTO_TEST_CASE(minimal_cancel_minus_test)
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(-0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0), I<double>(-0.01,0X1.999999999999AP-4)), I<double>(-0X1.70A3D70A3D70BP-4,0X1.E666666666657P+0) );
 
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(MAX), I<double>(-MAX)), I<double>(MAX,INF) );
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(-MAX,MAX), I<double>(-MAX,MAX)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(-MAX,MAX), I<double>(-MAX,0X1.FFFFFFFFFFFFEP+1023)), I<double>(0.0,0X1P+971) );
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(-MAX,MAX), I<double>(-0X1.FFFFFFFFFFFFEP+1023,MAX)), I<double>(-0X1P+971,0.0) );
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(-MAX,0X1.FFFFFFFFFFFFEP+1023), I<double>(-MAX,MAX)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(-0X1.FFFFFFFFFFFFEP+1023,MAX), I<double>(-MAX,MAX)), I<double>::entire() );
+
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(MIN), I<double>(MIN)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(MIN), I<double>(-MIN)), I<double>(0X1P-1021) );
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(0X1P-1022,0X1.0000000000002P-1022), I<double>(0X1P-1022,0X1.0000000000001P-1022)), I<double>(0.0,0X0.0000000000001P-1022) );
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(0X1P-1022,0X1.0000000000001P-1022), I<double>(0X1P-1022,0X1.0000000000002P-1022)), I<double>::entire() );
+
+
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(-0X1P+0,0X1.FFFFFFFFFFFFFP-53), I<double>(-0X1.FFFFFFFFFFFFEP-53,0X1P+0)), I<double>(-0X1.FFFFFFFFFFFFFP-1,-0X1.FFFFFFFFFFFFEP-1) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(-0X1P+0,0X1.FFFFFFFFFFFFEP-53), I<double>(-0X1.FFFFFFFFFFFFFP-53,0X1P+0)), I<double>::entire() );
 }

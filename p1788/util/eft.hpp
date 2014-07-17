@@ -31,6 +31,7 @@ namespace p1788
 namespace util
 {
 
+// TODO Nicht ueber FPU!!!
 template<typename T>
 std::pair<T,T> two_sum(T const& a, T const& b)
 {

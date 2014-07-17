@@ -69,7 +69,7 @@ template<p1788::flavor::infsup::subnormalize SN>
 class subnormalization_trait
 {
 public:
-    static void apply(mpfr_t& x, int t, mpfr_rnd_t rnd) {
+    static void apply(mpfr_t&, int, mpfr_rnd_t) {
         // Nothing to do
     }
 };
@@ -102,10 +102,15 @@ namespace infsup
 template<typename T, subnormalize SUBNORMALIZE>
 void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::setup()
 {
-    //TODO Check!!!
-    //TODO necessary???
+
     mpfr_set_default_prec(std::numeric_limits<T>::digits);
-    mpfr_set_emin(std::numeric_limits<T>::min_exponent);
+
+    //TODO Ueberarbeiten: normalized/súbnormalized ueber Traits
+    if (SUBNORMALIZE == p1788::flavor::infsup::subnormalize::yes)
+        mpfr_set_emin(std::numeric_limits<T>::min_exponent - std::numeric_limits<T>::digits + 1);
+    else
+        mpfr_set_emin(std::numeric_limits<T>::min_exponent);
+
     mpfr_set_emax(std::numeric_limits<T>::max_exponent);
 }
 
@@ -207,6 +212,7 @@ mpfr_t& mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::operator() ()
 }
 
 
+//TODO notwendig?
 template<typename T, subnormalize SUBNORMALIZE>
 void mpfr_flavor<T, SUBNORMALIZE>::mpfr_var::subnormalize(int t, mpfr_rnd_t rnd)
 {

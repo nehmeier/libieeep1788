@@ -1458,8 +1458,10 @@ BOOST_AUTO_TEST_CASE(minimal_pown_test)
     BOOST_CHECK_EQUAL( pown(I<double>(0.0), -2), I<double>::empty() );
     BOOST_CHECK_EQUAL( pown(I<double>(13.1), -2), I<double>(0X1.7DE3A077D1568P-8,0X1.7DE3A077D1569P-8) );
     BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), -2), I<double>(0X1.3570290CD6E14P-26,0X1.3570290CD6E15P-26) );
-    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -2), I<double>(0X0P+0,0X1P-1022) );
-    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -2), I<double>(0X0P+0,0X1P-1022) );
+//    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -2), I<double>(0X0P+0,0X1P-1022) );    //not subnormalized
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -2), I<double>(0X0P+0,0X0.0000000000001P-1022) );     // subnormalized
+//    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -2), I<double>(0X0P+0,0X1P-1022) );   not subnormalized
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -2), I<double>(0X0P+0,0X0.0000000000001P-1022) );   // subnormalized
     BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), -2), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), -2), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), -2), I<double>(0X1.3F0C482C977C9P-17,INF) );
@@ -1471,8 +1473,10 @@ BOOST_AUTO_TEST_CASE(minimal_pown_test)
     BOOST_CHECK_EQUAL( pown(I<double>(0.0), -8), I<double>::empty() );
     BOOST_CHECK_EQUAL( pown(I<double>(13.1), -8), I<double>(0X1.3CEF39247CA6DP-30,0X1.3CEF39247CA6EP-30) );
     BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), -8), I<double>(0X1.113D9EF0A99ACP-103,0X1.113D9EF0A99ADP-103) );
-    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -8), I<double>(0X0P+0,0X1P-1022) );
-    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -8), I<double>(0X0P+0,0X1P-1022) );
+//    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -8), I<double>(0X0P+0,0X1P-1022) );    not subnormalized
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -8), I<double>(0X0P+0,0X0.0000000000001P-1022) );    // subnormalized
+//    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -8), I<double>(0X0P+0,0X1P-1022) );   not subnormalized
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -8), I<double>(0X0P+0,0X0.0000000000001P-1022) );   // subnormalized
     BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), -8), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), -8), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), -8), I<double>(0X1.34CC3764D1E0CP-67,INF) );
@@ -1485,8 +1489,10 @@ BOOST_AUTO_TEST_CASE(minimal_pown_test)
     BOOST_CHECK_EQUAL( pown(I<double>(0.0), -1), I<double>::empty() );
     BOOST_CHECK_EQUAL( pown(I<double>(13.1), -1), I<double>(0X1.38ABF82EE6986P-4,0X1.38ABF82EE6987P-4) );
     BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), -1), I<double>(-0X1.197422C9048BFP-13,-0X1.197422C9048BEP-13) );
-    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -1), I<double>(0X0P+0,0X1P-1022) );
-    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -1), I<double>(-0X1P-1022,-0X0P+0) );
+//    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -1), I<double>(0X0P+0,0X1P-1022) );   not subnormalized
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -1), I<double>(0X0.4P-1022,0X0.4000000000001P-1022) );   // subnormalized
+//    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -1), I<double>(-0X1P-1022,-0X0P+0) );   not subnormalized
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -1), I<double>(-0X0.4000000000001P-1022,-0X0.4P-1022) );   // subnormalized
     BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), -1), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), -1), I<double>(-INF,0.0) );
     BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), -1), I<double>::entire() );
@@ -1498,8 +1504,10 @@ BOOST_AUTO_TEST_CASE(minimal_pown_test)
     BOOST_CHECK_EQUAL( pown(I<double>(0.0), -3), I<double>::empty() );
     BOOST_CHECK_EQUAL( pown(I<double>(13.1), -3), I<double>(0X1.D26DF4D8B1831P-12,0X1.D26DF4D8B1832P-12) );
     BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), -3), I<double>(-0X1.54347DED91B19P-39,-0X1.54347DED91B18P-39) );
-    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -3), I<double>(0X0P+0,0X1P-1022) );
-    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -3), I<double>(-0X1P-1022,-0X0P+0) );
+//    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -3), I<double>(0X0P+0,0X1P-1022) );   not subnormalized
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -3), I<double>(0X0P+0,0X0.0000000000001P-1022) );   // subnormalized
+//    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -3), I<double>(-0X1P-1022,-0X0P+0) );   not subnormalized
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -3), I<double>(-0X0.0000000000001P-1022,-0X0P+0) );   // subnormalized
     BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), -3), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), -3), I<double>(-INF,0.0) );
     BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), -3), I<double>::entire() );
@@ -1511,8 +1519,10 @@ BOOST_AUTO_TEST_CASE(minimal_pown_test)
     BOOST_CHECK_EQUAL( pown(I<double>(0.0), -7), I<double>::empty() );
     BOOST_CHECK_EQUAL( pown(I<double>(13.1), -7), I<double>(0X1.037D76C912DBCP-26,0X1.037D76C912DBDP-26) );
     BOOST_CHECK_EQUAL( pown(I<double>(-7451.145), -7), I<double>(-0X1.F10F41FB8858FP-91,-0X1.F10F41FB8858EP-91) );
-    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -7), I<double>(0X0P+0,0X1P-1022) );
-    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -7), I<double>(-0X1P-1022,-0X0P+0) );
+//    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -7), I<double>(0X0P+0,0X1P-1022) );   not subnormalized
+    BOOST_CHECK_EQUAL( pown(I<double>(MAX), -7), I<double>(0X0P+0,0X0.0000000000001P-1022) );   // subnormalized
+//    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -7), I<double>(-0X1P-1022,-0X0P+0) );   not subnormalized
+    BOOST_CHECK_EQUAL( pown(I<double>(-MAX), -7), I<double>(-0X0.0000000000001P-1022,-0X0P+0) );   // subnormalized
     BOOST_CHECK_EQUAL( pown(I<double>(0.0,INF), -7), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( pown(I<double>(-INF,0.0), -7), I<double>(-INF,0.0) );
     BOOST_CHECK_EQUAL( pown(I<double>(-324.3,2.5), -7), I<double>::entire() );
@@ -1522,6 +1532,241 @@ BOOST_AUTO_TEST_CASE(minimal_pown_test)
 
 BOOST_AUTO_TEST_CASE(minimal_pow_test)
 {
+//    BOOST_CHECK_EQUAL( pow(I<double>::empty(), I<double>::empty()), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>::empty(), I<double>::entire()), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>::empty(), I<double>(-INF,-1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>::empty(), I<double>(-INF,0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>::empty(), I<double>(0.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>::empty(), I<double>(1.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>::empty(), I<double>(-3.0,5.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>::empty(), I<double>(0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>::empty(), I<double>(-5.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>::empty(), I<double>(5.0)), I<double>::empty() );
+//
+//
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>::empty()), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(0.0)), I<double>(1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(0.0,1.0)), I<double>(0X1.999999999999AP-4,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(0.0,2.5)), I<double>(0X1.9E7C6E43390B7P-9,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(0.0,INF)), I<double>(0.0,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(0.1)), I<double>(0X1.96B230BCDC434P-1,0X1.DDB680117AB13P-1) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(0.1,1.0)), I<double>(0X1.999999999999AP-4,0X1.DDB680117AB13P-1) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(0.1,2.5)), I<double>(0X1.9E7C6E43390B7P-9,0X1.DDB680117AB13P-1) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(0.1,INF)), I<double>(0.0,0X1.DDB680117AB13P-1) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(1.0)), I<double>(0X1.999999999999AP-4,0X1P-1) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(1.0,2.5)), I<double>(0X1.9E7C6E43390B7P-9,0X1P-1) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(1.0,INF)), I<double>(0.0,0X1P-1) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(2.5)), I<double>(0X1.9E7C6E43390B7P-9,0X1.6A09E667F3BCDP-3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(2.5,INF)), I<double>(0.0,0X1.6A09E667F3BCDP-3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-0.1,0.1)), I<double>(0X1.96B230BCDC434P-1,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-0.1,1.0)), I<double>(0X1.999999999999AP-4,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-0.1,2.5)), I<double>(0X1.9E7C6E43390B7P-9,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-0.1,INF)), I<double>(0.0,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-1.0,0.1)), I<double>(0X1.96B230BCDC434P-1,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-1.0,1.0)), I<double>(0X1.999999999999AP-4,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-1.0,2.5)), I<double>(0X1.9E7C6E43390B7P-9,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-1.0,INF)), I<double>(0.0,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-2.5,0.1)), I<double>(0X1.96B230BCDC434P-1,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-2.5,1.0)), I<double>(0X1.999999999999AP-4,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-2.5,2.5)), I<double>(0X1.9E7C6E43390B7P-9,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-2.5,INF)), I<double>(0.0,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-INF,0.1)), I<double>(0X1.96B230BCDC434P-1,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-INF,1.0)), I<double>(0X1.999999999999AP-4,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-INF,2.5)), I<double>(0X1.9E7C6E43390B7P-9,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>::entire()), I<double>(0.0,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-1.0,0.0)), I<double>(1.0,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-2.5,0.0)), I<double>(1.0,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-INF,0.0)), I<double>(1.0,INF) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-0.1)), I<double>(0X1.125FBEE250664P+0,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-1.0,-0.1)), I<double>(0X1.125FBEE250664P+0,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-2.5,-0.1)), I<double>(0X1.125FBEE250664P+0,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-INF,-0.1)), I<double>(0X1.125FBEE250664P+0,INF) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-1.0)), I<double>(0X1P+1,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-2.5,-1.0)), I<double>(0X1P+1,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-INF,-1.0)), I<double>(0X1P+1,INF) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-2.5)), I<double>(0X1.6A09E667F3BCCP+2,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(-INF,-2.5)), I<double>(0X1.6A09E667F3BCCP+2,INF) );
+//
+//
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>::empty()), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(0.0)), I<double>(1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(0.0,1.0)), I<double>(0X1.999999999999AP-4,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(0.0,2.5)), I<double>(0X1.9E7C6E43390B7P-9,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(0.0,INF)), I<double>(0.0,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(0.1)), I<double>(0X1.96B230BCDC434P-1,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(0.1,1.0)), I<double>(0X1.999999999999AP-4,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(0.1,2.5)), I<double>(0X1.9E7C6E43390B7P-9,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(0.1,INF)), I<double>(0.0,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(1.0)), I<double>(0X1.999999999999AP-4,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(1.0,2.5)), I<double>(0X1.9E7C6E43390B7P-9,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(1.0,INF)), I<double>(0.0,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(2.5)), I<double>(0X1.9E7C6E43390B7P-9,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(2.5,INF)), I<double>(0.0,1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-0.1,0.1)), I<double>(0X1.96B230BCDC434P-1,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-0.1,1.0)), I<double>(0X1.999999999999AP-4,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-0.1,2.5)), I<double>(0X1.9E7C6E43390B7P-9,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-0.1,INF)), I<double>(0.0,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-1.0,0.1)), I<double>(0X1.96B230BCDC434P-1,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-1.0,1.0)), I<double>(0X1.999999999999AP-4,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-1.0,2.5)), I<double>(0X1.9E7C6E43390B7P-9,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-1.0,INF)), I<double>(0.0,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-2.5,0.1)), I<double>(0X1.96B230BCDC434P-1,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-2.5,1.0)), I<double>(0X1.999999999999AP-4,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-2.5,2.5)), I<double>(0X1.9E7C6E43390B7P-9,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-2.5,INF)), I<double>(0.0,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-INF,0.1)), I<double>(0X1.96B230BCDC434P-1,INF) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-INF,1.0)), I<double>(0X1.999999999999AP-4,INF) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-INF,2.5)), I<double>(0X1.9E7C6E43390B7P-9,INF) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>::entire()), I<double>(0.0,INF) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-0.1,0.0)), I<double>(1.0,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-1.0,0.0)), I<double>(1.0,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-2.5,0.0)), I<double>(1.0,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-INF,0.0)), I<double>(1.0,INF) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-0.1)), I<double>(1.0,0X1.4248EF8FC2604P+0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-1.0,-0.1)), I<double>(1.0,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-2.5,-0.1)), I<double>(1.0,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-INF,-0.1)), I<double>(1.0,INF) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-1.0)), I<double>(1.0,0X1.4P+3) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-2.5,-1.0)), I<double>(1.0,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-INF,-1.0)), I<double>(1.0,INF) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-2.5)), I<double>(1.0,0X1.3C3A4EDFA9758P+8) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.1,1.0), I<double>(-INF,-2.5)), I<double>(1.0,INF) );
+//
+//
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>::empty()), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(0.0)), I<double>(1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(0.0,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(0.0,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(0.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(0.1,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(0.1,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(0.1,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(1.0,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(1.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(2.5,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-0.1,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-0.1,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-0.1,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-0.1,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-1.0,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-1.0,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-1.0,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-1.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-2.5,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-2.5,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-2.5,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-2.5,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-INF,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-INF,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-INF,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>::entire()), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-1.0,0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-2.5,0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-INF,0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-1.0,-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-2.5,-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-INF,-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-2.5,-1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-INF,-1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(0.5,1.5), I<double>(-INF,-2.5)), I<double>::empty() );
+////TODO das gleiche mit x=[0.5,INF]
+//
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>::empty()), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(0.0)), I<double>(1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(0.0,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(0.0,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(0.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(0.1,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(0.1,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(0.1,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(1.0,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(1.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(2.5,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-0.1,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-0.1,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-0.1,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-0.1,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-1.0,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-1.0,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-1.0,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-1.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-2.5,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-2.5,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-2.5,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-2.5,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-INF,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-INF,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-INF,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>::entire()), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-1.0,0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-2.5,0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-INF,0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-1.0,-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-2.5,-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-INF,-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-2.5,-1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-INF,-1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.0,1.5), I<double>(-INF,-2.5)), I<double>::empty() );
+////TODO das gleiche mit x=[1.0,INF]
+//
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>::empty()), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(0.0)), I<double>(1.0) );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(0.0,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(0.0,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(0.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(0.1,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(0.1,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(0.1,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(1.0,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(1.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(2.5,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-0.1,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-0.1,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-0.1,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-0.1,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-1.0,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-1.0,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-1.0,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-1.0,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-2.5,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-2.5,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-2.5,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-2.5,INF)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-INF,0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-INF,1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-INF,2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>::entire()), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-1.0,0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-2.5,0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-INF,0.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-1.0,-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-2.5,-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-INF,-0.1)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-2.5,-1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-INF,-1.0)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-2.5)), I<double>::empty() );
+//    BOOST_CHECK_EQUAL( pow(I<double>(1.1,1.5), I<double>(-INF,-2.5)), I<double>::empty() );
+////TODO das gleiche mit x=[1.1,INF]
+
+
+//TODO x_lower == 0.0, 0.0 im inneren, x_upper == 0.0, x_upper < 0.0
     BOOST_CHECK(false);
 }
 
@@ -1536,7 +1781,8 @@ BOOST_AUTO_TEST_CASE(minimal_exp_test)
     BOOST_CHECK_EQUAL( exp(I<double>(-INF,0X1.62E42FEFA39FP+9)), I<double>(0.0,INF) );
     BOOST_CHECK_EQUAL( exp(I<double>(0X1.62E42FEFA39FP+9)), I<double>( 0X1.FFFFFFFFFFFFFP+1023,INF) );
     BOOST_CHECK_EQUAL( exp(I<double>(0.0,0X1.62E42FEFA39EP+9)), I<double>(1.0,0X1.FFFFFFFFFC32BP+1023) );
-    BOOST_CHECK_EQUAL( exp(I<double>(-0X1.6232BDD7ABCD3P+9,0X1.62E42FEFA39EP+9)), I<double>(0.0,0X1.FFFFFFFFFC32BP+1023) );
+//    BOOST_CHECK_EQUAL( exp(I<double>(-0X1.6232BDD7ABCD3P+9,0X1.62E42FEFA39EP+9)), I<double>(0.0,0X1.FFFFFFFFFC32BP+1023) );   not subnormalized
+    BOOST_CHECK_EQUAL( exp(I<double>(-0X1.6232BDD7ABCD3P+9,0X1.62E42FEFA39EP+9)), I<double>(0X0.FFFFFFFFFFE7BP-1022,0X1.FFFFFFFFFC32BP+1023) );   // subnormalized
     BOOST_CHECK_EQUAL( exp(I<double>(-0X1.6232BDD7ABCD3P+8,0X1.62E42FEFA39EP+9)), I<double>(0X1.FFFFFFFFFFE7BP-512,0X1.FFFFFFFFFC32BP+1023) );
     BOOST_CHECK_EQUAL( exp(I<double>(-0X1.6232BDD7ABCD3P+8,0.0)), I<double>(0X1.FFFFFFFFFFE7BP-512,1.0) );
     BOOST_CHECK_EQUAL( exp(I<double>(-0X1.6232BDD7ABCD3P+8,1.0)), I<double>(0X1.FFFFFFFFFFE7BP-512,0X1.5BF0A8B14576AP+1) );
@@ -1582,7 +1828,8 @@ BOOST_AUTO_TEST_CASE(minimal_exp10_test)
     BOOST_CHECK_EQUAL( exp10(I<double>(0X1.34413509F79FFP+8)), I<double>(0X1.FFFFFFFFFFFFFP+1023,INF) );
 
     BOOST_CHECK_EQUAL( exp10(I<double>(0.0,0X1.34413509F79FEP+8)), I<double>(1.0,0X1.FFFFFFFFFFBA1P+1023) );
-    BOOST_CHECK_EQUAL( exp10(I<double>(-0X1.33A7146F72A42P+8,0X1.34413509F79FEP+8)), I<double>(0.0,0X1.FFFFFFFFFFBA1P+1023) );
+//    BOOST_CHECK_EQUAL( exp10(I<double>(-0X1.33A7146F72A42P+8,0X1.34413509F79FEP+8)), I<double>(0.0,0X1.FFFFFFFFFFBA1P+1023) );   not subnormalized
+    BOOST_CHECK_EQUAL( exp10(I<double>(-0X1.33A7146F72A42P+8,0X1.34413509F79FEP+8)), I<double>(0X0.FFFFFFFFFFFE3P-1022,0X1.FFFFFFFFFFBA1P+1023) );   // subnormalized
     BOOST_CHECK_EQUAL( exp10(I<double>(-0X1.22P+7,0X1.34413509F79FEP+8)), I<double>(0X1.3FAAC3E3FA1F3P-482,0X1.FFFFFFFFFFBA1P+1023) );
     BOOST_CHECK_EQUAL( exp10(I<double>(-0X1.22P+7,0.0)), I<double>(0X1.3FAAC3E3FA1F3P-482,1.0) );
     BOOST_CHECK_EQUAL( exp10(I<double>(-0X1.22P+7,1.0)), I<double>(0X1.3FAAC3E3FA1F3P-482,10.0) );
