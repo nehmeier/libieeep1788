@@ -919,7 +919,7 @@ mpfr_flavor<T, SUBNORMALIZE>::pow(mpfr_flavor<T, SUBNORMALIZE>::representation c
 
     mpfr_var::setup();
 
-    mpfr_var x_lower(xx.first, MPFR_RNDD);
+    mpfr_var x_lower(xx.first == -0.0 ? 0.0 : xx.first, MPFR_RNDD);
     mpfr_var x_upper(xx.second, MPFR_RNDU);
     mpfr_var y_lower(y.first, MPFR_RNDD);
     mpfr_var y_upper(y.second, MPFR_RNDU);
