@@ -48,6 +48,8 @@ BOOST_AUTO_TEST_CASE(minimal_is_common_test)
     BOOST_CHECK(is_common(I<double>(-27.0, 0.0)));
     BOOST_CHECK(is_common(I<double>(0.0)));
     BOOST_CHECK(is_common(I<double>(-0.0)));
+    BOOST_CHECK(is_common(I<double>(-0.0,0.0)));
+    BOOST_CHECK(is_common(I<double>(0.0,-0.0)));
     BOOST_CHECK(is_common(I<double>(5.0, 12.4)));
     BOOST_CHECK(is_common(I<double>(-MAX, MAX)));
 
@@ -66,6 +68,7 @@ BOOST_AUTO_TEST_CASE(minimal_is_singleton_test)
     BOOST_CHECK(is_singleton(I<double>(-0.0)));
     BOOST_CHECK(is_singleton(I<double>(0.0)));
     BOOST_CHECK(is_singleton(I<double>(-0.0, 0.0)));
+    BOOST_CHECK(is_singleton(I<double>(0.0, -0.0)));
 
     BOOST_CHECK(!is_singleton(I<double>::entire()));
     BOOST_CHECK(!is_singleton(I<double>::empty()));
@@ -85,6 +88,8 @@ BOOST_AUTO_TEST_CASE(minimal_is_member_test)
     BOOST_CHECK(is_member(-0.0, I<double>(0.0)));
     BOOST_CHECK(is_member(0.0, I<double>(0.0)));
     BOOST_CHECK(is_member(0.0, I<double>(-0.0)));
+    BOOST_CHECK(is_member(0.0, I<double>(-0.0,0.0)));
+    BOOST_CHECK(is_member(0.0, I<double>(0.0,-0.0)));
     BOOST_CHECK(is_member(5.0, I<double>(5.0, 12.4)));
     BOOST_CHECK(is_member(6.3, I<double>(5.0, 12.4)));
     BOOST_CHECK(is_member(12.4, I<double>(5.0, 12.4)));

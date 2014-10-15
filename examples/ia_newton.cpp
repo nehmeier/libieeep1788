@@ -41,7 +41,7 @@ void ia_newton(I<T> (*f) (I<T> const&),
                T eps,
                bool unique)
 {
-    if ( !is_member(0.0, f(y)))
+    if ( !is_member(0.0, f(y)) )
         return;
 
     I<T> c = I<T>(mid(y));
@@ -114,6 +114,7 @@ int main()
 
 //using namespace p1788::infsup;
 
+    std::cout << std::boolalpha;
 
     ia_newton(f1, df1, I<double>(-3.0,5.0), 0.0001, false);
     std::cout << std::endl;

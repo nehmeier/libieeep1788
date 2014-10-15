@@ -85,7 +85,7 @@ mpfr_flavor<T, SUBNORMALIZE>::mid(mpfr_flavor<T, SUBNORMALIZE>::representation c
         return std::numeric_limits<T>::quiet_NaN();
 
     if (is_entire(x))
-        return 0;
+        return 0.0;
 
     if (x.first == -std::numeric_limits<T>::infinity())
         return -std::numeric_limits<T>::max();
@@ -100,7 +100,9 @@ mpfr_flavor<T, SUBNORMALIZE>::mid(mpfr_flavor<T, SUBNORMALIZE>::representation c
 
     xl.subnormalize(mpfr_add(xl(), xl(), xu(), MPFR_RNDN), MPFR_RNDN);
     xl.subnormalize(mpfr_div_si(xl(), xl(), 2l, MPFR_RNDN), MPFR_RNDN);
-    return xl.get(MPFR_RNDN);
+
+    T res = xl.get(MPFR_RNDN);
+    return res == -0.0 ? 0.0 : res;
 }
 
 template<typename T, subnormalize SUBNORMALIZE>

@@ -80,6 +80,7 @@ BOOST_AUTO_TEST_CASE(minimal_cancel_plus_test)
     BOOST_CHECK_EQUAL( cancel_plus(I<double>::empty(), I<double>(-5.0,10.0)), I<double>::empty() );
     BOOST_CHECK_EQUAL( cancel_plus(I<double>::empty(), I<double>(-5.0,-1.0)), I<double>::empty() );
 
+    BOOST_CHECK_EQUAL( cancel_plus(I<double>(-5.1,-0.0), I<double>(0.0,5.0)), I<double>(-0X1.999999999998P-4,0.0) );
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(-5.1,-1.0), I<double>(1.0,5.0)), I<double>(-0X1.999999999998P-4,0.0) );
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(-5.0,-0.9), I<double>(1.0,5.0)), I<double>(0.0, 0X1.9999999999998P-4) );
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(-5.1,-0.9), I<double>(1.0,5.0)), I<double>(-0X1.999999999998P-4,0X1.9999999999998P-4) );
@@ -90,8 +91,10 @@ BOOST_AUTO_TEST_CASE(minimal_cancel_plus_test)
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(-10.0, 5.0), I<double>(-5.0,10.0)), I<double>(0.0) );
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(0.9, 5.0), I<double>(-5.0,-1.0)), I<double>(-0X1.9999999999998P-4,0.0) );
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(1.0, 5.1), I<double>(-5.0,-1.0)), I<double>(0.0,0X1.999999999998P-4) );
+    BOOST_CHECK_EQUAL( cancel_plus(I<double>(0.0, 5.1), I<double>(-5.0,-0.0)), I<double>(0.0,0X1.999999999998P-4) );
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(0.9, 5.1), I<double>(-5.0,-1.0)), I<double>(-0X1.9999999999998P-4,0X1.999999999998P-4) );
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(1.0, 5.0), I<double>(-5.0,-1.0)), I<double>(0.0) );
+    BOOST_CHECK_EQUAL( cancel_plus(I<double>(0.0, 5.0), I<double>(-5.0,-0.0)), I<double>(0.0) );
 
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(0X1.FFFFFFFFFFFFP+0), I<double>(-0X1.999999999999AP-4)), I<double>(0X1.E666666666656P+0,0X1.E666666666657P+0) );
     BOOST_CHECK_EQUAL( cancel_plus(I<double>(-0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0), I<double>(-0X1.999999999999AP-4,0.01)), I<double>(-0X1.70A3D70A3D70BP-4,0X1.E666666666657P+0) );
@@ -147,6 +150,7 @@ BOOST_AUTO_TEST_CASE(minimal_cancel_minus_test)
     BOOST_CHECK_EQUAL( cancel_minus(I<double>::empty(), I<double>(-10.0, 5.0)), I<double>::empty() );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>::empty(), I<double>(1.0, 5.0)), I<double>::empty() );
 
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(-5.1,-0.0), I<double>(-5.0, 0.0)), I<double>(-0X1.999999999998P-4,0.0) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(-5.1,-1.0), I<double>(-5.0, -1.0)), I<double>(-0X1.999999999998P-4,0.0) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(-5.0,-0.9), I<double>(-5.0, -1.0)), I<double>(0.0, 0X1.9999999999998P-4) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(-5.1,-0.9), I<double>(-5.0, -1.0)), I<double>(-0X1.999999999998P-4,0X1.9999999999998P-4) );
@@ -156,10 +160,12 @@ BOOST_AUTO_TEST_CASE(minimal_cancel_minus_test)
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(-10.1, 5.1), I<double>(-10.0, 5.0)), I<double>(-0X1.999999999998P-4,0X1.999999999998P-4) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(-10.0, 5.0), I<double>(-10.0, 5.0)), I<double>(0.0) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(0.9, 5.0), I<double>(1.0, 5.0)), I<double>(-0X1.9999999999998P-4,0.0) );
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(-0.0, 5.1), I<double>(0.0, 5.0)), I<double>(0.0,0X1.999999999998P-4) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(1.0, 5.1), I<double>(1.0, 5.0)), I<double>(0.0,0X1.999999999998P-4) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(0.9, 5.1), I<double>(1.0, 5.0)), I<double>(-0X1.9999999999998P-4,0X1.999999999998P-4) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(1.0, 5.0), I<double>(1.0, 5.0)), I<double>(0.0) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(-5.0, 1.0), I<double>(-1.0, 5.0)), I<double>(-4.0) );
+    BOOST_CHECK_EQUAL( cancel_minus(I<double>(-5.0, 0.0), I<double>(-0.0, 5.0)), I<double>(-5.0) );
 
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(0X1.FFFFFFFFFFFFP+0), I<double>(0X1.999999999999AP-4)), I<double>(0X1.E666666666656P+0,0X1.E666666666657P+0) );
     BOOST_CHECK_EQUAL( cancel_minus(I<double>(-0X1.999999999999AP-4,0X1.FFFFFFFFFFFFP+0), I<double>(-0.01,0X1.999999999999AP-4)), I<double>(-0X1.70A3D70A3D70BP-4,0X1.E666666666657P+0) );

@@ -58,7 +58,7 @@ void ia_bisect(I<T> (*f) (I<T> const&),
 
 I<double> f (I<double> const& x)
 {
-    return sin(x);
+    return x*x + sin(x);
 }
 
 

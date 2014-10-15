@@ -80,7 +80,7 @@ int main()
     std::cout << "fma: " << fma(d_a, d_b, d_c) << std::endl;
 //    std::cout << "fma mt: " << fma<I<float>>(d_a, f_b, d_c) << std::endl << std::endl;
 
-    std::cout << "case: " << interval_case(d_a, d_b, d_c) << std::endl;
+//    std::cout << "case: " << interval_case(d_a, d_b, d_c) << std::endl;
 
     std::cout << "pown: " << pown(d_a, 3) << std::endl;
 

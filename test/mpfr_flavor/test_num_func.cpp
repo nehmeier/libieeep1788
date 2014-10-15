@@ -49,6 +49,14 @@ BOOST_AUTO_TEST_CASE(minimal_inf_test)
     BOOST_CHECK( std::signbit(inf(I<double>(-0.0,2.0))) );
     BOOST_CHECK_EQUAL( inf(I<double>(0.0,2.0)), 0.0 );
     BOOST_CHECK( std::signbit(inf(I<double>(0.0,2.0))) );
+    BOOST_CHECK_EQUAL( inf(I<double>(-0.0)), 0.0 );
+    BOOST_CHECK( std::signbit(inf(I<double>(-0.0))) );
+    BOOST_CHECK_EQUAL( inf(I<double>(0.0)), 0.0 );
+    BOOST_CHECK( std::signbit(inf(I<double>(0.0))) );
+    BOOST_CHECK_EQUAL( inf(I<double>(0.0,-0.0)), 0.0 );
+    BOOST_CHECK( std::signbit(inf(I<double>(0.0,-0.0))) );
+
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_sup_test)
@@ -61,19 +69,34 @@ BOOST_AUTO_TEST_CASE(minimal_sup_test)
     BOOST_CHECK( !std::signbit(sup(I<double>(-3.0,0.0))) );
     BOOST_CHECK_EQUAL( sup(I<double>(-3.0,-0.0)), 0.0 );
     BOOST_CHECK( !std::signbit(sup(I<double>(-3.0,-0.0))) );
+    BOOST_CHECK_EQUAL( sup(I<double>(-0.0)), 0.0 );
+    BOOST_CHECK( !std::signbit(sup(I<double>(-0.0))) );
+    BOOST_CHECK_EQUAL( sup(I<double>(0.0)), 0.0 );
+    BOOST_CHECK( !std::signbit(sup(I<double>(0.0))) );
+    BOOST_CHECK_EQUAL( sup(I<double>(0.0,-0.0)), 0.0 );
+    BOOST_CHECK( !std::signbit(sup(I<double>(0.0,-0.0))) );
+
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_mid_test)
 {
-    BOOST_CHECK_EQUAL( mid(I<double>(0.0,2.0)), 1.0 );
-    BOOST_CHECK_EQUAL( mid(I<double>(2.0)), 2.0 );
     BOOST_CHECK( std::isnan(mid(I<double>::empty())) );
     BOOST_CHECK_EQUAL( mid(I<double>::entire()), 0.0 );
     BOOST_CHECK( !std::signbit(mid(I<double>::entire())) );
+    BOOST_CHECK_EQUAL( mid(I<double>(0.0,2.0)), 1.0 );
+    BOOST_CHECK_EQUAL( mid(I<double>(2.0)), 2.0 );
+    BOOST_CHECK_EQUAL( mid(I<double>(0X1.8P+0,0X1.6666666666666P-1)), 0X1.199999999999AP+0 );
     BOOST_CHECK_EQUAL( mid(I<double>(-2.0,2.0)), 0.0 );
     BOOST_CHECK( !std::signbit(mid(I<double>(-2.0,2.0))) );
     BOOST_CHECK_EQUAL( mid(I<double>(0.0,INF)), MAX );
     BOOST_CHECK_EQUAL( mid(I<double>(-INF, 1.2)), -MAX );
+    BOOST_CHECK_EQUAL( mid(I<double>(-0X0.0000000000002P-1022,0X0.0000000000001P-1022)), 0.0 );
+    BOOST_CHECK( !std::signbit(mid(I<double>(-0X0.0000000000002P-1022,0X0.0000000000001P-1022))) );
+    BOOST_CHECK_EQUAL( mid(I<double>(-0X0.0000000000001P-1022,0X0.0000000000002P-1022)), 0.0 );
+    BOOST_CHECK( !std::signbit(mid(I<double>(-0X0.0000000000001P-1022,0X0.0000000000002P-1022))) );
+
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_rad_test)
@@ -85,6 +108,9 @@ BOOST_AUTO_TEST_CASE(minimal_rad_test)
     BOOST_CHECK_EQUAL( rad(I<double>::entire()), INF );
     BOOST_CHECK_EQUAL( rad(I<double>(0.0,INF)), INF );
     BOOST_CHECK_EQUAL( rad(I<double>(-INF, 1.2)), INF );
+    BOOST_CHECK_EQUAL( rad(I<double>(-0X0.0000000000002P-1022,0X0.0000000000001P-1022)), 0X0.0000000000002P-1022 );
+
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_mid_rad_test)
@@ -106,6 +132,8 @@ BOOST_AUTO_TEST_CASE(minimal_mid_rad_test)
     BOOST_CHECK_EQUAL( mid_rad(I<double>::entire()).second, INF );
     BOOST_CHECK_EQUAL( mid_rad(I<double>(0.0,INF)).second, INF );
     BOOST_CHECK_EQUAL( mid_rad(I<double>(-INF, 1.2)).second, INF );
+
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_wid_test)
@@ -117,6 +145,8 @@ BOOST_AUTO_TEST_CASE(minimal_wid_test)
     BOOST_CHECK_EQUAL( wid(I<double>(-INF,2.0)), INF );
     BOOST_CHECK_EQUAL( wid(I<double>::entire()), INF );
     BOOST_CHECK( std::isnan(wid(I<double>::empty())) );
+
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_mag_test)
@@ -131,6 +161,8 @@ BOOST_AUTO_TEST_CASE(minimal_mag_test)
     BOOST_CHECK( !std::signbit(mag(I<double>(-0.0,0.0))) );
     BOOST_CHECK_EQUAL( mag(I<double>(-0.0,-0.0)), 0.0 );
     BOOST_CHECK( !std::signbit(mag(I<double>(-0.0,-0.0))) );
+
+    BOOST_CHECK(false);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_mig_test)
@@ -150,4 +182,6 @@ BOOST_AUTO_TEST_CASE(minimal_mig_test)
     BOOST_CHECK( !std::signbit(mig(I<double>(-0.0,0.0))) );
     BOOST_CHECK_EQUAL( mig(I<double>(-0.0,-0.0)), 0.0 );
     BOOST_CHECK( !std::signbit(mig(I<double>(-0.0,-0.0))) );
+
+    BOOST_CHECK(false);
 }
