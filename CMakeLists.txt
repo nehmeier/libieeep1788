@@ -83,7 +83,7 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR}/cmake/Mod
 set(Boost_USE_STATIC_LIBS OFF)
 set(Boost_USE_MULTITHREADED ON)
 set(Boost_USE_STATIC_RUNTIME OFF)
-find_package(Boost 1.55 COMPONENTS unit_test_framework)
+find_package(Boost 1.54 COMPONENTS unit_test_framework)
 
 if(Boost_FOUND)
     include_directories(${Boost_INCLUDE_DIRS})
