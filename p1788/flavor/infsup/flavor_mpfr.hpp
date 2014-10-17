@@ -53,8 +53,16 @@ enum class subnormalize : bool
     no = false
 };
 
+enum class auto_setup : bool
+{
+    yes = true,
+    no = false
+};
 
-template<typename T, subnormalize SUBNORMALIZE = subnormalize::yes>
+template<typename T,
+    subnormalize SUBNORMALIZE = std::numeric_limits<T>::has_denorm == std::denorm_present ? subnormalize::yes
+        : subnormalize::no,
+    auto_setup AUTOSETUP = auto_setup::yes>
 class mpfr_flavor
 {
 
@@ -76,9 +84,11 @@ public:
 
     typedef p1788::util::mpfr_var<
         std::numeric_limits<T>::digits,
-        std::numeric_limits<double>::min_exponent - std::numeric_limits<double>::digits + 1,
+        SUBNORMALIZE == subnormalize::no ? std::numeric_limits<double>::min_exponent
+            : std::numeric_limits<double>::min_exponent - std::numeric_limits<double>::digits + 1,
         std::numeric_limits<double>::max_exponent,
-        static_cast<bool>(SUBNORMALIZE)
+        SUBNORMALIZE == subnormalize::yes,
+        AUTOSETUP == auto_setup::yes
     >   mpfr_var;
 
 // -----------------------------------------------------------------------------
@@ -146,6 +156,11 @@ public:
 
     static representation static_method_entire();
     static representation_dec static_method_entire_dec();
+
+
+    static void setup();
+    static void free_cache();
+
 
 
 // -----------------------------------------------------------------------------

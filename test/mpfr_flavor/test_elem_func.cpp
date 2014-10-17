@@ -31,7 +31,7 @@
 
 
 template<typename T>
-using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
+using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes, p1788::flavor::infsup::auto_setup::yes>;
 
 template<typename T>
 using I = p1788::infsup::interval<T, flavor>;

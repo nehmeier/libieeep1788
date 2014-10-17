@@ -40,7 +40,7 @@ namespace p1788
 namespace util
 {
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
 class mpfr_var
 {
 public:
@@ -49,8 +49,11 @@ public:
     static const mpfr_exp_t EMIN = EMIN_;
     static const mpfr_exp_t EMAX = EMAX_;
     static const bool SUBNORMALIZE = SUBNORMALIZE_;
+    static const bool AUTOSETUP = AUTOSETUP_;
 
     static void setup();
+    static void forced_setup();
+    static void free_cache();
 
     mpfr_var();
     mpfr_var(unsigned long int op, mpfr_rnd_t rnd);

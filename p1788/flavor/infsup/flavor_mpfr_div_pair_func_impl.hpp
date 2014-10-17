@@ -35,13 +35,13 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T, subnormalize SUBNORMALIZE>
-std::pair<typename mpfr_flavor<T, SUBNORMALIZE>::representation, typename mpfr_flavor<T, SUBNORMALIZE>::representation>
-mpfr_flavor<T, SUBNORMALIZE>::div_to_pair(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
-        mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+std::pair<typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation, typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation>
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_to_pair(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
+        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
 {
     if (x.first <= 0.0 && x.second >= 0.0)
-        return std::pair<typename mpfr_flavor<T, SUBNORMALIZE>::representation, typename mpfr_flavor<T, SUBNORMALIZE>::representation>
+        return std::pair<typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation, typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation>
                (div(x, y), static_method_empty());
 
     if (y.first < 0.0 && y.second > 0.0) {
@@ -49,28 +49,28 @@ mpfr_flavor<T, SUBNORMALIZE>::div_to_pair(mpfr_flavor<T, SUBNORMALIZE>::represen
         representation b =  div(x, representation(0.0, y.second));
 
         if (is_interior(representation(0.0,0.0), intersect(a,b)))
-            return std::pair<typename mpfr_flavor<T, SUBNORMALIZE>::representation, typename mpfr_flavor<T, SUBNORMALIZE>::representation>
+            return std::pair<typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation, typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation>
                (hull(a,b), static_method_empty());
 
-        return std::pair<typename mpfr_flavor<T, SUBNORMALIZE>::representation, typename mpfr_flavor<T, SUBNORMALIZE>::representation>
+        return std::pair<typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation, typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation>
                (less(a,b) ? a : b, less(a,b) ? b : a);
     }
 
-    return std::pair<typename mpfr_flavor<T, SUBNORMALIZE>::representation, typename mpfr_flavor<T, SUBNORMALIZE>::representation>
+    return std::pair<typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation, typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation>
            (div(x, y), static_method_empty());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-std::pair<typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec, typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec>
-mpfr_flavor<T, SUBNORMALIZE>::div_to_pair(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
-        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+std::pair<typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec, typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec>
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_to_pair(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
+        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
 {
     if (y.first.first < 0.0 && y.first.second > 0.0)
-        return std::pair<typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec, typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec>
+        return std::pair<typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec, typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec>
                (div(x, representation_dec(representation(y.first.first, 0.0), y.second)),
                 div(x, representation_dec(representation(0.0, y.first.second), y.second)));
 
-    return std::pair<typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec, typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec>
+    return std::pair<typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec, typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec>
            (div(x, y), static_method_empty_dec());
 }
 

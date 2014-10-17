@@ -35,9 +35,9 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::inf(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::inf(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::infinity();
@@ -48,17 +48,17 @@ mpfr_flavor<T, SUBNORMALIZE>::inf(mpfr_flavor<T, SUBNORMALIZE>::representation c
     return x.first;
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::inf(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::inf(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     return inf(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::sup(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::sup(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return -std::numeric_limits<T>::infinity();
@@ -69,17 +69,17 @@ mpfr_flavor<T, SUBNORMALIZE>::sup(mpfr_flavor<T, SUBNORMALIZE>::representation c
     return x.second;
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::sup(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::sup(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     return sup(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::mid(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -105,17 +105,17 @@ mpfr_flavor<T, SUBNORMALIZE>::mid(mpfr_flavor<T, SUBNORMALIZE>::representation c
     return res == -0.0 ? 0.0 : res;
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::mid(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     return mid(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::rad(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::rad(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -131,32 +131,32 @@ mpfr_flavor<T, SUBNORMALIZE>::rad(mpfr_flavor<T, SUBNORMALIZE>::representation c
     return xl.template get<T>(MPFR_RNDU);
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::rad(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::rad(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     return rad(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 std::pair<T, T>
-mpfr_flavor<T, SUBNORMALIZE>::mid_rad(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid_rad(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     return std::pair<T,T>(mid(x), rad(x));
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 std::pair<T, T>
-mpfr_flavor<T, SUBNORMALIZE>::mid_rad(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid_rad(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     return std::pair<T,T>(mid(x), rad(x));
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::wid(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::wid(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -171,17 +171,17 @@ mpfr_flavor<T, SUBNORMALIZE>::wid(mpfr_flavor<T, SUBNORMALIZE>::representation c
     return xl.template get<T>(MPFR_RNDU);
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::wid(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::wid(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     return wid(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::mag(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mag(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -192,17 +192,17 @@ mpfr_flavor<T, SUBNORMALIZE>::mag(mpfr_flavor<T, SUBNORMALIZE>::representation c
     return xl > xu ? xl : xu;
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::mag(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mag(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     return mag(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::mig(mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mig(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -217,9 +217,9 @@ mpfr_flavor<T, SUBNORMALIZE>::mig(mpfr_flavor<T, SUBNORMALIZE>::representation c
     return xl < xu ? xl : xu;
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
-mpfr_flavor<T, SUBNORMALIZE>::mig(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x)
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mig(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     return mig(x.first);
 }

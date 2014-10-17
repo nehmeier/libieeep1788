@@ -35,9 +35,10 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T, subnormalize SUBNORMALIZE>
-p1788::overlapping::overlapping_state mpfr_flavor<T, SUBNORMALIZE>::overlap(mpfr_flavor<T, SUBNORMALIZE>::representation const& x,
-        mpfr_flavor<T, SUBNORMALIZE>::representation const& y)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+p1788::overlapping::overlapping_state
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
+        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
 {
     if (is_empty(x)) {
         if (is_empty(y)) {
@@ -103,9 +104,10 @@ p1788::overlapping::overlapping_state mpfr_flavor<T, SUBNORMALIZE>::overlap(mpfr
     return p1788::overlapping::overlapping_state::before;
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-p1788::overlapping::overlapping_state mpfr_flavor<T, SUBNORMALIZE>::overlap(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& x,
-        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const& y)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+p1788::overlapping::overlapping_state
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
+        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

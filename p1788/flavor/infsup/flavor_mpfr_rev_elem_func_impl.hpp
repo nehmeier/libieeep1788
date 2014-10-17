@@ -35,10 +35,10 @@ namespace flavor
 namespace infsup
 {
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -49,38 +49,38 @@ mpfr_flavor<T, SUBNORMALIZE>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
     return hull(intersect(p, x), intersect(n, x));
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c)
 {
     return sqr_rev(c, static_method_entire());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::sqr_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::recip_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::recip_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -88,38 +88,38 @@ mpfr_flavor<T, SUBNORMALIZE>::recip_rev(mpfr_flavor<T, SUBNORMALIZE>::representa
     return intersect(recip(c), x);
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::recip_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::recip_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::recip_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::recip_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c)
 {
     return inv_rev(c, static_method_entire());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::recip_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::recip_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::abs_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::abs_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -133,80 +133,80 @@ mpfr_flavor<T, SUBNORMALIZE>::abs_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
     return hull(intersect(p, x), intersect(n, x));
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::abs_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::abs_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::abs_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::abs_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c)
 {
     return abs_rev(c, static_method_entire());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::abs_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::abs_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::pown_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const&,
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pown_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
                          int)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire();
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::pown_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pown_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
                          int)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::pown_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pown_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
                          int p)
 {
     return pown_rev(c, static_method_entire(), p);
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::pown_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pown_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
                          int)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::sin_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::sin_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -317,38 +317,38 @@ mpfr_flavor<T, SUBNORMALIZE>::sin_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
     return representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::sin_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::sin_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::sin_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::sin_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c)
 {
     return sin_rev(c, static_method_entire());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::sin_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::sin_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::cos_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cos_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -462,38 +462,38 @@ mpfr_flavor<T, SUBNORMALIZE>::cos_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
     return representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::cos_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cos_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::cos_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cos_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c)
 {
     return cos_rev(c, static_method_entire());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::cos_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cos_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::tan_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::tan_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -581,38 +581,38 @@ mpfr_flavor<T, SUBNORMALIZE>::tan_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
     return representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::tan_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::tan_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::tan_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::tan_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c)
 {
     return tan_rev(c, static_method_entire());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::tan_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::tan_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -623,39 +623,39 @@ mpfr_flavor<T, SUBNORMALIZE>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE>::representat
     return hull(intersect(p, x), intersect(n, x));
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& c)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c)
 {
     return cosh_rev(c, static_method_entire());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cosh_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::mul_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& b,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mul_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& b,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return x;
@@ -758,42 +758,42 @@ mpfr_flavor<T, SUBNORMALIZE>::mul_rev(mpfr_flavor<T, SUBNORMALIZE>::representati
     return x;                           // intersect(entire, x)
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::mul_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mul_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::mul_rev(mpfr_flavor<T, SUBNORMALIZE>::representation const& b,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation const& c)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mul_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& b,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c)
 {
     return mul_rev(b, c, static_method_entire());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::mul_rev(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                        mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mul_rev(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::div_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation const& b,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& b,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     // same as b * c, except b == 0.0 or c == 0.0 !!!!
 
@@ -916,42 +916,42 @@ mpfr_flavor<T, SUBNORMALIZE>::div_rev1(mpfr_flavor<T, SUBNORMALIZE>::representat
     return intersect(representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU)), x);
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::div_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::div_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation const& b,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const& c)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& b,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c)
 {
     return div_rev1(b, c, static_method_entire());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::div_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::div_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation const& a,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const& c,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const& x)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& a,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     // TODO same as a/c ?????
 
@@ -1091,210 +1091,210 @@ mpfr_flavor<T, SUBNORMALIZE>::div_rev2(mpfr_flavor<T, SUBNORMALIZE>::representat
     return intersect(representation(al.template get<T>(MPFR_RNDD), au.template get<T>(MPFR_RNDU)), x);
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::div_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::div_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation const& a,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const& c)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& a,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c)
 {
     return div_rev2(a, c, static_method_entire());
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::div_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::pow_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pow_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire();
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::pow_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pow_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
-}
-
-
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::pow_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
-}
-
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::pow_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::pow_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pow_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire();
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::pow_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pow_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
-}
-
-
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::pow_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
-}
-
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::pow_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                         mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::atan2_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pow_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire();
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::atan2_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pow_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
-}
-
-
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::atan2_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
-}
-
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::atan2_rev1(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::atan2_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pow_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire();
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::atan2_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pow_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                         mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation
-mpfr_flavor<T, SUBNORMALIZE>::atan2_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::atan2_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire();
 }
 
-template<typename T, subnormalize SUBNORMALIZE>
-typename mpfr_flavor<T, SUBNORMALIZE>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE>::atan2_rev2(mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&,
-                           mpfr_flavor<T, SUBNORMALIZE>::representation_dec const&)
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::atan2_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE>::static_method_entire_dec();
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::atan2_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire();
+}
+
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::atan2_rev1(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::atan2_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire();
+}
+
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::atan2_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
+}
+
+
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::atan2_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire();
+}
+
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::atan2_rev2(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                           mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 } // namespace infsup
