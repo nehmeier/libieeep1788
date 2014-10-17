@@ -29,7 +29,6 @@ set(P1788_HEADER_FILES
     flavor_mpfr_bool_func_impl.hpp
     flavor_mpfr_cancel_func_impl.hpp
     flavor_mpfr_class_impl.hpp
-    flavor_mpfr_class_mpfr_var_impl.hpp
     flavor_mpfr_div_pair_func_impl.hpp
     flavor_mpfr_elem_func_impl.hpp
     flavor_mpfr.hpp

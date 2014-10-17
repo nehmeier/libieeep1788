@@ -101,7 +101,7 @@ mpfr_flavor<T, SUBNORMALIZE>::mid(mpfr_flavor<T, SUBNORMALIZE>::representation c
     xl.subnormalize(mpfr_add(xl(), xl(), xu(), MPFR_RNDN), MPFR_RNDN);
     xl.subnormalize(mpfr_div_si(xl(), xl(), 2l, MPFR_RNDN), MPFR_RNDN);
 
-    T res = xl.get(MPFR_RNDN);
+    T res = xl.template get<T>(MPFR_RNDN);
     return res == -0.0 ? 0.0 : res;
 }
 
@@ -128,7 +128,7 @@ mpfr_flavor<T, SUBNORMALIZE>::rad(mpfr_flavor<T, SUBNORMALIZE>::representation c
     xl.subnormalize(mpfr_sub(xl(), xu(), xl(), MPFR_RNDU), MPFR_RNDU);
     xl.subnormalize(mpfr_div_si(xl(), xl(), 2l, MPFR_RNDU), MPFR_RNDU);
 
-    return xl.get(MPFR_RNDU);
+    return xl.template get<T>(MPFR_RNDU);
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -168,7 +168,7 @@ mpfr_flavor<T, SUBNORMALIZE>::wid(mpfr_flavor<T, SUBNORMALIZE>::representation c
 
     xl.subnormalize(mpfr_sub(xl(), xu(), xl(), MPFR_RNDU), MPFR_RNDU);
 
-    return xl.get(MPFR_RNDU);
+    return xl.template get<T>(MPFR_RNDU);
 }
 
 template<typename T, subnormalize SUBNORMALIZE>

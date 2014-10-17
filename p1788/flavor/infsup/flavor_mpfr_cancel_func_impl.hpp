@@ -130,7 +130,7 @@ mpfr_flavor<T, SUBNORMALIZE>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE>::represe
     mpfr_sub(xl(), xl(), yl(), MPFR_RNDD);
     mpfr_sub(xu(), xu(), yu(), MPFR_RNDU);
 
-    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
+    return representation(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>

@@ -220,7 +220,7 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup(representation_type<TT> const& 
     mpfr_var lower(other.first, MPFR_RNDD);
     mpfr_var upper(other.second, MPFR_RNDU);
 
-    return representation(lower.get(MPFR_RNDD), upper.get(MPFR_RNDU));
+    return representation(lower.template get<T>(MPFR_RNDD), upper.template get<T>(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -233,7 +233,7 @@ mpfr_flavor<T, SUBNORMALIZE>::constructor_infsup_dec(representation_dec_type<TT>
     mpfr_var lower(other.first.first, MPFR_RNDD);
     mpfr_var upper(other.first.second, MPFR_RNDU);
 
-    return representation_dec(representation(lower.get(MPFR_RNDD), upper.get(MPFR_RNDU)), other.second);
+    return representation_dec(representation(lower.template get<T>(MPFR_RNDD), upper.template get<T>(MPFR_RNDU)), other.second);
 }
 
 

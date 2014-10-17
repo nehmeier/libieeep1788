@@ -29,6 +29,8 @@
 #include <utility>
 #include <limits>
 #include <cfenv>
+
+#include "p1788/util/mpfr_var.hpp"
 #include <mpfr.h>
 
 //------------------------------------------------------------------------------
@@ -70,6 +72,14 @@ public:
     typedef representation_type<T> representation;
 
     typedef representation_dec_type<T> representation_dec;
+
+
+    typedef p1788::util::mpfr_var<
+        std::numeric_limits<T>::digits,
+        std::numeric_limits<double>::min_exponent - std::numeric_limits<double>::digits + 1,
+        std::numeric_limits<double>::max_exponent,
+        static_cast<bool>(SUBNORMALIZE)
+    >   mpfr_var;
 
 // -----------------------------------------------------------------------------
 // Class constructors and methods
@@ -688,66 +698,6 @@ public:
     static representation sinh_slope3(representation const&);
     static representation_dec sinh_slope3(representation_dec const&);
 
-
-
-private:
-
-    class mpfr_var
-    {
-    public:
-
-        static void setup();
-
-
-        mpfr_var();
-        mpfr_var(unsigned long int op, mpfr_rnd_t rnd);
-        mpfr_var(long int op, mpfr_rnd_t rnd);
-        mpfr_var(float op, mpfr_rnd_t rnd);
-        mpfr_var(double op, mpfr_rnd_t rnd);
-        mpfr_var(long double op, mpfr_rnd_t rnd);
-
-        ~mpfr_var();
-
-        void set(unsigned long int op, mpfr_rnd_t rnd);
-        void set(long int op, mpfr_rnd_t rnd);
-        void set(float op, mpfr_rnd_t rnd);
-        void set(double op, mpfr_rnd_t rnd);
-        void set(long double op, mpfr_rnd_t rnd);
-
-        T get(mpfr_rnd_t rnd);
-
-        std::string get_str(mpfr_rnd_t rnd, int b = 10, size_t n = 0);
-
-        mpfr_t& operator() ();
-
-        void subnormalize(int t, mpfr_rnd_t rnd);
-
-    private:
-        mpfr_t var_;
-
-
-// Ignore effective C++ warnings
-// on GCC  push the last diagnostic state and disable -Weffc++
-//FIXME support other compiler
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-        class mpfr_str
-        {
-        public:
-            mpfr_str(mpfr_t var, mpfr_rnd_t rnd, int b, size_t n);
-
-            ~mpfr_str();
-
-            std::string operator() () const;
-        private:
-            char * char_;
-            std::string str_;
-        };
-// on GCC  enable the diagnostic state -Weffc++ again
-#pragma GCC diagnostic pop
-
-    };
-
 };
 
 
@@ -771,7 +721,5 @@ private:
 #include "p1788/flavor/infsup/flavor_mpfr_rec_overlap_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rec_bool_func_impl.hpp"
 #include "p1788/flavor/infsup/flavor_mpfr_rec_slope_func_impl.hpp"
-
-#include "p1788/flavor/infsup/flavor_mpfr_class_mpfr_var_impl.hpp"
 
 #endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_HPP

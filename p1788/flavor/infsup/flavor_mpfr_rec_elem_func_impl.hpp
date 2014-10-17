@@ -52,7 +52,7 @@ mpfr_flavor<T, SUBNORMALIZE>::rootn(mpfr_flavor<T, SUBNORMALIZE>::representation
             xl.subnormalize(mpfr_root(xl(), xl(), q, MPFR_RNDD), MPFR_RNDD);
             xu.subnormalize(mpfr_root(xu(), xu(), q, MPFR_RNDU), MPFR_RNDU);
 
-            return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
+            return representation(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
         } else {
             if (x.second < 0.0)
                 return mpfr_flavor<T, SUBNORMALIZE>::static_method_empty();
@@ -63,7 +63,7 @@ mpfr_flavor<T, SUBNORMALIZE>::rootn(mpfr_flavor<T, SUBNORMALIZE>::representation
             xl.subnormalize(mpfr_root(xl(), xl(), q, MPFR_RNDD), MPFR_RNDD);
             xu.subnormalize(mpfr_root(xu(), xu(), q, MPFR_RNDU), MPFR_RNDU);
 
-            return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
+            return representation(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
         }
     } else if (q < 0) {
         return recip(rootn(x, -q));
@@ -98,7 +98,7 @@ mpfr_flavor<T, SUBNORMALIZE>::expm1(mpfr_flavor<T, SUBNORMALIZE>::representation
     l.subnormalize(mpfr_expm1(l(), l(), MPFR_RNDD), MPFR_RNDD);
     u.subnormalize(mpfr_expm1(u(), u(), MPFR_RNDU), MPFR_RNDU);
 
-    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+    return representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -127,7 +127,7 @@ mpfr_flavor<T, SUBNORMALIZE>::exp2m1(mpfr_flavor<T, SUBNORMALIZE>::representatio
     u.subnormalize(mpfr_exp2(u(), u(), MPFR_RNDU), MPFR_RNDU);
     u.subnormalize(mpfr_sub_si(u(), u(), 1, MPFR_RNDU), MPFR_RNDU);     //TODO necessary?
 
-    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+    return representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -156,7 +156,7 @@ mpfr_flavor<T, SUBNORMALIZE>::exp10m1(mpfr_flavor<T, SUBNORMALIZE>::representati
     u.subnormalize(mpfr_exp10(u(), u(), MPFR_RNDU), MPFR_RNDU);
     u.subnormalize(mpfr_sub_si(u(), u(), 1, MPFR_RNDU), MPFR_RNDU);     //TODO necessary?
 
-    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+    return representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -185,7 +185,7 @@ mpfr_flavor<T, SUBNORMALIZE>::logp1(mpfr_flavor<T, SUBNORMALIZE>::representation
     l.subnormalize(mpfr_log1p(l(), l(), MPFR_RNDD), MPFR_RNDD);
     u.subnormalize(mpfr_log1p(u(), u(), MPFR_RNDU), MPFR_RNDU);
 
-    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+    return representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -217,7 +217,7 @@ mpfr_flavor<T, SUBNORMALIZE>::log2p1(mpfr_flavor<T, SUBNORMALIZE>::representatio
     l.subnormalize(mpfr_log2(l(), l(), MPFR_RNDD), MPFR_RNDD);
     u.subnormalize(mpfr_log2(u(), u(), MPFR_RNDU), MPFR_RNDU);
 
-    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+    return representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -249,7 +249,7 @@ mpfr_flavor<T, SUBNORMALIZE>::log10p1(mpfr_flavor<T, SUBNORMALIZE>::representati
     l.subnormalize(mpfr_log10(l(), l(), MPFR_RNDD), MPFR_RNDD);
     u.subnormalize(mpfr_log10(u(), u(), MPFR_RNDU), MPFR_RNDU);
 
-    return representation(l.get(MPFR_RNDD), u.get(MPFR_RNDU));
+    return representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -306,7 +306,7 @@ mpfr_flavor<T, SUBNORMALIZE>::hypot(mpfr_flavor<T, SUBNORMALIZE>::representation
     xl.subnormalize(mpfr_hypot(xl(), xl(), yl(), MPFR_RNDD), MPFR_RNDD);
     xu.subnormalize(mpfr_hypot(xu(), xu(), yu(), MPFR_RNDU), MPFR_RNDU);
 
-    return representation(xl.get(MPFR_RNDD), xu.get(MPFR_RNDU));
+    return representation(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
@@ -337,7 +337,7 @@ mpfr_flavor<T, SUBNORMALIZE>::r_sqrt(mpfr_flavor<T, SUBNORMALIZE>::representatio
 
         xu.subnormalize(mpfr_rec_sqrt(xu(), xu(), MPFR_RNDD), MPFR_RNDD);
 
-        return representation(xu.get(MPFR_RNDD), std::numeric_limits<T>::infinity());
+        return representation(xu.template get<T>(MPFR_RNDD), std::numeric_limits<T>::infinity());
     }
 
     mpfr_var xl(x.first, MPFR_RNDD);
@@ -346,7 +346,7 @@ mpfr_flavor<T, SUBNORMALIZE>::r_sqrt(mpfr_flavor<T, SUBNORMALIZE>::representatio
     xu.subnormalize(mpfr_rec_sqrt(xu(), xu(), MPFR_RNDD), MPFR_RNDD);
     xl.subnormalize(mpfr_rec_sqrt(xl(), xl(), MPFR_RNDU), MPFR_RNDU);
 
-    return representation(xu.get(MPFR_RNDD), xl.get(MPFR_RNDU));
+    return representation(xu.template get<T>(MPFR_RNDD), xl.template get<T>(MPFR_RNDU));
 }
 
 template<typename T, subnormalize SUBNORMALIZE>
