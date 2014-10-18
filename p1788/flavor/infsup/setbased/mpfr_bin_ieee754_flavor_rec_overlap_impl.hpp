@@ -23,8 +23,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_OVERLAP_IMPL_HPP
-#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_OVERLAP_IMPL_HPP
+#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_REC_OVERLAP_IMPL_HPP
+#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_REC_OVERLAP_IMPL_HPP
 
 namespace p1788
 {
@@ -35,10 +35,13 @@ namespace flavor
 namespace infsup
 {
 
+namespace setbased
+{
+
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 p1788::overlapping::overlapping_state
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
-        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
+        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
 {
     if (is_empty(x)) {
         if (is_empty(y)) {
@@ -106,13 +109,16 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_flavor<T, SUBNORMALIZE, AU
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 p1788::overlapping::overlapping_state
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
-        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
+        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return overlap(x.first, y.first);
 }
+
+
+} // namespace setbased
 
 } // namespace infsup
 
@@ -121,4 +127,4 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_flavor<T, SUBNORMALIZE, AU
 } // namespace p1788
 
 
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_OVERLAP_IMPL_HPP
+#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_REC_OVERLAP_IMPL_HPP

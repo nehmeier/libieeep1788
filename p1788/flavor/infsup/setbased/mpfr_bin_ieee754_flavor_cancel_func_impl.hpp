@@ -23,8 +23,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_CANCEL_FUNC_IMPL_HPP
-#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_CANCEL_FUNC_IMPL_HPP
+#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_CANCEL_FUNC_IMPL_HPP
+#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_CANCEL_FUNC_IMPL_HPP
 
 #include "p1788/util/eft.hpp"
 
@@ -38,18 +38,21 @@ namespace flavor
 namespace infsup
 {
 
+namespace setbased
+{
+
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
-        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
+typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_plus(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
+        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
 {
     return cancel_minus(x, neg(y));
 }
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
-        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
+typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_plus(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
+        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -59,9 +62,9 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_plus(mpfr_flavor<T, SUBNORMALIZE
 
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
-        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
+typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_minus(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
+        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
 {
     if (x.first == -std::numeric_limits<T>::infinity()
             || x.second == +std::numeric_limits<T>::infinity()
@@ -134,15 +137,17 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_minus(mpfr_flavor<T, SUBNORMALIZ
 }
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_minus(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
-        mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
+typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_minus(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
+        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
     return representation_dec(cancel_minus(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
+
+} // namespace setbased
 
 } // namespace infsup
 
@@ -151,4 +156,4 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_minus(mpfr_flavor<T, SUBNORMALIZ
 } // namespace p1788
 
 
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_CANCEL_FUNC_IMPL_HPP
+#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_CANCEL_FUNC_IMPL_HPP

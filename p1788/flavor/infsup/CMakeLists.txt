@@ -24,34 +24,5 @@
 #   limitations under the License.
 
 
-# relevant header files of this directory
-set(P1788_HEADER_FILES
-    flavor_mpfr_bool_func_impl.hpp
-    flavor_mpfr_cancel_func_impl.hpp
-    flavor_mpfr_class_impl.hpp
-    flavor_mpfr_div_pair_func_impl.hpp
-    flavor_mpfr_elem_func_impl.hpp
-    flavor_mpfr.hpp
-    flavor_mpfr_io_impl.hpp
-    flavor_mpfr_num_func_impl.hpp
-    flavor_mpfr_rec_bool_func_impl.hpp
-    flavor_mpfr_rec_elem_func_impl.hpp
-    flavor_mpfr_rec_overlap_impl.hpp
-    flavor_mpfr_rec_slope_func_impl.hpp
-    flavor_mpfr_rev_elem_func_impl.hpp
-    flavor_mpfr_set_op_impl.hpp
-   )
-
-# relative path of this directory
-string(REGEX REPLACE "${PROJECT_SOURCE_DIR}" "" P1788_RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
-
-# prefix for custom target
-string(REGEX REPLACE "/" "_" P1788_HEADERS_TARGET_SUFFIX ${P1788_RELATIVE_PATH})
-
-# custom_target to include headers in IDE-project-managers
-add_custom_target("header${P1788_HEADERS_TARGET_SUFFIX}" SOURCES ${P1788_HEADER_FILES})
-
-# install header files
-install(FILES ${P1788_HEADER_FILES} DESTINATION "include${P1788_RELATIVE_PATH}")
-
-
+# include headers of subdirectories
+add_subdirectory(setbased)

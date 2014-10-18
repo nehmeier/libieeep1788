@@ -23,8 +23,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_IO_IMPL_HPP
-#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_IO_IMPL_HPP
+#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_IO_IMPL_HPP
+#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_IO_IMPL_HPP
 
 #include <iostream>
 
@@ -40,13 +40,15 @@ namespace flavor
 namespace infsup
 {
 
+namespace setbased
+{
 
 // IO
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 template< typename CharT, typename Traits >
 std::basic_ostream<CharT, Traits>&
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_output(std::basic_ostream<CharT, Traits>& os,
-                                mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_output(std::basic_ostream<CharT, Traits>& os,
+                                mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     if (is_empty(x))
         return os << "[Empty]";
@@ -64,8 +66,8 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_output(std::basic_ostream<Char
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 template< typename CharT, typename Traits >
 std::basic_ostream<CharT, Traits>&
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_output(std::basic_ostream<CharT, Traits>& os,
-                                mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_output(std::basic_ostream<CharT, Traits>& os,
+                                mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     operator_output(os, x.first);
 
@@ -76,8 +78,8 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_output(std::basic_ostream<Char
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 template< typename CharT, typename Traits >
 std::basic_istream<CharT, Traits>&
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_input(std::basic_istream<CharT, Traits>& is,
-                               mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation& x)
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_input(std::basic_istream<CharT, Traits>& is,
+                               mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -92,8 +94,8 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_input(std::basic_istream<CharT
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 template< typename CharT, typename Traits >
 std::basic_istream<CharT, Traits>&
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_input(std::basic_istream<CharT, Traits>& is,
-                               mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec& x)
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_input(std::basic_istream<CharT, Traits>& is,
+                               mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -106,6 +108,8 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_input(std::basic_istream<CharT
 }
 
 
+} // namespace setbased
+
 } // namespace infsup
 
 } // namespace flavor
@@ -113,4 +117,4 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_input(std::basic_istream<CharT
 } // namespace p1788
 
 
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_IO_IMPL_HPP
+#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_IO_IMPL_HPP

@@ -23,8 +23,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_HPP
-#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_HPP
+#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_HPP
+#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_HPP
 
 #include <utility>
 #include <limits>
@@ -46,6 +46,9 @@ namespace flavor
 namespace infsup
 {
 
+namespace setbased
+{
+
 
 enum class subnormalize : bool
 {
@@ -63,7 +66,7 @@ template<typename T,
     subnormalize SUBNORMALIZE = std::numeric_limits<T>::has_denorm == std::denorm_present ? subnormalize::yes
         : subnormalize::no,
     auto_setup AUTOSETUP = auto_setup::yes>
-class mpfr_flavor
+class mpfr_bin_ieee754_flavor
 {
 
     static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
@@ -716,6 +719,8 @@ public:
 };
 
 
+} // namespace setbased
+
 } // namespace infsup
 
 } // namespace flavor
@@ -723,18 +728,18 @@ public:
 } // namespace p1788
 
 
-#include "p1788/flavor/infsup/flavor_mpfr_class_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_io_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_set_op_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_num_func_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_bool_func_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_elem_func_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_div_pair_func_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_rev_elem_func_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_cancel_func_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_rec_elem_func_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_rec_overlap_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_rec_bool_func_impl.hpp"
-#include "p1788/flavor/infsup/flavor_mpfr_rec_slope_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_class_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_io_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_set_op_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_num_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_bool_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_elem_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_div_pair_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rev_elem_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_cancel_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_elem_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_overlap_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_bool_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_slope_func_impl.hpp"
 
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_HPP
+#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_HPP

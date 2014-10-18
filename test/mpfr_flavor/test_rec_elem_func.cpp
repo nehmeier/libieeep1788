@@ -23,14 +23,14 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#define BOOST_TEST_MODULE "Recommended forward elementary functions on intervals [inf-sup-interval, mpfr_flavor]"
+#define BOOST_TEST_MODULE "Recommended forward elementary functions on intervals [infsup/interval, infsup/setbased/mpfr_bin_ieee754_flavor]"
 #include "test/util/boost_test_wrapper.hpp"
 
 
 #include "p1788/p1788.hpp"
 
 template<typename T>
-using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes, p1788::flavor::infsup::auto_setup::yes>;
+using flavor = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T, p1788::flavor::infsup::setbased::subnormalize::yes, p1788::flavor::infsup::setbased::auto_setup::yes>;
 
 template<typename T>
 using interval = p1788::infsup::interval<T, flavor>;

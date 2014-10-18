@@ -23,8 +23,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_SET_OP_IMPL_HPP
-#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_SET_OP_IMPL_HPP
+#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_SET_OP_IMPL_HPP
+#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_SET_OP_IMPL_HPP
 
 #include <algorithm>
 
@@ -37,10 +37,13 @@ namespace flavor
 namespace infsup
 {
 
+namespace setbased
+{
+
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::intersect(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
-                          mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
+typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::intersect(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
+                          mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
 {
     if (are_disjoint(x, y))
         return static_method_empty();
@@ -50,20 +53,20 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::intersect(mpfr_flavor<T, SUBNORMALIZE, 
 }
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::intersect(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
-                          mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
+typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::intersect(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                          mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
+    return mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::hull(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
-                     mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
+typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::hull(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
+                     mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
 {
     if (is_empty(x))
         return y;
@@ -75,17 +78,20 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::hull(mpfr_flavor<T, SUBNORMALIZE, AUTOS
 }
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
-mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::hull(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
-                     mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
+typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
+mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::hull(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&,
+                     mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const&)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
+    return mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::static_method_entire_dec();
 }
 
 
 //TODO hull(s)   P1788/8.1 12.8.1
+
+
+} // namespace setbased
 
 } // namespace infsup
 
@@ -94,4 +100,4 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::hull(mpfr_flavor<T, SUBNORMALIZE, AUTOS
 } // namespace p1788
 
 
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_SET_OP_IMPL_HPP
+#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_SET_OP_IMPL_HPP

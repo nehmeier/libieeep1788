@@ -23,8 +23,8 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_BOOL_FUNC_IMPL_HPP
-#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_BOOL_FUNC_IMPL_HPP
+#ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_REC_BOOL_FUNC_IMPL_HPP
+#define LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_REC_BOOL_FUNC_IMPL_HPP
 
 #include <limits>
 #include <cmath>
@@ -38,8 +38,11 @@ namespace flavor
 namespace infsup
 {
 
+namespace setbased
+{
+
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_common(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_common(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     //TODO ist das in D8.1 7.2 so gemeint?
     return !is_empty(x)
@@ -48,7 +51,7 @@ bool mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_common(mpfr_flavor<T, SUBNORMAL
 }
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_common(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_common(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     //TODO ist das in D8.1 7.2 so gemeint? oder hier die decoration verwenden?
     return is_common(x.first);
@@ -56,30 +59,33 @@ bool mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_common(mpfr_flavor<T, SUBNORMAL
 
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_singleton(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_singleton(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     return x.first == x.second;
 }
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_singleton(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_singleton(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     return is_singleton(x.first);
 }
 
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_member(T m, mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_member(T m, mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
 {
     return x.first <= m && m <= x.second
         && std::abs(m) != std::numeric_limits<T>::infinity();
 }
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_member(T m, mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_member(T m, mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
 {
     return is_member(m, x.first);
 }
+
+
+} // namespace setbased
 
 } // namespace infsup
 
@@ -88,4 +94,4 @@ bool mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_member(T m, mpfr_flavor<T, SUBN
 } // namespace p1788
 
 
-#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_FLAVOR_MPFR_REC_BOOL_FUNC_IMPL_HPP
+#endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_REC_BOOL_FUNC_IMPL_HPP

@@ -23,7 +23,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#define BOOST_TEST_MODULE "Cancellative addition and subtraction [inf-sup-interval, mpfr_flavor]"
+#define BOOST_TEST_MODULE "Cancellative addition and subtraction [infsup/interval, infsup/setbased/mpfr_bin_ieee754_flavor]"
 #include "test/util/boost_test_wrapper.hpp"
 
 #include <limits>
@@ -34,7 +34,7 @@ const double MAX = std::numeric_limits<double>::max();
 const double MIN = std::numeric_limits<double>::min();
 
 template<typename T>
-using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes, p1788::flavor::infsup::auto_setup::yes>;
+using flavor = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T, p1788::flavor::infsup::setbased::subnormalize::yes, p1788::flavor::infsup::setbased::auto_setup::yes>;
 
 template<typename T>
 using I = p1788::infsup::interval<T, flavor>;
