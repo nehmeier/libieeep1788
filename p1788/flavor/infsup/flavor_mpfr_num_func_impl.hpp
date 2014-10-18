@@ -93,13 +93,28 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_flavor<T, SUBNORMALIZE, AUTOSE
     if (x.second == std::numeric_limits<T>::infinity())
         return std::numeric_limits<T>::max();
 
-    mpfr_var::setup();
 
-    mpfr_var xl(x.first, MPFR_RNDD);
-    mpfr_var xu(x.second, MPFR_RNDU);
+    // extended EMIN for error free division by 2
+    typedef p1788::util::mpfr_var<mpfr_var::PREC,
+                                mpfr_var::EMIN -1,
+                                mpfr_var::EMAX,
+                                false,
+                                false>  ext_mpfr_var;
 
-    xl.subnormalize(mpfr_add(xl(), xl(), xu(), MPFR_RNDN), MPFR_RNDN);
-    xl.subnormalize(mpfr_div_si(xl(), xl(), 2l, MPFR_RNDN), MPFR_RNDN);
+    ext_mpfr_var::forced_setup();
+
+    ext_mpfr_var xl(x.first, MPFR_RNDD);
+    ext_mpfr_var xu(x.second, MPFR_RNDU);
+
+    // error free because of the extended EMIN
+    mpfr_div_si(xl(),xl(),2, MPFR_RNDN);
+    mpfr_div_si(xu(),xu(),2, MPFR_RNDN);
+
+    int t = mpfr_add(xl(), xl(), xu(), MPFR_RNDN);
+
+    mpfr_var::forced_setup();
+
+    xl.subnormalize(mpfr_check_range(xl(), t, MPFR_RNDN), MPFR_RNDN);
 
     T res = xl.template get<T>(MPFR_RNDN);
     return res == -0.0 ? 0.0 : res;
