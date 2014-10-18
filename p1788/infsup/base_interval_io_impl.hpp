@@ -34,9 +34,9 @@ namespace infsup
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name IO operators
-///
-///@{
+// \name IO operators
+//
+//@{
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval, typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(
@@ -52,7 +52,7 @@ std::basic_istream<CharT, Traits>& operator>>(
     return Flavor<T>::operator_input(is, x.rep_);
 }
 
-///@}
+//@}
 
 } // namespace infsup
 

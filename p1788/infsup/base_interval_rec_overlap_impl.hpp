@@ -34,9 +34,9 @@ namespace infsup
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name Recommended interval overlapping, see P1788/D7.0 Sect. 9.7.2
-///
-///@{
+// \name Recommended interval overlapping, see P1788/D7.0 Sect. 9.7.2
+//
+//@{
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
@@ -58,7 +58,7 @@ p1788::overlapping::overlapping_state overlap(base_interval<T, Flavor, RepType, 
 //                   static_cast<interval<TMax, Flavor>>(y));
 //}
 
-///@}
+//@}
 
 
 } // namespace infsup

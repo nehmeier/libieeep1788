@@ -621,7 +621,7 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::fma(mpfr_flavor<T, SUBNORMALIZE, AUTOSE
 }
 
 
-////TODO notwendig?
+//TODO notwendig?
 //template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 //typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
 //mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::interval_case(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& c,
@@ -640,7 +640,7 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::fma(mpfr_flavor<T, SUBNORMALIZE, AUTOSE
 //    return hull(g, h);
 //}
 //
-////TODO notwendig?
+//TODO notwendig?
 //template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 //typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
 //mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::interval_case(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& c,
@@ -795,7 +795,7 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pown(mpfr_flavor<T, SUBNORMALIZE, AUTOS
 }
 
 
-//// siehe heimlich pow1
+// siehe heimlich pow1
 //template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 //typename mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
 //mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::pow(mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,

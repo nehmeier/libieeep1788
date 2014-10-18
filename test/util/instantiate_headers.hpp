@@ -118,7 +118,7 @@ f_d__idcr mig_ = &p1788::infsup::mig;
 
 
 
-//// \name Boolean functions on intervals, see P1788/D7.0 Sect. 9.6.10
+// \name Boolean functions on intervals, see P1788/D7.0 Sect. 9.6.10
 //
 //
 //is_empty
@@ -164,7 +164,7 @@ f_d__idcr mig_ = &p1788::infsup::mig;
 //
 //
 //
-//// \name Forward elementary functions
+// \name Forward elementary functions
 //
 //
 //pos
@@ -266,7 +266,7 @@ f_d__idcr mig_ = &p1788::infsup::mig;
 //
 //max
 //
-//// \name Reverse elementary functions, see P1788/D7.0 Sect. 9.6.5 Table 2
+// \name Reverse elementary functions, see P1788/D7.0 Sect. 9.6.5 Table 2
 //
 //
 //sqr_rev
@@ -301,7 +301,7 @@ f_d__idcr mig_ = &p1788::infsup::mig;
 //
 //
 //
-//// \name Cancellative addition and subtraction, see P1788/D7.0 Sect. 9.6.6
+// \name Cancellative addition and subtraction, see P1788/D7.0 Sect. 9.6.6
 //
 //
 //cancel_plus
@@ -309,7 +309,7 @@ f_d__idcr mig_ = &p1788::infsup::mig;
 //cancel_minus
 //
 //
-//// \name Recommended forward elementary functions on intervals, see P1788/D7.0 Sect. 9.7.1 Table 5
+// \name Recommended forward elementary functions on intervals, see P1788/D7.0 Sect. 9.7.1 Table 5
 //
 //
 //rootn
@@ -345,11 +345,11 @@ f_d__idcr mig_ = &p1788::infsup::mig;
 //atan_pi
 //atan2_pi
 //
-//// \name Recommended interval overlapping, see P1788/D7.0 Sect. 9.7.2
+// \name Recommended interval overlapping, see P1788/D7.0 Sect. 9.7.2
 //
 //overlap
 //
-//// \name Recommended slope functions, see P1788/D7.0 Sect. 9.7.3 Table 7
+// \name Recommended slope functions, see P1788/D7.0 Sect. 9.7.3 Table 7
 //
 //exp_slope1
 //

@@ -48,10 +48,10 @@
 //    std::cout << d_a.decoration() << std::endl;
 //
 //
-////    p1788::decoration::decoration dec = p1788::decoration::decoration::trv;
-////
-////    std::cin >> dec;
-////    std::cout << dec << std::endl;
+//    p1788::decoration::decoration dec = p1788::decoration::decoration::trv;
+//
+//    std::cin >> dec;
+//    std::cout << dec << std::endl;
 //
 //    std::cout << intersect(d_a, d_b) << std::endl;
 //    std::cout << hull(d_a, d_b) << std::endl;

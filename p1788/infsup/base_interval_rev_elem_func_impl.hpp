@@ -35,9 +35,9 @@ namespace infsup
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name Reverse elementary functions, see P1788/D7.0 Sect. 9.6.5 Table 2
-///
-///@{
+// \name Reverse elementary functions, see P1788/D7.0 Sect. 9.6.5 Table 2
+//
+//@{
 
 
 // reverse version of unary point functions
@@ -46,12 +46,12 @@ namespace infsup
 // sqr_rev
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval sqr_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval sqr_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::sqr_rev(c.rep_, x.rep_));
 }
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval sqr_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval sqr_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::sqr_rev(x.rep_));
 }
 
@@ -59,12 +59,12 @@ ConcreteInterval sqr_rev(base_interval<T, Flavor, RepType, ConcreteInterval> con
 // recip_rev
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval recip_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval recip_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::recip_rev(c.rep_, x.rep_));
 }
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval recip_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval recip_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::recip_rev(x.rep_));
 }
 
@@ -72,12 +72,12 @@ ConcreteInterval recip_rev(base_interval<T, Flavor, RepType, ConcreteInterval> c
 // abs_rev
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval abs_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval abs_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::abs_rev(c.rep_, x.rep_));
 }
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval abs_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval abs_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::abs_rev(x.rep_));
 }
 
@@ -86,13 +86,13 @@ ConcreteInterval abs_rev(base_interval<T, Flavor, RepType, ConcreteInterval> con
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval pown_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x, int n) {   ///< Required, accurate
+                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x, int n) {   //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::pown_rev(c.rep_, x.rep_, n));
 }
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval pown_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, int n) {   ///< Required, accurate
+ConcreteInterval pown_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, int n) {   //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::pown_rev(x.rep_, n));
 }
 
@@ -100,13 +100,13 @@ ConcreteInterval pown_rev(base_interval<T, Flavor, RepType, ConcreteInterval> co
 // sin_rev
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval sin_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval sin_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::sin_rev(c.rep_, x.rep_));
 }
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval sin_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval sin_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::sin_rev(x.rep_));
 }
 
@@ -114,13 +114,13 @@ ConcreteInterval sin_rev(base_interval<T, Flavor, RepType, ConcreteInterval> con
 // cos_rev
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval cos_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval cos_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::cos_rev(c.rep_, x.rep_));
 }
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval cos_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval cos_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::cos_rev(x.rep_));
 }
 
@@ -129,13 +129,13 @@ ConcreteInterval cos_rev(base_interval<T, Flavor, RepType, ConcreteInterval> con
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval tan_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                   base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+                                   base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::tan_rev(c.rep_, x.rep_));
 }
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval tan_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+ConcreteInterval tan_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::tan_rev(x.rep_));
 }
 
@@ -143,12 +143,12 @@ ConcreteInterval tan_rev(base_interval<T, Flavor, RepType, ConcreteInterval> con
 // cosh_rev
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval cosh_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+ConcreteInterval cosh_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::cosh_rev(c.rep_, x.rep_));
 }
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval cosh_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+ConcreteInterval cosh_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::cosh_rev(x.rep_));
 }
 
@@ -162,14 +162,14 @@ ConcreteInterval cosh_rev(base_interval<T, Flavor, RepType, ConcreteInterval> co
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval mul_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& b,
                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                   base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+                                   base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::mul_rev(b.rep_, c.rep_, x.rep_));
 }
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval mul_rev(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                   base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     ///< Required, accurate
+                                   base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {     //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::mul_rev(c.rep_, x.rep_));
 }
 
@@ -179,13 +179,13 @@ ConcreteInterval mul_rev(base_interval<T, Flavor, RepType, ConcreteInterval> con
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval div_rev1(base_interval<T, Flavor, RepType, ConcreteInterval> const& b,
                                     base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::div_rev1(b.rep_, c.rep_, x.rep_));
 }
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval div_rev1(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::div_rev1(c.rep_, x.rep_));
 }
 
@@ -195,14 +195,14 @@ ConcreteInterval div_rev1(base_interval<T, Flavor, RepType, ConcreteInterval> co
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval div_rev2(base_interval<T, Flavor, RepType, ConcreteInterval> const& a,
                                     base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::div_rev2(a.rep_, c.rep_, x.rep_));
 }
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval div_rev2(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::div_rev2(c.rep_, x.rep_));
 }
 
@@ -211,14 +211,14 @@ ConcreteInterval div_rev2(base_interval<T, Flavor, RepType, ConcreteInterval> co
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval pow_rev1(base_interval<T, Flavor, RepType, ConcreteInterval> const& b,
                                     base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::pow_rev1(b.rep_, c.rep_, x.rep_));
 }
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval pow_rev1(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::pow_rev1(c.rep_, x.rep_));
 }
 
@@ -228,13 +228,13 @@ ConcreteInterval pow_rev1(base_interval<T, Flavor, RepType, ConcreteInterval> co
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval pow_rev2(base_interval<T, Flavor, RepType, ConcreteInterval> const& a,
                                     base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::pow_rev2(a.rep_, c.rep_, x.rep_));
 }
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval pow_rev2(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    ///< Required, accurate
+                                    base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {    //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::pow_rev2(c.rep_, x.rep_));
 }
 
@@ -244,13 +244,13 @@ ConcreteInterval pow_rev2(base_interval<T, Flavor, RepType, ConcreteInterval> co
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval atan2_rev1(base_interval<T, Flavor, RepType, ConcreteInterval> const& b,
                                       base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                      base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {  ///< Required, accurate
+                                      base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {  //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::atan2_rev1(b.rep_, c.rep_, x.rep_));
 }
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval atan2_rev1(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                      base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {  ///< Required, accurate
+                                      base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {  //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::atan2_rev1(c.rep_, x.rep_));
 }
 
@@ -260,18 +260,18 @@ ConcreteInterval atan2_rev1(base_interval<T, Flavor, RepType, ConcreteInterval> 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval atan2_rev2(base_interval<T, Flavor, RepType, ConcreteInterval> const& a,
                                       base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                      base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {  ///< Required, accurate
+                                      base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {  //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::atan2_rev2(a.rep_, c.rep_, x.rep_));
 }
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval atan2_rev2(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
-                                      base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {  ///< Required, accurate
+                                      base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {  //< Required, accurate
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::atan2_rev2(c.rep_, x.rep_));
 }
 
 
-///@}
+//@}
 
 
 } // namespace infsup

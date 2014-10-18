@@ -48,22 +48,22 @@ namespace infsup
 
 
 
-/// \brief Base class for a level 2 infsup interval
-///
-///
-/// Base class representing a level 2 infsup interval, see P1788/D7.0 Sect. 4.1.
-///
-/// This class only serves as a uniform interface/representation of an
-/// interval. All the behavior will be specified by the template policy class
-/// Flavor<T> which implements the flavors concept of the standard in coherent way,
-/// see P1788/D7.0 Sect. 5.
-///
-/// \param T                  Number system / parent format
-/// \param Flavor<typename>   Generic flavor which will be instantiated with the
-///                           number system T
-/// \param RepType            Type of the internal representation
-/// \param ConcreteInterval   Type of the concrete interval type (sub class)
-///
+// \brief Base class for a level 2 infsup interval
+//
+//
+// Base class representing a level 2 infsup interval, see P1788/D7.0 Sect. 4.1.
+//
+// This class only serves as a uniform interface/representation of an
+// interval. All the behavior will be specified by the template policy class
+// Flavor<T> which implements the flavors concept of the standard in coherent way,
+// see P1788/D7.0 Sect. 5.
+//
+// \param T                  Number system / parent format
+// \param Flavor<typename>   Generic flavor which will be instantiated with the
+//                           number system T
+// \param RepType            Type of the internal representation
+// \param ConcreteInterval   Type of the concrete interval type (sub class)
+//
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 class base_interval
 {
@@ -101,11 +101,11 @@ public:
 // -----------------------------------------------------------------------------
 
 
-    /// \brief Foo Bar baz
-    /// Implementation specific
-    /// \return T
-    ///
-    ///
+    // \brief Foo Bar baz
+    // Implementation specific
+    // \return T
+    //
+    //
     T lower() const {
         return Flavor<T>::method_lower(rep_);
     }
@@ -320,7 +320,7 @@ protected:
                                  base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
                                  base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
-////TODO notwendig?
+//TODO notwendig?
 //    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
 //    friend ConcreteInterval_ interval_case(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
 //                                           base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,

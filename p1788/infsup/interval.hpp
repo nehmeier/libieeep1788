@@ -120,7 +120,7 @@ public:
 //    { }
 
     // Implementation specific Copy-constructor
-    interval(base_interval_type const& other)  ///< Copy-constructor
+    interval(base_interval_type const& other)  //< Copy-constructor
         : base_interval_type(Flavor<T>::constructor_infsup(other.rep_))
     { }
 

@@ -36,16 +36,16 @@ namespace infsup
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name Cancellative addition and subtraction, see P1788/D7.0 Sect. 9.6.6
-///
-///@{
+// \name Cancellative addition and subtraction, see P1788/D7.0 Sect. 9.6.6
+//
+//@{
 
 
 // cancel_plus
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval cancel_plus(base_interval<T, Flavor, RepType, ConcreteInterval> const& a,
-                                       base_interval<T, Flavor, RepType, ConcreteInterval> const& b) {     ///< Required, necessary for bare intervals? see, 11.11.6 // TODO nicht fuer bare interval
+                                       base_interval<T, Flavor, RepType, ConcreteInterval> const& b) {     //< Required, necessary for bare intervals? see, 11.11.6 // TODO nicht fuer bare interval
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::cancel_plus(a.rep_, b.rep_));
 }
 
@@ -74,7 +74,7 @@ ConcreteInterval cancel_plus(base_interval<T, Flavor, RepType, ConcreteInterval>
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval cancel_minus(base_interval<T, Flavor, RepType, ConcreteInterval> const& a,
-                                        base_interval<T, Flavor, RepType, ConcreteInterval> const& b) {    ///< Required, necessary for bare intervals? see, 11.11.6 // TODO nicht fuer bare interval
+                                        base_interval<T, Flavor, RepType, ConcreteInterval> const& b) {    //< Required, necessary for bare intervals? see, 11.11.6 // TODO nicht fuer bare interval
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::cancel_minus(a.rep_, b.rep_));
 }
 
@@ -98,7 +98,7 @@ ConcreteInterval cancel_minus(base_interval<T, Flavor, RepType, ConcreteInterval
 //                                 static_cast<interval<TMax, Flavor>>(b)));
 //}
 
-///@}
+//@}
 
 
 } // namespace infsup

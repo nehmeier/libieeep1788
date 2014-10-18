@@ -45,12 +45,12 @@ namespace util
 #pragma GCC diagnostic ignored "-Weffc++"
 
 
-/// \brief Trait to check if type T is an p1788::infsup::base_interval
-///
-/// \param T type
-/// \return field value contains boolean result of the check
-///
-///
+// \brief Trait to check if type T is an p1788::infsup::base_interval
+//
+// \param T type
+// \return field value contains boolean result of the check
+//
+//
 template<typename T>
 class is_infsup_base_interval_implementation
     : public std::integral_constant<bool, false>
@@ -87,16 +87,16 @@ class is_infsup_base_interval_implementation<p1788::infsup::decorated_interval<T
 
 
 
-/// \brief Trait to determine the precision oder of the type T
-///
-/// The order should be realized by an enum class for each group of coherent
-/// types, e.g. IEEE 754 binary floating point {float, double, long double}.
-/// Hence, only types of the same group are comparable.
-///
-/// \param T type
-/// \return field value contains the order
-///
-///
+// \brief Trait to determine the precision oder of the type T
+//
+// The order should be realized by an enum class for each group of coherent
+// types, e.g. IEEE 754 binary floating point {float, double, long double}.
+// Hence, only types of the same group are comparable.
+//
+// \param T type
+// \return field value contains the order
+//
+//
 template<typename T>
 class type_precision_order
     : public std::integral_constant<int, 0>

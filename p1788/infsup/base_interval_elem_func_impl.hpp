@@ -38,36 +38,36 @@ namespace infsup
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name Forward elementary functions
-///
-///@{
+// \name Forward elementary functions
+//
+//@{
 
 
 // pos
 
-/// \brief Identity of an interval <B>x</B>
-///
-/// <B>Implementation specific</B>
-///
-/// Only provided for consistency with #neg(interval<T,Flavor> const& x).
-///
-/// \see #neg(interval<T,Flavor> const& x)
-/// \see #operator+(interval<T,Flavor> const& x)
-///
-/// \param x interval
-/// \return <B>x</B>
-///
+// \brief Identity of an interval <B>x</B>
+//
+// <B>Implementation specific</B>
+//
+// Only provided for consistency with #neg(interval<T,Flavor> const& x).
+//
+// \see #neg(interval<T,Flavor> const& x)
+// \see #operator+(interval<T,Flavor> const& x)
+//
+// \param x interval
+// \return <B>x</B>
+//
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval pos(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(x.rep_);
 }
 
-/// \brief Identity of an interval <B>x</B>
-///
-/// <B>Short hand of</B> #pos(interval<T,Flavor> const& x)
-///
-/// <B>Implementation specific</B>
-///
+// \brief Identity of an interval <B>x</B>
+//
+// <B>Short hand of</B> #pos(interval<T,Flavor> const& x)
+//
+// <B>Implementation specific</B>
+//
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval operator+(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return pos(x);
@@ -76,28 +76,28 @@ ConcreteInterval operator+(base_interval<T, Flavor, RepType, ConcreteInterval> c
 
 // neg
 
-/// \brief Negation of an interval <B>x</B>
-///
-/// <B>Required by IEEE P1788</B>
-///
-///
-/// \see #operator-(interval<T,Flavor> const& x)
-/// \see #pos(interval<T,Flavor> const& x)
-///
-/// \param x interval
-/// \return -<B>x</B>
-///
+// \brief Negation of an interval <B>x</B>
+//
+// <B>Required by IEEE P1788</B>
+//
+//
+// \see #operator-(interval<T,Flavor> const& x)
+// \see #pos(interval<T,Flavor> const& x)
+//
+// \param x interval
+// \return -<B>x</B>
+//
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval neg(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::neg(x.rep_));
 }
 
-/// \brief Negation of an interval <B>x</B>
-///
-/// <B>Short hand of</B> #neg(interval<T,Flavor> const& x)
-///
-/// <B>Implementation specific</B>
-///
+// \brief Negation of an interval <B>x</B>
+//
+// <B>Short hand of</B> #neg(interval<T,Flavor> const& x)
+//
+// <B>Implementation specific</B>
+//
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval operator-(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return neg(x);
@@ -465,8 +465,8 @@ Interval fma(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
 }
 
 
-//// interval case
-////TODO notwendig?
+// interval case
+//TODO notwendig?
 //template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 //ConcreteInterval interval_case(base_interval<T, Flavor, RepType, ConcreteInterval> const& c,
 //        base_interval<T, Flavor, RepType, ConcreteInterval> const& g,
@@ -718,7 +718,7 @@ ConcreteInterval max(base_interval<T, Flavor, RepType, ConcreteInterval> const& 
 }
 
 
-///@}
+//@}
 
 
 } // namespace infsup

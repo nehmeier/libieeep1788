@@ -34,9 +34,9 @@ namespace infsup
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name Recommended boolean functions on intervals, see P1788/D8.1 Sect. 10.7.3
-///
-///@{
+// \name Recommended boolean functions on intervals, see P1788/D8.1 Sect. 10.7.3
+//
+//@{
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
@@ -55,7 +55,7 @@ bool is_member(T m, base_interval<T, Flavor, RepType, ConcreteInterval> const& x
 }
 
 
-///@}
+//@}
 
 
 } // namespace infsup

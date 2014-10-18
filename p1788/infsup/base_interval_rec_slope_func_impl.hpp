@@ -34,9 +34,9 @@ namespace infsup
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name Recommended slope functions, see P1788/D7.0 Sect. 9.7.3 Table 7
-///
-///@{
+// \name Recommended slope functions, see P1788/D7.0 Sect. 9.7.3 Table 7
+//
+//@{
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
@@ -259,7 +259,7 @@ ConcreteInterval sinh_slope3(base_interval<T, Flavor, RepType, ConcreteInterval>
 //    return Interval(sinh_slope3(static_cast<interval<TMax, Flavor>>(x)));
 //}
 
-///@}
+//@}
 
 
 

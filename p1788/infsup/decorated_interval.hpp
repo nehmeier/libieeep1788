@@ -154,7 +154,7 @@ public:
 //    { }
 
     // Implementation specific Copy-constructor
-    decorated_interval(base_interval_type const& other)  ///< Copy-constructor
+    decorated_interval(base_interval_type const& other)  //< Copy-constructor
         : base_interval_type(Flavor<T>::constructor_infsup_dec(other.rep_))
     { }
 

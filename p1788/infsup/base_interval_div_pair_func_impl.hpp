@@ -34,9 +34,9 @@ namespace infsup
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name Recommended div to pair function, see P1788/D8.1 Sect. 10.6.5
-///
-///@{
+// \name Recommended div to pair function, see P1788/D8.1 Sect. 10.6.5
+//
+//@{
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
@@ -50,7 +50,7 @@ div_to_pair(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_i
                base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(tmp.second));
 }
 
-///@}
+//@}
 
 
 } // namespace infsup

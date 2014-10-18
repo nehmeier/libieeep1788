@@ -35,9 +35,9 @@ namespace infsup
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
-/// \name Recommended forward elementary functions on intervals, see P1788/D7.0 Sect. 9.7.1 Table 5
-///
-///@{
+// \name Recommended forward elementary functions on intervals, see P1788/D7.0 Sect. 9.7.1 Table 5
+//
+//@{
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
@@ -222,7 +222,7 @@ ConcreteInterval compoundm1(base_interval<T, Flavor, RepType, ConcreteInterval> 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval hypot(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
-                                 base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {   ///< tightest, required or recommended?
+                                 base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {   //< tightest, required or recommended?
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::hypot(x.rep_, y.rep_));
 }
 
@@ -427,7 +427,7 @@ ConcreteInterval atan2_pi(base_interval<T, Flavor, RepType, ConcreteInterval> co
 //                             static_cast<interval<TMax, Flavor>>(y)));
 //}
 
-///@}
+//@}
 
 
 } // namespace infsup

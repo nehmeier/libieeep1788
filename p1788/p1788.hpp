@@ -27,10 +27,6 @@
 #define LIBIEEEP1788_P1788_P1788_HPP
 
 
-///
-/// \brief This header includes all functionality provided by libieeep1788.
-///
-
 #include "p1788/version.hpp"
 
 

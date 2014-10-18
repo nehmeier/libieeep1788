@@ -176,7 +176,7 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::constructor_infsup_dec(std::string cons
 //    //TODO check iterator
 //    auto result = std::minmax_element(first, last);
 //
-////TODO  invalid argument => exception?
+//TODO  invalid argument => exception?
 //    return representation(*result.first, *result.second);
 //}
 //
@@ -189,7 +189,7 @@ mpfr_flavor<T, SUBNORMALIZE, AUTOSETUP>::constructor_infsup_dec(std::string cons
 //    //TODO check iterator
 //    auto result = std::minmax_element(first, last);
 //
-////TODO  invalid argument => exception?
+//TODO  invalid argument => exception?
 //    return representation_dec(representation(*result.first, *result.second), p1788::decoration::decoration::trv);
 //}
 
