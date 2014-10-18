@@ -44,7 +44,6 @@ set(P1788_HEADER_FILES
 
 # relative path of this directory
 string(REGEX REPLACE "${PROJECT_SOURCE_DIR}" "" P1788_RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
-message(STATUS ${P1788_RELATIVE_PATH})
 
 # prefix for custom target
 string(REGEX REPLACE "/" "_" P1788_HEADERS_TARGET_SUFFIX ${P1788_RELATIVE_PATH})
