@@ -85,28 +85,30 @@ public:
         : base_interval_type(Flavor<T>::constructor_infsup(point))
     { }
 
-    // Required for 754-conforming, see numsToInterval(l,u) formatOf P1788/D8.1 Sect. 12.12.8.
-    template<typename L, typename U>
-    interval(L lower, U upper)
-        : base_interval_type(Flavor<T>::constructor_infsup(lower, upper))
-    {
-        //TODO static_assert hier oder im Flavor?
-        //TODO int-werte landen hier und funktionieren somit nicht
-        static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-        static_assert(std::numeric_limits<L>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-        static_assert(std::numeric_limits<U>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-    }
+//TODO necessary?
+//    // Required for 754-conforming, see numsToInterval(l,u) formatOf P1788/D8.1 Sect. 12.12.8.
+//    template<typename L, typename U>
+//    interval(L lower, U upper)
+//        : base_interval_type(Flavor<T>::constructor_infsup(lower, upper))
+//    {
+//        //TODO static_assert hier oder im Flavor?
+//        //TODO int-werte landen hier und funktionieren somit nicht
+//        static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+//        static_assert(std::numeric_limits<L>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+//        static_assert(std::numeric_limits<U>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+//    }
 
+//TODO necessary?
     // Implementation specificfor 754-conforming, Singleton formatOf
-    template<typename T_>
-    explicit interval(T_ point)
-        : base_interval_type(Flavor<T>::constructor_infsup(point))
-    {
-        //TODO static_assert hier oder im Flavor?
-        //TODO int-werte landen hier und funktionieren somit nicht
-        static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-        static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-    }
+//    template<typename T_>
+//    explicit interval(T_ point)
+//        : base_interval_type(Flavor<T>::constructor_infsup(point))
+//    {
+//        //TODO static_assert hier oder im Flavor?
+//        //TODO int-werte landen hier und funktionieren somit nicht
+//        static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+//        static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+//    }
 
 
     // Required see textToInterval(l,u) P1788/D8.1 Sect. 12.12.8.

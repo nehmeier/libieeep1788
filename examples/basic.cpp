@@ -25,36 +25,71 @@
 
 #include <iostream>
 
-//#include "p1788/p1788.hpp"
-//
-//template<typename T>
-//using flavor = p1788::flavor::infsup::mpfr_flavor<T, p1788::flavor::infsup::subnormalize::yes>;
-//
-//template<typename T>
-//using I = p1788::infsup::decorated_interval<T, flavor>;
-//
-//
-//int main()
-//{
-//
-//using namespace p1788::infsup;
-//
-//
-//    I<double> d_a(-1.0,2.0), d_b(3.0,4.0), d_c(1.0,6.0);
-//    I<float> f_a(1.0f,2.0f), f_b(3.0f,4.0f), f_c(5.0f,6.0f);
-//
+#include "p1788/p1788.hpp"
+#include <mpfr.h>
+#include <limits>
+
+template<typename T>
+using flavor = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T, p1788::flavor::infsup::setbased::subnormalize::yes, p1788::flavor::infsup::setbased::auto_setup::yes>;
+
+template<typename T>
+using I = p1788::infsup::interval<T, flavor>;
+
+template<typename T>
+using DI = p1788::infsup::decorated_interval<T, flavor>;
+
+int main()
+{
+
+using namespace p1788::infsup;
+
+
+    I<double> id_a(-1.0,2.0), id_b(3.0,4.0), id_c(1.0,6.0);
+    I<float> if_a(1.0f,2.0f), if_b(3.0f,4.0f), if_c(5.0f,6.0f);
+    DI<double> dd_a(-1.0,2.0), dd_b(3.0,4.0), dd_c(1.0,6.0);
+    DI<float> df_a(1.0f,2.0f), df_b(3.0f,4.0f), df_c(5.0f,6.0f);
 //    std::cout << d_a << std::endl;
 //    std::cout << d_a.rad() << std::endl;
 //    std::cout << d_a.decoration() << std::endl;
-//
-//
+
+
 //    p1788::decoration::decoration dec = p1788::decoration::decoration::trv;
 //
 //    std::cin >> dec;
 //    std::cout << dec << std::endl;
-//
-//    std::cout << intersect(d_a, d_b) << std::endl;
-//    std::cout << hull(d_a, d_b) << std::endl;
+
+    I<float> x = static_cast<I<float>>(id_a);
+    std::cout << x << std::endl;
+    I<double> y = static_cast<I<double>>(if_a);
+    std::cout << y << std::endl;
+    I<float> z(id_a);
+    std::cout << z << std::endl << std::endl;
+
+    std::cout << intersect(id_a, id_c) << std::endl;
+    std::cout << I<float>::intersect(id_a, if_a) << std::endl;
+    std::cout << intersect(dd_a, dd_c) << std::endl;
+    std::cout << DI<float>::intersect(dd_a, df_a) << std::endl;
+
+    std::cout << hull(id_a, id_c) << std::endl;
+    std::cout << I<float>::hull(id_a, if_a) << std::endl;
+    std::cout << hull(dd_a, dd_c) << std::endl;
+    std::cout << DI<float>::hull(dd_a, df_a) << std::endl << std::endl;
+
+    I<double> a(0.0,  std::numeric_limits<double>::infinity());
+    double m = mid(a);
+    double r = rad(a);
+    //I<double> b = I<double>(m) + I<double>(-r,r);
+
+    //std::cout << b << std::endl;
+    //std::cout << subset(a,b) << std::endl;
+
+
+    printf("%f %A\n\n", m, m);
+    printf("%f %A\n\n", r, r);
+    //std::cout << (0X1.FFFFFFFFFFFFFP+1023 - 0X1.FFFFFFFFFFFFCP+1023) / 2 << std::endl;
+
+
+
 //
 //    std::cout << inf(d_a) << std::endl;
 //    std::cout << sup(d_a) << std::endl;
@@ -97,34 +132,4 @@
 //    std::cout << add<I<double>>(f_a, d_b) << std::endl;
 //    std::cout << sqrt<I<double>>(f_a) << std::endl;
 //    std::cout << fma<I<double>>(f_a, d_b, d_a) << std::endl;
-//}
-
-#include "p1788/util/mpfr_var.hpp"
-
-using namespace p1788::util;
-
-int main()
-{
-typedef mpfr_var<53,-1073,1024,true,false> norm;
-typedef mpfr_var<53,-1074,1024,true,true> extended;
-
-extended::setup();
-extended a(0X0.0000000000002P-1022,MPFR_RNDN), b(0X0.0000000000001P-1022,MPFR_RNDN);
-
-mpfr_div_ui(a(),a(),2,MPFR_RNDN);
-mpfr_div_ui(b(),b(),2,MPFR_RNDN);
-
-
-norm r;
-
-int t = mpfr_add(r(), a(), b(), MPFR_RNDN);
-norm::setup();
-t = mpfr_check_range(r(),t,MPFR_RNDN);
-t = r.subnormalize(t,MPFR_RNDN);
-
-mpfr_printf("%R*a \n", MPFR_RNDN, r());
-printf("%A\n",r.get<double>(MPFR_RNDN));
-
-
-
 }

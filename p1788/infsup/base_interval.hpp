@@ -48,22 +48,22 @@ namespace infsup
 
 
 
-// \brief Base class for a level 2 infsup interval
-//
-//
-// Base class representing a level 2 infsup interval, see P1788/D7.0 Sect. 4.1.
-//
-// This class only serves as a uniform interface/representation of an
-// interval. All the behavior will be specified by the template policy class
-// Flavor<T> which implements the flavors concept of the standard in coherent way,
-// see P1788/D7.0 Sect. 5.
-//
-// \param T                  Number system / parent format
-// \param Flavor<typename>   Generic flavor which will be instantiated with the
-//                           number system T
-// \param RepType            Type of the internal representation
-// \param ConcreteInterval   Type of the concrete interval type (sub class)
-//
+/// \brief Base class for a level 2 infsup interval
+///
+///
+/// Base class representing a level 2 infsup interval, see P1788/D7.0 Sect. 4.1.
+///
+/// This class only serves as a uniform interface/representation of an
+/// interval. All the behavior will be specified by the template policy class
+/// Flavor<T> which implements the flavors concept of the standard in coherent way,
+/// see P1788/D7.0 Sect. 5.
+///
+/// \tparam T                  Number system / parent format
+/// \tparam Flavor<typename>   Generic flavor which will be instantiated with the
+///                           number system T
+/// \tparam RepType            Type of the internal representation
+/// \tparam ConcreteInterval   Type of the concrete interval type (sub class)
+///
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 class base_interval
 {
@@ -175,6 +175,16 @@ protected:
     friend class decorated_interval;
 
 
+
+public:
+
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+// Operations on intervals (Friends)
+// Corresponding mixed-type operations (static members)
+//------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
+
 // -----------------------------------------------------------------------------
 // IO operators
 // -----------------------------------------------------------------------------
@@ -194,10 +204,40 @@ protected:
     friend ConcreteInterval_
     intersect(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+    template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
+    static ConcreteInterval
+    intersect(base_interval<T1_, Flavor, RepType1_, ConcreteInterval1_> const&, base_interval<T2_, Flavor, RepType2_, ConcreteInterval2_> const&);
+
+    /// \brief dsfsdfsd
+    ///
+    /// dfsdsdf
+    ///
+    /// dsfsdfdsfsddf
+    ///     foo bar baz
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    /// \internal dfsddsdsf
+    ///  dsfsdfsdf
+    ///  sdfsdfsdf
+    ///
+    ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend ConcreteInterval_
     hull(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+    /// \brief fgg
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
+    template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
+    static ConcreteInterval
+    hull(base_interval<T1_, Flavor, RepType1_, ConcreteInterval1_> const&, base_interval<T2_, Flavor, RepType2_, ConcreteInterval2_> const&);
 
 // -----------------------------------------------------------------------------
 // Numeric functions on intervals

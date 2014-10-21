@@ -62,6 +62,16 @@ enum class auto_setup : bool
     no = false
 };
 
+/// \brief tesxt
+///
+/// \param
+/// \param
+/// \return
+///
+///
+template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP> class mpfr_bin_ieee754_flavor;
+
+
 template<typename T,
     subnormalize SUBNORMALIZE = std::numeric_limits<T>::has_denorm == std::denorm_present ? subnormalize::yes
         : subnormalize::no,

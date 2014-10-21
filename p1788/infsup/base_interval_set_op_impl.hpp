@@ -26,6 +26,8 @@
 #ifndef LIBIEEEP1788_P1788_INFSUP_BASE_INTERVAL_SET_OP_IMPL_HPP
 #define LIBIEEEP1788_P1788_INFSUP_BASE_INTERVAL_SET_OP_IMPL_HPP
 
+#include "p1788/util/mixed_type_traits.hpp"
+
 namespace p1788
 {
 
@@ -63,49 +65,56 @@ namespace infsup
 // \param y interval
 // \return intersection of <B>x</B>  and <B>y</B>
 //
+
+
+/// \brief fsdfsdf
+///
+/// \param
+/// \param
+/// \return
+///
+///
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval
 intersect(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::intersect(x.rep_, y.rep_));
 }
 
-// \brief Intersection of two intervals <B>x</B> and <B>y</B>
-//
-// <B>Mixed type operation of</B> #intersect(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
-//
-// <B>Required by IEEE P1788</B>
-//
-// If <TT>Interval</TT> is of type p1788::infsup::interval and the flavor
-// of <TT>Interval</TT> is the same as <TT>Flavor</TT> and the number system
-// <TT>Ti</TT> of <TT>Interval</TT> as well as
-//  <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
-// <TT>Tmax</TT> of <TT>Ti</TT>, <TT>T</TT> and <TT>Ty</TT> is determined at compile time
-// using template meta programming. Then the intervals
-// <B>x</B> and <B>y</B> are converted to intervals of type
-// <TT>interval<Tmax,Flavor></TT> and are passed to the function
-// #intersect(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
-// Afterwards the return value of #intersect(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
-// is converted to type <TT>Interval</TT>.
-//
-//template<typename Interval, typename T, typename Ty, template<typename> class Flavor>
-//Interval intersect(interval<T, Flavor> const& x,
-//                          interval<Ty, Flavor> const& y) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T,
-//             Ty
-//             >::type TMax;
-//
-//    return Interval(intersect(static_cast<interval<TMax, Flavor>>(x),
-//                              static_cast<interval<TMax, Flavor>>(y)));
-//}
+
+/// \brief fooo
+///
+/// \param
+/// \param
+/// \return
+///
+///
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
+ConcreteInterval
+base_interval<T,Flavor,RepType,ConcreteInterval>::intersect(base_interval<T1_, Flavor, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor, RepType2_, ConcreteInterval2_> const& y) {
+
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T1_>::representation, RepType1_>::value
+                    && std::is_same<typename Flavor<T2_>::representation, RepType2_>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T1_>::representation_dec, RepType1_>::value
+                    && std::is_same<typename Flavor<T2_>::representation_dec, RepType2_>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    typedef typename p1788::util::max_precision_interval_type<
+        ConcreteInterval,
+        ConcreteInterval1_,
+        ConcreteInterval2_
+             >::type Interval_max;
+
+    return ConcreteInterval(
+                p1788::infsup::intersect(static_cast<Interval_max>(x),static_cast<Interval_max>(y))
+            );
+}
+
 
 
 
@@ -140,48 +149,32 @@ hull(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval
 }
 
 
-// \brief Interval hull of two intervals <B>x</B> and <B>y</B>
-//
-// <B>Mixed type operation of</B> #hull(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
-//
-// <B>Required by IEEE P1788</B>
-//
-// If <TT>Interval</TT> is of type p1788::infsup::interval and the flavor
-// of <TT>Interval</TT> is the same as <TT>Flavor</TT> and the number system
-// <TT>Ti</TT> of <TT>Interval</TT> as well as
-//  <TT>T</TT> and <TT>Ty</TT> are of the same radix, the maximum precision
-// <TT>Tmax</TT> of <TT>Ti</TT>, <TT>T</TT> and <TT>Ty</TT> is determined at compile time
-// using template meta programming. Then the intervals
-// <B>x</B> and <B>y</B> are converted to intervals of type
-// <TT>interval<Tmax,Flavor></TT> and are passed to the function
-// #hull(interval<T,Flavor> const& x, interval<T,Flavor> const& y).
-// Afterwards the return value of #hull(interval<T,Flavor> const& x, interval<T,Flavor> const& y)
-// is converted to type <TT>Interval</TT>.
-//
-//template<typename Interval, typename T, typename Ty, template<typename> class Flavor>
-//Interval hull(interval<T, Flavor> const& x,
-//                     interval<Ty, Flavor> const& y) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T,
-//             Ty
-//             >::type TMax;
-//
-//    return Interval(hull(static_cast<interval<TMax, Flavor>>(x),
-//                         static_cast<interval<TMax, Flavor>>(y)));
-//}
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
+ConcreteInterval
+base_interval<T,Flavor,RepType,ConcreteInterval>::hull(base_interval<T1_, Flavor, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor, RepType2_, ConcreteInterval2_> const& y) {
 
-// TODO
-//template<typename T, template<typename> class Flavor> interval<T, Flavor> hull(std::initializer_list<T> ilst);           //< interval hull, see P1788/D7.0 Sect. 11.8.1
-// TODO: Mixed type operation
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T1_>::representation, RepType1_>::value
+                    && std::is_same<typename Flavor<T2_>::representation, RepType2_>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T1_>::representation_dec, RepType1_>::value
+                    && std::is_same<typename Flavor<T2_>::representation_dec, RepType2_>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
 
+    typedef typename p1788::util::max_precision_interval_type<
+        ConcreteInterval,
+        ConcreteInterval1_,
+        ConcreteInterval2_
+             >::type Interval_max;
+
+    return ConcreteInterval(
+                p1788::infsup::hull(static_cast<Interval_max>(x),static_cast<Interval_max>(y))
+            );
+}
 
 //@}
 

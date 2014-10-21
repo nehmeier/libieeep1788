@@ -38,6 +38,7 @@ namespace infsup
 namespace setbased
 {
 
+
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
 T
 mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::inf(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
@@ -67,7 +68,7 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::sup(mpfr_bin_ieee754_flavor
         return -std::numeric_limits<T>::infinity();
 
     if (x.second == 0.0)
-        return 0.0;
+        return +0.0;
 
     return x.second;
 }
@@ -88,7 +89,7 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_bin_ieee754_flavor
         return std::numeric_limits<T>::quiet_NaN();
 
     if (is_entire(x))
-        return 0.0;
+        return +0.0;
 
     if (x.first == -std::numeric_limits<T>::infinity())
         return -std::numeric_limits<T>::max();
@@ -99,10 +100,10 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_bin_ieee754_flavor
 
     // extended EMIN for error free division by 2
     typedef p1788::util::mpfr_var<mpfr_var::PREC,
-                                mpfr_var::EMIN -1,
-                                mpfr_var::EMAX,
-                                false,
-                                false>  ext_mpfr_var;
+            mpfr_var::EMIN -1,
+            mpfr_var::EMAX,
+            false,
+            false>  ext_mpfr_var;
 
     ext_mpfr_var::forced_setup();
 
@@ -120,7 +121,7 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_bin_ieee754_flavor
     xl.subnormalize(mpfr_check_range(xl(), t, MPFR_RNDN), MPFR_RNDN);
 
     T res = xl.template get<T>(MPFR_RNDN);
-    return res == -0.0 ? 0.0 : res;
+    return res == -0.0 ? +0.0 : res;
 }
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
@@ -138,15 +139,20 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::rad(mpfr_bin_ieee754_flavor
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
 
+    T dm = mid(x);
+
     mpfr_var::setup();
+
+    mpfr_var m(dm, MPFR_RNDN);
 
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    xl.subnormalize(mpfr_sub(xl(), xu(), xl(), MPFR_RNDU), MPFR_RNDU);
-    xl.subnormalize(mpfr_div_si(xl(), xl(), 2l, MPFR_RNDU), MPFR_RNDU);
+    mpfr_sub(xl(), m(), xl(), MPFR_RNDU);
+    mpfr_sub(xu(), xu(), m(), MPFR_RNDU);
 
-    return xl.template get<T>(MPFR_RNDU);
+    T res = mpfr_cmp(xl(), xu()) > 0 ? xl.template get<T>(MPFR_RNDU) : xu.template get<T>(MPFR_RNDU);
+    return res == -0.0 ? +0.0 : res;
 }
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
@@ -186,7 +192,8 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::wid(mpfr_bin_ieee754_flavor
 
     xl.subnormalize(mpfr_sub(xl(), xu(), xl(), MPFR_RNDU), MPFR_RNDU);
 
-    return xl.template get<T>(MPFR_RNDU);
+    T res = xl.template get<T>(MPFR_RNDU);
+    return res == -0.0 ? +0.0 : res;
 }
 
 template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
@@ -226,7 +233,7 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mig(mpfr_bin_ieee754_flavor
         return std::numeric_limits<T>::quiet_NaN();
 
     if (x.first < 0.0 && x.second > 0.0)
-        return 0.0;
+        return +0.0;
 
 
     T xl = std::abs(x.first);
