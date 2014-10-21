@@ -68,6 +68,22 @@ T inf(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return Flavor<T>::inf(x.rep_);
 }
 
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T_, typename RepType_, class ConcreteInterval_>
+T
+base_interval<T,Flavor,RepType,ConcreteInterval>::inf(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
+
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    return Flavor<T>::convert_rndd(p1788::infsup::inf(x));
+}
 
 // \brief Supremum of an interval <B>x</B>
 //
@@ -97,6 +113,23 @@ T inf(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 T sup(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return Flavor<T>::sup(x.rep_);
+}
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T_, typename RepType_, class ConcreteInterval_>
+T
+base_interval<T,Flavor,RepType,ConcreteInterval>::sup(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
+
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    return Flavor<T>::convert_rndu(p1788::infsup::sup(x));
 }
 
 // \brief Midpoint of an interval <B>x</B>
@@ -129,6 +162,23 @@ T mid(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return Flavor<T>::mid(x.rep_);
 }
 
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T_, typename RepType_, class ConcreteInterval_>
+T
+base_interval<T,Flavor,RepType,ConcreteInterval>::mid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
+
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    return Flavor<T>::convert_rndn(p1788::infsup::mid(x));
+}
+
 // \brief Radius of an interval <B>x</B>
 //
 // <B>Required by IEEE P1788</B>
@@ -159,6 +209,23 @@ T rad(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return Flavor<T>::rad(x.rep_);
 }
 
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T_, typename RepType_, class ConcreteInterval_>
+T
+base_interval<T,Flavor,RepType,ConcreteInterval>::rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
+
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    return Flavor<T>::convert_rndu(p1788::infsup::rad(x));
+}
+
 //TODO Eigener Struct mit Elementen mid und rad?
 // \brief Midpoint and radius of an interval <B>x</B>
 //
@@ -185,6 +252,24 @@ std::pair<T, T> mid_rad(base_interval<T, Flavor, RepType, ConcreteInterval> cons
     return Flavor<T>::mid_rad(x.rep_);
 }
 
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T_, typename RepType_, class ConcreteInterval_>
+std::pair<T, T>
+base_interval<T,Flavor,RepType,ConcreteInterval>::mid_rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
+
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    std::pair<T_,T_> tmp = p1788::infsup::mid_rad(x);
+
+    return std::pair<T,T>(Flavor<T>::convert_rndn(tmp.first), Flavor<T>::convert_rndu(tmp.second));
+}
 // \brief Width of an interval <B>x</B>
 //
 // <B>Required by IEEE P1788</B>
@@ -210,6 +295,23 @@ std::pair<T, T> mid_rad(base_interval<T, Flavor, RepType, ConcreteInterval> cons
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 T wid(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return Flavor<T>::wid(x.rep_);
+}
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T_, typename RepType_, class ConcreteInterval_>
+T
+base_interval<T,Flavor,RepType,ConcreteInterval>::wid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
+
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    return Flavor<T>::convert_rndu(p1788::infsup::wid(x));
 }
 
 // \brief Magnitude of an interval <B>x</B>
@@ -239,6 +341,23 @@ T mag(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return Flavor<T>::mag(x.rep_);
 }
 
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T_, typename RepType_, class ConcreteInterval_>
+T
+base_interval<T,Flavor,RepType,ConcreteInterval>::mag(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
+
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    return Flavor<T>::convert_rndu(p1788::infsup::mag(x));
+}
+
 // \brief Mignitude of an interval <B>x</B>
 //
 // <B>Required by IEEE P1788</B>
@@ -264,6 +383,23 @@ T mag(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 T mig(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return Flavor<T>::mig(x.rep_);
+}
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T_, typename RepType_, class ConcreteInterval_>
+T
+base_interval<T,Flavor,RepType,ConcreteInterval>::mig(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
+
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                    || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                    "It is not supported by mixed type operations to use "
+                    "interval and decorated_interval types together!"
+                   );
+
+    return Flavor<T>::convert_rndd(p1788::infsup::mig(x));
 }
 
 //@}

@@ -87,6 +87,65 @@ public:
     >   mpfr_var;
 
 
+// -----------------------------------------------------------------------------
+// Utility functions
+// -----------------------------------------------------------------------------
+
+///@name Utility functions
+///
+///
+///@{
+
+    /// \brief Converts a floating point number of type \p T_ to a floating point number of type \p T using rounding to \f$-\infty\f$
+    ///
+    /// \tparam T_ Type of the original number format.
+    /// \pre \p T_ hast to fulfill the requirements of IEC559 / IEEE754, see \c std::numeric_limits::is_iec559.
+    ///
+    /// \param x Value in the original number format \p T_.
+    ///
+    /// \return Largest number of type \p T \f$\leq\f$ \p x. It returns -0.0 in case of a zero.
+    ///
+    /// \note \ref pageAccuracy "Accuracy:" Round toward negative
+    ///
+    ///
+    template<typename T_>
+    static T convert_rndd(T_ x);
+
+    /// \brief Converts a floating point number of type \p T_ to the closest floating point number of type \p T
+    ///
+    /// \tparam T_ Type of the original number format.
+    /// \pre \p T_ hast to fulfill the requirements of IEC559 / IEEE754, see \c std::numeric_limits::is_iec559.
+    ///
+    /// \param x Value in the original number format \p T_.
+    ///
+    /// \return Closest number of type \p T to the number \p x.
+    /// If \p x lies exactly in the middle of two consecutive numbers of type \p T than it is rounded to the one with least significant equal to zero.
+    /// It returns +0.0 in case of a zero.
+    ///
+    /// \note \ref pageAccuracy "Accuracy:" Round to nearest
+    ///
+    ///
+    template<typename T_>
+    static T convert_rndn(T_ x);
+
+    /// \brief Converts a floating point number of type \p T_ to a floating point number of type \p T using rounding to \f$+\infty\f$
+    ///
+    /// \tparam T_ Type of the original number format.
+    /// \pre \p T_ hast to fulfill the requirements of IEC559 / IEEE754, see \c std::numeric_limits::is_iec559.
+    ///
+    /// \param x Value in the original number format \p T_.
+    ///
+    /// \return Smallest number of type \p T \f$\geq\f$ \p x. It returns +0.0 in case of a zero.
+    ///
+    /// \note \ref pageAccuracy "Accuracy:" Round toward positive
+    ///
+    ///
+    template<typename T_>
+    static T convert_rndu(T_ x);
+
+///@}
+
+
 
 // -----------------------------------------------------------------------------
 // Class constructors and methods
@@ -163,142 +222,381 @@ public:
 // Input and output
 // -----------------------------------------------------------------------------
 
+///@name Input and output
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     template< typename CharT, typename Traits >
     static std::basic_ostream<CharT, Traits>& operator_output(
         std::basic_ostream<CharT, Traits>& os,
         representation const& x);
 
+    /// \todo TODO
+    ///
+    ///
     template< typename CharT, typename Traits >
     static std::basic_ostream<CharT, Traits>& operator_output(
         std::basic_ostream<CharT, Traits>& os,
         representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     template< typename CharT, typename Traits >
     static std::basic_istream<CharT, Traits>& operator_input(
         std::basic_istream<CharT, Traits>& is,
         representation& x);
 
+    /// \todo TODO
+    ///
+    ///
     template< typename CharT, typename Traits >
     static std::basic_istream<CharT, Traits>& operator_input(
         std::basic_istream<CharT, Traits>& is,
         representation_dec& x);
 
+///@}
+
 // -----------------------------------------------------------------------------
-// Non-arithmetic set operations
+// Set operations
 // -----------------------------------------------------------------------------
 
+///@name Set operations
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     static representation intersect(representation const& x,
                                     representation const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static representation_dec intersect(representation_dec const& x,
                                     representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static representation hull(representation const& x,
                                representation const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static representation_dec hull(representation_dec const& x,
                                representation_dec const& y);
 
+///@}
 
 // -----------------------------------------------------------------------------
 // Numeric functions on intervals
 // -----------------------------------------------------------------------------
 
+///@name Numeric functions on intervals
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     static T inf(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static T inf(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static T sup(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static T sup(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static T mid(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static T mid(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static T wid(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static T wid(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static T rad(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static T rad(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static T mag(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static T mag(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static T mig(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static T mig(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static std::pair<T, T> mid_rad(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static std::pair<T, T> mid_rad(representation_dec const& x);
 
+///@}
+
 // -----------------------------------------------------------------------------
-// Boolean functions on intervals
+// Boolean functions of intervals
 // -----------------------------------------------------------------------------
 
-    // \brief Test
-    //
-    // \param x representation
-    // \return bool
-    //
-    //
+///@name Boolean functions of intervals
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     static bool is_empty(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static bool is_empty(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static bool is_entire(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static bool is_entire(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static bool is_equal(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static bool is_equal(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static bool subset(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static bool subset(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static bool less(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static bool less(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static bool precedes(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static bool precedes(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static bool is_interior(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static bool is_interior(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static bool strictly_less(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static bool strictly_less(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static bool strictly_precedes(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static bool strictly_precedes(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static bool are_disjoint(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static bool are_disjoint(representation_dec const& x, representation_dec const& y);
 
+///@}
+
 // -----------------------------------------------------------------------------
-// Forward elementary functions
+// Forward-mode elementary functions
 // -----------------------------------------------------------------------------
 
+///@name Forward-mode elementary functions
+///
+///
+///@{
 
+
+    /// \todo TODO
+    ///
+    ///
     static representation pos(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pos(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation neg(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec neg(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation add(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec add(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sub(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sub(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static representation mul(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec mul(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static representation div(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec div(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static representation recip(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec recip(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sqrt(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sqrt(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation fma(representation const& x, representation const& y,
                               representation const& z );
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec fma(representation_dec const& x, representation_dec const& y,
                               representation_dec const& z );
 
@@ -310,404 +608,1115 @@ public:
 //                                        representation_dec const& g,
 //                                        representation_dec const& h );
 
+    /// \todo TODO
+    ///
+    ///
     static representation sqr(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sqr(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation pown(representation const& x, int p);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pown(representation_dec const& x, int p);
 
+    /// \todo TODO
+    ///
+    ///
     static representation pow(representation const& x, representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pow(representation_dec const& x, representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static representation exp(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec exp(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation exp2(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec exp2(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation exp10(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec exp10(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation log(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec log(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation log2(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec log2(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation log10(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec log10(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sin(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sin(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation cos(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cos(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation tan(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec tan(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation asin(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec asin(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation acos(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec acos(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation atan(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation atan2(representation const& y,
                                 representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan2(representation_dec const& y,
                                 representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sinh(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sinh(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation cosh(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cosh(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation tanh(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec tanh(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation asinh(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec asinh(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation acosh(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec acosh(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation atanh(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atanh(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sign(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sign(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation ceil(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec ceil(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation floor(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec floor(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation trunc(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec trunc(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation round_ties_to_even(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec round_ties_to_even(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation round_ties_to_away(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec round_ties_to_away(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation abs(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec abs(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation min(representation const& x,
                               representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec min(representation_dec const& x,
                               representation_dec const& y);
 
+    /// \todo TODO
+    ///
+    ///
     static representation max(representation const& x,
                               representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec max(representation_dec const& x,
                               representation_dec const& y);
 
+///@}
 
 // -----------------------------------------------------------------------------
-// Reverse elementary functions
+// Two-output division
 // -----------------------------------------------------------------------------
 
+///@name Two-output division
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     static std::pair<representation,representation> div_to_pair(representation const& x,
                                   representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static std::pair<representation_dec,representation_dec> div_to_pair(representation_dec const& x,
                                   representation_dec const& y);
 
+///@}
+
 // -----------------------------------------------------------------------------
-// Reverse elementary functions
+// Reverse-mode elementary functions
 // -----------------------------------------------------------------------------
 
+///@name Reverse-mode elementary functions
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     static representation sqr_rev(representation const& c,
                                   representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sqr_rev(representation_dec const& c,
                                   representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sqr_rev(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sqr_rev(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation recip_rev(representation const& c,
                                   representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec recip_rev(representation_dec const& c,
                                   representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation recip_rev(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec recip_rev(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation abs_rev(representation const& c,
                                   representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec abs_rev(representation_dec const& c,
                                   representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation abs_rev(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec abs_rev(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation pown_rev(representation const& c,
                                    representation const& x,
                                    int n);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pown_rev(representation_dec const& c,
                                    representation_dec const& x,
                                    int n);
 
+    /// \todo TODO
+    ///
+    ///
     static representation pown_rev(representation const& x,
                                    int n);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pown_rev(representation_dec const& x,
                                    int n);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sin_rev(representation const& c,
                                   representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sin_rev(representation_dec const& c,
                                   representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sin_rev(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sin_rev(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation cos_rev(representation const& c,
                                   representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cos_rev(representation_dec const& c,
                                   representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation cos_rev(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cos_rev(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation tan_rev(representation const& c,
                                   representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec tan_rev(representation_dec const& c,
                                   representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation tan_rev(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec tan_rev(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation cosh_rev(representation const& c,
                                    representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cosh_rev(representation_dec const& c,
                                    representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation cosh_rev(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cosh_rev(representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation mul_rev(representation const& b,
                                   representation const& c,
                                   representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec mul_rev(representation_dec const& b,
                                   representation_dec const& c,
                                   representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation mul_rev(representation const& c,
                                   representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec mul_rev(representation_dec const& c,
                                   representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation div_rev1(representation const& b,
                                    representation const& c,
                                    representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec div_rev1(representation_dec const& b,
                                    representation_dec const& c,
                                    representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation div_rev1(representation const& c,
                                    representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec div_rev1(representation_dec const& c,
                                    representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation div_rev2(representation const& a,
                                    representation const& c,
                                    representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec div_rev2(representation_dec const& a,
                                    representation_dec const& c,
                                    representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation div_rev2(representation const& c,
                                    representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec div_rev2(representation_dec const& c,
                                    representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation pow_rev1(representation const& b,
                                    representation const& c,
                                    representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pow_rev1(representation_dec const& b,
                                    representation_dec const& c,
                                    representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation pow_rev1(representation const& c,
                                    representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pow_rev1(representation_dec const& c,
                                    representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation pow_rev2(representation const& a,
                                    representation const& c,
                                    representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pow_rev2(representation_dec const& a,
                                    representation_dec const& c,
                                    representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation pow_rev2(representation const& c,
                                    representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pow_rev2(representation_dec const& c,
                                    representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation atan2_rev1(representation const& b,
                                      representation const& c,
                                      representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan2_rev1(representation_dec const& b,
                                      representation_dec const& c,
                                      representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation atan2_rev1(representation const& c,
                                      representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan2_rev1(representation_dec const& c,
                                      representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation atan2_rev2(representation const& a,
                                      representation const& c,
                                      representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan2_rev2(representation_dec const& a,
                                      representation_dec const& c,
                                      representation_dec const& x);
 
+    /// \todo TODO
+    ///
+    ///
     static representation atan2_rev2(representation const& c,
                                      representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan2_rev2(representation_dec const& c,
                                      representation_dec  const& x);
 
+///@}
 
 // -----------------------------------------------------------------------------
 // Cancellative addition and subtraction
 // -----------------------------------------------------------------------------
 
+///@name Cancellative addition and subtraction
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     static representation cancel_plus(representation const& a,
                                       representation const& b);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cancel_plus(representation_dec const& a,
                                       representation_dec const& b);
 
+    /// \todo TODO
+    ///
+    ///
     static representation cancel_minus(representation const& a,
                                        representation const& b);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cancel_minus(representation_dec const& a,
                                        representation_dec const& b);
 
+///@}
 
 // -----------------------------------------------------------------------------
-// Recommended forward elementary functions on intervals
+// Forward-mode elementary functions (Recommended)
 // -----------------------------------------------------------------------------
 
+///@name Forward-mode elementary functions (Recommended)
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     static representation rootn(representation const&, int);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec rootn(representation_dec const&, int);
 
+    /// \todo TODO
+    ///
+    ///
     static representation expm1(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec expm1(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation exp2m1(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec exp2m1(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation exp10m1(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec exp10m1(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation logp1(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec logp1(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation log2p1(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec log2p1(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation log10p1(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec log10p1(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation compoundm1(representation const&,
                                      representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec compoundm1(representation_dec const&,
                                      representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation hypot(representation const&,
                                 representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec hypot(representation_dec const&,
                                 representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation r_sqrt(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec r_sqrt(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sin_pi(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sin_pi(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation cos_pi(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cos_pi(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation tan_pi(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec tan_pi(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation asin_pi(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec asin_pi(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation acos_pi(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec acos_pi(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation atan_pi(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan_pi(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation atan2_pi(representation const&,
                                    representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan2_pi(representation_dec const&,
                                    representation_dec const&);
 
+///@}
 
 // -----------------------------------------------------------------------------
-// Recommended interval overlapping
+// Extended interval comparisons (Recommended)
 // -----------------------------------------------------------------------------
 
+///@name Extended interval comparisons (Recommended)
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     static p1788::overlapping::overlapping_state overlap(representation const&,
             representation const&);
+
+
+    /// \todo TODO
+    ///
+    ///
     static p1788::overlapping::overlapping_state overlap(representation_dec const&,
             representation_dec const&);
 
 // -----------------------------------------------------------------------------
-// Recommended boolean functions
+// Boolean functions of intervals (Recommended)
 // -----------------------------------------------------------------------------
 
+///@name Boolean functions of intervals (Recommended)
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     static bool is_common(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static bool is_common(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static bool is_singleton(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static bool is_singleton(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static bool is_member(T, representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static bool is_member(T, representation_dec const&);
 
+///@}
+
 // -----------------------------------------------------------------------------
-// Recommended slope functions
+// Slope functions (Recommended)
 // -----------------------------------------------------------------------------
 
+///@name Slope functions (Recommended)
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
     static representation exp_slope1(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec exp_slope1(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation exp_slope2(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec exp_slope2(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation log_slope1(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec log_slope1(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation log_slope2(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec log_slope2(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation cos_slope2(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cos_slope2(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sin_slope3(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sin_slope3(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation asin_slope3(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec asin_slope3(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation atan_slope3(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan_slope3(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation cosh_slope2(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cosh_slope2(representation_dec const&);
 
+    /// \todo TODO
+    ///
+    ///
     static representation sinh_slope3(representation const&);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sinh_slope3(representation_dec const&);
+
+///@}
 
 };
 
@@ -734,5 +1743,6 @@ public:
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_overlap_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_bool_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_slope_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_util_func_impl.hpp"
 
 #endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_HPP

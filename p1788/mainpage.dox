@@ -28,3 +28,14 @@
 /// Foo bar baz
 ///
 /// \see p1788::infsup::interval
+
+
+
+/// \page pageAccuracy Accuracy
+///
+/// \li <b>Round toward positive</b> foo
+///
+/// \li <b>Round toward negative</b> bar
+///
+/// \li <b>Round to nearest</b>  baz
+

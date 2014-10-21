@@ -200,41 +200,46 @@ public:
 // Non-arithmetic set operations
 // -----------------------------------------------------------------------------
 
+    /** \brief
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend ConcreteInterval_
     intersect(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+    /** \brief Mixed-type
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
     static ConcreteInterval
     intersect(base_interval<T1_, Flavor, RepType1_, ConcreteInterval1_> const&, base_interval<T2_, Flavor, RepType2_, ConcreteInterval2_> const&);
 
-    /// \brief dsfsdfsd
-    ///
-    /// dfsdsdf
-    ///
-    /// dsfsdfdsfsddf
-    ///     foo bar baz
-    ///
-    /// \param
-    /// \param
-    /// \return
-    ///
-    /// \internal dfsddsdsf
-    ///  dsfsdfsdf
-    ///  sdfsdfsdf
-    ///
-    ///
+    /** \brief
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend ConcreteInterval_
     hull(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
-    /// \brief fgg
-    ///
-    /// \param
-    /// \param
-    /// \return
-    ///
-    ///
+    /** \brief Mixed-type
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
     static ConcreteInterval
     hull(base_interval<T1_, Flavor, RepType1_, ConcreteInterval1_> const&, base_interval<T2_, Flavor, RepType2_, ConcreteInterval2_> const&);
@@ -243,29 +248,172 @@ public:
 // Numeric functions on intervals
 // -----------------------------------------------------------------------------
 
+    /** \brief
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ inf(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+    /** \brief Mixed-type
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    static T inf(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
+
+
+    /** \brief
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ sup(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+    /** \brief Mixed-type
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    static T sup(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
+
+
+    /** \brief
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ mid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+    /** \brief Mixed-type
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    static T mid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
+
+
+    /** \brief
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+    /** \brief Mixed-type
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    static T rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
+
+
+    /** \brief
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend std::pair<T_, T_> mid_rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+    /** \brief Mixed-type
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    static std::pair<T, T> mid_rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
+
+
+    /** \brief
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ wid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+    /** \brief Mixed-type
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    static T wid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
+
+
+    /** \brief
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ mag(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+    /** \brief Mixed-type
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    static T mag(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
+
+
+    /** \brief
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ mig(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+
+    /** \brief Mixed-type
+     *
+     * \param
+     * \param
+     * \return
+     *
+     */
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    static T mig(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
 
 // -----------------------------------------------------------------------------

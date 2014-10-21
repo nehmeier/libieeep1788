@@ -30,6 +30,9 @@
 #include <limits>
 
 template<typename T>
+using F = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>;
+
+template<typename T>
 using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
 template<typename T>
@@ -72,7 +75,7 @@ using namespace p1788::infsup;
     std::cout << hull(dd_a, dd_c) << std::endl;
     std::cout << DI<float>::hull(dd_a, df_a) << std::endl << std::endl;
 
-    I<double> a(0.0,  std::numeric_limits<double>::infinity());
+    I<double> a(1.0,  2.3);
     double m = mid(a);
     double r = rad(a);
     //I<double> b = I<double>(m) + I<double>(-r,r);
@@ -82,6 +85,11 @@ using namespace p1788::infsup;
 
 
     printf("%f %A\n\n", m, m);
+    printf("%f %A\n\n", F<float>::convert_rndd(m), F<float>::convert_rndd(m));
+    printf("%f %A\n\n", F<float>::convert_rndn(m), F<float>::convert_rndn(m));
+    printf("%f %A\n\n", F<float>::convert_rndu(m), F<float>::convert_rndu(m));
+    printf("%f %A\n\n\n", I<float>::mid(a), I<float>::mid(a));
+
     printf("%f %A\n\n", r, r);
     //std::cout << (0X1.FFFFFFFFFFFFFP+1023 - 0X1.FFFFFFFFFFFFCP+1023) / 2 << std::endl;
 

@@ -67,13 +67,7 @@ namespace infsup
 //
 
 
-/// \brief fsdfsdf
-///
-/// \param
-/// \param
-/// \return
-///
-///
+
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval
 intersect(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {
@@ -81,13 +75,7 @@ intersect(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_int
 }
 
 
-/// \brief fooo
-///
-/// \param
-/// \param
-/// \return
-///
-///
+
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
 ConcreteInterval
