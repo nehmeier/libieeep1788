@@ -38,13 +38,13 @@ namespace infsup
 namespace setbased
 {
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-std::pair<typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation, typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation>
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_to_pair(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
-        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
+template<typename T>
+std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
+mpfr_bin_ieee754_flavor<T>::div_to_pair(mpfr_bin_ieee754_flavor<T>::representation const& x,
+        mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
     if (x.first <= 0.0 && x.second >= 0.0)
-        return std::pair<typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation, typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation>
+        return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
                (div(x, y), static_method_empty());
 
     if (y.first < 0.0 && y.second > 0.0) {
@@ -52,28 +52,28 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_to_pair(mpfr_bin_ieee75
         representation b =  div(x, representation(0.0, y.second));
 
         if (is_interior(representation(0.0,0.0), intersect(a,b)))
-            return std::pair<typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation, typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation>
+            return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
                (hull(a,b), static_method_empty());
 
-        return std::pair<typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation, typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation>
+        return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
                (less(a,b) ? a : b, less(a,b) ? b : a);
     }
 
-    return std::pair<typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation, typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation>
+    return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
            (div(x, y), static_method_empty());
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-std::pair<typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec, typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec>
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::div_to_pair(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
-        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
+template<typename T>
+std::pair<typename mpfr_bin_ieee754_flavor<T>::representation_dec, typename mpfr_bin_ieee754_flavor<T>::representation_dec>
+mpfr_bin_ieee754_flavor<T>::div_to_pair(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+        mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
     if (y.first.first < 0.0 && y.first.second > 0.0)
-        return std::pair<typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec, typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec>
+        return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation_dec, typename mpfr_bin_ieee754_flavor<T>::representation_dec>
                (div(x, representation_dec(representation(y.first.first, 0.0), y.second)),
                 div(x, representation_dec(representation(0.0, y.first.second), y.second)));
 
-    return std::pair<typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec, typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec>
+    return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation_dec, typename mpfr_bin_ieee754_flavor<T>::representation_dec>
            (div(x, y), static_method_empty_dec());
 }
 

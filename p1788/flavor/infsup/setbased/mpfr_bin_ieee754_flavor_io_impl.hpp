@@ -44,11 +44,11 @@ namespace setbased
 {
 
 // IO
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 template< typename CharT, typename Traits >
 std::basic_ostream<CharT, Traits>&
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_output(std::basic_ostream<CharT, Traits>& os,
-                                mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+mpfr_bin_ieee754_flavor<T>::operator_output(std::basic_ostream<CharT, Traits>& os,
+                                mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (is_empty(x))
         return os << "[Empty]";
@@ -63,11 +63,11 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_output(std::basic_
     return os << "[" << xl.get_str(MPFR_RNDD) << "," << xu.get_str(MPFR_RNDU) << "]";
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 template< typename CharT, typename Traits >
 std::basic_ostream<CharT, Traits>&
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_output(std::basic_ostream<CharT, Traits>& os,
-                                mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+mpfr_bin_ieee754_flavor<T>::operator_output(std::basic_ostream<CharT, Traits>& os,
+                                mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     operator_output(os, x.first);
 
@@ -75,11 +75,11 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_output(std::basic_
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 template< typename CharT, typename Traits >
 std::basic_istream<CharT, Traits>&
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_input(std::basic_istream<CharT, Traits>& is,
-                               mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation& x)
+mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is,
+                               mpfr_bin_ieee754_flavor<T>::representation& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -91,11 +91,11 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_input(std::basic_i
     return is;
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 template< typename CharT, typename Traits >
 std::basic_istream<CharT, Traits>&
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::operator_input(std::basic_istream<CharT, Traits>& is,
-                               mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec& x)
+mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is,
+                               mpfr_bin_ieee754_flavor<T>::representation_dec& x)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

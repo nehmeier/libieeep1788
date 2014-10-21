@@ -39,9 +39,9 @@ namespace setbased
 {
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::inf(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+mpfr_bin_ieee754_flavor<T>::inf(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::infinity();
@@ -52,17 +52,17 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::inf(mpfr_bin_ieee754_flavor
     return x.first;
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::inf(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+mpfr_bin_ieee754_flavor<T>::inf(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     return inf(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::sup(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+mpfr_bin_ieee754_flavor<T>::sup(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (is_empty(x))
         return -std::numeric_limits<T>::infinity();
@@ -73,17 +73,17 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::sup(mpfr_bin_ieee754_flavor
     return x.second;
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::sup(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+mpfr_bin_ieee754_flavor<T>::sup(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     return sup(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+mpfr_bin_ieee754_flavor<T>::mid(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -102,10 +102,9 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_bin_ieee754_flavor
     typedef p1788::util::mpfr_var<mpfr_var::PREC,
             mpfr_var::EMIN -1,
             mpfr_var::EMAX,
-            false,
             false>  ext_mpfr_var;
 
-    ext_mpfr_var::forced_setup();
+    ext_mpfr_var::setup();
 
     ext_mpfr_var xl(x.first, MPFR_RNDD);
     ext_mpfr_var xu(x.second, MPFR_RNDU);
@@ -116,7 +115,7 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_bin_ieee754_flavor
 
     int t = mpfr_add(xl(), xl(), xu(), MPFR_RNDN);
 
-    mpfr_var::forced_setup();
+    mpfr_var::setup();
 
     xl.subnormalize(mpfr_check_range(xl(), t, MPFR_RNDN), MPFR_RNDN);
 
@@ -124,17 +123,17 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_bin_ieee754_flavor
     return res == -0.0 ? +0.0 : res;
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+mpfr_bin_ieee754_flavor<T>::mid(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     return mid(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::rad(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+mpfr_bin_ieee754_flavor<T>::rad(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -155,32 +154,32 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::rad(mpfr_bin_ieee754_flavor
     return res == -0.0 ? +0.0 : res;
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::rad(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+mpfr_bin_ieee754_flavor<T>::rad(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     return rad(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 std::pair<T, T>
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid_rad(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+mpfr_bin_ieee754_flavor<T>::mid_rad(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     return std::pair<T,T>(mid(x), rad(x));
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 std::pair<T, T>
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mid_rad(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+mpfr_bin_ieee754_flavor<T>::mid_rad(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     return std::pair<T,T>(mid(x), rad(x));
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::wid(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+mpfr_bin_ieee754_flavor<T>::wid(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -196,17 +195,17 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::wid(mpfr_bin_ieee754_flavor
     return res == -0.0 ? +0.0 : res;
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::wid(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+mpfr_bin_ieee754_flavor<T>::wid(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     return wid(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mag(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+mpfr_bin_ieee754_flavor<T>::mag(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -217,17 +216,17 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mag(mpfr_bin_ieee754_flavor
     return xl > xu ? xl : xu;
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mag(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+mpfr_bin_ieee754_flavor<T>::mag(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     return mag(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mig(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+mpfr_bin_ieee754_flavor<T>::mig(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (is_empty(x))
         return std::numeric_limits<T>::quiet_NaN();
@@ -242,9 +241,9 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mig(mpfr_bin_ieee754_flavor
     return xl < xu ? xl : xu;
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 T
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::mig(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+mpfr_bin_ieee754_flavor<T>::mig(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     return mig(x.first);
 }

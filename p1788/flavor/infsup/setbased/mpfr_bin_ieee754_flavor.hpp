@@ -50,32 +50,13 @@ namespace setbased
 {
 
 
-enum class subnormalize : bool
-{
-    yes = true,
-    no = false
-};
-
-enum class auto_setup : bool
-{
-    yes = true,
-    no = false
-};
 
 /// \brief tesxt
 ///
-/// \param
-/// \param
-/// \return
+/// \tparam T
 ///
 ///
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP> class mpfr_bin_ieee754_flavor;
-
-
-template<typename T,
-    subnormalize SUBNORMALIZE = std::numeric_limits<T>::has_denorm == std::denorm_present ? subnormalize::yes
-        : subnormalize::no,
-    auto_setup AUTOSETUP = auto_setup::yes>
+template<typename T>
 class mpfr_bin_ieee754_flavor
 {
 
@@ -83,26 +64,29 @@ class mpfr_bin_ieee754_flavor
 
 public:
 
-    template<typename TT>
+    // Type-structures for the internal representation
+    template<typename TT>                                   // structure for bare intervals
     using representation_type = std::pair<TT,TT>;
 
-    template<typename TT>
+    template<typename TT>                                   // structure for decorated intervals
     using representation_dec_type = std::pair<representation_type<TT>, p1788::decoration::decoration>;
 
-    // Internal representation
-    typedef representation_type<T> representation;
 
-    typedef representation_dec_type<T> representation_dec;
+    // Types for the internal representation
+    typedef representation_type<T> representation;          // bare interval
+    typedef representation_dec_type<T> representation_dec;  // decorated interval
 
 
+    // Typedef for the corresponding mpfr wrapper class representing the IEEE 754 binary floating point format of type T
     typedef p1788::util::mpfr_var<
         std::numeric_limits<T>::digits,
-        SUBNORMALIZE == subnormalize::no ? std::numeric_limits<double>::min_exponent
+        std::numeric_limits<T>::has_denorm != std::denorm_present ? std::numeric_limits<double>::min_exponent
             : std::numeric_limits<double>::min_exponent - std::numeric_limits<double>::digits + 1,
         std::numeric_limits<double>::max_exponent,
-        SUBNORMALIZE == subnormalize::yes,
-        AUTOSETUP == auto_setup::yes
+        std::numeric_limits<T>::has_denorm == std::denorm_present
     >   mpfr_var;
+
+
 
 // -----------------------------------------------------------------------------
 // Class constructors and methods
@@ -171,7 +155,6 @@ public:
     static representation_dec static_method_entire_dec();
 
 
-    static void setup();
     static void free_cache();
 
 

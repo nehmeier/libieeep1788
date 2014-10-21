@@ -32,10 +32,7 @@
 #include "p1788/p1788.hpp"
 
 template<typename T>
-using flavor = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T, p1788::flavor::infsup::setbased::subnormalize::yes, p1788::flavor::infsup::setbased::auto_setup::yes>;
-
-template<typename T>
-using I = p1788::infsup::interval<T, flavor>;
+using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
 
 

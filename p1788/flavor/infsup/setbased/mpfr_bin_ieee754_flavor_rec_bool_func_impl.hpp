@@ -41,8 +41,8 @@ namespace infsup
 namespace setbased
 {
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_common(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+template<typename T>
+bool mpfr_bin_ieee754_flavor<T>::is_common(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     //TODO ist das in D8.1 7.2 so gemeint?
     return !is_empty(x)
@@ -50,36 +50,36 @@ bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_common(mpfr_bin_iee
         && x.second < std::numeric_limits<T>::infinity();
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_common(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+template<typename T>
+bool mpfr_bin_ieee754_flavor<T>::is_common(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     //TODO ist das in D8.1 7.2 so gemeint? oder hier die decoration verwenden?
     return is_common(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_singleton(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+template<typename T>
+bool mpfr_bin_ieee754_flavor<T>::is_singleton(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     return x.first == x.second;
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_singleton(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+template<typename T>
+bool mpfr_bin_ieee754_flavor<T>::is_singleton(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     return is_singleton(x.first);
 }
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_member(T m, mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x)
+template<typename T>
+bool mpfr_bin_ieee754_flavor<T>::is_member(T m, mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     return x.first <= m && m <= x.second
         && std::abs(m) != std::numeric_limits<T>::infinity();
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-bool mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::is_member(T m, mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x)
+template<typename T>
+bool mpfr_bin_ieee754_flavor<T>::is_member(T m, mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     return is_member(m, x.first);
 }

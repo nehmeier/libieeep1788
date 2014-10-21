@@ -38,10 +38,10 @@ namespace infsup
 namespace setbased
 {
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 p1788::overlapping::overlapping_state
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
-        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
+mpfr_bin_ieee754_flavor<T>::overlap(mpfr_bin_ieee754_flavor<T>::representation const& x,
+        mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
     if (is_empty(x)) {
         if (is_empty(y)) {
@@ -107,10 +107,10 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_bin_ieee754_fl
     return p1788::overlapping::overlapping_state::before;
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
+template<typename T>
 p1788::overlapping::overlapping_state
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::overlap(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
-        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
+mpfr_bin_ieee754_flavor<T>::overlap(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+        mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

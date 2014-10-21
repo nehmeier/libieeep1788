@@ -41,18 +41,18 @@ namespace infsup
 namespace setbased
 {
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_plus(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
-        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::cancel_plus(mpfr_bin_ieee754_flavor<T>::representation const& x,
+        mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
     return cancel_minus(x, neg(y));
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_plus(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
-        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::cancel_plus(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+        mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -61,10 +61,10 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_plus(mpfr_bin_ieee75
 
 
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_minus(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& x,
-        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation const& y)
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::cancel_minus(mpfr_bin_ieee754_flavor<T>::representation const& x,
+        mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
     if (x.first == -std::numeric_limits<T>::infinity()
             || x.second == +std::numeric_limits<T>::infinity()
@@ -136,10 +136,10 @@ mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_minus(mpfr_bin_ieee7
     return representation(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
 }
 
-template<typename T, subnormalize SUBNORMALIZE, auto_setup AUTOSETUP>
-typename mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec
-mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::cancel_minus(mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& x,
-        mpfr_bin_ieee754_flavor<T, SUBNORMALIZE, AUTOSETUP>::representation_dec const& y)
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::cancel_minus(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+        mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 

@@ -86,130 +86,101 @@ public:
 };
 
 
-
-template<class MPFR_VAR, bool AUTOSETUP>
-class setup_trait
-{
-public:
-    static void apply() {
-        // Nothing to do
-    }
-};
-
-
-template<class MPFR_VAR>
-class setup_trait<MPFR_VAR,true>
-{
-public:
-    static void apply() {
-        MPFR_VAR::forced_setup();
-    }
-};
-
-
-
-
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::setup()
-{
-    setup_trait<mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>, AUTOSETUP_>::apply();
-}
-
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::forced_setup()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::setup()
 {
     mpfr_set_emin(EMIN_);
     mpfr_set_emax(EMAX_);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::free_cache()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::free_cache()
 {
     mpfr_free_cache();
 }
 
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::mpfr_var()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var()
 {
     mpfr_init2(var_, PREC_);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::mpfr_var(unsigned long int op, mpfr_rnd_t rnd) : mpfr_var()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(unsigned long int op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::mpfr_var(long int op, mpfr_rnd_t rnd) : mpfr_var()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(long int op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::mpfr_var(float op, mpfr_rnd_t rnd) : mpfr_var()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(float op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::mpfr_var(double op, mpfr_rnd_t rnd) : mpfr_var()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(double op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::mpfr_var(long double op, mpfr_rnd_t rnd) : mpfr_var()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(long double op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::~mpfr_var()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::~mpfr_var()
 {
     mpfr_clear(var_);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::set(unsigned long int op, mpfr_rnd_t rnd)
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::set(unsigned long int op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_ui(var_, op, rnd), rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::set(long int op, mpfr_rnd_t rnd)
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::set(long int op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_si(var_, op, rnd), rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::set(float op, mpfr_rnd_t rnd)
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::set(float op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_flt(var_, op, rnd), rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::set(double op, mpfr_rnd_t rnd)
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::set(double op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_d(var_, op, rnd), rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::set(long double op, mpfr_rnd_t rnd)
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::set(long double op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_ld(var_, op, rnd), rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 template<typename T>
-T mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::get(mpfr_rnd_t rnd)
+T mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::get(mpfr_rnd_t rnd)
 {
     return p1788::util::mpfr_get_trait<T>::apply(var_, rnd);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-std::string mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::get_str(mpfr_rnd_t rnd, int b, size_t n)
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+std::string mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::get_str(mpfr_rnd_t rnd, int b, size_t n)
 {
     mpfr_str str(var_, rnd, b, n);
 
@@ -217,15 +188,15 @@ std::string mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::get_str(mpfr_r
 }
 
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-mpfr_t& mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::operator() ()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_t& mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::operator() ()
 {
     return var_;
 }
 
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-int mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::subnormalize(int t, mpfr_rnd_t rnd)
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+int mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::subnormalize(int t, mpfr_rnd_t rnd)
 {
     return p1788::util::subnormalization_trait<SUBNORMALIZE_>::apply(var_, t, rnd);
 }
@@ -235,8 +206,8 @@ int mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::subnormalize(int t, mp
 // TODO current local decimal point!!!!
 // TODO Hex etc
 // TODO Check
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::mpfr_str::mpfr_str(mpfr_t var, mpfr_rnd_t rnd, int b, size_t n)
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_str::mpfr_str(mpfr_t var, mpfr_rnd_t rnd, int b, size_t n)
     : char_(nullptr), str_()
 {
     mpfr_exp_t exp;
@@ -272,14 +243,14 @@ mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::mpfr_str::mpfr_str(mpfr_t 
     }
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::mpfr_str::~mpfr_str()
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_str::~mpfr_str()
 {
     mpfr_free_str(char_);
 }
 
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_, bool AUTOSETUP_>
-std::string mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_,AUTOSETUP_>::mpfr_str::operator() () const
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+std::string mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_str::operator() () const
 {
     return str_;
 }
