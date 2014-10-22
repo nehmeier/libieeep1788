@@ -29,9 +29,16 @@
 #include <utility>
 #include <limits>
 #include <cfenv>
+#include <cmath>
+#include <iostream>
+#include <algorithm>
 
+#include "p1788/decoration/decoration.hpp"
+#include "p1788/overlapping/overlapping.hpp"
+#include "p1788/util/eft.hpp"
+#include "p1788/util/assert.hpp"
 #include "p1788/util/mpfr_var.hpp"
-#include <mpfr.h>
+
 
 //------------------------------------------------------------------------------
 // MPFR infsup Flavor
@@ -214,7 +221,9 @@ public:
     static representation_dec static_method_entire_dec();
 
 
-    static void free_cache();
+    static void setup();
+
+    static void teardown();
 
 
 

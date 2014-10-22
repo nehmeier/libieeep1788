@@ -26,7 +26,6 @@
 #ifndef LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_CLASS_IMPL_HPP
 #define LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_CLASS_IMPL_HPP
 
-#include "p1788/util/assert.hpp"
 
 namespace p1788
 {
@@ -351,10 +350,16 @@ mpfr_bin_ieee754_flavor<T>::static_method_entire_dec()
                           std::numeric_limits<T>::infinity()), p1788::decoration::decoration::trv);
 }
 
+template<typename T>
+void
+mpfr_bin_ieee754_flavor<T>::setup()
+{
+    // nothing to do
+}
 
 template<typename T>
 void
-mpfr_bin_ieee754_flavor<T>::free_cache()
+mpfr_bin_ieee754_flavor<T>::teardown()
 {
     mpfr_var::free_cache();
 }
