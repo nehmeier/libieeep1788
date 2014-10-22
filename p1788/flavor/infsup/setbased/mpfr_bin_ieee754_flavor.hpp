@@ -60,7 +60,7 @@ namespace setbased
 
 /// \brief tesxt
 ///
-/// \tparam T
+/// \tparam T Type of the interval bounds
 ///
 ///
 template<typename T>
@@ -68,20 +68,6 @@ class mpfr_bin_ieee754_flavor
 {
 
     static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-
-public:
-
-    // Type-structures for the internal representation
-    template<typename TT>                                   // structure for bare intervals
-    using representation_type = std::pair<TT,TT>;
-
-    template<typename TT>                                   // structure for decorated intervals
-    using representation_dec_type = std::pair<representation_type<TT>, p1788::decoration::decoration>;
-
-
-    // Types for the internal representation
-    typedef representation_type<T> representation;          // bare interval
-    typedef representation_dec_type<T> representation_dec;  // decorated interval
 
 
     // Typedef for the corresponding mpfr wrapper class representing the IEEE 754 binary floating point format of type T
@@ -94,8 +80,80 @@ public:
     >   mpfr_var;
 
 
+public:
+
+// -----------------------------------------------------------------------------
+// Typed for internal representation
+// -----------------------------------------------------------------------------
+
+    /// \brief Type-structure for the internal representation of bare intervals
+    ///
+    /// It is a <c>std::pair\<TT,TT\></c> of two values of type \p TT to store the lower (<c>first</c>) and
+    /// the upper (<c>second</c>) bound of an bare interval.
+    ///
+    /// \tparam TT Type of the lower and upper bound of a bare interval.
+    ///
+    template<typename TT>
+    using representation_type = std::pair<TT,TT>;
+
+    /// \brief Type-structure for the internal representation of decorated intervals
+    ///
+    /// It is a <c>std::pair\<\link mpfr_bin_ieee754_flavor::representation_type representation_type\<TT\>\endlink,p1788::decoration::decoration\></c>
+    /// to store a bare interval of type <c>\link mpfr_bin_ieee754_flavor::representation_type representation_type\<TT\>\endlink</c> in the <c>first</c> member and the
+    /// the decoration of type p1788::decoration::decoration in the (<c>second</c>) member.
+    ///
+    /// \tparam TT Type of the lower and upper bound of a decorated interval.
+    ///
+    template<typename TT>
+    using representation_dec_type = std::pair<representation_type<TT>, p1788::decoration::decoration>;
+
+
+    /// \brief Type for the internal representation of bare intervals
+    ///
+    /// Type-structure <c>\link mpfr_bin_ieee754_flavor::representation_type representation_type\<T\>\endlink</c>
+    /// distincted with with the type \p T.
+    ///
+    typedef representation_type<T> representation;          //< Distincted
+
+    /// \brief Type for the internal representation of decorated intervals
+    ///
+    /// Type-structure <c>\link mpfr_bin_ieee754_flavor::representation_dec_type representation_dec_type\<T\>\endlink</c>
+    /// distincted with with the type \p T.
+    ///
+    typedef representation_dec_type<T> representation_dec;  // decorated interval
+
+
+
+
+
+
+// -----------------------------------------------------------------------------
+// Setup functions
+//
+// p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_setup_func_impl.hpp
+// -----------------------------------------------------------------------------
+
+///@name Setup functions
+///
+///
+///@{
+
+    /// \todo document
+    ///
+    ///
+    static void setup();
+
+    /// \todo document
+    ///
+    ///
+    static void teardown();
+///@}
+
+
 // -----------------------------------------------------------------------------
 // Utility functions
+//
+// p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_util_func_impl.hpp
 // -----------------------------------------------------------------------------
 
 ///@name Utility functions
@@ -155,7 +213,9 @@ public:
 
 
 // -----------------------------------------------------------------------------
-// Class constructors and methods
+// Constructors, Methods, Interval constants
+//
+// p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_class_impl.hpp
 // -----------------------------------------------------------------------------
 
     // Constructors
@@ -213,23 +273,55 @@ public:
     static p1788::decoration::decoration method_decoration(representation_dec const& x);
 
 
-    // Static Methods
+///@name Interval constants
+///
+///
+///@{
+
+    /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation representation\endlink for an empty bare interval
+    ///
+    /// \return representation(NaN, NaN)
+    ///
+    ///
     static representation static_method_empty();
+
+    /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an empty decorated interval
+    ///
+    /// \return representation_dec(representation(NaN, NaN), \link p1788::decoration::decoration trv\endlink)
+    ///
+    ///
     static representation_dec static_method_empty_dec();
 
+    /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation representation\endlink for an entire bare interval
+    ///
+    /// \return representation(\f$-\infty\f$, \f$+\infty\f$)
+    ///
+    ///
     static representation static_method_entire();
+
+    /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an entire decorated interval
+    ///
+    /// \return representation_dec(representation(\f$-\infty\f$, \f$+\infty\f$), \link p1788::decoration::decoration dac\endlink)
+    ///
+    ///
     static representation_dec static_method_entire_dec();
 
+    /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an ill-formend decorated interval (Not an Interval)
+    ///
+    /// \return representation_dec(representation(NaN, NaN), \link p1788::decoration::decoration ill\endlink)
+    ///
+    ///
+    static representation_dec static_method_nai_dec();
 
-    static void setup();
-
-    static void teardown();
-
-
+///@}
 
 // -----------------------------------------------------------------------------
 // Input and output
 // -----------------------------------------------------------------------------
+
+
+//template<typename T_, typename CharT, typename Traits>
+//friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&, typename mpfr_bin_ieee754_flavor<T_>::representation_type const&);
 
 ///@name Input and output
 ///
@@ -424,6 +516,11 @@ public:
     ///
     ///
     static bool is_entire(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    static bool is_nai(representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1752,6 +1849,7 @@ public:
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_overlap_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_bool_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_slope_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_setup_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_util_func_impl.hpp"
 
 #endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_HPP

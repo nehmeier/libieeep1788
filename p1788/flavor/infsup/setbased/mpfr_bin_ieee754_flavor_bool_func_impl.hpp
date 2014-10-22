@@ -73,6 +73,14 @@ mpfr_bin_ieee754_flavor<T>::is_entire(mpfr_bin_ieee754_flavor<T>::representation
     return false;
 }
 
+template<typename T>
+bool
+mpfr_bin_ieee754_flavor<T>::is_nai(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
+{
+    LIBIEEEP1788_NOT_IMPLEMENTED;
+
+    return false;
+}
 
 template<typename T>
 bool

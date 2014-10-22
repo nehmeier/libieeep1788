@@ -27,6 +27,7 @@
 set(P1788_HEADER_FILES
     boost_test_wrapper.hpp
     instantiate_headers.hpp
+    mpfr_bin_ieee754_flavor_io_test_util.hpp
    )
 
 # relative path of this directory

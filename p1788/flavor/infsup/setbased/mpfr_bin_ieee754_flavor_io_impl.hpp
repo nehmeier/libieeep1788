@@ -39,6 +39,7 @@ namespace infsup
 namespace setbased
 {
 
+
 // IO
 template<typename T>
 template< typename CharT, typename Traits >

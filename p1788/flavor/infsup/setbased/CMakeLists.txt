@@ -40,6 +40,7 @@ set(P1788_HEADER_FILES
 	mpfr_bin_ieee754_flavor_rec_slope_func_impl.hpp
 	mpfr_bin_ieee754_flavor_rev_elem_func_impl.hpp
 	mpfr_bin_ieee754_flavor_set_op_impl.hpp
+	mpfr_bin_ieee754_flavor_setup_func_impl.hpp
 	mpfr_bin_ieee754_flavor_util_func_impl.hpp
    )
 

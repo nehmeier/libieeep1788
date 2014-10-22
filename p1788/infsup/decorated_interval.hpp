@@ -86,6 +86,13 @@ namespace infsup
 {
 
 
+/// \brief
+///
+/// \param
+/// \param
+/// \return
+///
+///
 template<typename T, template<typename> class Flavor>
 class decorated_interval final
     : public base_interval<T, Flavor, typename Flavor<T>::representation_dec, decorated_interval<T, Flavor>>
@@ -177,20 +184,51 @@ public:
 
 
 // -----------------------------------------------------------------------------
-// Static methods
+// Interval constants
 // -----------------------------------------------------------------------------
 
-// Required, Creates an empty interval, see P1788/D8.1 Sect. 10.6.2
+///@name Interval constants
+///
+///
+///@{
 
+    /// \brief Returns an empty decorated interval
+    ///
+    /// \return \f$\emptyset\f$<sub>\link p1788::decoration::decoration trv\endlink</sub>
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::static_method_empty_dec()</c>
+    /// which creates the representation for an empty decorated interval.
+    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::static_method_empty_dec()
+    ///
     static decorated_interval empty() {
         return decorated_interval(Flavor<T>::static_method_empty_dec());
     }
 
-// Required, Creates an entire interval, see P1788/D8.1 Sect. 10.6.2
+    /// \brief Returns an entire decorated interval
+    ///
+    /// \return \f$[-\infty,+\infty]\f$<sub>\link p1788::decoration::decoration dac\endlink</sub>
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::static_method_entire_dec()</c>
+    /// which creates the representation for an entire decorated interval.
+    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::static_method_entire_dec()
+    ///
     static decorated_interval entire() {
         return decorated_interval(Flavor<T>::static_method_entire_dec());
     }
 
+    /// \brief Returns an ill-formed decorated interval (Not an Interval)
+    ///
+    /// \return  NaI (= \f$\emptyset\f$<sub>\link p1788::decoration::decoration ill\endlink</sub>)
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::static_method_nai_dec()</c>
+    /// which creates the representation for an ill-formed decorated interval (NaI).
+    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::static_method_nai_dec()
+    ///
+    static decorated_interval nai() {
+        return decorated_interval(Flavor<T>::static_method_nai_dec());
+    }
+
+///@}
 
 private:
 

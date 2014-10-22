@@ -36,20 +36,26 @@ namespace p1788
 namespace decoration
 {
 
-// \brief Enum describing the 6 different interval decorations
-// see P1788/D7.0 Sect. 10.2 and 10.10
-//
+/// \brief Enum describing the 6 different interval decorations
+///
+/// \todo documentation, propagation order ...
 enum class decoration
 {
-    ill = 0,    //< ill
-    trv = 1,    //< trivial
-    def = 2,    //< defined
-    dac = 3,    //< defined and continuous
-    com = 4    //< common, see P1788/D7.0 Sect. 10.10
+    ill = 0,    ///< ill
+    trv = 1,    ///< trivial
+    def = 2,    ///< defined
+    dac = 3,    ///< defined and continuous
+    com = 4     ///< common
 };
 
 std::string decoration_map[] = { "ill", "trv", "def", "dac", "com" };
 
+
+//bool operator==(decoration d1, decoration d2)
+//{
+//    return static_cast<typename std::underlying_type<decoration>::type>(d1)
+//        == static_cast<typename std::underlying_type<decoration>::type>(d2);
+//}
 
 
 template<typename CharT, typename Traits>

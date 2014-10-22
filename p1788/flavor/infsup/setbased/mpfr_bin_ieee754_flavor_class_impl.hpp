@@ -315,8 +315,9 @@ mpfr_bin_ieee754_flavor<T>::method_decoration(mpfr_bin_ieee754_flavor<T>::repres
     return x.second;
 }
 
-
-// Static Methods
+// -----------------------------------------------------------------------------
+// Interval constants
+// -----------------------------------------------------------------------------
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
@@ -347,21 +348,15 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::static_method_entire_dec()
 {
     return representation_dec(representation(-std::numeric_limits<T>::infinity(),
-                          std::numeric_limits<T>::infinity()), p1788::decoration::decoration::trv);
+                          std::numeric_limits<T>::infinity()), p1788::decoration::decoration::dac);
 }
 
 template<typename T>
-void
-mpfr_bin_ieee754_flavor<T>::setup()
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::static_method_nai_dec()
 {
-    // nothing to do
-}
-
-template<typename T>
-void
-mpfr_bin_ieee754_flavor<T>::teardown()
-{
-    mpfr_var::free_cache();
+    return representation_dec(representation(std::numeric_limits<T>::quiet_NaN(),
+                          std::numeric_limits<T>::quiet_NaN()), p1788::decoration::decoration::ill);
 }
 
 
