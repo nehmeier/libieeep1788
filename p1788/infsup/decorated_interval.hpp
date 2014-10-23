@@ -196,36 +196,36 @@ public:
     ///
     /// \return \f$\emptyset\f$<sub>\link p1788::decoration::decoration trv\endlink</sub>
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::static_method_empty_dec()</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::empty_dec()</c>
     /// which creates the representation for an empty decorated interval.
-    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::static_method_empty_dec()
+    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::empty_dec()
     ///
     static decorated_interval empty() {
-        return decorated_interval(Flavor<T>::static_method_empty_dec());
+        return decorated_interval(Flavor<T>::empty_dec());
     }
 
     /// \brief Returns an entire decorated interval
     ///
     /// \return \f$[-\infty,+\infty]\f$<sub>\link p1788::decoration::decoration dac\endlink</sub>
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::static_method_entire_dec()</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::entire_dec()</c>
     /// which creates the representation for an entire decorated interval.
-    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::static_method_entire_dec()
+    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::entire_dec()
     ///
     static decorated_interval entire() {
-        return decorated_interval(Flavor<T>::static_method_entire_dec());
+        return decorated_interval(Flavor<T>::entire_dec());
     }
 
     /// \brief Returns an ill-formed decorated interval (Not an Interval)
     ///
     /// \return  NaI (= \f$\emptyset\f$<sub>\link p1788::decoration::decoration ill\endlink</sub>)
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::static_method_nai_dec()</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::nai()</c>
     /// which creates the representation for an ill-formed decorated interval (NaI).
-    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::static_method_nai_dec()
+    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::nai()
     ///
     static decorated_interval nai() {
-        return decorated_interval(Flavor<T>::static_method_nai_dec());
+        return decorated_interval(Flavor<T>::nai());
     }
 
 ///@}

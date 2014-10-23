@@ -68,7 +68,7 @@ mpfr_bin_ieee754_flavor<T>::cancel_minus(mpfr_bin_ieee754_flavor<T>::representat
             || x.second == +std::numeric_limits<T>::infinity()
             || y.first == -std::numeric_limits<T>::infinity()
             || y.second == +std::numeric_limits<T>::infinity())
-        return static_method_entire();
+        return entire();
 
     p1788::overlapping::overlapping_state os = overlap(x, y);
 
@@ -79,7 +79,7 @@ mpfr_bin_ieee754_flavor<T>::cancel_minus(mpfr_bin_ieee754_flavor<T>::representat
 
     //    if (is_empty(y))
     if (os == p1788::overlapping::overlapping_state::second_empty)
-        return static_method_entire();
+        return entire();
 
 
 
@@ -88,7 +88,7 @@ mpfr_bin_ieee754_flavor<T>::cancel_minus(mpfr_bin_ieee754_flavor<T>::representat
     if (os == p1788::overlapping::overlapping_state::starts
         || os == p1788::overlapping::overlapping_state::contained_by
         || os == p1788::overlapping::overlapping_state::finishes)
-        return static_method_entire();
+        return entire();
 
     if (os == p1788::overlapping::overlapping_state::before
         || os == p1788::overlapping::overlapping_state::meets
@@ -101,7 +101,7 @@ mpfr_bin_ieee754_flavor<T>::cancel_minus(mpfr_bin_ieee754_flavor<T>::representat
         auto x_wid = p1788::util::two_sum(x.second, -x.first);
         auto y_wid = p1788::util::two_sum(y.second, -y.first);
         if (x_wid.first < y_wid.first || (x_wid.first == y_wid.first && x_wid.second < y_wid.second))
-            return static_method_entire();
+            return entire();
     }
 
     if (os == p1788::overlapping::overlapping_state::overlaps
@@ -113,7 +113,7 @@ mpfr_bin_ieee754_flavor<T>::cancel_minus(mpfr_bin_ieee754_flavor<T>::representat
         auto upper_dist = p1788::util::two_sum(y.second, -x.second);
         auto lower_dist = p1788::util::two_sum(y.first, -x.first);
         if (lower_dist.first < upper_dist.first || (lower_dist.first == upper_dist.first && lower_dist.second < upper_dist.second))
-            return static_method_entire();
+            return entire();
     }
 
 

@@ -41,35 +41,35 @@ const double INF = std::numeric_limits<double>::infinity();
 
 
 
-BOOST_AUTO_TEST_CASE(minimal_static_method_empty_test)
+BOOST_AUTO_TEST_CASE(minimal_empty_test)
 {
-    BOOST_CHECK( std::isnan( F<double>::static_method_empty().first ) );
-    BOOST_CHECK( std::isnan( F<double>::static_method_empty().second ) );
+    BOOST_CHECK( std::isnan( F<double>::empty().first ) );
+    BOOST_CHECK( std::isnan( F<double>::empty().second ) );
 }
 
-BOOST_AUTO_TEST_CASE(minimal_static_method_empty_dec_test)
+BOOST_AUTO_TEST_CASE(minimal_empty_dec_test)
 {
-    BOOST_CHECK( std::isnan( F<double>::static_method_empty_dec().first.first ) );
-    BOOST_CHECK( std::isnan( F<double>::static_method_empty_dec().first.second ) );
-    BOOST_CHECK_EQUAL( F<double>::static_method_empty_dec().second, p1788::decoration::decoration::trv );
+    BOOST_CHECK( std::isnan( F<double>::empty_dec().first.first ) );
+    BOOST_CHECK( std::isnan( F<double>::empty_dec().first.second ) );
+    BOOST_CHECK_EQUAL( F<double>::empty_dec().second, p1788::decoration::decoration::trv );
 }
 
-BOOST_AUTO_TEST_CASE(minimal_static_method_entire_test)
+BOOST_AUTO_TEST_CASE(minimal_entire_test)
 {
-    BOOST_CHECK_EQUAL( F<double>::static_method_entire().first, -INF );
-    BOOST_CHECK_EQUAL( F<double>::static_method_entire().second, INF );
+    BOOST_CHECK_EQUAL( F<double>::entire().first, -INF );
+    BOOST_CHECK_EQUAL( F<double>::entire().second, INF );
 }
 
-BOOST_AUTO_TEST_CASE(minimal_static_method_entire_dec_test)
+BOOST_AUTO_TEST_CASE(minimal_entire_dec_test)
 {
-    BOOST_CHECK_EQUAL( F<double>::static_method_entire_dec().first.first, -INF );
-    BOOST_CHECK_EQUAL( F<double>::static_method_entire_dec().first.second, INF );
-    BOOST_CHECK_EQUAL( F<double>::static_method_entire_dec().second, p1788::decoration::decoration::dac );
+    BOOST_CHECK_EQUAL( F<double>::entire_dec().first.first, -INF );
+    BOOST_CHECK_EQUAL( F<double>::entire_dec().first.second, INF );
+    BOOST_CHECK_EQUAL( F<double>::entire_dec().second, p1788::decoration::decoration::dac );
 }
 
-BOOST_AUTO_TEST_CASE(minimal_static_method_nai_dec_test)
+BOOST_AUTO_TEST_CASE(minimal_nai_test)
 {
-    BOOST_CHECK( std::isnan( F<double>::static_method_nai_dec().first.first ) );
-    BOOST_CHECK( std::isnan( F<double>::static_method_nai_dec().first.second ) );
-    BOOST_CHECK_EQUAL( F<double>::static_method_nai_dec().second, p1788::decoration::decoration::ill );
+    BOOST_CHECK( std::isnan( F<double>::nai().first.first ) );
+    BOOST_CHECK( std::isnan( F<double>::nai().first.second ) );
+    BOOST_CHECK_EQUAL( F<double>::nai().second, p1788::decoration::decoration::ill );
 }

@@ -45,14 +45,14 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::constructor_infsup()
 {
-    return static_method_empty();
+    return empty();
 }
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec()
 {
-    return static_method_empty_dec();
+    return empty_dec();
 }
 
 
@@ -138,10 +138,10 @@ mpfr_bin_ieee754_flavor<T>::constructor_infsup(std::string const& str)
     std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::toupper);
 
     if (tmp == "[ENTIRE]")
-        return static_method_entire();
+        return entire();
 
     if (tmp == "[EMPTY]")
-        return static_method_empty();
+        return empty();
 
     return representation(0.0, 0.0);
 }
@@ -158,10 +158,10 @@ mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(std::string const& str)
     std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::toupper);
 
     if (tmp == "[ENTIRE]")
-        return static_method_entire_dec();
+        return entire_dec();
 
     if (tmp == "[EMPTY]")
-        return static_method_empty_dec();
+        return empty_dec();
 
     return representation_dec(representation(0.0, 0.0), p1788::decoration::decoration::trv);
 }
@@ -321,7 +321,7 @@ mpfr_bin_ieee754_flavor<T>::method_decoration(mpfr_bin_ieee754_flavor<T>::repres
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::static_method_empty()
+mpfr_bin_ieee754_flavor<T>::empty()
 {
     return representation(std::numeric_limits<T>::quiet_NaN(),
                           std::numeric_limits<T>::quiet_NaN());
@@ -329,7 +329,7 @@ mpfr_bin_ieee754_flavor<T>::static_method_empty()
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::static_method_empty_dec()
+mpfr_bin_ieee754_flavor<T>::empty_dec()
 {
     return representation_dec(representation(std::numeric_limits<T>::quiet_NaN(),
                           std::numeric_limits<T>::quiet_NaN()), p1788::decoration::decoration::trv);
@@ -337,7 +337,7 @@ mpfr_bin_ieee754_flavor<T>::static_method_empty_dec()
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::static_method_entire()
+mpfr_bin_ieee754_flavor<T>::entire()
 {
     return representation(-std::numeric_limits<T>::infinity(),
                           std::numeric_limits<T>::infinity());
@@ -345,7 +345,7 @@ mpfr_bin_ieee754_flavor<T>::static_method_entire()
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::static_method_entire_dec()
+mpfr_bin_ieee754_flavor<T>::entire_dec()
 {
     return representation_dec(representation(-std::numeric_limits<T>::infinity(),
                           std::numeric_limits<T>::infinity()), p1788::decoration::decoration::dac);
@@ -353,7 +353,7 @@ mpfr_bin_ieee754_flavor<T>::static_method_entire_dec()
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::static_method_nai_dec()
+mpfr_bin_ieee754_flavor<T>::nai()
 {
     return representation_dec(representation(std::numeric_limits<T>::quiet_NaN(),
                           std::numeric_limits<T>::quiet_NaN()), p1788::decoration::decoration::ill);

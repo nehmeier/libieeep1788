@@ -45,7 +45,7 @@ mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation
                           mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
     if (are_disjoint(x, y))
-        return static_method_empty();
+        return empty();
     else
         return representation(std::max(x.first, y.first),
                               std::min(x.second, y.second));
@@ -79,7 +79,7 @@ mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_bin_ieee754_flavor<T>::static_method_entire_dec();
+    return mpfr_bin_ieee754_flavor<T>::entire_dec();
 }
 
 
@@ -104,7 +104,7 @@ mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_dec 
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_bin_ieee754_flavor<T>::static_method_entire_dec();
+    return mpfr_bin_ieee754_flavor<T>::entire_dec();
 }
 
 

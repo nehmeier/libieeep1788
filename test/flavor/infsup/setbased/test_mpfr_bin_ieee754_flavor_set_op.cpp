@@ -37,16 +37,16 @@ BOOST_AUTO_TEST_CASE(minimal_intersect_test)
 {
     BOOST_CHECK_EQUAL( F<double>::intersect(F<double>::representation(1.0,3.0), F<double>::representation(2.1,4.0)), F<double>::representation(2.1,3.0) );
     BOOST_CHECK_EQUAL( F<double>::intersect(F<double>::representation(1.0,3.0), F<double>::representation(3.0,4.0)), F<double>::representation(3.0,3.0) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::intersect(F<double>::representation(1.0,3.0), F<double>::static_method_empty()) ) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::intersect(F<double>::static_method_entire(), F<double>::static_method_empty()) ) );
-    BOOST_CHECK_EQUAL( F<double>::intersect(F<double>::representation(1.0,3.0), F<double>::static_method_entire()), F<double>::representation(1.0,3.0) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::intersect(F<double>::representation(1.0,3.0), F<double>::empty()) ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::intersect(F<double>::entire(), F<double>::empty()) ) );
+    BOOST_CHECK_EQUAL( F<double>::intersect(F<double>::representation(1.0,3.0), F<double>::entire()), F<double>::representation(1.0,3.0) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_hull_test)
 {
     BOOST_CHECK_EQUAL( F<double>::hull(F<double>::representation(1.0,3.0), F<double>::representation(2.1,4.0)), F<double>::representation(1.0,4.0) );
     BOOST_CHECK_EQUAL( F<double>::hull(F<double>::representation(1.0,1.0), F<double>::representation(2.1,4.0)), F<double>::representation(1.0,4.0) );
-    BOOST_CHECK_EQUAL( F<double>::hull(F<double>::representation(1.0,3.0), F<double>::static_method_empty()), F<double>::representation(1.0,3.0) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::hull(F<double>::static_method_empty(), F<double>::static_method_empty()) ) );
-    BOOST_CHECK_EQUAL( F<double>::hull(F<double>::representation(1.0,3.0), F<double>::static_method_entire()), F<double>::static_method_entire() );
+    BOOST_CHECK_EQUAL( F<double>::hull(F<double>::representation(1.0,3.0), F<double>::empty()), F<double>::representation(1.0,3.0) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::hull(F<double>::empty(), F<double>::empty()) ) );
+    BOOST_CHECK_EQUAL( F<double>::hull(F<double>::representation(1.0,3.0), F<double>::entire()), F<double>::entire() );
 }

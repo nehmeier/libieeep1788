@@ -153,24 +153,24 @@ public:
     ///
     /// \return \f$\emptyset\f$
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::static_method_empty()</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::empty()</c>
     /// which creates the representation for an empty interval.
-    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::static_method_empty()
+    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::empty()
     ///
     static interval empty() {
-        return interval(Flavor<T>::static_method_empty());
+        return interval(Flavor<T>::empty());
     }
 
     /// \brief Returns an entire interval
     ///
     /// \return \f$[-\infty,+\infty]\f$
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::static_method_entire()</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::entire()</c>
     /// which creates the representation for an entire interval.
-    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::static_method_entire()
+    /// \see p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::entire()
     ///
     static interval entire() {
-        return interval(Flavor<T>::static_method_entire());
+        return interval(Flavor<T>::entire());
     }
 
 ///@}

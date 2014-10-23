@@ -313,35 +313,35 @@ public:
     /// \return representation(NaN, NaN)
     ///
     ///
-    static representation static_method_empty();
+    static representation empty();
 
     /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an empty decorated interval
     ///
     /// \return representation_dec(representation(NaN, NaN), \link p1788::decoration::decoration trv\endlink)
     ///
     ///
-    static representation_dec static_method_empty_dec();
+    static representation_dec empty_dec();
 
     /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation representation\endlink for an entire bare interval
     ///
     /// \return representation(\f$-\infty\f$, \f$+\infty\f$)
     ///
     ///
-    static representation static_method_entire();
+    static representation entire();
 
     /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an entire decorated interval
     ///
     /// \return representation_dec(representation(\f$-\infty\f$, \f$+\infty\f$), \link p1788::decoration::decoration dac\endlink)
     ///
     ///
-    static representation_dec static_method_entire_dec();
+    static representation_dec entire_dec();
 
     /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an ill-formend decorated interval (Not an Interval)
     ///
     /// \return representation_dec(representation(NaN, NaN), \link p1788::decoration::decoration ill\endlink)
     ///
     ///
-    static representation_dec static_method_nai_dec();
+    static representation_dec nai();
 
 ///@}
 

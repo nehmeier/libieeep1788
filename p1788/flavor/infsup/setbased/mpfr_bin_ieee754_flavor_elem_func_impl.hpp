@@ -280,7 +280,7 @@ mpfr_bin_ieee754_flavor<T>::div(mpfr_bin_ieee754_flavor<T>::representation const
         return y;
 
     if (y.first == 0.0 && y.second == 0.0)
-        return static_method_empty();
+        return empty();
 
     if (x.first == 0.0 && x.second == 0.0)
         return x;
@@ -288,10 +288,10 @@ mpfr_bin_ieee754_flavor<T>::div(mpfr_bin_ieee754_flavor<T>::representation const
     if ((y.first < 0.0 && y.second > 0.0)
             || (x.first < 0.0 && x.second > 0.0
                 && (y.first == 0.0 || y.second == 0.0)))
-        return static_method_entire();
+        return entire();
 
 //    if ((x.second < 0.0 || x.first > 0.0) && y.first == 0.0 && y.second == 0.0)
-//        return static_method_empty();
+//        return empty();
 
     mpfr_var::setup();
     mpfr_var l;
@@ -424,7 +424,7 @@ mpfr_bin_ieee754_flavor<T>::sqrt(mpfr_bin_ieee754_flavor<T>::representation cons
         return x;
 
     if (x.second < 0.0)
-        return static_method_empty();
+        return empty();
 
     mpfr_var::setup();
 
@@ -731,7 +731,7 @@ mpfr_bin_ieee754_flavor<T>::pown(mpfr_bin_ieee754_flavor<T>::representation cons
     // negative
     if (p < 0) {
         if (x.first == 0.0 && x.second == 0.0)
-            return static_method_empty();
+            return empty();
 
         // even
         if (p % 2 == 0) {
@@ -755,7 +755,7 @@ mpfr_bin_ieee754_flavor<T>::pown(mpfr_bin_ieee754_flavor<T>::representation cons
         // odd
 
         if (x.first < 0.0 && x.second > 0.0)
-            return static_method_entire();
+            return entire();
 
         if (x.first == 0.0) {
             mpfr_var l(x.second, MPFR_RNDU);
@@ -910,7 +910,7 @@ mpfr_bin_ieee754_flavor<T>::pow(mpfr_bin_ieee754_flavor<T>::representation const
 
     if (xx.second == 0.0) {
         if (y.second <= 0.0) {
-            return static_method_empty();
+            return empty();
         } else {
             return representation(0.0, 0.0);
         }
@@ -1093,7 +1093,7 @@ mpfr_bin_ieee754_flavor<T>::log(mpfr_bin_ieee754_flavor<T>::representation const
         return xx;
 
     if (x.second <= 0.0)
-        return static_method_empty();
+        return empty();
 
     mpfr_var::setup();
     mpfr_var xl(x.first <= 0.0 ? 0.0 : x.first, MPFR_RNDD);
@@ -1125,7 +1125,7 @@ mpfr_bin_ieee754_flavor<T>::log2(mpfr_bin_ieee754_flavor<T>::representation cons
         return xx;
 
     if (x.second <= 0.0)
-        return static_method_empty();
+        return empty();
 
     mpfr_var::setup();
     mpfr_var xl(x.first <= 0.0 ? 0.0 : x.first, MPFR_RNDD);
@@ -1157,7 +1157,7 @@ mpfr_bin_ieee754_flavor<T>::log10(mpfr_bin_ieee754_flavor<T>::representation con
         return xx;
 
     if (x.second <= 0.0)
-        return static_method_empty();
+        return empty();
 
     mpfr_var::setup();
     mpfr_var xl(x.first <= 0.0 ? 0.0 : x.first, MPFR_RNDD);
@@ -1380,13 +1380,13 @@ mpfr_bin_ieee754_flavor<T>::tan(mpfr_bin_ieee754_flavor<T>::representation const
     mpfr_sub(w(), xu(), xl(), MPFR_RNDU);
 
     if (mpfr_cmp(w(), pi()) > 0)
-        return static_method_entire();
+        return entire();
 
     xl.subnormalize(mpfr_tan(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
     xu.subnormalize(mpfr_tan(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
 
     if (mpfr_cmp(xl(), xu()) > 0)
-        return static_method_entire();
+        return entire();
 
     return representation(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
 }
@@ -1499,9 +1499,9 @@ mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation con
 
     if (is_empty(y) || is_empty(x) ||
             (y.first == 0.0 && y.second == 0.0 && x.first == 0.0 && y.second == 0.0))
-        return static_method_empty();
+        return empty();
 
-    return static_method_entire();
+    return entire();
 }
 
 template<typename T>
@@ -1640,7 +1640,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::acosh(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (is_empty(x) || x.second < 1.0)
-        return static_method_empty();
+        return empty();
 
     mpfr_var::setup();
 
@@ -1668,7 +1668,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::atanh(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (is_empty(x) || x.second <= -1.0 || x.first >= 1.0)
-        return static_method_empty();
+        return empty();
 
     mpfr_var::setup();
 

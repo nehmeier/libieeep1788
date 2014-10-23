@@ -58,7 +58,7 @@ mpfr_bin_ieee754_flavor<T>::rootn(mpfr_bin_ieee754_flavor<T>::representation con
             return representation(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
         } else {
             if (x.second < 0.0)
-                return mpfr_bin_ieee754_flavor<T>::static_method_empty();
+                return mpfr_bin_ieee754_flavor<T>::empty();
 
             mpfr_var xl(x.first < 0.0 ? 0.0 : x.first , MPFR_RNDD);
             mpfr_var xu(x.second, MPFR_RNDU);
@@ -74,7 +74,7 @@ mpfr_bin_ieee754_flavor<T>::rootn(mpfr_bin_ieee754_flavor<T>::representation con
 
     // TODO, check ?
     // In case of q == 0, function not defined
-    return mpfr_bin_ieee754_flavor<T>::static_method_empty();
+    return mpfr_bin_ieee754_flavor<T>::empty();
 }
 
 template<typename T>
@@ -272,7 +272,7 @@ mpfr_bin_ieee754_flavor<T>::compoundm1(mpfr_bin_ieee754_flavor<T>::representatio
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_bin_ieee754_flavor<T>::static_method_entire();
+    return mpfr_bin_ieee754_flavor<T>::entire();
 }
 
 template<typename T>
@@ -331,7 +331,7 @@ mpfr_bin_ieee754_flavor<T>::r_sqrt(mpfr_bin_ieee754_flavor<T>::representation co
         return x;
 
     if (x.second < 0.0)
-        return static_method_empty();
+        return empty();
 
     mpfr_var::setup();
 
@@ -368,7 +368,7 @@ mpfr_bin_ieee754_flavor<T>::sin_pi(mpfr_bin_ieee754_flavor<T>::representation co
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_bin_ieee754_flavor<T>::static_method_entire();
+    return mpfr_bin_ieee754_flavor<T>::entire();
 }
 
 template<typename T>
@@ -387,7 +387,7 @@ mpfr_bin_ieee754_flavor<T>::cos_pi(mpfr_bin_ieee754_flavor<T>::representation co
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_bin_ieee754_flavor<T>::static_method_entire();
+    return mpfr_bin_ieee754_flavor<T>::entire();
 }
 
 template<typename T>
@@ -406,7 +406,7 @@ mpfr_bin_ieee754_flavor<T>::tan_pi(mpfr_bin_ieee754_flavor<T>::representation co
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_bin_ieee754_flavor<T>::static_method_entire();
+    return mpfr_bin_ieee754_flavor<T>::entire();
 }
 
 template<typename T>
@@ -425,7 +425,7 @@ mpfr_bin_ieee754_flavor<T>::asin_pi(mpfr_bin_ieee754_flavor<T>::representation c
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_bin_ieee754_flavor<T>::static_method_entire();
+    return mpfr_bin_ieee754_flavor<T>::entire();
 }
 
 template<typename T>
@@ -444,7 +444,7 @@ mpfr_bin_ieee754_flavor<T>::acos_pi(mpfr_bin_ieee754_flavor<T>::representation c
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_bin_ieee754_flavor<T>::static_method_entire();
+    return mpfr_bin_ieee754_flavor<T>::entire();
 }
 
 template<typename T>
@@ -463,7 +463,7 @@ mpfr_bin_ieee754_flavor<T>::atan_pi(mpfr_bin_ieee754_flavor<T>::representation c
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_bin_ieee754_flavor<T>::static_method_entire();
+    return mpfr_bin_ieee754_flavor<T>::entire();
 }
 
 template<typename T>
@@ -483,7 +483,7 @@ mpfr_bin_ieee754_flavor<T>::atan2_pi(mpfr_bin_ieee754_flavor<T>::representation 
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
-    return mpfr_bin_ieee754_flavor<T>::static_method_entire();
+    return mpfr_bin_ieee754_flavor<T>::entire();
 }
 
 template<typename T>

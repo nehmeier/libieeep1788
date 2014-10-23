@@ -39,8 +39,8 @@ const double INF = std::numeric_limits<double>::infinity();
 
 BOOST_AUTO_TEST_CASE(minimal_is_empty_test)
 {
-    BOOST_CHECK( F<double>::is_empty(F<double>::static_method_empty()) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::static_method_entire()) );
+    BOOST_CHECK( F<double>::is_empty(F<double>::empty()) );
+    BOOST_CHECK( !F<double>::is_empty(F<double>::entire()) );
     BOOST_CHECK( !F<double>::is_empty(F<double>::representation(1.0,2.0)) );
     BOOST_CHECK( !F<double>::is_empty(F<double>::representation(-1.0,2.0)) );
     BOOST_CHECK( !F<double>::is_empty(F<double>::representation(-3.0,-2.0)) );
@@ -58,8 +58,8 @@ BOOST_AUTO_TEST_CASE(minimal_is_empty_test)
 
 BOOST_AUTO_TEST_CASE(minimal_is_entire_test)
 {
-    BOOST_CHECK( !F<double>::is_entire(F<double>::static_method_empty()) );
-    BOOST_CHECK( F<double>::is_entire(F<double>::static_method_entire()) );
+    BOOST_CHECK( !F<double>::is_entire(F<double>::empty()) );
+    BOOST_CHECK( F<double>::is_entire(F<double>::entire()) );
     BOOST_CHECK( !F<double>::is_entire(F<double>::representation(1.0,2.0)) );
     BOOST_CHECK( !F<double>::is_entire(F<double>::representation(-1.0,2.0)) );
     BOOST_CHECK( !F<double>::is_entire(F<double>::representation(-3.0,-2.0)) );
@@ -78,10 +78,10 @@ BOOST_AUTO_TEST_CASE(minimal_is_equal_test)
 {
     BOOST_CHECK( F<double>::is_equal(F<double>::representation(1.0,2.0), F<double>::representation(1.0,2.0)) );
     BOOST_CHECK( !F<double>::is_equal(F<double>::representation(1.0,2.1), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::static_method_empty(), F<double>::static_method_empty()) );
-    BOOST_CHECK( !F<double>::is_equal(F<double>::static_method_empty(), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::static_method_entire(), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::is_equal(F<double>::representation(1.0,2.4), F<double>::static_method_entire()) );
+    BOOST_CHECK( F<double>::is_equal(F<double>::empty(), F<double>::empty()) );
+    BOOST_CHECK( !F<double>::is_equal(F<double>::empty(), F<double>::representation(1.0,2.0)) );
+    BOOST_CHECK( F<double>::is_equal(F<double>::entire(), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::is_equal(F<double>::representation(1.0,2.4), F<double>::entire()) );
     BOOST_CHECK( F<double>::is_equal(F<double>::representation(1.0,INF), F<double>::representation(1.0,INF)) );
     BOOST_CHECK( !F<double>::is_equal(F<double>::representation(1.0,2.4), F<double>::representation(1.0,INF)) );
     BOOST_CHECK( F<double>::is_equal(F<double>::representation(-INF,2.0), F<double>::representation(-INF,2.0)) );
@@ -96,23 +96,23 @@ BOOST_AUTO_TEST_CASE(minimal_is_equal_test)
 
 BOOST_AUTO_TEST_CASE(minimal_subset_test)
 {
-    BOOST_CHECK( F<double>::subset(F<double>::static_method_empty(), F<double>::static_method_empty()) );
-    BOOST_CHECK( F<double>::subset(F<double>::static_method_empty(), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::static_method_empty(), F<double>::representation(-0.0,4.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::static_method_empty(), F<double>::representation(-0.1,1.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::static_method_empty(), F<double>::representation(-0.1,0.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::static_method_empty(), F<double>::representation(-0.1,-0.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::static_method_empty(), F<double>::static_method_entire()) );
+    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::empty()) );
+    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::representation(0.0,4.0)) );
+    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::representation(-0.0,4.0)) );
+    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::representation(-0.1,1.0)) );
+    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::representation(-0.1,0.0)) );
+    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::representation(-0.1,-0.0)) );
+    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::entire()) );
 
-    BOOST_CHECK( !F<double>::subset(F<double>::representation(0.0,4.0), F<double>::static_method_empty()) );
-    BOOST_CHECK( !F<double>::subset(F<double>::representation(-0.0,4.0), F<double>::static_method_empty()) );
-    BOOST_CHECK( !F<double>::subset(F<double>::representation(-0.1,1.0), F<double>::static_method_empty()) );
-    BOOST_CHECK( !F<double>::subset(F<double>::static_method_entire(), F<double>::static_method_empty()) );
+    BOOST_CHECK( !F<double>::subset(F<double>::representation(0.0,4.0), F<double>::empty()) );
+    BOOST_CHECK( !F<double>::subset(F<double>::representation(-0.0,4.0), F<double>::empty()) );
+    BOOST_CHECK( !F<double>::subset(F<double>::representation(-0.1,1.0), F<double>::empty()) );
+    BOOST_CHECK( !F<double>::subset(F<double>::entire(), F<double>::empty()) );
 
-    BOOST_CHECK( F<double>::subset(F<double>::representation(0.0,4.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(-0.0,4.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(-0.1,1.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( F<double>::subset(F<double>::static_method_entire(), F<double>::static_method_entire()) );
+    BOOST_CHECK( F<double>::subset(F<double>::representation(0.0,4.0), F<double>::entire()) );
+    BOOST_CHECK( F<double>::subset(F<double>::representation(-0.0,4.0), F<double>::entire()) );
+    BOOST_CHECK( F<double>::subset(F<double>::representation(-0.1,1.0), F<double>::entire()) );
+    BOOST_CHECK( F<double>::subset(F<double>::entire(), F<double>::entire()) );
 
     BOOST_CHECK( F<double>::subset(F<double>::representation(1.0,2.0), F<double>::representation(1.0,2.0)) );
     BOOST_CHECK( F<double>::subset(F<double>::representation(1.0,2.0), F<double>::representation(0.0,4.0)) );
@@ -132,17 +132,17 @@ BOOST_AUTO_TEST_CASE(minimal_subset_test)
 
 BOOST_AUTO_TEST_CASE(minimal_less_test)
 {
-    BOOST_CHECK( F<double>::less(F<double>::static_method_empty(), F<double>::static_method_empty()) );
-    BOOST_CHECK( !F<double>::less(F<double>::representation(1.0,2.0), F<double>::static_method_empty()) );
-    BOOST_CHECK( !F<double>::less(F<double>::static_method_empty(), F<double>::representation(1.0,2.0)) );
+    BOOST_CHECK( F<double>::less(F<double>::empty(), F<double>::empty()) );
+    BOOST_CHECK( !F<double>::less(F<double>::representation(1.0,2.0), F<double>::empty()) );
+    BOOST_CHECK( !F<double>::less(F<double>::empty(), F<double>::representation(1.0,2.0)) );
 
-    BOOST_CHECK( F<double>::less(F<double>::static_method_entire(), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::less(F<double>::representation(1.0,2.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::less(F<double>::representation(0.0,2.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::less(F<double>::representation(-0.0,2.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::less(F<double>::static_method_entire(), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( !F<double>::less(F<double>::static_method_entire(), F<double>::representation(0.0,2.0)) );
-    BOOST_CHECK( !F<double>::less(F<double>::static_method_entire(), F<double>::representation(-0.0,2.0)) );
+    BOOST_CHECK( F<double>::less(F<double>::entire(), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::less(F<double>::representation(1.0,2.0), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::less(F<double>::representation(0.0,2.0), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::less(F<double>::representation(-0.0,2.0), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::less(F<double>::entire(), F<double>::representation(1.0,2.0)) );
+    BOOST_CHECK( !F<double>::less(F<double>::entire(), F<double>::representation(0.0,2.0)) );
+    BOOST_CHECK( !F<double>::less(F<double>::entire(), F<double>::representation(-0.0,2.0)) );
 
     BOOST_CHECK( F<double>::less(F<double>::representation(0.0,2.0), F<double>::representation(0.0,2.0)) );
     BOOST_CHECK( F<double>::less(F<double>::representation(0.0,2.0), F<double>::representation(-0.0,2.0)) );
@@ -167,16 +167,16 @@ BOOST_AUTO_TEST_CASE(minimal_less_test)
 
 BOOST_AUTO_TEST_CASE(minimal_precedes_test)
 {
-    BOOST_CHECK( F<double>::precedes(F<double>::static_method_empty(), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(3.0,4.0), F<double>::static_method_empty()) );
-    BOOST_CHECK( F<double>::precedes(F<double>::static_method_empty(), F<double>::static_method_empty()) );
+    BOOST_CHECK( F<double>::precedes(F<double>::empty(), F<double>::representation(3.0,4.0)) );
+    BOOST_CHECK( F<double>::precedes(F<double>::representation(3.0,4.0), F<double>::empty()) );
+    BOOST_CHECK( F<double>::precedes(F<double>::empty(), F<double>::empty()) );
 
 
-    BOOST_CHECK( !F<double>::precedes(F<double>::representation(1.0,2.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::precedes(F<double>::representation(0.0,2.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::precedes(F<double>::representation(-0.0,2.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::precedes(F<double>::static_method_entire(), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( !F<double>::precedes(F<double>::static_method_entire(), F<double>::static_method_entire()) );
+    BOOST_CHECK( !F<double>::precedes(F<double>::representation(1.0,2.0), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::precedes(F<double>::representation(0.0,2.0), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::precedes(F<double>::representation(-0.0,2.0), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::precedes(F<double>::entire(), F<double>::representation(1.0,2.0)) );
+    BOOST_CHECK( !F<double>::precedes(F<double>::entire(), F<double>::entire()) );
 
     BOOST_CHECK( F<double>::precedes(F<double>::representation(1.0,2.0), F<double>::representation(3.0,4.0)) );
     BOOST_CHECK( F<double>::precedes(F<double>::representation(1.0,3.0), F<double>::representation(3.0,4.0)) );
@@ -198,14 +198,14 @@ BOOST_AUTO_TEST_CASE(minimal_precedes_test)
 
 BOOST_AUTO_TEST_CASE(minimal_is_interior_test)
 {
-    BOOST_CHECK( F<double>::is_interior(F<double>::static_method_empty(), F<double>::static_method_empty()) );
-    BOOST_CHECK( F<double>::is_interior(F<double>::static_method_empty(), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( !F<double>::is_interior(F<double>::representation(0.0,4.0), F<double>::static_method_empty()) );
+    BOOST_CHECK( F<double>::is_interior(F<double>::empty(), F<double>::empty()) );
+    BOOST_CHECK( F<double>::is_interior(F<double>::empty(), F<double>::representation(0.0,4.0)) );
+    BOOST_CHECK( !F<double>::is_interior(F<double>::representation(0.0,4.0), F<double>::empty()) );
 
-    BOOST_CHECK( F<double>::is_interior(F<double>::static_method_entire(), F<double>::static_method_entire()) );
-    BOOST_CHECK( F<double>::is_interior(F<double>::representation(0.0,4.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( F<double>::is_interior(F<double>::static_method_empty(), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::is_interior(F<double>::static_method_entire(), F<double>::representation(0.0,4.0)) );
+    BOOST_CHECK( F<double>::is_interior(F<double>::entire(), F<double>::entire()) );
+    BOOST_CHECK( F<double>::is_interior(F<double>::representation(0.0,4.0), F<double>::entire()) );
+    BOOST_CHECK( F<double>::is_interior(F<double>::empty(), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::is_interior(F<double>::entire(), F<double>::representation(0.0,4.0)) );
 
     BOOST_CHECK( !F<double>::is_interior(F<double>::representation(0.0,4.0), F<double>::representation(0.0,4.0)) );
     BOOST_CHECK( F<double>::is_interior(F<double>::representation(1.0,2.0), F<double>::representation(0.0,4.0)) );
@@ -222,13 +222,13 @@ BOOST_AUTO_TEST_CASE(minimal_is_interior_test)
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_less_test)
 {
-    BOOST_CHECK( F<double>::strictly_less(F<double>::static_method_empty(), F<double>::static_method_empty()) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(1.0,2.0), F<double>::static_method_empty()) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::static_method_empty(), F<double>::representation(1.0,2.0)) );
+    BOOST_CHECK( F<double>::strictly_less(F<double>::empty(), F<double>::empty()) );
+    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(1.0,2.0), F<double>::empty()) );
+    BOOST_CHECK( !F<double>::strictly_less(F<double>::empty(), F<double>::representation(1.0,2.0)) );
 
-    BOOST_CHECK( F<double>::strictly_less(F<double>::static_method_entire(), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(1.0,2.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::static_method_entire(), F<double>::representation(1.0,2.0)) );
+    BOOST_CHECK( F<double>::strictly_less(F<double>::entire(), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(1.0,2.0), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::strictly_less(F<double>::entire(), F<double>::representation(1.0,2.0)) );
 
     BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(1.0,2.0), F<double>::representation(1.0,2.0)) );
     BOOST_CHECK( F<double>::strictly_less(F<double>::representation(1.0,2.0), F<double>::representation(3.0,4.0)) );
@@ -244,14 +244,14 @@ BOOST_AUTO_TEST_CASE(minimal_strictly_less_test)
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_test)
 {
-    BOOST_CHECK( F<double>::strictly_precedes(F<double>::static_method_empty(), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::strictly_precedes(F<double>::representation(3.0,4.0), F<double>::static_method_empty()) );
-    BOOST_CHECK( F<double>::strictly_precedes(F<double>::static_method_empty(), F<double>::static_method_empty()) );
+    BOOST_CHECK( F<double>::strictly_precedes(F<double>::empty(), F<double>::representation(3.0,4.0)) );
+    BOOST_CHECK( F<double>::strictly_precedes(F<double>::representation(3.0,4.0), F<double>::empty()) );
+    BOOST_CHECK( F<double>::strictly_precedes(F<double>::empty(), F<double>::empty()) );
 
 
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(1.0,2.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::static_method_entire(), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::static_method_entire(), F<double>::static_method_entire()) );
+    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(1.0,2.0), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::entire(), F<double>::representation(1.0,2.0)) );
+    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::entire(), F<double>::entire()) );
 
     BOOST_CHECK( F<double>::strictly_precedes(F<double>::representation(1.0,2.0), F<double>::representation(3.0,4.0)) );
     BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(1.0,3.0), F<double>::representation(3.0,4.0)) );
@@ -267,16 +267,16 @@ BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_test)
 
 BOOST_AUTO_TEST_CASE(minimal_are_disjoint_test)
 {
-    BOOST_CHECK( F<double>::are_disjoint(F<double>::static_method_empty(), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::are_disjoint(F<double>::representation(3.0,4.0), F<double>::static_method_empty()) );
-    BOOST_CHECK( F<double>::are_disjoint(F<double>::static_method_empty(), F<double>::static_method_empty()) );
+    BOOST_CHECK( F<double>::are_disjoint(F<double>::empty(), F<double>::representation(3.0,4.0)) );
+    BOOST_CHECK( F<double>::are_disjoint(F<double>::representation(3.0,4.0), F<double>::empty()) );
+    BOOST_CHECK( F<double>::are_disjoint(F<double>::empty(), F<double>::empty()) );
 
     BOOST_CHECK( F<double>::are_disjoint(F<double>::representation(3.0,4.0), F<double>::representation(1.0,2.0)) );
 
     BOOST_CHECK( !F<double>::are_disjoint(F<double>::representation(0.0,0.0), F<double>::representation(-0.0,-0.0)) );
     BOOST_CHECK( !F<double>::are_disjoint(F<double>::representation(0.0,-0.0), F<double>::representation(-0.0,0.0)) );
     BOOST_CHECK( !F<double>::are_disjoint(F<double>::representation(3.0,4.0), F<double>::representation(1.0,7.0)) );
-    BOOST_CHECK( !F<double>::are_disjoint(F<double>::representation(3.0,4.0), F<double>::static_method_entire()) );
-    BOOST_CHECK( !F<double>::are_disjoint(F<double>::static_method_entire(), F<double>::representation(1.0,7.0)) );
-    BOOST_CHECK( !F<double>::are_disjoint(F<double>::static_method_entire(), F<double>::static_method_entire()) );
+    BOOST_CHECK( !F<double>::are_disjoint(F<double>::representation(3.0,4.0), F<double>::entire()) );
+    BOOST_CHECK( !F<double>::are_disjoint(F<double>::entire(), F<double>::representation(1.0,7.0)) );
+    BOOST_CHECK( !F<double>::are_disjoint(F<double>::entire(), F<double>::entire()) );
 }

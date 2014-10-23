@@ -45,7 +45,7 @@ mpfr_bin_ieee754_flavor<T>::div_to_pair(mpfr_bin_ieee754_flavor<T>::representati
 {
     if (x.first <= 0.0 && x.second >= 0.0)
         return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
-               (div(x, y), static_method_empty());
+               (div(x, y), empty());
 
     if (y.first < 0.0 && y.second > 0.0) {
         representation a =  div(x, representation(y.first, 0.0));
@@ -53,14 +53,14 @@ mpfr_bin_ieee754_flavor<T>::div_to_pair(mpfr_bin_ieee754_flavor<T>::representati
 
         if (is_interior(representation(0.0,0.0), intersect(a,b)))
             return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
-               (hull(a,b), static_method_empty());
+               (hull(a,b), empty());
 
         return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
                (less(a,b) ? a : b, less(a,b) ? b : a);
     }
 
     return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
-           (div(x, y), static_method_empty());
+           (div(x, y), empty());
 }
 
 template<typename T>
@@ -74,7 +74,7 @@ mpfr_bin_ieee754_flavor<T>::div_to_pair(mpfr_bin_ieee754_flavor<T>::representati
                 div(x, representation_dec(representation(0.0, y.first.second), y.second)));
 
     return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation_dec, typename mpfr_bin_ieee754_flavor<T>::representation_dec>
-           (div(x, y), static_method_empty_dec());
+           (div(x, y), empty_dec());
 }
 
 
