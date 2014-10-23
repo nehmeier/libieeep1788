@@ -26,6 +26,6 @@
 add_subdirectory(flavor)
 
 # TODO wieder mit rein!!!
-#add_subdirectory(infsup)
+add_subdirectory(infsup)
 
 add_subdirectory(util)

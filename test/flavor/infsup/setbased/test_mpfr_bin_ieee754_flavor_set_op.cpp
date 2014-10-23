@@ -33,7 +33,6 @@ template<typename T>
 using F = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>;
 
 
-
 BOOST_AUTO_TEST_CASE(minimal_intersect_test)
 {
     BOOST_CHECK_EQUAL( F<double>::intersect(F<double>::representation(1.0,3.0), F<double>::representation(2.1,4.0)), F<double>::representation(2.1,3.0) );

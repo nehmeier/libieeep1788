@@ -38,6 +38,7 @@
 #include "p1788/util/eft.hpp"
 #include "p1788/util/assert.hpp"
 #include "p1788/util/mpfr_var.hpp"
+#include "p1788/util/mixed_type_traits.hpp"
 
 
 //------------------------------------------------------------------------------
@@ -69,22 +70,17 @@ class mpfr_bin_ieee754_flavor
 
     static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
+protected:
 
     // Typedef for the corresponding mpfr wrapper class representing the IEEE 754 binary floating point format of type T
     typedef p1788::util::mpfr_var<
-        std::numeric_limits<T>::digits,
+    std::numeric_limits<T>::digits,
         std::numeric_limits<T>::has_denorm != std::denorm_present ? std::numeric_limits<double>::min_exponent
-            : std::numeric_limits<double>::min_exponent - std::numeric_limits<double>::digits + 1,
+        : std::numeric_limits<double>::min_exponent - std::numeric_limits<double>::digits + 1,
         std::numeric_limits<double>::max_exponent,
         std::numeric_limits<T>::has_denorm == std::denorm_present
-    >   mpfr_var;
+        >   mpfr_var;
 
-
-public:
-
-// -----------------------------------------------------------------------------
-// Typed for internal representation
-// -----------------------------------------------------------------------------
 
     /// \brief Type-structure for the internal representation of bare intervals
     ///
@@ -95,6 +91,7 @@ public:
     ///
     template<typename TT>
     using representation_type = std::pair<TT,TT>;
+
 
     /// \brief Type-structure for the internal representation of decorated intervals
     ///
@@ -107,24 +104,25 @@ public:
     template<typename TT>
     using representation_dec_type = std::pair<representation_type<TT>, p1788::decoration::decoration>;
 
+public:
+
+// -----------------------------------------------------------------------------
+// Typed for internal representation
+// -----------------------------------------------------------------------------
 
     /// \brief Type for the internal representation of bare intervals
     ///
     /// Type-structure <c>\link mpfr_bin_ieee754_flavor::representation_type representation_type\<T\>\endlink</c>
     /// distincted with with the type \p T.
     ///
-    typedef representation_type<T> representation;          //< Distincted
+    typedef representation_type<T> representation;
 
     /// \brief Type for the internal representation of decorated intervals
     ///
     /// Type-structure <c>\link mpfr_bin_ieee754_flavor::representation_dec_type representation_dec_type\<T\>\endlink</c>
     /// distincted with with the type \p T.
     ///
-    typedef representation_dec_type<T> representation_dec;  // decorated interval
-
-
-
-
+    typedef representation_dec_type<T> representation_dec;
 
 
 // -----------------------------------------------------------------------------
@@ -161,7 +159,7 @@ public:
 ///
 ///@{
 
-    /// \brief Converts a floating point number of type \p T_ to a floating point number of type \p T using rounding to \f$-\infty\f$
+    /// \brief Converts a floating point number of type \p T_ to a floating point number of type \p T using rounding to \f$-\infty\f$.
     ///
     /// \tparam T_ Type of the original number format.
     /// \pre \p T_ hast to fulfill the requirements of IEC559 / IEEE754, see \c std::numeric_limits::is_iec559.
@@ -170,13 +168,13 @@ public:
     ///
     /// \return Largest number of type \p T \f$\leq\f$ \p x. It returns -0.0 in case of a zero.
     ///
-    /// \note \ref pageAccuracy "Accuracy:" Round toward negative
+    /// \note \ref pageAccuracy "Accuracy:" Round toward negative follows the IEEE754 specification.
     ///
     ///
     template<typename T_>
     static T convert_rndd(T_ x);
 
-    /// \brief Converts a floating point number of type \p T_ to the closest floating point number of type \p T
+    /// \brief Converts a floating point number of type \p T_ to the closest floating point number of type \p T.
     ///
     /// \tparam T_ Type of the original number format.
     /// \pre \p T_ hast to fulfill the requirements of IEC559 / IEEE754, see \c std::numeric_limits::is_iec559.
@@ -187,13 +185,13 @@ public:
     /// If \p x lies exactly in the middle of two consecutive numbers of type \p T than it is rounded to the one with least significant equal to zero.
     /// It returns +0.0 in case of a zero.
     ///
-    /// \note \ref pageAccuracy "Accuracy:" Round to nearest
+    /// \note \ref pageAccuracy "Accuracy:" Round to nearest follows the IEEE754 specification.
     ///
     ///
     template<typename T_>
     static T convert_rndn(T_ x);
 
-    /// \brief Converts a floating point number of type \p T_ to a floating point number of type \p T using rounding to \f$+\infty\f$
+    /// \brief Converts a floating point number of type \p T_ to a floating point number of type \p T using rounding to \f$+\infty\f$.
     ///
     /// \tparam T_ Type of the original number format.
     /// \pre \p T_ hast to fulfill the requirements of IEC559 / IEEE754, see \c std::numeric_limits::is_iec559.
@@ -202,11 +200,43 @@ public:
     ///
     /// \return Smallest number of type \p T \f$\geq\f$ \p x. It returns +0.0 in case of a zero.
     ///
-    /// \note \ref pageAccuracy "Accuracy:" Round toward positive
+    /// \note \ref pageAccuracy "Accuracy:" Round toward positive follows the IEEE754 specification.
     ///
     ///
     template<typename T_>
     static T convert_rndu(T_ x);
+
+    /// \brief Converts an interval representation of type \p mpfr_bin_ieee754_flavor<T_>::representation to
+    /// an interval representation of type \p mpfr_bin_ieee754_flavor<T>::representation by using the interval hull (outward rounding).
+    ///
+    /// \tparam T_ Type of the number format of the original bound type.
+    /// \pre \p T_ hast to fulfill the requirements of IEC559 / IEEE754, see \c std::numeric_limits::is_iec559.
+    ///
+    /// \param x Interval representation with the original bound type \p T_.
+    ///
+    /// \return Smallest interval representation with bound type \p T containing \p x.
+    ///
+    /// \note \ref pageAccuracy "Accuracy:" Outward rounding uses round toward negative and positive which follow the IEEE754 specification.
+    ///
+    ///
+    template<typename T_>
+    static representation convert_hull(representation_type<T_> const& x);
+
+    /// \brief Converts an decorated interval representation of type \p mpfr_bin_ieee754_flavor<T_>::representation_dec to
+    /// an decorated interval representation of type \p mpfr_bin_ieee754_flavor<T>::representation_dec by using the interval hull (outward rounding).
+    ///
+    /// \tparam T_ Type of the number format of the original bound type.
+    /// \pre \p T_ hast to fulfill the requirements of IEC559 / IEEE754, see \c std::numeric_limits::is_iec559.
+    ///
+    /// \param x Decorated interval representation with the original bound type \p T_.
+    ///
+    /// \return Smallest decorated interval representation with bound type \p T containing \p x. The decoration is unchanged.
+    ///
+    /// \note \ref pageAccuracy "Accuracy:" Outward rounding uses round toward negative and positive which follow the IEEE754 specification.
+    ///
+    ///
+    template<typename T_>
+    static representation_dec convert_hull(representation_dec_type<T_> const& x);
 
 ///@}
 
@@ -377,11 +407,19 @@ public:
     static representation intersect(representation const& x,
                                     representation const& y);
 
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1_, typename T2_>
+    static representation intersect(representation_type<T1_> const& x,
+                                    representation_type<T2_> const& y);
+
     /// \todo TODO
     ///
     ///
     static representation_dec intersect(representation_dec const& x,
-                                    representation_dec const& y);
+                                        representation_dec const& y);
 
     /// \todo TODO
     ///
@@ -393,7 +431,7 @@ public:
     ///
     ///
     static representation_dec hull(representation_dec const& x,
-                               representation_dec const& y);
+                                   representation_dec const& y);
 
 ///@}
 
@@ -704,7 +742,7 @@ public:
     ///
     ///
     static representation_dec fma(representation_dec const& x, representation_dec const& y,
-                              representation_dec const& z );
+                                  representation_dec const& z );
 
 //TODO notwendig?
 //    static representation interval_case(representation const& c,
@@ -874,7 +912,7 @@ public:
     ///
     ///
     static representation_dec atan2(representation_dec const& y,
-                                representation_dec const& x);
+                                    representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1016,7 +1054,7 @@ public:
     ///
     ///
     static representation_dec min(representation_dec const& x,
-                              representation_dec const& y);
+                                  representation_dec const& y);
 
     /// \todo TODO
     ///
@@ -1028,7 +1066,7 @@ public:
     ///
     ///
     static representation_dec max(representation_dec const& x,
-                              representation_dec const& y);
+                                  representation_dec const& y);
 
 ///@}
 
@@ -1045,13 +1083,13 @@ public:
     ///
     ///
     static std::pair<representation,representation> div_to_pair(representation const& x,
-                                  representation const& y);
+            representation const& y);
 
     /// \todo TODO
     ///
     ///
     static std::pair<representation_dec,representation_dec> div_to_pair(representation_dec const& x,
-                                  representation_dec const& y);
+            representation_dec const& y);
 
 ///@}
 
@@ -1074,7 +1112,7 @@ public:
     ///
     ///
     static representation_dec sqr_rev(representation_dec const& c,
-                                  representation_dec const& x);
+                                      representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1090,13 +1128,13 @@ public:
     ///
     ///
     static representation recip_rev(representation const& c,
-                                  representation const& x);
+                                    representation const& x);
 
     /// \todo TODO
     ///
     ///
     static representation_dec recip_rev(representation_dec const& c,
-                                  representation_dec const& x);
+                                        representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1118,7 +1156,7 @@ public:
     ///
     ///
     static representation_dec abs_rev(representation_dec const& c,
-                                  representation_dec const& x);
+                                      representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1141,8 +1179,8 @@ public:
     ///
     ///
     static representation_dec pown_rev(representation_dec const& c,
-                                   representation_dec const& x,
-                                   int n);
+                                       representation_dec const& x,
+                                       int n);
 
     /// \todo TODO
     ///
@@ -1154,7 +1192,7 @@ public:
     ///
     ///
     static representation_dec pown_rev(representation_dec const& x,
-                                   int n);
+                                       int n);
 
     /// \todo TODO
     ///
@@ -1166,7 +1204,7 @@ public:
     ///
     ///
     static representation_dec sin_rev(representation_dec const& c,
-                                  representation_dec const& x);
+                                      representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1188,7 +1226,7 @@ public:
     ///
     ///
     static representation_dec cos_rev(representation_dec const& c,
-                                  representation_dec const& x);
+                                      representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1210,7 +1248,7 @@ public:
     ///
     ///
     static representation_dec tan_rev(representation_dec const& c,
-                                  representation_dec const& x);
+                                      representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1232,7 +1270,7 @@ public:
     ///
     ///
     static representation_dec cosh_rev(representation_dec const& c,
-                                   representation_dec const& x);
+                                       representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1255,8 +1293,8 @@ public:
     ///
     ///
     static representation_dec mul_rev(representation_dec const& b,
-                                  representation_dec const& c,
-                                  representation_dec const& x);
+                                      representation_dec const& c,
+                                      representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1268,7 +1306,7 @@ public:
     ///
     ///
     static representation_dec mul_rev(representation_dec const& c,
-                                  representation_dec const& x);
+                                      representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1281,8 +1319,8 @@ public:
     ///
     ///
     static representation_dec div_rev1(representation_dec const& b,
-                                   representation_dec const& c,
-                                   representation_dec const& x);
+                                       representation_dec const& c,
+                                       representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1294,7 +1332,7 @@ public:
     ///
     ///
     static representation_dec div_rev1(representation_dec const& c,
-                                   representation_dec const& x);
+                                       representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1307,8 +1345,8 @@ public:
     ///
     ///
     static representation_dec div_rev2(representation_dec const& a,
-                                   representation_dec const& c,
-                                   representation_dec const& x);
+                                       representation_dec const& c,
+                                       representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1320,7 +1358,7 @@ public:
     ///
     ///
     static representation_dec div_rev2(representation_dec const& c,
-                                   representation_dec const& x);
+                                       representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1333,8 +1371,8 @@ public:
     ///
     ///
     static representation_dec pow_rev1(representation_dec const& b,
-                                   representation_dec const& c,
-                                   representation_dec const& x);
+                                       representation_dec const& c,
+                                       representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1346,7 +1384,7 @@ public:
     ///
     ///
     static representation_dec pow_rev1(representation_dec const& c,
-                                   representation_dec const& x);
+                                       representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1359,8 +1397,8 @@ public:
     ///
     ///
     static representation_dec pow_rev2(representation_dec const& a,
-                                   representation_dec const& c,
-                                   representation_dec const& x);
+                                       representation_dec const& c,
+                                       representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1372,7 +1410,7 @@ public:
     ///
     ///
     static representation_dec pow_rev2(representation_dec const& c,
-                                   representation_dec const& x);
+                                       representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1385,8 +1423,8 @@ public:
     ///
     ///
     static representation_dec atan2_rev1(representation_dec const& b,
-                                     representation_dec const& c,
-                                     representation_dec const& x);
+                                         representation_dec const& c,
+                                         representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1398,7 +1436,7 @@ public:
     ///
     ///
     static representation_dec atan2_rev1(representation_dec const& c,
-                                     representation_dec const& x);
+                                         representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1411,8 +1449,8 @@ public:
     ///
     ///
     static representation_dec atan2_rev2(representation_dec const& a,
-                                     representation_dec const& c,
-                                     representation_dec const& x);
+                                         representation_dec const& c,
+                                         representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -1424,7 +1462,7 @@ public:
     ///
     ///
     static representation_dec atan2_rev2(representation_dec const& c,
-                                     representation_dec  const& x);
+                                         representation_dec  const& x);
 
 ///@}
 
@@ -1447,7 +1485,7 @@ public:
     ///
     ///
     static representation_dec cancel_plus(representation_dec const& a,
-                                      representation_dec const& b);
+                                          representation_dec const& b);
 
     /// \todo TODO
     ///
@@ -1459,7 +1497,7 @@ public:
     ///
     ///
     static representation_dec cancel_minus(representation_dec const& a,
-                                       representation_dec const& b);
+                                           representation_dec const& b);
 
 ///@}
 
@@ -1552,7 +1590,7 @@ public:
     ///
     ///
     static representation_dec compoundm1(representation_dec const&,
-                                     representation_dec const&);
+                                         representation_dec const&);
 
     /// \todo TODO
     ///
@@ -1564,7 +1602,7 @@ public:
     ///
     ///
     static representation_dec hypot(representation_dec const&,
-                                representation_dec const&);
+                                    representation_dec const&);
 
     /// \todo TODO
     ///
@@ -1646,7 +1684,7 @@ public:
     ///
     ///
     static representation_dec atan2_pi(representation_dec const&,
-                                   representation_dec const&);
+                                       representation_dec const&);
 
 ///@}
 

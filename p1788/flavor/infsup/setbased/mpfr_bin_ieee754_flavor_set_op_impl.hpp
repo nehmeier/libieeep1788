@@ -51,6 +51,27 @@ mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation
                               std::min(x.second, y.second));
 }
 
+
+template<typename T>
+template<typename T1_, typename T2_>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation_type<T1_> const& x,
+                          mpfr_bin_ieee754_flavor<T>::representation_type<T2_> const& y)
+{
+        static_assert(std::numeric_limits<T1_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+        static_assert(std::numeric_limits<T2_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+        typedef typename p1788::util::max_precision_type<T,T1_,T2_>::type T_MAX;
+
+        return convert_hull(
+                   mpfr_bin_ieee754_flavor<T_MAX>::intersect(
+                       mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x),
+                       mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(y)
+                   )
+               );
+}
+
+
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation_dec const&,

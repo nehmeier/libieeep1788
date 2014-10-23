@@ -39,3 +39,11 @@
 ///
 /// \li <b>Round to nearest</b>  baz
 
+
+
+/// \page pageFlavor Flavor requrements
+///
+/// \li <c>typedef representation</c>
+/// \li <c>typedef representation_dec</c>
+
+

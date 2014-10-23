@@ -48,11 +48,9 @@ mpfr_bin_ieee754_flavor<T>::is_empty(mpfr_bin_ieee754_flavor<T>::representation 
 
 template<typename T>
 bool
-mpfr_bin_ieee754_flavor<T>::is_empty(mpfr_bin_ieee754_flavor<T>::representation_dec const&)
+mpfr_bin_ieee754_flavor<T>::is_empty(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
+    return std::isnan(x.first.first) && std::isnan(x.first.second) && x.second == p1788::decoration::decoration::trv;
 }
 
 

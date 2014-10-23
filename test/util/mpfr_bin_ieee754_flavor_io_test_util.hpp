@@ -44,6 +44,12 @@ namespace std
         return s;
     }
 
+    ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<long double>::representation const& r)
+    {
+        s << '<' << r.first << ',' << r.second << '>';
+        return s;
+    }
+
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<float>::representation_dec const& r)
     {
         s << r.first << '_' << r.second;
@@ -51,6 +57,12 @@ namespace std
     }
 
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<double>::representation_dec const& r)
+    {
+        s << r.first << '_' << r.second;
+        return s;
+    }
+
+    ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<long double>::representation_dec const& r)
     {
         s << r.first << '_' << r.second;
         return s;

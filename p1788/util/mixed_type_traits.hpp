@@ -105,7 +105,7 @@ class type_precision_order
                   "Type is not supported!");
 };
 
-
+// TODO notwendig?
 template<typename... Types> class max_precision_interval_type
 {
     static_assert(sizeof...(Types) > 0,
@@ -113,6 +113,7 @@ template<typename... Types> class max_precision_interval_type
 };
 
 
+// TODO notwendig?
 template<typename First, typename Second, typename... Tail>
 class max_precision_interval_type<First, Second, Tail...>
 {
@@ -131,12 +132,52 @@ public:
     >::type type;
 };
 
+// TODO notwendig?
 template<typename Type>
 class max_precision_interval_type<Type>
 {
 public:
     typedef Type type;
 };
+
+
+
+
+
+template<typename... Types> class max_precision_type
+{
+    static_assert(sizeof...(Types) > 0,
+                  "max_precision_interval_type for an empty argument list!");
+};
+
+
+template<typename First, typename Second, typename... Tail>
+class max_precision_type<First, Second, Tail...>
+{
+public:
+    static_assert(std::is_same<typename type_precision_order<First>::value_type,
+                  typename type_precision_order<Second>::value_type>::value,
+                  "Different type groups!");
+
+    typedef typename max_precision_type<
+    typename std::conditional<
+    (type_precision_order<First>::value > type_precision_order<Second>::value),
+    First,
+    Second
+    >::type,
+    Tail...
+    >::type type;
+};
+
+template<typename Type>
+class max_precision_type<Type>
+{
+public:
+    typedef Type type;
+};
+
+
+
 
 
 

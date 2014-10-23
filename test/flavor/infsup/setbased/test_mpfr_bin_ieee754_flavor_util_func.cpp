@@ -28,7 +28,9 @@
 
 #include <string>
 #include <limits>
+#include "p1788/decoration/decoration.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor.hpp"
+#include "test/util/mpfr_bin_ieee754_flavor_io_test_util.hpp"
 
 template<typename T>
 using F = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>;
@@ -40,7 +42,8 @@ const float MAX_F = std::numeric_limits<float>::max();
 const double DNORM_MIN_D = std::numeric_limits<double>::denorm_min();
 const float DNORM_MIN_F = std::numeric_limits<float>::denorm_min();
 
-
+const double NAN_D = std::numeric_limits<double>::quiet_NaN();
+const float NAN_F = std::numeric_limits<float>::quiet_NaN();
 
 BOOST_AUTO_TEST_CASE(minimal_convert_rndd)
 {
@@ -76,6 +79,11 @@ BOOST_AUTO_TEST_CASE(minimal_convert_rndd)
     BOOST_CHECK_EQUAL(F<float>::convert_rndd(INF_F), INF_F);
     BOOST_CHECK_EQUAL(F<double>::convert_rndd(-INF_F), -INF_D);
     BOOST_CHECK_EQUAL(F<float>::convert_rndd(-INF_F), -INF_F);
+
+    BOOST_CHECK( std::isnan( F<double>::convert_rndd(NAN_D) ));
+    BOOST_CHECK( std::isnan( F<float>::convert_rndd(NAN_D) ));
+    BOOST_CHECK( std::isnan( F<double>::convert_rndd(NAN_F) ));
+    BOOST_CHECK( std::isnan( F<float>::convert_rndd(NAN_F) ));
 }
 
 
@@ -113,7 +121,13 @@ BOOST_AUTO_TEST_CASE(minimal_convert_rndn)
     BOOST_CHECK_EQUAL(F<float>::convert_rndn(INF_F), INF_F);
     BOOST_CHECK_EQUAL(F<double>::convert_rndn(-INF_F), -INF_D);
     BOOST_CHECK_EQUAL(F<float>::convert_rndn(-INF_F), -INF_F);
+
+    BOOST_CHECK( std::isnan( F<double>::convert_rndn(NAN_D) ));
+    BOOST_CHECK( std::isnan( F<float>::convert_rndn(NAN_D) ));
+    BOOST_CHECK( std::isnan( F<double>::convert_rndn(NAN_F) ));
+    BOOST_CHECK( std::isnan( F<float>::convert_rndn(NAN_F) ));
 }
+
 
 BOOST_AUTO_TEST_CASE(minimal_convert_rndu)
 {
@@ -148,4 +162,109 @@ BOOST_AUTO_TEST_CASE(minimal_convert_rndu)
     BOOST_CHECK_EQUAL(F<float>::convert_rndu(INF_F), INF_F);
     BOOST_CHECK_EQUAL(F<double>::convert_rndu(-INF_F), -INF_D);
     BOOST_CHECK_EQUAL(F<float>::convert_rndu(-INF_F), -INF_F);
+
+    BOOST_CHECK( std::isnan( F<double>::convert_rndu(NAN_D) ));
+    BOOST_CHECK( std::isnan( F<float>::convert_rndu(NAN_D) ));
+    BOOST_CHECK( std::isnan( F<double>::convert_rndu(NAN_F) ));
+    BOOST_CHECK( std::isnan( F<float>::convert_rndu(NAN_F) ));
+}
+
+
+BOOST_AUTO_TEST_CASE(minimal_convert_hull)
+{
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")) ), F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")) ), F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")) ), F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")) ), F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<float>::representation(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")) ), F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")));
+
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(-DNORM_MIN_D, -DNORM_MIN_D) ), F<double>::representation(-DNORM_MIN_D, -DNORM_MIN_D));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(-DNORM_MIN_D, DNORM_MIN_D) ), F<double>::representation(-DNORM_MIN_D, DNORM_MIN_D));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(DNORM_MIN_D, DNORM_MIN_D) ), F<double>::representation(DNORM_MIN_D, DNORM_MIN_D));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<float>::representation(DNORM_MIN_F, DNORM_MIN_F) ), F<double>::representation(DNORM_MIN_F, DNORM_MIN_F));
+
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(-MAX_D, -MAX_D) ), F<double>::representation(-MAX_D, -MAX_D));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(-MAX_D, MAX_D) ), F<double>::representation(-MAX_D, MAX_D));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(MAX_D, MAX_D) ), F<double>::representation(MAX_D, MAX_D));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<float>::representation(MAX_F, MAX_F) ), F<double>::representation(MAX_F, MAX_F));
+
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation(-INF_D, INF_D) ), F<double>::representation(-INF_D, INF_D));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<float>::representation(-INF_F, INF_F) ), F<double>::representation(-INF_D, INF_D));
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::convert_hull( F<double>::representation(NAN_D, NAN_D) )));
+    BOOST_CHECK( F<double>::is_empty(F<double>::convert_hull( F<float>::representation(NAN_D, NAN_D) )));
+
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")) ), F<float>::representation(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")) ), F<float>::representation(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")) ), F<float>::representation(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")) ), F<float>::representation(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<float>::representation(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")) ), F<float>::representation(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")));
+
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(-DNORM_MIN_D, -DNORM_MIN_D) ), F<float>::representation(-DNORM_MIN_F,+0.0));
+    BOOST_CHECK( !std::signbit( F<float>::convert_hull( F<double>::representation(-DNORM_MIN_D, -DNORM_MIN_D) ).second ));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(-DNORM_MIN_D, DNORM_MIN_D) ), F<float>::representation(-DNORM_MIN_F, DNORM_MIN_F));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(DNORM_MIN_D, DNORM_MIN_D) ), F<float>::representation(-0.0, DNORM_MIN_F));
+    BOOST_CHECK( std::signbit( F<float>::convert_hull( F<double>::representation(DNORM_MIN_D, DNORM_MIN_D) ).first ));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<float>::representation(DNORM_MIN_F, DNORM_MIN_F) ), F<float>::representation(DNORM_MIN_F, DNORM_MIN_F));
+
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(-MAX_D, -MAX_D) ), F<float>::representation(-INF_F, -MAX_F));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(-MAX_D, MAX_D) ), F<float>::representation(-INF_F, INF_F));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(MAX_D, MAX_D) ), F<float>::representation(MAX_F, INF_F));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<float>::representation(MAX_F, MAX_F) ), F<float>::representation(MAX_F, MAX_F));
+
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation(-INF_D, INF_D) ), F<float>::representation(-INF_F, INF_F));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<float>::representation(-INF_F, INF_F) ), F<float>::representation(-INF_F, INF_F));
+
+    BOOST_CHECK( F<float>::is_empty(F<float>::convert_hull( F<double>::representation(NAN_D, NAN_D) )));
+    BOOST_CHECK( F<float>::is_empty(F<float>::convert_hull( F<float>::representation(NAN_D, NAN_D) )));
+}
+
+
+BOOST_AUTO_TEST_CASE(minimal_convert_hull_dec)
+{
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::com) ), F<double>::representation_dec( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::com));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::dac) ), F<double>::representation_dec( F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::dac));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::def) ), F<double>::representation_dec( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::def));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<float>::representation_dec( F<float>::representation(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::trv));
+
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(-DNORM_MIN_D, -DNORM_MIN_D), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(-DNORM_MIN_D, -DNORM_MIN_D), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(-DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(-DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<float>::representation_dec( F<float>::representation(DNORM_MIN_F, DNORM_MIN_F), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(DNORM_MIN_F, DNORM_MIN_F), p1788::decoration::decoration::trv));
+
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(-MAX_D, -MAX_D), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(-MAX_D, -MAX_D), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(-MAX_D, MAX_D), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(-MAX_D, MAX_D), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(MAX_D, MAX_D), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(MAX_D, MAX_D), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<float>::representation_dec( F<float>::representation(MAX_F, MAX_F), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(MAX_F, MAX_F), p1788::decoration::decoration::trv));
+
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<double>::representation_dec( F<double>::representation(-INF_D, INF_D), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(-INF_D, INF_D), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( F<float>::representation_dec( F<float>::representation(-INF_F, INF_F), p1788::decoration::decoration::trv) ), F<double>::representation_dec( F<double>::representation(-INF_D, INF_D), p1788::decoration::decoration::trv));
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::convert_hull( F<double>::representation_dec(F<double>::representation(NAN_D, NAN_D), p1788::decoration::decoration::trv) )));
+    BOOST_CHECK( F<double>::is_empty(F<double>::convert_hull( F<float>::representation_dec(F<float>::representation(NAN_D, NAN_D), p1788::decoration::decoration::trv) )));
+
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::com) ), F<float>::representation_dec( F<float>::representation(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), p1788::decoration::decoration::com));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::dac) ), F<float>::representation_dec( F<float>::representation(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), p1788::decoration::decoration::dac));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::def) ), F<float>::representation_dec( F<float>::representation(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), p1788::decoration::decoration::def));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<float>::representation_dec( F<float>::representation(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")), p1788::decoration::decoration::trv));
+
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(-DNORM_MIN_D, -DNORM_MIN_D), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(-DNORM_MIN_F,+0.0), p1788::decoration::decoration::trv));
+    BOOST_CHECK( !std::signbit( F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(-DNORM_MIN_D, -DNORM_MIN_D), p1788::decoration::decoration::trv) ).first.second ));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(-DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(-DNORM_MIN_F, DNORM_MIN_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(-0.0, DNORM_MIN_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK( std::signbit( F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv) ).first.first ));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<float>::representation_dec( F<float>::representation(DNORM_MIN_F, DNORM_MIN_F), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(DNORM_MIN_F, DNORM_MIN_F), p1788::decoration::decoration::trv));
+
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(-MAX_D, -MAX_D), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(-INF_F, -MAX_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(-MAX_D, MAX_D), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(-INF_F, INF_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(MAX_D, MAX_D), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(MAX_F, INF_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<float>::representation_dec( F<float>::representation(MAX_F, MAX_F), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(MAX_F, MAX_F), p1788::decoration::decoration::trv));
+
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<double>::representation_dec( F<double>::representation(-INF_D, INF_D), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(-INF_F, INF_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( F<float>::representation_dec( F<float>::representation(-INF_F, INF_F), p1788::decoration::decoration::trv) ), F<float>::representation_dec( F<float>::representation(-INF_F, INF_F), p1788::decoration::decoration::trv));
+
+    BOOST_CHECK( F<float>::is_empty(F<float>::convert_hull( F<double>::representation_dec(F<double>::representation(NAN_D, NAN_D), p1788::decoration::decoration::trv) )));
+    BOOST_CHECK( F<float>::is_empty(F<float>::convert_hull( F<float>::representation_dec(F<float>::representation(NAN_D, NAN_D), p1788::decoration::decoration::trv) )));
 }

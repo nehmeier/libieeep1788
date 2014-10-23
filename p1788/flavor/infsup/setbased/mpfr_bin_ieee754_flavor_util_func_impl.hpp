@@ -83,6 +83,28 @@ T mpfr_bin_ieee754_flavor<T>::convert_rndu(T_ x)
     return res == 0.0 ? +0.0 : res;     // maps +-0.0 to +0.0
 }
 
+
+template<typename T>
+template<typename T_>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::convert_hull(representation_type<T_> const& x)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    return representation(convert_rndd(x.first), convert_rndu(x.second));
+}
+
+template<typename T>
+template<typename T_>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::convert_hull(representation_dec_type<T_> const& x)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    return representation_dec(representation(convert_rndd(x.first.first), convert_rndu(x.first.second)), x.second);
+}
+
+
 } // namespace setbased
 
 } // namespace infsup
