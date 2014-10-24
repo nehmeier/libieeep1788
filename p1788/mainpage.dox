@@ -33,6 +33,11 @@
 
 /// \page pageAccuracy Accuracy
 ///
+/// \li <b>Tightest</b>
+/// \li <b>Accurat</b>
+/// \li <b>Valid</b> 
+///
+///
 /// \li <b>Round toward positive</b> foo
 ///
 /// \li <b>Round toward negative</b> bar

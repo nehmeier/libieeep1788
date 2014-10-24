@@ -168,7 +168,7 @@ public:
     ///
     /// \return Largest number of type \p T \f$\leq\f$ \p x. It returns -0.0 in case of a zero.
     ///
-    /// \note \ref pageAccuracy "Accuracy:" Round toward negative follows the IEEE754 specification.
+    /// \note Round toward negative follows the IEEE754 specification.
     ///
     ///
     template<typename T_>
@@ -185,7 +185,7 @@ public:
     /// If \p x lies exactly in the middle of two consecutive numbers of type \p T than it is rounded to the one with least significant equal to zero.
     /// It returns +0.0 in case of a zero.
     ///
-    /// \note \ref pageAccuracy "Accuracy:" Round to nearest follows the IEEE754 specification.
+    /// \note Round to nearest follows the IEEE754 specification.
     ///
     ///
     template<typename T_>
@@ -200,7 +200,7 @@ public:
     ///
     /// \return Smallest number of type \p T \f$\geq\f$ \p x. It returns +0.0 in case of a zero.
     ///
-    /// \note \ref pageAccuracy "Accuracy:" Round toward positive follows the IEEE754 specification.
+    /// \note Round toward positive follows the IEEE754 specification.
     ///
     ///
     template<typename T_>
@@ -214,9 +214,10 @@ public:
     ///
     /// \param x Interval representation with the original bound type \p T_.
     ///
-    /// \return Smallest interval representation with bound type \p T containing \p x.
+    /// \return Tightest interval representation with bound type \p T containing \p x.
     ///
-    /// \note \ref pageAccuracy "Accuracy:" Outward rounding uses round toward negative and positive which follow the IEEE754 specification.
+    /// \note \ref pageAccuracy "Accuracy:" Tightest
+    /// \note Outward rounding uses round toward negative and positive which follow the IEEE754 specification.
     ///
     ///
     template<typename T_>
@@ -230,9 +231,10 @@ public:
     ///
     /// \param x Decorated interval representation with the original bound type \p T_.
     ///
-    /// \return Smallest decorated interval representation with bound type \p T containing \p x. The decoration is unchanged.
+    /// \return Tightest decorated interval representation with bound type \p T containing \p x. The decoration is unchanged.
     ///
-    /// \note \ref pageAccuracy "Accuracy:" Outward rounding uses round toward negative and positive which follow the IEEE754 specification.
+    /// \note \ref pageAccuracy "Accuracy:" Tightest
+    /// \note Outward rounding uses round toward negative and positive which follow the IEEE754 specification.
     ///
     ///
     template<typename T_>
@@ -444,25 +446,85 @@ public:
 ///
 ///@{
 
-    /// \todo TODO
+
+    /// \brief Infimum of a bare interval representation
     ///
+    /// \param x Interval representation
+    /// \return \li \f$+\infty\f$ if \p x is empty
+    ///         \li -0 if the lower bound of \p x is zero
+    ///         \li lower bound of \p x otherwise
     ///
     static T inf(representation const& x);
 
-    /// \todo TODO
+    /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::inf(representation const& x) inf\endlink</c>.
     ///
+    /// \param x Interval representation
+    /// \return Result of <c>\link mpfr_bin_ieee754_flavor::inf(representation const& x) inf\endlink</c> converted
+    ///         to the type \p T_ using rounding to \f$-\infty\f$.
+    ///
+    ///
+    template<typename T_>
+    static T inf(representation_type<T_> const& x);
+
+
+    /// \brief Infimum of a decorated interval representation
+    ///
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p is NaI
+    ///         \li \f$+\infty\f$ if \p x is empty
+    ///         \li -0 if the lower bound of \p x is zero
+    ///         \li lower bound of \p x otherwise
     ///
     static T inf(representation_dec const& x);
 
-    /// \todo TODO
+    /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::inf(representation_dec const& x) inf\endlink</c>.
     ///
+    /// \param x Decorated interval representation
+    /// \return Result of <c>\link mpfr_bin_ieee754_flavor::inf(representation_dec const& x) inf\endlink</c> converted
+    ///         to the type \p T_ using rounding to \f$-\infty\f$.
+    ///
+    ///
+    template<typename T_>
+    static T inf(representation_dec_type<T_> const& x);
+
+    /// \brief Supremum of a bare interval representation
+    ///
+    /// \param x Interval representation
+    /// \return \li \f$-\infty\f$ if \p x is empty
+    ///         \li +0 if the upper bound of \p x is zero
+    ///         \li upper bound of \p x otherwise
     ///
     static T sup(representation const& x);
 
-    /// \todo TODO
+    /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::sup(representation const& x) sup\endlink</c>.
     ///
+    /// \param x Interval representation
+    /// \return Result of <c>\link mpfr_bin_ieee754_flavor::sup(representation const& x) sup\endlink</c> converted
+    ///         to the type \p T_ using rounding to \f$+\infty\f$.
+    ///
+    ///
+    template<typename T_>
+    static T sup(representation_type<T_> const& x);
+
+    /// \brief Supremum of a decorated interval representation
+    ///
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p is NaI
+    ///         \li \f$-\infty\f$ if \p x is empty
+    ///         \li +0 if the upper bound of \p x is zero
+    ///         \li upper bound of \p x otherwise
     ///
     static T sup(representation_dec const& x);
+
+    /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::sup(representation_dec const& x) sup\endlink</c>.
+    ///
+    /// \param x Decorated interval representation
+    /// \return Result of <c>\link mpfr_bin_ieee754_flavor::sup(representation_dec const& x) sup\endlink</c> converted
+    ///         to the type \p T_ using rounding to \f$+\infty\f$.
+    ///
+    ///
+    template<typename T_>
+    static T sup(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -535,28 +597,44 @@ public:
 ///
 ///@{
 
-    /// \todo TODO
+
+    /// \brief Checks if \p x is a representation for an empty bare interval.
     ///
+    /// \param x Interval representation
+    /// \return \li <c>true</c> if x is a representation of an empty bare interval
+    ///         \li <c>false</c> otherwise.
     ///
     static bool is_empty(representation const& x);
 
-    /// \todo TODO
+    /// \brief Checks if \p x is a representation for an empty decorated interval.
     ///
+    /// \param x Decorated interval representation
+    /// \return \li <c>true</c> if x is a representation of an empty decorated interval
+    ///         \li <c>false</c> otherwise.
     ///
     static bool is_empty(representation_dec const& x);
 
-    /// \todo TODO
+    /// \brief Checks if \p x is a representation for an entire bare interval.
     ///
+    /// \param x Interval representation
+    /// \return \li <c>true</c> if x is a representation of an entire bare interval
+    ///         \li <c>false</c> otherwise.
     ///
     static bool is_entire(representation const& x);
 
-    /// \todo TODO
+    /// \brief Checks if \p x is a representation for an entire decorated interval.
     ///
+    /// \param x Interval representation
+    /// \return \li <c>true</c> if x is a representation of an entire decorated interval
+    ///         \li <c>false</c> otherwise.
     ///
     static bool is_entire(representation_dec const& x);
 
-    /// \todo TODO
+    /// \brief Checks if \p x is a representation for an ill-formed decorated interval (Not an Interval).
     ///
+    /// \param x Interval representation
+    /// \return \li <c>true</c> if x is a representation of NaI
+    ///         \li <c>false</c> otherwise.
     ///
     static bool is_nai(representation_dec const& x);
 

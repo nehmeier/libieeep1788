@@ -43,7 +43,8 @@ if(Boost_FOUND)
         set(P1788_TEST_FILES
             test_mpfr_bin_ieee754_flavor_bool_func.cpp
             test_mpfr_bin_ieee754_flavor_class.cpp
-            test_mpfr_bin_ieee754_flavor_set_op.cpp
+            test_mpfr_bin_ieee754_flavor_num_func.cpp
+            #test_mpfr_bin_ieee754_flavor_set_op.cpp
             test_mpfr_bin_ieee754_flavor_util_func.cpp
            )
 

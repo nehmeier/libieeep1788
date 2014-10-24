@@ -34,249 +34,317 @@
 template<typename T>
 using F = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>;
 
+template<typename T>
+using REP = typename F<T>::representation;
+
+template<typename T>
+using REP_DEC = typename F<T>::representation_dec;
+
+typedef p1788::decoration::decoration DEC;
 
 const double INF = std::numeric_limits<double>::infinity();
+const double NaN = std::numeric_limits<double>::quiet_NaN();
 
 BOOST_AUTO_TEST_CASE(minimal_is_empty_test)
 {
-    BOOST_CHECK( F<double>::is_empty(F<double>::empty()) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::entire()) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(-1.0,2.0)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(-3.0,-2.0)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(-INF,2.0)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(-INF,0.0)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(-INF,-0.0)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(0.0,INF)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(-0.0,INF)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(-0.0,0.0)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(0.0,-0.0)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( !F<double>::is_empty(F<double>::representation(-0.0,-0.0)) );
+    BOOST_CHECK( F<double>::is_empty(REP<double>(NaN,NaN)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(-INF,+INF)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(1.0,2.0)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(-1.0,2.0)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(-3.0,-2.0)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(-INF,2.0)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(-INF,0.0)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(-INF,-0.0)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(0.0,INF)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(-0.0,INF)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(-0.0,0.0)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(0.0,-0.0)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(0.0,0.0)) );
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(-0.0,-0.0)) );
 }
 
+BOOST_AUTO_TEST_CASE(minimal_is_empty_dec_test)
+{
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(NaN,NaN), DEC::ill)) );
+    BOOST_CHECK( F<double>::is_empty(REP_DEC<double>(REP<double>(NaN,NaN), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-INF,+INF), DEC::def)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(1.0,2.0), DEC::com)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-1.0,2.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-3.0,-2.0), DEC::dac)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-INF,2.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-INF,0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-INF,-0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(0.0,INF), DEC::def)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-0.0,INF), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-0.0,0.0), DEC::com)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(0.0,0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)) );
+}
 
 BOOST_AUTO_TEST_CASE(minimal_is_entire_test)
 {
-    BOOST_CHECK( !F<double>::is_entire(F<double>::empty()) );
-    BOOST_CHECK( F<double>::is_entire(F<double>::entire()) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(-1.0,2.0)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(-3.0,-2.0)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(-INF,2.0)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(-INF,0.0)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(-INF,-0.0)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(0.0,INF)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(-0.0,INF)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(-0.0,0.0)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(0.0,-0.0)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( !F<double>::is_entire(F<double>::representation(-0.0,-0.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(NaN,NaN)) );
+    BOOST_CHECK( F<double>::is_entire(REP<double>(-INF,+INF)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(1.0,2.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(-1.0,2.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(-3.0,-2.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(-INF,2.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(-INF,0.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(-INF,-0.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(0.0,INF)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(-0.0,INF)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(-0.0,0.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(0.0,-0.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(0.0,0.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(-0.0,-0.0)) );
 }
 
-BOOST_AUTO_TEST_CASE(minimal_is_equal_test)
+BOOST_AUTO_TEST_CASE(minimal_is_entire_dec_test)
 {
-    BOOST_CHECK( F<double>::is_equal(F<double>::representation(1.0,2.0), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( !F<double>::is_equal(F<double>::representation(1.0,2.1), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::empty(), F<double>::empty()) );
-    BOOST_CHECK( !F<double>::is_equal(F<double>::empty(), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::entire(), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::is_equal(F<double>::representation(1.0,2.4), F<double>::entire()) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::representation(1.0,INF), F<double>::representation(1.0,INF)) );
-    BOOST_CHECK( !F<double>::is_equal(F<double>::representation(1.0,2.4), F<double>::representation(1.0,INF)) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::representation(-INF,2.0), F<double>::representation(-INF,2.0)) );
-    BOOST_CHECK( !F<double>::is_equal(F<double>::representation(-INF,2.4), F<double>::representation(-INF,2.0)) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::representation(-2.0,0.0), F<double>::representation(-2.0,0.0)) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::representation(-0.0,2.0), F<double>::representation(0.0,2.0)) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::representation(-0.0,-0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::representation(-0.0,0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::is_equal(F<double>::representation(0.0,-0.0), F<double>::representation(0.0,0.0)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(NaN,NaN), DEC::ill)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(NaN,NaN), DEC::trv)) );
+    BOOST_CHECK( F<double>::is_entire(REP_DEC<double>(REP<double>(-INF,+INF), DEC::trv)) );
+    BOOST_CHECK( F<double>::is_entire(REP_DEC<double>(REP<double>(-INF,+INF), DEC::def)) );
+    BOOST_CHECK( F<double>::is_entire(REP_DEC<double>(REP<double>(-INF,+INF), DEC::dac)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(1.0,2.0), DEC::com)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(-1.0,2.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(-3.0,-2.0), DEC::dac)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(-INF,2.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(-INF,0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(-INF,-0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(0.0,INF), DEC::def)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(-0.0,INF), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(-0.0,0.0), DEC::com)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(0.0,0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)) );
 }
 
-
-BOOST_AUTO_TEST_CASE(minimal_subset_test)
+BOOST_AUTO_TEST_CASE(minimal_is_nai_dec_test)
 {
-    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::empty()) );
-    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::representation(-0.0,4.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::representation(-0.1,1.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::representation(-0.1,0.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::representation(-0.1,-0.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::empty(), F<double>::entire()) );
-
-    BOOST_CHECK( !F<double>::subset(F<double>::representation(0.0,4.0), F<double>::empty()) );
-    BOOST_CHECK( !F<double>::subset(F<double>::representation(-0.0,4.0), F<double>::empty()) );
-    BOOST_CHECK( !F<double>::subset(F<double>::representation(-0.1,1.0), F<double>::empty()) );
-    BOOST_CHECK( !F<double>::subset(F<double>::entire(), F<double>::empty()) );
-
-    BOOST_CHECK( F<double>::subset(F<double>::representation(0.0,4.0), F<double>::entire()) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(-0.0,4.0), F<double>::entire()) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(-0.1,1.0), F<double>::entire()) );
-    BOOST_CHECK( F<double>::subset(F<double>::entire(), F<double>::entire()) );
-
-    BOOST_CHECK( F<double>::subset(F<double>::representation(1.0,2.0), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(1.0,2.0), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(1.0,2.0), F<double>::representation(-0.0,4.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(0.1,0.2), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(0.1,0.2), F<double>::representation(-0.0,4.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(-0.1,-0.1), F<double>::representation(-4.0, 3.4)) );
-
-    BOOST_CHECK( F<double>::subset(F<double>::representation(0.0,0.0), F<double>::representation(-0.0,-0.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(-0.0,-0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(-0.0,0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(-0.0,0.0), F<double>::representation(0.0,-0.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(0.0,-0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::subset(F<double>::representation(0.0,-0.0), F<double>::representation(-0.0,0.0)) );
+    BOOST_CHECK( F<double>::is_nai(REP_DEC<double>(REP<double>(NaN,NaN), DEC::ill)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(NaN,NaN), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-INF,+INF), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-INF,+INF), DEC::def)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-INF,+INF), DEC::dac)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(1.0,2.0), DEC::com)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-1.0,2.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-3.0,-2.0), DEC::dac)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-INF,2.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-INF,0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-INF,-0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(0.0,INF), DEC::def)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-0.0,INF), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-0.0,0.0), DEC::com)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(0.0,0.0), DEC::trv)) );
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)) );
 }
 
-
-BOOST_AUTO_TEST_CASE(minimal_less_test)
-{
-    BOOST_CHECK( F<double>::less(F<double>::empty(), F<double>::empty()) );
-    BOOST_CHECK( !F<double>::less(F<double>::representation(1.0,2.0), F<double>::empty()) );
-    BOOST_CHECK( !F<double>::less(F<double>::empty(), F<double>::representation(1.0,2.0)) );
-
-    BOOST_CHECK( F<double>::less(F<double>::entire(), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::less(F<double>::representation(1.0,2.0), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::less(F<double>::representation(0.0,2.0), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::less(F<double>::representation(-0.0,2.0), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::less(F<double>::entire(), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( !F<double>::less(F<double>::entire(), F<double>::representation(0.0,2.0)) );
-    BOOST_CHECK( !F<double>::less(F<double>::entire(), F<double>::representation(-0.0,2.0)) );
-
-    BOOST_CHECK( F<double>::less(F<double>::representation(0.0,2.0), F<double>::representation(0.0,2.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(0.0,2.0), F<double>::representation(-0.0,2.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(0.0,2.0), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(-0.0,2.0), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(1.0,2.0), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(1.0,2.0), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(1.0,3.5), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(1.0,4.0), F<double>::representation(3.0,4.0)) );
-
-    BOOST_CHECK( F<double>::less(F<double>::representation(-2.0,-1.0), F<double>::representation(-2.0,-1.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(-3.0,-1.5), F<double>::representation(-2.0,-1.0)) );
-
-    BOOST_CHECK( F<double>::less(F<double>::representation(0.0,0.0), F<double>::representation(-0.0,-0.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(-0.0,-0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(-0.0,0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(-0.0,0.0), F<double>::representation(0.0,-0.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(0.0,-0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::less(F<double>::representation(0.0,-0.0), F<double>::representation(-0.0,0.0)) );
-}
-
-
-BOOST_AUTO_TEST_CASE(minimal_precedes_test)
-{
-    BOOST_CHECK( F<double>::precedes(F<double>::empty(), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(3.0,4.0), F<double>::empty()) );
-    BOOST_CHECK( F<double>::precedes(F<double>::empty(), F<double>::empty()) );
-
-
-    BOOST_CHECK( !F<double>::precedes(F<double>::representation(1.0,2.0), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::precedes(F<double>::representation(0.0,2.0), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::precedes(F<double>::representation(-0.0,2.0), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::precedes(F<double>::entire(), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( !F<double>::precedes(F<double>::entire(), F<double>::entire()) );
-
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(1.0,2.0), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(1.0,3.0), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(-3.0, -1.0), F<double>::representation(-1.0,0.0)) );
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(-3.0, -1.0), F<double>::representation(-1.0,-0.0)) );
-
-    BOOST_CHECK( !F<double>::precedes(F<double>::representation(1.0,3.5), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( !F<double>::precedes(F<double>::representation(1.0,4.0), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( !F<double>::precedes(F<double>::representation(-3.0, -0.1), F<double>::representation(-1.0,0.0)) );
-
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(0.0,0.0), F<double>::representation(-0.0,-0.0)) );
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(-0.0,-0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(-0.0,0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(-0.0,0.0), F<double>::representation(0.0,-0.0)) );
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(0.0,-0.0), F<double>::representation(0.0,0.0)) );
-    BOOST_CHECK( F<double>::precedes(F<double>::representation(0.0,-0.0), F<double>::representation(-0.0,0.0)) );
-}
-
-
-BOOST_AUTO_TEST_CASE(minimal_is_interior_test)
-{
-    BOOST_CHECK( F<double>::is_interior(F<double>::empty(), F<double>::empty()) );
-    BOOST_CHECK( F<double>::is_interior(F<double>::empty(), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( !F<double>::is_interior(F<double>::representation(0.0,4.0), F<double>::empty()) );
-
-    BOOST_CHECK( F<double>::is_interior(F<double>::entire(), F<double>::entire()) );
-    BOOST_CHECK( F<double>::is_interior(F<double>::representation(0.0,4.0), F<double>::entire()) );
-    BOOST_CHECK( F<double>::is_interior(F<double>::empty(), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::is_interior(F<double>::entire(), F<double>::representation(0.0,4.0)) );
-
-    BOOST_CHECK( !F<double>::is_interior(F<double>::representation(0.0,4.0), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( F<double>::is_interior(F<double>::representation(1.0,2.0), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( !F<double>::is_interior(F<double>::representation(-2.0,2.0), F<double>::representation(-2.0,4.0)) );
-    BOOST_CHECK( F<double>::is_interior(F<double>::representation(-0.0,-0.0), F<double>::representation(-2.0,4.0)) );
-    BOOST_CHECK( F<double>::is_interior(F<double>::representation(0.0,0.0), F<double>::representation(-2.0,4.0)) );
-    BOOST_CHECK( !F<double>::is_interior(F<double>::representation(0.0,0.0), F<double>::representation(-0.0,-0.0)) );
-
-    BOOST_CHECK( !F<double>::is_interior(F<double>::representation(0.0,4.4), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( !F<double>::is_interior(F<double>::representation(-1.0,-1.0), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( !F<double>::is_interior(F<double>::representation(2.0,2.0), F<double>::representation(-2.0,-1.0)) );
-}
-
-
-BOOST_AUTO_TEST_CASE(minimal_strictly_less_test)
-{
-    BOOST_CHECK( F<double>::strictly_less(F<double>::empty(), F<double>::empty()) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(1.0,2.0), F<double>::empty()) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::empty(), F<double>::representation(1.0,2.0)) );
-
-    BOOST_CHECK( F<double>::strictly_less(F<double>::entire(), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(1.0,2.0), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::entire(), F<double>::representation(1.0,2.0)) );
-
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(1.0,2.0), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( F<double>::strictly_less(F<double>::representation(1.0,2.0), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::strictly_less(F<double>::representation(1.0,3.5), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(1.0,4.0), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(0.0,4.0), F<double>::representation(0.0,4.0)) );
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(-0.0,4.0), F<double>::representation(0.0,4.0)) );
-
-    BOOST_CHECK( !F<double>::strictly_less(F<double>::representation(-2.0,-1.0), F<double>::representation(-2.0,-1.0)) );
-    BOOST_CHECK( F<double>::strictly_less(F<double>::representation(-3.0,-1.5), F<double>::representation(-2.0,-1.0)) );
-}
-
-
-BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_test)
-{
-    BOOST_CHECK( F<double>::strictly_precedes(F<double>::empty(), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::strictly_precedes(F<double>::representation(3.0,4.0), F<double>::empty()) );
-    BOOST_CHECK( F<double>::strictly_precedes(F<double>::empty(), F<double>::empty()) );
-
-
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(1.0,2.0), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::entire(), F<double>::representation(1.0,2.0)) );
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::entire(), F<double>::entire()) );
-
-    BOOST_CHECK( F<double>::strictly_precedes(F<double>::representation(1.0,2.0), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(1.0,3.0), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(-3.0, -1.0), F<double>::representation(-1.0,0.0)) );
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(-3.0, -0.0), F<double>::representation(0.0,1.0)) );
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(-3.0, 0.0), F<double>::representation(-0.0,1.0)) );
-
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(1.0,3.5), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(1.0,4.0), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( !F<double>::strictly_precedes(F<double>::representation(-3.0, -0.1), F<double>::representation(-1.0,0.0)) );
-}
-
-
-BOOST_AUTO_TEST_CASE(minimal_are_disjoint_test)
-{
-    BOOST_CHECK( F<double>::are_disjoint(F<double>::empty(), F<double>::representation(3.0,4.0)) );
-    BOOST_CHECK( F<double>::are_disjoint(F<double>::representation(3.0,4.0), F<double>::empty()) );
-    BOOST_CHECK( F<double>::are_disjoint(F<double>::empty(), F<double>::empty()) );
-
-    BOOST_CHECK( F<double>::are_disjoint(F<double>::representation(3.0,4.0), F<double>::representation(1.0,2.0)) );
-
-    BOOST_CHECK( !F<double>::are_disjoint(F<double>::representation(0.0,0.0), F<double>::representation(-0.0,-0.0)) );
-    BOOST_CHECK( !F<double>::are_disjoint(F<double>::representation(0.0,-0.0), F<double>::representation(-0.0,0.0)) );
-    BOOST_CHECK( !F<double>::are_disjoint(F<double>::representation(3.0,4.0), F<double>::representation(1.0,7.0)) );
-    BOOST_CHECK( !F<double>::are_disjoint(F<double>::representation(3.0,4.0), F<double>::entire()) );
-    BOOST_CHECK( !F<double>::are_disjoint(F<double>::entire(), F<double>::representation(1.0,7.0)) );
-    BOOST_CHECK( !F<double>::are_disjoint(F<double>::entire(), F<double>::entire()) );
-}
+//BOOST_AUTO_TEST_CASE(minimal_is_equal_test)
+//{
+//    BOOST_CHECK( F<double>::is_equal(REP<double>(1.0,2.0), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( !F<double>::is_equal(REP<double>(1.0,2.1), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( F<double>::is_equal(REP<double>(NaN,NaN), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( !F<double>::is_equal(REP<double>(NaN,NaN), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( F<double>::is_equal(REP<double>(-INF,+INF), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::is_equal(REP<double>(1.0,2.4), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( F<double>::is_equal(REP<double>(1.0,INF), REP<double>(1.0,INF)) );
+//    BOOST_CHECK( !F<double>::is_equal(REP<double>(1.0,2.4), REP<double>(1.0,INF)) );
+//    BOOST_CHECK( F<double>::is_equal(REP<double>(-INF,2.0), REP<double>(-INF,2.0)) );
+//    BOOST_CHECK( !F<double>::is_equal(REP<double>(-INF,2.4), REP<double>(-INF,2.0)) );
+//    BOOST_CHECK( F<double>::is_equal(REP<double>(-2.0,0.0), REP<double>(-2.0,0.0)) );
+//    BOOST_CHECK( F<double>::is_equal(REP<double>(-0.0,2.0), REP<double>(0.0,2.0)) );
+//    BOOST_CHECK( F<double>::is_equal(REP<double>(-0.0,-0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::is_equal(REP<double>(-0.0,0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::is_equal(REP<double>(0.0,-0.0), REP<double>(0.0,0.0)) );
+//}
+//
+//
+//BOOST_AUTO_TEST_CASE(minimal_subset_test)
+//{
+//    BOOST_CHECK( F<double>::subset(REP<double>(NaN,NaN), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(NaN,NaN), REP<double>(0.0,4.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(NaN,NaN), REP<double>(-0.0,4.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(NaN,NaN), REP<double>(-0.1,1.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(NaN,NaN), REP<double>(-0.1,0.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(NaN,NaN), REP<double>(-0.1,-0.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(NaN,NaN), REP<double>(-INF,+INF)) );
+//
+//    BOOST_CHECK( !F<double>::subset(REP<double>(0.0,4.0), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( !F<double>::subset(REP<double>(-0.0,4.0), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( !F<double>::subset(REP<double>(-0.1,1.0), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( !F<double>::subset(REP<double>(-INF,+INF), REP<double>(NaN,NaN)) );
+//
+//    BOOST_CHECK( F<double>::subset(REP<double>(0.0,4.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(-0.0,4.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(-0.1,1.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(-INF,+INF), REP<double>(-INF,+INF)) );
+//
+//    BOOST_CHECK( F<double>::subset(REP<double>(1.0,2.0), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(1.0,2.0), REP<double>(0.0,4.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(1.0,2.0), REP<double>(-0.0,4.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(0.1,0.2), REP<double>(0.0,4.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(0.1,0.2), REP<double>(-0.0,4.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(-0.1,-0.1), REP<double>(-4.0, 3.4)) );
+//
+//    BOOST_CHECK( F<double>::subset(REP<double>(0.0,0.0), REP<double>(-0.0,-0.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(-0.0,-0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(-0.0,0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(-0.0,0.0), REP<double>(0.0,-0.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(0.0,-0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::subset(REP<double>(0.0,-0.0), REP<double>(-0.0,0.0)) );
+//}
+//
+//
+//BOOST_AUTO_TEST_CASE(minimal_less_test)
+//{
+//    BOOST_CHECK( F<double>::less(REP<double>(NaN,NaN), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( !F<double>::less(REP<double>(1.0,2.0), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( !F<double>::less(REP<double>(NaN,NaN), REP<double>(1.0,2.0)) );
+//
+//    BOOST_CHECK( F<double>::less(REP<double>(-INF,+INF), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::less(REP<double>(1.0,2.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::less(REP<double>(0.0,2.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::less(REP<double>(-0.0,2.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::less(REP<double>(-INF,+INF), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( !F<double>::less(REP<double>(-INF,+INF), REP<double>(0.0,2.0)) );
+//    BOOST_CHECK( !F<double>::less(REP<double>(-INF,+INF), REP<double>(-0.0,2.0)) );
+//
+//    BOOST_CHECK( F<double>::less(REP<double>(0.0,2.0), REP<double>(0.0,2.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(0.0,2.0), REP<double>(-0.0,2.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(0.0,2.0), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(-0.0,2.0), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(1.0,2.0), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(1.0,2.0), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(1.0,3.5), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(1.0,4.0), REP<double>(3.0,4.0)) );
+//
+//    BOOST_CHECK( F<double>::less(REP<double>(-2.0,-1.0), REP<double>(-2.0,-1.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(-3.0,-1.5), REP<double>(-2.0,-1.0)) );
+//
+//    BOOST_CHECK( F<double>::less(REP<double>(0.0,0.0), REP<double>(-0.0,-0.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(-0.0,-0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(-0.0,0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(-0.0,0.0), REP<double>(0.0,-0.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(0.0,-0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::less(REP<double>(0.0,-0.0), REP<double>(-0.0,0.0)) );
+//}
+//
+//
+//BOOST_AUTO_TEST_CASE(minimal_precedes_test)
+//{
+//    BOOST_CHECK( F<double>::precedes(REP<double>(NaN,NaN), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( F<double>::precedes(REP<double>(3.0,4.0), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( F<double>::precedes(REP<double>(NaN,NaN), REP<double>(NaN,NaN)) );
+//
+//
+//    BOOST_CHECK( !F<double>::precedes(REP<double>(1.0,2.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::precedes(REP<double>(0.0,2.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::precedes(REP<double>(-0.0,2.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::precedes(REP<double>(-INF,+INF), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( !F<double>::precedes(REP<double>(-INF,+INF), REP<double>(-INF,+INF)) );
+//
+//    BOOST_CHECK( F<double>::precedes(REP<double>(1.0,2.0), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( F<double>::precedes(REP<double>(1.0,3.0), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( F<double>::precedes(REP<double>(-3.0, -1.0), REP<double>(-1.0,0.0)) );
+//    BOOST_CHECK( F<double>::precedes(REP<double>(-3.0, -1.0), REP<double>(-1.0,-0.0)) );
+//
+//    BOOST_CHECK( !F<double>::precedes(REP<double>(1.0,3.5), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( !F<double>::precedes(REP<double>(1.0,4.0), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( !F<double>::precedes(REP<double>(-3.0, -0.1), REP<double>(-1.0,0.0)) );
+//
+//    BOOST_CHECK( F<double>::precedes(REP<double>(0.0,0.0), REP<double>(-0.0,-0.0)) );
+//    BOOST_CHECK( F<double>::precedes(REP<double>(-0.0,-0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::precedes(REP<double>(-0.0,0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::precedes(REP<double>(-0.0,0.0), REP<double>(0.0,-0.0)) );
+//    BOOST_CHECK( F<double>::precedes(REP<double>(0.0,-0.0), REP<double>(0.0,0.0)) );
+//    BOOST_CHECK( F<double>::precedes(REP<double>(0.0,-0.0), REP<double>(-0.0,0.0)) );
+//}
+//
+//
+//BOOST_AUTO_TEST_CASE(minimal_is_interior_test)
+//{
+//    BOOST_CHECK( F<double>::is_interior(REP<double>(NaN,NaN), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( F<double>::is_interior(REP<double>(NaN,NaN), REP<double>(0.0,4.0)) );
+//    BOOST_CHECK( !F<double>::is_interior(REP<double>(0.0,4.0), REP<double>(NaN,NaN)) );
+//
+//    BOOST_CHECK( F<double>::is_interior(REP<double>(-INF,+INF), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( F<double>::is_interior(REP<double>(0.0,4.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( F<double>::is_interior(REP<double>(NaN,NaN), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::is_interior(REP<double>(-INF,+INF), REP<double>(0.0,4.0)) );
+//
+//    BOOST_CHECK( !F<double>::is_interior(REP<double>(0.0,4.0), REP<double>(0.0,4.0)) );
+//    BOOST_CHECK( F<double>::is_interior(REP<double>(1.0,2.0), REP<double>(0.0,4.0)) );
+//    BOOST_CHECK( !F<double>::is_interior(REP<double>(-2.0,2.0), REP<double>(-2.0,4.0)) );
+//    BOOST_CHECK( F<double>::is_interior(REP<double>(-0.0,-0.0), REP<double>(-2.0,4.0)) );
+//    BOOST_CHECK( F<double>::is_interior(REP<double>(0.0,0.0), REP<double>(-2.0,4.0)) );
+//    BOOST_CHECK( !F<double>::is_interior(REP<double>(0.0,0.0), REP<double>(-0.0,-0.0)) );
+//
+//    BOOST_CHECK( !F<double>::is_interior(REP<double>(0.0,4.4), REP<double>(0.0,4.0)) );
+//    BOOST_CHECK( !F<double>::is_interior(REP<double>(-1.0,-1.0), REP<double>(0.0,4.0)) );
+//    BOOST_CHECK( !F<double>::is_interior(REP<double>(2.0,2.0), REP<double>(-2.0,-1.0)) );
+//}
+//
+//
+//BOOST_AUTO_TEST_CASE(minimal_strictly_less_test)
+//{
+//    BOOST_CHECK( F<double>::strictly_less(REP<double>(NaN,NaN), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( !F<double>::strictly_less(REP<double>(1.0,2.0), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( !F<double>::strictly_less(REP<double>(NaN,NaN), REP<double>(1.0,2.0)) );
+//
+//    BOOST_CHECK( F<double>::strictly_less(REP<double>(-INF,+INF), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::strictly_less(REP<double>(1.0,2.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::strictly_less(REP<double>(-INF,+INF), REP<double>(1.0,2.0)) );
+//
+//    BOOST_CHECK( !F<double>::strictly_less(REP<double>(1.0,2.0), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( F<double>::strictly_less(REP<double>(1.0,2.0), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( F<double>::strictly_less(REP<double>(1.0,3.5), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( !F<double>::strictly_less(REP<double>(1.0,4.0), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( !F<double>::strictly_less(REP<double>(0.0,4.0), REP<double>(0.0,4.0)) );
+//    BOOST_CHECK( !F<double>::strictly_less(REP<double>(-0.0,4.0), REP<double>(0.0,4.0)) );
+//
+//    BOOST_CHECK( !F<double>::strictly_less(REP<double>(-2.0,-1.0), REP<double>(-2.0,-1.0)) );
+//    BOOST_CHECK( F<double>::strictly_less(REP<double>(-3.0,-1.5), REP<double>(-2.0,-1.0)) );
+//}
+//
+//
+//BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_test)
+//{
+//    BOOST_CHECK( F<double>::strictly_precedes(REP<double>(NaN,NaN), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( F<double>::strictly_precedes(REP<double>(3.0,4.0), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( F<double>::strictly_precedes(REP<double>(NaN,NaN), REP<double>(NaN,NaN)) );
+//
+//
+//    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(1.0,2.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(-INF,+INF), REP<double>(1.0,2.0)) );
+//    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(-INF,+INF), REP<double>(-INF,+INF)) );
+//
+//    BOOST_CHECK( F<double>::strictly_precedes(REP<double>(1.0,2.0), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(1.0,3.0), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(-3.0, -1.0), REP<double>(-1.0,0.0)) );
+//    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(-3.0, -0.0), REP<double>(0.0,1.0)) );
+//    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(-3.0, 0.0), REP<double>(-0.0,1.0)) );
+//
+//    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(1.0,3.5), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(1.0,4.0), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(-3.0, -0.1), REP<double>(-1.0,0.0)) );
+//}
+//
+//
+//BOOST_AUTO_TEST_CASE(minimal_are_disjoint_test)
+//{
+//    BOOST_CHECK( F<double>::are_disjoint(REP<double>(NaN,NaN), REP<double>(3.0,4.0)) );
+//    BOOST_CHECK( F<double>::are_disjoint(REP<double>(3.0,4.0), REP<double>(NaN,NaN)) );
+//    BOOST_CHECK( F<double>::are_disjoint(REP<double>(NaN,NaN), REP<double>(NaN,NaN)) );
+//
+//    BOOST_CHECK( F<double>::are_disjoint(REP<double>(3.0,4.0), REP<double>(1.0,2.0)) );
+//
+//    BOOST_CHECK( !F<double>::are_disjoint(REP<double>(0.0,0.0), REP<double>(-0.0,-0.0)) );
+//    BOOST_CHECK( !F<double>::are_disjoint(REP<double>(0.0,-0.0), REP<double>(-0.0,0.0)) );
+//    BOOST_CHECK( !F<double>::are_disjoint(REP<double>(3.0,4.0), REP<double>(1.0,7.0)) );
+//    BOOST_CHECK( !F<double>::are_disjoint(REP<double>(3.0,4.0), REP<double>(-INF,+INF)) );
+//    BOOST_CHECK( !F<double>::are_disjoint(REP<double>(-INF,+INF), REP<double>(1.0,7.0)) );
+//    BOOST_CHECK( !F<double>::are_disjoint(REP<double>(-INF,+INF), REP<double>(-INF,+INF)) );
+//}

@@ -39,6 +39,7 @@ namespace infsup
 namespace setbased
 {
 
+// is_empty ( bare interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::is_empty(mpfr_bin_ieee754_flavor<T>::representation const& x)
@@ -46,14 +47,15 @@ mpfr_bin_ieee754_flavor<T>::is_empty(mpfr_bin_ieee754_flavor<T>::representation 
     return std::isnan(x.first) && std::isnan(x.second);
 }
 
+// is_empty ( decorated interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::is_empty(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    return std::isnan(x.first.first) && std::isnan(x.first.second) && x.second == p1788::decoration::decoration::trv;
+    return x.second != p1788::decoration::decoration::ill && is_empty(x.first);
 }
 
-
+// is_entire ( bare interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::is_entire(mpfr_bin_ieee754_flavor<T>::representation const& x)
@@ -62,22 +64,20 @@ mpfr_bin_ieee754_flavor<T>::is_entire(mpfr_bin_ieee754_flavor<T>::representation
            && x.second == std::numeric_limits<T>::infinity();
 }
 
+// is_entire ( decorated interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::is_entire(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
+    return is_entire(x.first);
 }
 
+// is_nai ( decorated interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::is_nai(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return false;
+    return std::isnan(x.first.first) && std::isnan(x.first.second) && x.second == p1788::decoration::decoration::ill;
 }
 
 template<typename T>

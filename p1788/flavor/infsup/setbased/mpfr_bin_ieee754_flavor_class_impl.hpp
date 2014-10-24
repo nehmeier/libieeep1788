@@ -319,6 +319,7 @@ mpfr_bin_ieee754_flavor<T>::method_decoration(mpfr_bin_ieee754_flavor<T>::repres
 // Interval constants
 // -----------------------------------------------------------------------------
 
+// empty bare interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::empty()
@@ -327,6 +328,7 @@ mpfr_bin_ieee754_flavor<T>::empty()
                           std::numeric_limits<T>::quiet_NaN());
 }
 
+// empty decorated interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::empty_dec()
@@ -335,6 +337,7 @@ mpfr_bin_ieee754_flavor<T>::empty_dec()
                           std::numeric_limits<T>::quiet_NaN()), p1788::decoration::decoration::trv);
 }
 
+// entire bare interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::entire()
@@ -343,6 +346,7 @@ mpfr_bin_ieee754_flavor<T>::entire()
                           std::numeric_limits<T>::infinity());
 }
 
+// entire decorated interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::entire_dec()
@@ -351,6 +355,7 @@ mpfr_bin_ieee754_flavor<T>::entire_dec()
                           std::numeric_limits<T>::infinity()), p1788::decoration::decoration::dac);
 }
 
+// nai decorated interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::nai()

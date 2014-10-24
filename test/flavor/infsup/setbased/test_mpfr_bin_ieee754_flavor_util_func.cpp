@@ -28,6 +28,7 @@
 
 #include <string>
 #include <limits>
+#include <cmath>
 #include "p1788/decoration/decoration.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor.hpp"
 #include "test/util/mpfr_bin_ieee754_flavor_io_test_util.hpp"

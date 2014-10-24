@@ -38,6 +38,7 @@ namespace infsup
 namespace setbased
 {
 
+// convert T_ to T with rounding to -oo
 template<typename T>
 template<typename T_>
 T mpfr_bin_ieee754_flavor<T>::convert_rndd(T_ x)
@@ -53,6 +54,7 @@ T mpfr_bin_ieee754_flavor<T>::convert_rndd(T_ x)
     return res == 0.0 ? -0.0 : res;     // maps +-0.0 to -0.0
 }
 
+// convert T_ to T with rounding to nearest
 template<typename T>
 template<typename T_>
 T mpfr_bin_ieee754_flavor<T>::convert_rndn(T_ x)
@@ -68,6 +70,7 @@ T mpfr_bin_ieee754_flavor<T>::convert_rndn(T_ x)
     return res == 0.0 ? +0.0 : res;     // maps +-0.0 to +0.0
 }
 
+// convert T_ to T with rounding to +oo
 template<typename T>
 template<typename T_>
 T mpfr_bin_ieee754_flavor<T>::convert_rndu(T_ x)
@@ -84,6 +87,7 @@ T mpfr_bin_ieee754_flavor<T>::convert_rndu(T_ x)
 }
 
 
+// convert bare interval with bounds T_ to bare interval with bounds T with outward rounding
 template<typename T>
 template<typename T_>
 typename mpfr_bin_ieee754_flavor<T>::representation
@@ -94,6 +98,7 @@ mpfr_bin_ieee754_flavor<T>::convert_hull(representation_type<T_> const& x)
     return representation(convert_rndd(x.first), convert_rndu(x.second));
 }
 
+// convert decorated interval with bounds T_ to decorated interval with bounds T with outward rounding
 template<typename T>
 template<typename T_>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
