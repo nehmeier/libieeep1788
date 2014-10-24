@@ -250,7 +250,19 @@ private:
 // Boolean functions on intervals
 // -----------------------------------------------------------------------------
 
-//TODO 12.12.9
+    /// \brief Checks if an interval \p x is NaI
+    ///
+    /// The computation is delegated to the static function
+    /// <c>Flavor<T>::is_nai(representation_dec const& x)</c>
+    /// of the policy class <c>Flavor<T></c> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param  x   interval
+    /// \retval true    \p x is NaI
+    /// \retval false   otherwise
+    ///
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) \endlink</c>
+    ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend bool is_nai(decorated_interval<T_, Flavor_> const&);
 

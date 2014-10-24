@@ -32,29 +32,6 @@ namespace p1788
 namespace infsup
 {
 
-
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// \name Boolean functions on intervals, see P1788/D7.0 Sect. 9.6.10
-//
-//@{
-
-
-// \brief Check if an interval <B>x</B> is the empty set
-//
-// <B>Required by IEEE P1788</B>
-//
-// The computation is delegated to the static function
-// \code
-// Flavor<T>::is_empty(Flavor<T>::representation const&)
-// \endcode
-// of the policy class <TT>Flavor<T></TT> by passing only the internal
-// representation of the interval.
-//
-// \param x   interval
-// \retval true    <B>x</B> is the empty set
-// \retval false   otherwise
-//
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 bool is_empty(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
     return Flavor<T>::is_empty(x.rep_);
