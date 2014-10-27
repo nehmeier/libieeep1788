@@ -58,39 +58,66 @@ using namespace p1788::infsup;
 //    std::cin >> dec;
 //    std::cout << dec << std::endl;
 
-    I<float> x = static_cast<I<float>>(id_a);
-    std::cout << x << std::endl;
-    I<double> y = static_cast<I<double>>(if_a);
-    std::cout << y << std::endl;
-    I<float> z(id_a);
-    std::cout << z << std::endl << std::endl;
+//    I<float> x = static_cast<I<float>>(id_a);
+//    std::cout << x << std::endl;
+//    I<double> y = static_cast<I<double>>(if_a);
+//    std::cout << y << std::endl;
+//    I<float> z(id_a);
+//    std::cout << z << std::endl << std::endl;
+//
+//    std::cout << intersect(id_a, id_c) << std::endl;
+//    std::cout << I<float>::intersect(id_a, if_a) << std::endl;
+//    std::cout << intersect(dd_a, dd_c) << std::endl;
+//    std::cout << DI<float>::intersect(dd_a, df_a) << std::endl;
+//
+//    std::cout << hull(id_a, id_c) << std::endl;
+//    std::cout << I<float>::hull(id_a, if_a) << std::endl;
+//    std::cout << hull(dd_a, dd_c) << std::endl;
+//    std::cout << DI<float>::hull(dd_a, df_a) << std::endl << std::endl;
 
-    std::cout << intersect(id_a, id_c) << std::endl;
-    std::cout << I<float>::intersect(id_a, if_a) << std::endl;
-    std::cout << intersect(dd_a, dd_c) << std::endl;
-    std::cout << DI<float>::intersect(dd_a, df_a) << std::endl;
-
-    std::cout << hull(id_a, id_c) << std::endl;
-    std::cout << I<float>::hull(id_a, if_a) << std::endl;
-    std::cout << hull(dd_a, dd_c) << std::endl;
-    std::cout << DI<float>::hull(dd_a, df_a) << std::endl << std::endl;
-
-    I<double> a(1.0,  2.3);
-    double m = mid(a);
-    double r = rad(a);
-    //I<double> b = I<double>(m) + I<double>(-r,r);
-
-    //std::cout << b << std::endl;
-    //std::cout << subset(a,b) << std::endl;
+    //printf("%f %A\n\n", std::numeric_limits<double>::max(), std::numeric_limits<double>::max());
 
 
-    printf("%f %A\n\n", m, m);
-    printf("%f %A\n\n", F<float>::convert_rndd(m), F<float>::convert_rndd(m));
-    printf("%f %A\n\n", F<float>::convert_rndn(m), F<float>::convert_rndn(m));
-    printf("%f %A\n\n", F<float>::convert_rndu(m), F<float>::convert_rndu(m));
-    printf("%f %A\n\n\n", I<float>::mid(a), I<float>::mid(a));
+    I<double> a(0X1.FFFFFCP+127,  0X1.FFFFFFP+127);
+    double m_d = mid(a);
+    double r_d = rad(a);
+    I<double> b_d = I<double>(m_d) + I<double>(-r_d,r_d);
 
-    printf("%f %A\n\n", r, r);
+    std::cout << b_d << std::endl;
+    std::cout << subset(a,b_d) << std::endl << std::endl;
+
+    double m_f =  I<float>::mid(a);
+    double r_fd = F<float>::convert_rndu(rad(a));
+    I<double> b_fd = I<double>(m_f) + I<double>(-r_fd,r_fd);
+
+    std::cout << b_fd << std::endl;
+    std::cout << subset(a,b_fd) << std::endl << std::endl;
+
+    double r_f = I<float>::rad(a);
+    I<double> b_f = I<double>(m_f) + I<double>(-r_f,r_f);
+
+    std::cout << b_f << std::endl;
+    std::cout << subset(a,b_f) << std::endl << std::endl;
+
+    std::cout << overlap(a, b_d) << std::endl;      // equal
+    std::cout << overlap(a, b_fd) << std::endl;     // overlaps
+    std::cout << overlap(a, b_f) << std::endl;      // starts
+    std::cout << overlap(b_d, b_fd) << std::endl;   // overlaps
+    std::cout << overlap(b_d, b_f) << std::endl;    // starts
+    std::cout << overlap(b_fd, b_f) << std::endl;   // contained_by
+
+
+//    printf("%f %A\n\n", m, m);
+//    printf("%f %A\n\n", F<float>::convert_rndd(m), F<float>::convert_rndd(m));
+//    printf("%f %A\n\n", F<float>::convert_rndn(m), F<float>::convert_rndn(m));
+//    printf("%f %A\n\n", F<float>::convert_rndu(m), F<float>::convert_rndu(m));
+//    printf("%f %A\n\n\n", I<float>::mid(a), I<float>::mid(a));
+//
+//    printf("%f %A\n\n", r, r);
+//    printf("%f %A\n\n", F<float>::convert_rndd(r), F<float>::convert_rndd(r));
+//    printf("%f %A\n\n", F<float>::convert_rndn(r), F<float>::convert_rndn(r));
+//    printf("%f %A\n\n", F<float>::convert_rndu(r), F<float>::convert_rndu(r));
+//    printf("%f %A\n\n\n", I<float>::rad(a), I<float>::rad(a));
     //std::cout << (0X1.FFFFFFFFFFFFFP+1023 - 0X1.FFFFFFFFFFFFCP+1023) / 2 << std::endl;
 
 

@@ -42,20 +42,20 @@ if(Boost_FOUND)
         # relevant test files of this directory
         set(P1788_TEST_FILES
             #test_bool_func.cpp
-            #test_set_op.cpp
-            #test_num_func.cpp
-            #test_elem_func.cpp
-            #test_class.cpp
             #test_cancel_func.cpp
+            #test_class.cpp
+            #test_dec_class.cpp
+            #test_dec_rec_bool_func.cpp
             #test_div_pair_func.cpp
-            #test_io.cpp
-            #test_rec_bool_func.cpp
             #test_rec_elem_func.cpp
             #test_rec_overlap.cpp
             #test_rec_slope_func.cpp
             #test_rev_elem_func.cpp
-            #test_dec_class.cpp
-            #test_dec_rec_bool_func.cpp
+            #test_set_op.cpp
+            #test_num_func.cpp
+            #test_elem_func.cpp
+            #test_io.cpp
+            #test_rec_bool_func.cpp
            )
 
         # relative path of this directory

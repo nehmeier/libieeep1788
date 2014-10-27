@@ -35,39 +35,7 @@ namespace infsup
 {
 
 
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// \name Non-arithmetic set operations, see P1788/D7.1 Sect. 9.6.7
-//
-//@{
-
-
-// \brief Intersection of two intervals <B>x</B> and <B>y</B>
-//
-// <B>Required by IEEE P1788</B>
-//
-// The intersection of two intervals <B>x</B>  and <B>y</B> is defined as:
-// \f[
-//    \mathbf{x} \cap \mathbf{y}
-// \f]
-//
-// The computation is delegated to the static function
-// \code
-// Flavor<T>::intersect(Flavor<T>::representation const&, Flavor<T>::representation const&)
-// \endcode
-// of the policy class <TT>Flavor<T></TT> by passing only the internal
-// representation of the intervals.
-//
-//
-// \see #intersect(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
-//
-// \param x interval
-// \param y interval
-// \return intersection of <B>x</B>  and <B>y</B>
-//
-
-
-
+// intersect( base_interval, base_interval )
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval
 intersect(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {
@@ -75,7 +43,7 @@ intersect(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_int
 }
 
 
-
+// intersect( base_interval, base_interval ) mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
 ConcreteInterval
@@ -92,51 +60,19 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::intersect(base_interval<T1_, F
                     "interval and decorated_interval types together!"
                    );
 
-    typedef typename p1788::util::max_precision_interval_type<
-        ConcreteInterval,
-        ConcreteInterval1_,
-        ConcreteInterval2_
-             >::type Interval_max;
-
-    return ConcreteInterval(
-                p1788::infsup::intersect(static_cast<Interval_max>(x),static_cast<Interval_max>(y))
-            );
+    // call of mixed type version
+    return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::intersect(x.rep_, y.rep_));
 }
 
 
-
-
-
-// \brief Interval hull of two intervals <B>x</B> and <B>y</B>
-//
-// <B>Required by IEEE P1788</B>
-//
-// The interval hull of two intervals <B>x</B>  and <B>y</B> is defined as:
-// \f[
-//    \operatorname{hull}(\mathbf{x} \cup\mathbf{y})
-// \f]
-//
-// The computation is delegated to the static function
-// \code
-// Flavor<T>::intersect(Flavor<T>::representation const&, Flavor<T>::representation const&)
-// \endcode
-// of the policy class <TT>Flavor<T></TT> by passing only the internal
-// representation of the intervals.
-//
-//
-// \see #hull(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
-//
-// \param x interval
-// \param y interval
-// \return interval hull of <B>x</B>  and <B>y</B>
-//
+// hull( base_interval, base_interval )
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval
 hull(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {
     return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::hull(x.rep_, y.rep_));
 }
 
-
+// hull( base_interval, base_interval ) mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
 ConcreteInterval
@@ -153,18 +89,9 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::hull(base_interval<T1_, Flavor
                     "interval and decorated_interval types together!"
                    );
 
-    typedef typename p1788::util::max_precision_interval_type<
-        ConcreteInterval,
-        ConcreteInterval1_,
-        ConcreteInterval2_
-             >::type Interval_max;
-
-    return ConcreteInterval(
-                p1788::infsup::hull(static_cast<Interval_max>(x),static_cast<Interval_max>(y))
-            );
+    // call of mixed type version
+    return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::hull(x.rep_, y.rep_));
 }
-
-//@}
 
 
 

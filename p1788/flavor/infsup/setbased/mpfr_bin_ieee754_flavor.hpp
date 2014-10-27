@@ -70,7 +70,7 @@ class mpfr_bin_ieee754_flavor
 
     static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-protected:
+public:
 
     // Typedef for the corresponding mpfr wrapper class representing the IEEE 754 binary floating point format of type T
     typedef p1788::util::mpfr_var<
@@ -104,7 +104,7 @@ protected:
     template<typename TT>
     using representation_dec_type = std::pair<representation_type<TT>, p1788::decoration::decoration>;
 
-public:
+
 
 // -----------------------------------------------------------------------------
 // Typed for internal representation
@@ -396,6 +396,8 @@ public:
 
 // -----------------------------------------------------------------------------
 // Set operations
+//
+// p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_set_op_impl.hpp
 // -----------------------------------------------------------------------------
 
 ///@name Set operations
@@ -403,37 +405,58 @@ public:
 ///
 ///@{
 
-    /// \todo TODO
+    /// \todo Docu, Test
     ///
     ///
     static representation intersect(representation const& x,
                                     representation const& y);
 
 
-    /// \todo TODO
+    /// \todo Docu, Test
     ///
     ///
     template<typename T1_, typename T2_>
     static representation intersect(representation_type<T1_> const& x,
                                     representation_type<T2_> const& y);
 
-    /// \todo TODO
+    /// \todo Docu, Test
     ///
     ///
     static representation_dec intersect(representation_dec const& x,
                                         representation_dec const& y);
 
-    /// \todo TODO
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T1_, typename T2_>
+    static representation_dec intersect(representation_dec_type<T1_> const& x,
+                                        representation_dec_type<T2_> const& y);
+
+    /// \todo Docu, Test
     ///
     ///
     static representation hull(representation const& x,
                                representation const& y);
 
-    /// \todo TODO
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T1_, typename T2_>
+    static representation hull(representation_type<T1_> const& x,
+                               representation_type<T2_> const& y);
+
+    /// \todo Docu, Test
     ///
     ///
     static representation_dec hull(representation_dec const& x,
                                    representation_dec const& y);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T1_, typename T2_>
+    static representation_dec hull(representation_dec_type<T1_> const& x,
+                                   representation_dec_type<T2_> const& y);
 
 ///@}
 
@@ -526,65 +549,138 @@ public:
     template<typename T_>
     static T sup(representation_dec_type<T_> const& x);
 
-    /// \todo TODO
+    /// \todo Docu, Test
     ///
     ///
     static T mid(representation const& x);
 
-    /// \todo TODO
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T_>
+    static T mid(representation_type<T_> const& x);
+
+    /// \todo Docu, Test
     ///
     ///
     static T mid(representation_dec const& x);
 
-    /// \todo TODO
+    /// \todo Docu, Test
     ///
     ///
-    static T wid(representation const& x);
+    template<typename T_>
+    static T mid(representation_dec_type<T_> const& x);
 
-    /// \todo TODO
-    ///
-    ///
-    static T wid(representation_dec const& x);
-
-    /// \todo TODO
+    /// \todo Docu, Test
     ///
     ///
     static T rad(representation const& x);
 
-    /// \todo TODO
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T_>
+    static T rad(representation_type<T_> const& x);
+
+    /// \todo Docu, Test
     ///
     ///
     static T rad(representation_dec const& x);
 
-    /// \todo TODO
+    /// \todo Docu, Test
     ///
     ///
-    static T mag(representation const& x);
+    template<typename T_>
+    static T rad(representation_dec_type<T_> const& x);
 
-    /// \todo TODO
-    ///
-    ///
-    static T mag(representation_dec const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    static T mig(representation const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    static T mig(representation_dec const& x);
-
-    /// \todo TODO
+    /// \todo Docu, Test
     ///
     ///
     static std::pair<T, T> mid_rad(representation const& x);
 
-    /// \todo TODO
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T_>
+    static std::pair<T, T> mid_rad(representation_type<T_> const& x);
+
+
+    /// \todo Docu, Test
     ///
     ///
     static std::pair<T, T> mid_rad(representation_dec const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T_>
+    static std::pair<T, T> mid_rad(representation_dec_type<T_> const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    static T wid(representation const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T_>
+    static T wid(representation_type<T_> const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    static T wid(representation_dec const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T_>
+    static T wid(representation_dec_type<T_> const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    static T mag(representation const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T_>
+    static T mag(representation_type<T_> const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    static T mag(representation_dec const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T_>
+    static T mag(representation_dec_type<T_> const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    static T mig(representation const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T_>
+    static T mig(representation_type<T_> const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    static T mig(representation_dec const& x);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T_>
+    static T mig(representation_dec_type<T_> const& x);
 
 ///@}
 

@@ -41,30 +41,32 @@ namespace overlapping
 //
 enum class overlapping_state
 {
-    both_empty,
-    first_empty,
-    second_empty,
-    before,
-    meets,
-    overlaps,
-    starts,
-    contained_by,
-    finishes,
-    equal,
-    finished_by,
-    contains,
-    started_by,
-    overlapped_by,
-    met_by,
-    after
+    both_empty = 0,
+    first_empty = 1,
+    second_empty = 2,
+    before = 3,
+    meets = 4,
+    overlaps = 5,
+    starts = 6,
+    contained_by = 7,
+    finishes = 8,
+    equal = 9,
+    finished_by = 10,
+    contains = 11,
+    started_by = 12,
+    overlapped_by = 13,
+    met_by = 14,
+    after = 15
 };
 
+std::string overlapping_map[] = { "both_empty", "first_empty", "second_empty", "before", "meets",
+    "overlaps", "starts", "contained_by", "finishes", "equal", "finished_by", "contains", "started_by",
+    "overlapped_by", "met_by", "after" };
 
 template<typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(
     std::basic_ostream<CharT, Traits>& os, overlapping_state o) {
-    return os << static_cast<unsigned int>(o);
-
+    return os << overlapping_map[static_cast<typename std::underlying_type<overlapping_state>::type>(o)];
 }
 
 

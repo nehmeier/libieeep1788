@@ -200,55 +200,104 @@ public:
 // Non-arithmetic set operations
 // -----------------------------------------------------------------------------
 
-    /** \brief
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+///@name Set operations
+///
+///
+///@{
+
+
+// \brief Intersection of two intervals <B>x</B> and <B>y</B>
+//
+// <B>Required by IEEE P1788</B>
+//
+// The intersection of two intervals <B>x</B>  and <B>y</B> is defined as:
+// \f[
+//    \mathbf{x} \cap \mathbf{y}
+// \f]
+//
+// The computation is delegated to the static function
+// \code
+// Flavor<T>::intersect(Flavor<T>::representation const&, Flavor<T>::representation const&)
+// \endcode
+// of the policy class <TT>Flavor<T></TT> by passing only the internal
+// representation of the intervals.
+//
+//
+// \see #intersect(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+//
+// \param x interval
+// \param y interval
+// \return intersection of <B>x</B>  and <B>y</B>
+//
+
+
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend ConcreteInterval_
     intersect(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
-    /** \brief Mixed-type
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \brief Mixed-type
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
     static ConcreteInterval
     intersect(base_interval<T1_, Flavor, RepType1_, ConcreteInterval1_> const&, base_interval<T2_, Flavor, RepType2_, ConcreteInterval2_> const&);
 
-    /** \brief
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+
+// \brief Interval hull of two intervals <B>x</B> and <B>y</B>
+//
+// <B>Required by IEEE P1788</B>
+//
+// The interval hull of two intervals <B>x</B>  and <B>y</B> is defined as:
+// \f[
+//    \operatorname{hull}(\mathbf{x} \cup\mathbf{y})
+// \f]
+//
+// The computation is delegated to the static function
+// \code
+// Flavor<T>::intersect(Flavor<T>::representation const&, Flavor<T>::representation const&)
+// \endcode
+// of the policy class <TT>Flavor<T></TT> by passing only the internal
+// representation of the intervals.
+//
+//
+// \see #hull(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+//
+// \param x interval
+// \param y interval
+// \return interval hull of <B>x</B>  and <B>y</B>
+//
+
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend ConcreteInterval_
     hull(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
-    /** \brief Mixed-type
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \brief Mixed-type
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T1_, typename RepType1_, class ConcreteInterval1_, typename T2_, typename RepType2_, class ConcreteInterval2_>
     static ConcreteInterval
     hull(base_interval<T1_, Flavor, RepType1_, ConcreteInterval1_> const&, base_interval<T2_, Flavor, RepType2_, ConcreteInterval2_> const&);
+
+
+///@}
+
 
 // -----------------------------------------------------------------------------
 // Numeric functions on intervals
 // -----------------------------------------------------------------------------
 
-
+///@name Numeric functions on intervals
+///
+///
+///@{
 
 // -----------------------------------------------------------------------------
 // -----------------------------------------------------------------------------
@@ -281,8 +330,6 @@ public:
 // \param x interval
 // \return infimum of <B>x</B>
 //
-
-
 
 
     /// \brief Infimum of an interval \p x
@@ -394,23 +441,16 @@ public:
 // \return midpoint of <B>x</B>
 //
 
-    /** \brief
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ mid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
-    /** \brief Mixed-type
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \brief Mixed-type
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, typename RepType_, class ConcreteInterval_>
     static T mid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
@@ -440,23 +480,16 @@ public:
 // \param x interval
 // \return radius of <B>x</B>
 //
-    /** \brief
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
-    /** \brief Mixed-type
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \brief Mixed-type
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, typename RepType_, class ConcreteInterval_>
     static T rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
@@ -483,23 +516,16 @@ public:
 // \return std::pair<T,T> containing the midpoint (first value) and the radius (second value) of <B>x</B>
 //
 
-    /** \brief
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend std::pair<T_, T_> mid_rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
-    /** \brief Mixed-type
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \brief Mixed-type
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, typename RepType_, class ConcreteInterval_>
     static std::pair<T, T> mid_rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
@@ -526,23 +552,16 @@ public:
 // \param x interval
 // \return width of <B>x</B>
 //
-    /** \brief
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ wid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
-    /** \brief Mixed-type
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \brief Mixed-type
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, typename RepType_, class ConcreteInterval_>
     static T wid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
@@ -569,23 +588,16 @@ public:
 // \param x interval
 // \return magnitude of <B>x</B>
 //
-    /** \brief
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ mag(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
-    /** \brief Mixed-type
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \brief Mixed-type
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, typename RepType_, class ConcreteInterval_>
     static T mag(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
@@ -613,25 +625,21 @@ public:
 // \return mignutude of <B>x</B>
 //
 
-    /** \brief
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ mig(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
-    /** \brief Mixed-type
-     *
-     * \param
-     * \param
-     * \return
-     *
-     */
+    /// \brief Mixed-type
+    /// \todo Docu, Test
+    ///
+    ///
     template<typename T_, typename RepType_, class ConcreteInterval_>
     static T mig(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
+
+///@}
 
 
 // -----------------------------------------------------------------------------

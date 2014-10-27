@@ -64,7 +64,6 @@ std::basic_ostream<CharT, Traits>& operator<<(
     decoration dec)
 {
     return os << decoration_map[static_cast<typename std::underlying_type<decoration>::type>(dec)];
-
 }
 
 template<typename CharT, typename Traits>
