@@ -481,9 +481,10 @@ public:
 
     /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::inf(representation const& x) inf\endlink</c>.
     ///
+    /// \tparam T_ Bound type of the input interval representation
     /// \param x Interval representation
     /// \return Result of <c>\link mpfr_bin_ieee754_flavor::inf(representation const& x) inf\endlink</c> converted
-    ///         to the type \p T_ using rounding to \f$-\infty\f$.
+    ///         to the type \p T using rounding to \f$-\infty\f$.
     ///
     ///
     template<typename T_>
@@ -493,19 +494,19 @@ public:
     /// \brief Infimum of a decorated interval representation
     ///
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p is NaI
-    ///         \li \f$+\infty\f$ if \p x is empty
-    ///         \li -0 if the lower bound of \p x is zero
-    ///         \li lower bound of \p x otherwise
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::inf(representation const& x) inf\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static T inf(representation_dec const& x);
 
-    /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::inf(representation_dec const& x) inf\endlink</c>.
+    /// \brief Mixed-type version of the infimum of a decorated interval representation.
     ///
+    /// \tparam T_ Bound type of the input interval representation
     /// \param x Decorated interval representation
-    /// \return Result of <c>\link mpfr_bin_ieee754_flavor::inf(representation_dec const& x) inf\endlink</c> converted
-    ///         to the type \p T_ using rounding to \f$-\infty\f$.
-    ///
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::inf(representation_type<T_> const& x) inf\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     template<typename T_>
     static T inf(representation_dec_type<T_> const& x);
@@ -521,9 +522,10 @@ public:
 
     /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::sup(representation const& x) sup\endlink</c>.
     ///
+    /// \tparam T_ Bound type of the input interval representation
     /// \param x Interval representation
     /// \return Result of <c>\link mpfr_bin_ieee754_flavor::sup(representation const& x) sup\endlink</c> converted
-    ///         to the type \p T_ using rounding to \f$+\infty\f$.
+    ///         to the type \p T using rounding to \f$+\infty\f$.
     ///
     ///
     template<typename T_>
@@ -532,152 +534,262 @@ public:
     /// \brief Supremum of a decorated interval representation
     ///
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p is NaI
-    ///         \li \f$-\infty\f$ if \p x is empty
-    ///         \li +0 if the upper bound of \p x is zero
-    ///         \li upper bound of \p x otherwise
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::sup(representation const& x) sup\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static T sup(representation_dec const& x);
 
-    /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::sup(representation_dec const& x) sup\endlink</c>.
+    /// \brief Mixed-type version of the supremum of a decorated interval representation.
     ///
+    /// \tparam T_ Bound type of the input interval representation
     /// \param x Decorated interval representation
-    /// \return Result of <c>\link mpfr_bin_ieee754_flavor::sup(representation_dec const& x) sup\endlink</c> converted
-    ///         to the type \p T_ using rounding to \f$+\infty\f$.
-    ///
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::sup(representation_type<T_> const& x) sup\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     template<typename T_>
     static T sup(representation_dec_type<T_> const& x);
 
-    /// \todo Docu, Test
+    /// \brief Midpoint of a bare interval representation
     ///
+    /// \param x Interval representation
+    /// \return \li NaN if \p x is empty
+    ///         \li +0 if \p x is entire
+    ///         \li finite negative number with largest magnitude of type \p T if  \f$\underline{x} = -\infty\f$ and \f$\overline{x}\f$ is finite
+    ///         \li finite positive number with largest magnitude of type \p T if \f$\underline{x}\f$ is finite and \f$\overline{x} = +\infty\f$
+    ///         \li \f$(\underline{x} + \overline{x}) / 2\f$ rounded to the nearest number of type \p T if \f$\underline{x}, \overline{x}\f$ are both finite.
+    ///              It returns +0.0 in case of a zero
     ///
     static T mid(representation const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of the midpoint of a bare interval representation
     ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Interval representation
+    /// \return \li NaN if \p x is empty
+    ///         \li +0 if \p x is entire
+    ///         \li finite negative number with largest magnitude of type \p T if  \f$\underline{x} = -\infty\f$ and \f$\overline{x}\f$ is finite
+    ///         \li finite positive number with largest magnitude of type \p T if \f$\underline{x}\f$ is f inite and \f$\overline{x} = +\infty\f$
+    ///         \li \f$(\underline{x} + \overline{x}) / 2\f$ rounded to the nearest number of type \p T if \f$\underline{x}, \overline{x}\f$ are both finite.
+    ///              It returns +0.0 in case of a zero
     ///
     template<typename T_>
     static T mid(representation_type<T_> const& x);
 
-    /// \todo Docu, Test
+    /// \brief Midpoint of a decorated interval representation
     ///
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mid(representation const& x) mid\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static T mid(representation_dec const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of the midpoint of a decorated interval representation.
     ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mid(representation_type<T_> const& x) mid\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     template<typename T_>
     static T mid(representation_dec_type<T_> const& x);
 
-    /// \todo Docu, Test
+    /// \brief Radius of a bare interval representation
     ///
+    /// \param x Interval representation
+    /// \return \li NaN if \p x is empty
+    ///         \li smallest number of type \p T such that \f$mid(x) - rad(x) \leq \underline{x}\f$ and \f$\overline{x} \leq mid(x) + rad(x)\f$, otherwise.
+    ///              It returns +0.0 in case of a zero
     ///
     static T rad(representation const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::rad(representation const& x) rad\endlink</c>.
     ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Interval representation
+    /// \return \li NaN if \p x is empty
+    ///         \li smallest number of type \p T such that \f$mid(x) - rad(x) \leq \underline{x}\f$ and \f$\overline{x} \leq mid(x) + rad(x)\f$, otherwise.
+    ///              It returns +0.0 in case of a zero
     ///
     template<typename T_>
     static T rad(representation_type<T_> const& x);
 
-    /// \todo Docu, Test
+    /// \brief Radius of a decorated interval representation
     ///
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::rad(representation const& x) rad\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static T rad(representation_dec const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of the radius of a decorated interval representation.
     ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::rad(representation_type<T_> const& x) rad\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     template<typename T_>
     static T rad(representation_dec_type<T_> const& x);
 
-    /// \todo Docu, Test
+    /// \brief Midpoint and radius of a bare interval representation
     ///
+    /// \param x Interval representation
+    /// \return <c>std::pair<T,T></c> containing the results of <c>\link mpfr_bin_ieee754_flavor::mid(representation const& x) mid\endlink</c>
+    /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation const& x) rad\endlink</c>
     ///
     static std::pair<T, T> mid_rad(representation const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of the midpoint and radius of a bare interval representation.
     ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Interval representation
+    /// \return <c>std::pair<T,T></c> containing the results of <c>\link mpfr_bin_ieee754_flavor::mid(representation_type<T_> const& x) mid\endlink</c>
+    /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation_type<T_> const& x) rad\endlink</c>
     ///
     template<typename T_>
     static std::pair<T, T> mid_rad(representation_type<T_> const& x);
 
-
-    /// \todo Docu, Test
+    /// \brief Midpoint and radius of a decorated interval representation
     ///
+    /// \param x Decorated interval representation
+    /// \return <c>std::pair<T,T></c> containing the results of <c>\link mpfr_bin_ieee754_flavor::mid(representation_dec const& x) mid\endlink</c>
+    /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation_dec const& x) rad\endlink</c>
     ///
     static std::pair<T, T> mid_rad(representation_dec const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of the midpoint and radius of a decorated interval representation.
     ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Decorated interval representation
+    /// \return <c>std::pair<T,T></c> containing the results of <c>\link mpfr_bin_ieee754_flavor::mid(representation_dec_type<T_> const& x) mid\endlink</c>
+    /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation_dec_type<T_> const& x) rad\endlink</c>
     ///
     template<typename T_>
     static std::pair<T, T> mid_rad(representation_dec_type<T_> const& x);
 
-    /// \todo Docu, Test
+    /// \brief Width of a bare interval representation
     ///
+    /// \param x Interval representation
+    /// \return \li NaN if \p x is empty
+    ///         \li \f$\overline{x} -\underline{x}\f$ rounded upward, otherwise.
+    ///              It returns +0.0 in case of a zero
     ///
     static T wid(representation const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::wid(representation const& x) wid\endlink</c>.
+    ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Interval representation
+    /// \return Result of <c>\link mpfr_bin_ieee754_flavor::wid(representation const& x) wid\endlink</c> converted
+    ///         to the type \p T using rounding to \f$+\infty\f$.
     ///
     ///
     template<typename T_>
     static T wid(representation_type<T_> const& x);
 
-    /// \todo Docu, Test
+    /// \brief Width of a decorated interval representation
     ///
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::wid(representation const& x) wid\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static T wid(representation_dec const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of the width of a decorated interval representation.
     ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::wid(representation_type<T_> const& x) wid\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     template<typename T_>
     static T wid(representation_dec_type<T_> const& x);
 
-    /// \todo Docu, Test
+    /// \brief Magnitude of a bare interval representation
     ///
+    /// \param x Interval representation
+    /// \return \li NaN if \p x is empty
+    ///         \li \f$ sup \{ |x| \mid x \in \mathbf{x} \}\f$  rounded upward, otherwise.
+    ///              It returns +0.0 in case of a zero
     ///
     static T mag(representation const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::mag(representation const& x) mag\endlink</c>.
+    ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Interval representation
+    /// \return Result of <c>\link mpfr_bin_ieee754_flavor::mag(representation const& x) mag\endlink</c> converted
+    ///         to the type \p T using rounding to \f$+\infty\f$.
     ///
     ///
     template<typename T_>
     static T mag(representation_type<T_> const& x);
 
-    /// \todo Docu, Test
+    /// \brief Magnitude of a decorated interval representation
     ///
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mag(representation const& x) mag\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static T mag(representation_dec const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of the magnitude of a decorated interval representation.
     ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mag(representation_type<T_> const& x) mag\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     template<typename T_>
     static T mag(representation_dec_type<T_> const& x);
 
-    /// \todo Docu, Test
+
+    /// \brief Mignitude of a bare interval representation
     ///
+    /// \param x Interval representation
+    /// \return \li NaN if \p x is empty
+    ///         \li \f$ inf \{ |x| \mid x \in \mathbf{x} \}\f$  rounded downward, otherwise.
+    ///              It returns +0.0 in case of a zero
     ///
     static T mig(representation const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::mig(representation const& x) mig\endlink</c>.
+    ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Interval representation
+    /// \return Result of <c>\link mpfr_bin_ieee754_flavor::mig(representation const& x) mig\endlink</c> converted
+    ///         to the type \p T using rounding to \f$-\infty\f$.
     ///
     ///
     template<typename T_>
     static T mig(representation_type<T_> const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mignitude of a decorated interval representation
     ///
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mig(representation const& x) mig\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static T mig(representation_dec const& x);
 
-    /// \todo Docu, Test
+    /// \brief Mixed-type version of the mignitude of a decorated interval representation.
     ///
+    /// \tparam T_ Bound type of the input interval representation
+    /// \param x Decorated interval representation
+    /// \return \li NaN if \p x is NaI
+    ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mig(representation_type<T_> const& x) mig\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     template<typename T_>
     static T mig(representation_dec_type<T_> const& x);

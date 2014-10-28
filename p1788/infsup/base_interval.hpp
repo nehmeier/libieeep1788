@@ -299,38 +299,6 @@ public:
 ///
 ///@{
 
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// \name Numeric functions on intervals, see P1788/D7.1 Sect. 9.6.9
-//
-//@{
-
-// \brief Infimum of an interval <B>x</B>
-//
-// <B>Required by IEEE P1788</B>
-//
-// The infimum of an interval <B>x</B> is defined as:
-// \f[
-//    \operatorname{inf}(\mathbf{x}) = \begin{cases}
-//        \underline{x} & \text{if } \mathbf{x} \text{ is nonempty} \br
-//        +\infty & \text{if } \mathbf{x} \text{ is empty}
-//    \end{cases}
-// \f]
-//
-// The computation is delegated to the static function
-// \code
-// Flavor<T>::inf(Flavor<T>::representation const&)
-// \endcode
-// of the policy class <TT>Flavor<T></TT> by passing only the internal
-// representation of the interval.
-//
-//
-// \see interval<T,Flavor>.lower()
-//
-// \param x interval
-// \return infimum of <B>x</B>
-//
-
 
     /// \brief Infimum of an interval \p x
     ///
@@ -341,7 +309,7 @@ public:
     /// representation of the interval.
     ///
     /// \param  x   interval
-    /// \return \li NaN if \p is NaI
+    /// \return \li NaN if \p x is NaI
     ///         \li \f$+\infty\f$ if \p x is empty
     ///         \li -0 if the lower bound of \p x is zero
     ///         \li lower bound of \p x otherwise
@@ -350,7 +318,7 @@ public:
     /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::inf(representation_dec const& x) mpfr_bin_ieee754_flavor::inf(representation_dec const& x) \endlink</c>
     ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend T_ inf(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+    friend T_ inf(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x);
 
     /// \brief Mixed-type version of the infimum of an interval \p x
     ///
@@ -361,7 +329,7 @@ public:
     /// representation of the interval.
     ///
     /// \param  x   interval
-    /// \return \li NaN if \p is NaI
+    /// \return \li NaN if \p x is NaI
     ///         \li \f$+\infty\f$ if \p x is empty
     ///         \li -0 if the lower bound of \p x is zero
     ///         \li lower bound of \p x otherwise
@@ -370,7 +338,7 @@ public:
     /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::inf(representation_dec_type<T_> const& x) mpfr_bin_ieee754_flavor::inf(representation_dec_type<T_> const& x) \endlink</c>
     ///
     template<typename T_, typename RepType_, class ConcreteInterval_>
-    static T inf(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
+    static T inf(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x);
 
 
 
@@ -383,7 +351,7 @@ public:
     /// representation of the interval.
     ///
     /// \param  x   interval
-    /// \return \li NaN if \p is NaI
+    /// \return \li NaN if \p x is NaI
     ///         \li \f$-\infty\f$ if \p x is empty
     ///         \li +0 if the upper bound of \p x is zero
     ///         \li upper bound of \p x otherwise
@@ -392,7 +360,7 @@ public:
     /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::sup(representation_dec const& x) mpfr_bin_ieee754_flavor::sup(representation_dec const& x) \endlink</c>
     ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend T_ sup(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+    friend T_ sup(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x);
 
     /// \brief Mixed-type version of the supremum of an interval \p x
     ///
@@ -403,7 +371,7 @@ public:
     /// representation of the interval.
     ///
     /// \param  x   interval
-    /// \return \li NaN if \p is NaI
+    /// \return \li NaN if \p x is NaI
     ///         \li \f$-\infty\f$ if \p x is empty
     ///         \li +0 if the upper bound of \p x is zero
     ///         \li upper bound of \p x otherwise
@@ -412,40 +380,31 @@ public:
     /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::sup(representation_dec_type<T_> const& x) mpfr_bin_ieee754_flavor::sup(representation_dec_type<T_> const& x) \endlink</c>
     ///
     template<typename T_, typename RepType_, class ConcreteInterval_>
-    static T sup(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
+    static T sup(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x);
 
 
-// \brief Midpoint of an interval <B>x</B>
-//
-// <B>Required by IEEE P1788</B>
-//
-// The midpoint of an interval <B>x</B> is defined as:
-// \f[
-//    \operatorname{mid}(\mathbf{x}) = \begin{cases}
-//        (\underline{x} + \overline{x}) / 2 & \text{if } \mathbf{x} \text{ is nonempty bounded} \br
-//         \text{no value } & \text{if } \mathbf{x} \text{ is empty or unbounded}
-//    \end{cases}
-// \f]
-//
-// The computation is delegated to the static function
-// \code
-// Flavor<T>::mid(Flavor<T>::representation const&)
-// \endcode
-// of the policy class <TT>Flavor<T></TT> by passing only the internal
-// representation of the interval.
-//
-//
-// \see interval<T,Flavor>.mid()
-//
-// \param x interval
-// \return midpoint of <B>x</B>
-//
-
-    /// \todo Docu, Test
+    /// \brief Midpoint of an interval \p x
     ///
+    /// The computation is delegated to the static function
+    /// <c>Flavor<T>::mid(representation const& x)</c>
+    /// or <c>Flavor<T>::mid(representation_dec const& x)</c>
+    /// of the policy class <c>Flavor<T></c> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param  x   interval
+    /// \return \li NaN if \p x is NaI
+    ///         \li NaN if \p x is empty
+    ///         \li +0 if \p x is entire
+    ///         \li finite negative number with largest magnitude of type \p T if  \f$\underline{x} = -\infty\f$ and \f$\overline{x}\f$ is finite
+    ///         \li finite positive number with largest magnitude of type \p T if \f$\underline{x}\f$ is finite and \f$\overline{x} = +\infty\f$
+    ///         \li \f$(\underline{x} + \overline{x}) / 2\f$ rounded to the nearest number of type \p T if \f$\underline{x}, \overline{x}\f$ are both finite.
+    ///              It returns +0.0 in case of a zero
+    ///
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::mid(representation const& x) mpfr_bin_ieee754_flavor::mid(representation const& x) \endlink</c>
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::mid(representation_dec const& x) mpfr_bin_ieee754_flavor::mid(representation_dec const& x) \endlink</c>
     ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend T_ mid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+    friend T_ mid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x);
 
     /// \brief Mixed-type
     /// \todo Docu, Test
@@ -455,36 +414,25 @@ public:
     static T mid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
 
-// \brief Radius of an interval <B>x</B>
-//
-// <B>Required by IEEE P1788</B>
-//
-// The radius of an interval <B>x</B> is defined as:
-// \f[
-//    \operatorname{rad}(\mathbf{x}) = \begin{cases}
-//        (\overline{x} - \underline{x}) / 2 & \text{if } \mathbf{x} \text{ is nonempty} \br
-//         \text{no value } & \text{if } \mathbf{x} \text{ is empty}
-//    \end{cases}
-// \f]
-//
-// The computation is delegated to the static function
-// \code
-// Flavor<T>::rad(Flavor<T>::representation const&)
-// \endcode
-// of the policy class <TT>Flavor<T></TT> by passing only the internal
-// representation of the interval.
-//
-//
-// \see interval<T,Flavor>.rad()
-//
-// \param x interval
-// \return radius of <B>x</B>
-//
-    /// \todo Docu, Test
+    /// \brief Radius of an interval \p x
     ///
+    /// The computation is delegated to the static function
+    /// <c>Flavor<T>::rad(representation const& x)</c>
+    /// or <c>Flavor<T>::rad(representation_dec const& x)</c>
+    /// of the policy class <c>Flavor<T></c> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param  x   interval
+    /// \return \li NaN if \p x is NaI
+    ///         \li NaN if \p x is empty
+    ///         \li smallest number of type \p T such that \f$mid(x) - rad(x) \leq \underline{x}\f$ and \f$\overline{x} \leq mid(x) + rad(x)\f$, otherwise.
+    ///              It returns +0.0 in case of a zero
+    ///
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::rad(representation const& x) mpfr_bin_ieee754_flavor::rad(representation const& x) \endlink</c>
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::rad(representation_dec const& x) mpfr_bin_ieee754_flavor::rad(representation_dec const& x) \endlink</c>
     ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend T_ rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+    friend T_ rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x);
 
     /// \brief Mixed-type
     /// \todo Docu, Test
@@ -494,33 +442,24 @@ public:
     static T rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
 
-//TODO Eigener Struct mit Elementen mid und rad?
-// \brief Midpoint and radius of an interval <B>x</B>
-//
-// <B>Recommended by IEEE P1788</B>
-// see Note in P1788/D7.0 Sect. 9.6.9
-//
-// Computes the midpoint and the radius of an interval <B>x</B>.
-//
-// The computation is delegated to the static function
-// \code
-// Flavor<T>::mid_rad(Flavor<T>::representation const&)
-// \endcode
-// of the policy class <TT>Flavor<T></TT> by passing only the internal
-// representation of the interval.
-//
-// \see #mid(interval<T,Flavor> const& x)
-// \see #rad(interval<T,Flavor> const& x)
-//
-// \param x interval
-// \return std::pair<T,T> containing the midpoint (first value) and the radius (second value) of <B>x</B>
-//
-
-    /// \todo Docu, Test
+    /// \brief Midpoint and radius of an interval \p x
     ///
+    /// The computation is delegated to the static function
+    /// <c>Flavor<T>::mid_rad(representation const& x)</c>
+    /// or <c>Flavor<T>::mid_rad(representation_dec const& x)</c>
+    /// of the policy class <c>Flavor<T></c> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param  x   interval
+    /// \return <c>std::pair<T,T></c> containing the results of
+    /// <c>\link mid(p1788::infsup::base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) mid\endlink</c>
+    /// and <c>\link rad(p1788::infsup::base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) rad\endlink</c>
+    ///
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::mid_rad(representation const& x) mpfr_bin_ieee754_flavor::mid_rad(representation const& x) \endlink</c>
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::mid_rad(representation_dec const& x) mpfr_bin_ieee754_flavor::mid_rad(representation_dec const& x) \endlink</c>
     ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend std::pair<T_, T_> mid_rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+    friend std::pair<T_, T_> mid_rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x);
 
     /// \brief Mixed-type
     /// \todo Docu, Test
@@ -530,30 +469,22 @@ public:
     static std::pair<T, T> mid_rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
 
-// \brief Width of an interval <B>x</B>
-//
-// <B>Required by IEEE P1788</B>
-//
-// The width of an interval <B>x</B> is defined as:
-// \f[
-//    \operatorname{wid}(\mathbf{x}) = \begin{cases}
-//        (\overline{x} - \underline{x}) & \text{if } \mathbf{x} \text{ is nonempty} \br
-//         \text{no value } & \text{if } \mathbf{x} \text{ is empty}
-//    \end{cases}
-// \f]
-//
-// The computation is delegated to the static function
-// \code
-// Flavor<T>::wid(Flavor<T>::representation const&)
-// \endcode
-// of the policy class <TT>Flavor<T></TT> by passing only the internal
-// representation of the interval.
-//
-// \param x interval
-// \return width of <B>x</B>
-//
-    /// \todo Docu, Test
+    /// \brief Width of an interval \p x
     ///
+    /// The computation is delegated to the static function
+    /// <c>Flavor<T>::wid(representation const& x)</c>
+    /// or <c>Flavor<T>::wid(representation_dec const& x)</c>
+    /// of the policy class <c>Flavor<T></c> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param  x   interval
+    /// \return \li NaN if \p x is NaI
+    ///         \li NaN if \p x is empty
+    ///         \li \f$\overline{x} -\underline{x}\f$ rounded upward, otherwise.
+    ///              It returns +0.0 in case of a zero
+    ///
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::wid(representation const& x) mpfr_bin_ieee754_flavor::wid(representation const& x) \endlink</c>
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::wid(representation_dec const& x) mpfr_bin_ieee754_flavor::wid(representation_dec const& x) \endlink</c>
     ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ wid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
@@ -566,30 +497,22 @@ public:
     static T wid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
 
-// \brief Magnitude of an interval <B>x</B>
-//
-// <B>Required by IEEE P1788</B>
-//
-// The magnitude of an interval <B>x</B> is defined as:
-// \f[
-//    \operatorname{mag}(\mathbf{x}) = \begin{cases}
-//        \operatorname{sup}\{ |x| \mid x \in \mathbf{x}\} & \text{if } \mathbf{x} \text{ is nonempty} \br
-//         \text{no value } & \text{if } \mathbf{x} \text{ is empty}
-//    \end{cases}
-// \f]
-//
-// The computation is delegated to the static function
-// \code
-// Flavor<T>::mag(Flavor<T>::representation const&)
-// \endcode
-// of the policy class <TT>Flavor<T></TT> by passing only the internal
-// representation of the interval.
-//
-// \param x interval
-// \return magnitude of <B>x</B>
-//
-    /// \todo Docu, Test
+    /// \brief Magnitude of an interval \p x
     ///
+    /// The computation is delegated to the static function
+    /// <c>Flavor<T>::mag(representation const& x)</c>
+    /// or <c>Flavor<T>::mag(representation_dec const& x)</c>
+    /// of the policy class <c>Flavor<T></c> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param  x   interval
+    /// \return \li NaN if \p x is NaI
+    ///         \li NaN if \p x is empty
+    ///         \li \f$ sup \{ |x| \mid x \in \mathbf{x} \}\f$  rounded upward, otherwise.
+    ///              It returns +0.0 in case of a zero
+    ///
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::mag(representation const& x) mpfr_bin_ieee754_flavor::mag(representation const& x) \endlink</c>
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::mag(representation_dec const& x) mpfr_bin_ieee754_flavor::mag(representation_dec const& x) \endlink</c>
     ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ mag(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
@@ -602,32 +525,22 @@ public:
     static T mag(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const&);
 
 
-// \brief Mignitude of an interval <B>x</B>
-//
-// <B>Required by IEEE P1788</B>
-//
-// The mignitude of an interval <B>x</B> is defined as:
-// \f[
-//    \operatorname{mig}(\mathbf{x}) = \begin{cases}
-//        \operatorname{inf}\{ |x| \mid x \in \mathbf{x}\} & \text{if } \mathbf{x} \text{ is nonempty} \br
-//         \text{no value } & \text{if } \mathbf{x} \text{ is empty}
-//    \end{cases}
-// \f]
-//
-// The computation is delegated to the static function
-// \code
-// Flavor<T>::mig(Flavor<T>::representation const&)
-// \endcode
-// of the policy class <TT>Flavor<T></TT> by passing only the internal
-// representation of the interval.
-//
-// \param x interval
-// \return mignutude of <B>x</B>
-//
-
-
-    /// \todo Docu, Test
+    /// \brief Mignitude of an interval \p x
     ///
+    /// The computation is delegated to the static function
+    /// <c>Flavor<T>::mig(representation const& x)</c>
+    /// or <c>Flavor<T>::mig(representation_dec const& x)</c>
+    /// of the policy class <c>Flavor<T></c> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param  x   interval
+    /// \return \li NaN if \p x is NaI
+    ///         \li NaN if \p x is empty
+    ///         \li \f$ inf \{ |x| \mid x \in \mathbf{x} \}\f$  rounded downward, otherwise.
+    ///              It returns +0.0 in case of a zero
+    ///
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::mig(representation const& x) mpfr_bin_ieee754_flavor::mig(representation const& x) \endlink</c>
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::mig(representation_dec const& x) mpfr_bin_ieee754_flavor::mig(representation_dec const& x) \endlink</c>
     ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
     friend T_ mig(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);

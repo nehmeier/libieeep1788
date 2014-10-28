@@ -51,13 +51,6 @@ enum class decoration
 std::string decoration_map[] = { "ill", "trv", "def", "dac", "com" };
 
 
-//bool operator==(decoration d1, decoration d2)
-//{
-//    return static_cast<typename std::underlying_type<decoration>::type>(d1)
-//        == static_cast<typename std::underlying_type<decoration>::type>(d2);
-//}
-
-
 template<typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(
     std::basic_ostream<CharT, Traits>& os,

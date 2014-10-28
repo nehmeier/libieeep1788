@@ -561,11 +561,14 @@ mpfr_bin_ieee754_flavor<T>::mig(mpfr_bin_ieee754_flavor<T>::representation_type<
 
     // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
     // Error free for floating point inf-sup intervals due to  outward rounding and downward rounding of the result
-    return convert_rndd(
+    T res = convert_rndd(
                mpfr_bin_ieee754_flavor<T_MAX>::mig(
                    mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x)
                )
            );
+
+    // remove signbit (see convert_rndd)
+    return res == -0.0 ? +0.0 : res;
 }
 
 // mig ( decorated interval )
