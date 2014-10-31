@@ -42,6 +42,7 @@ using REP = typename F<T>::representation;
 template<typename T>
 using REP_DEC = typename F<T>::representation_dec;
 
+typedef p1788::decoration::decoration DEC;
 
 const double INF_D = std::numeric_limits<double>::infinity();
 const float INF_F = std::numeric_limits<float>::infinity();
@@ -231,49 +232,56 @@ BOOST_AUTO_TEST_CASE(minimal_convert_hull)
 
 BOOST_AUTO_TEST_CASE(minimal_convert_hull_dec)
 {
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::com) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::com));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::dac) ), REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::dac));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::def) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::def));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<float>( REP<float>(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), DEC:trv) ), REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), DEC:trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC:com) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC:com));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), DEC:dac) ), REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), DEC:dac));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), DEC:def) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), DEC:def));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<float>( REP<float>(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")), DEC:trv) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), DEC:trv));
 
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(-DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(-DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<float>( REP<float>(DNORM_MIN_F, DNORM_MIN_F), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(DNORM_MIN_F, DNORM_MIN_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), DEC:trv) ), REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), DEC:trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(-DNORM_MIN_D, DNORM_MIN_D), DEC:trv) ), REP_DEC<double>( REP<double>(-DNORM_MIN_D, DNORM_MIN_D), DEC:trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), DEC:trv) ), REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), DEC:trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<float>( REP<float>(DNORM_MIN_F, DNORM_MIN_F), DEC:trv) ), REP_DEC<double>( REP<double>(DNORM_MIN_F, DNORM_MIN_F), DEC:trv));
 
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(-MAX_D, MAX_D), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(-MAX_D, MAX_D), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(MAX_D, MAX_D), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(MAX_D, MAX_D), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<float>( REP<float>(MAX_F, MAX_F), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(MAX_F, MAX_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), DEC:trv) ), REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), DEC:trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(-MAX_D, MAX_D), DEC:trv) ), REP_DEC<double>( REP<double>(-MAX_D, MAX_D), DEC:trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(MAX_D, MAX_D), DEC:trv) ), REP_DEC<double>( REP<double>(MAX_D, MAX_D), DEC:trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<float>( REP<float>(MAX_F, MAX_F), DEC:trv) ), REP_DEC<double>( REP<double>(MAX_F, MAX_F), DEC:trv));
 
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(-INF_D, INF_D), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(-INF_D, INF_D), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<float>( REP<float>(-INF_F, INF_F), p1788::decoration::decoration::trv) ), REP_DEC<double>( REP<double>(-INF_D, INF_D), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC:trv) ), REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC:trv));
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC:trv) ), REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC:trv));
 
-    BOOST_CHECK( F<double>::is_empty(F<double>::convert_hull( REP_DEC<double>(REP<double>(NAN_D, NAN_D), p1788::decoration::decoration::trv) )));
-    BOOST_CHECK( F<double>::is_empty(F<double>::convert_hull( REP_DEC<float>(REP<float>(NAN_D, NAN_D), p1788::decoration::decoration::trv) )));
+    BOOST_CHECK( F<double>::is_empty(F<double>::convert_hull( REP_DEC<double>(REP<double>(NAN_D, NAN_D), DEC:trv) )));
+    BOOST_CHECK( F<double>::is_empty(F<double>::convert_hull( REP_DEC<float>(REP<float>(NAN_D, NAN_D), DEC:trv) )));
 
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), p1788::decoration::decoration::com) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), p1788::decoration::decoration::com));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::dac) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), p1788::decoration::decoration::dac));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), p1788::decoration::decoration::def) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), p1788::decoration::decoration::def));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<float>( REP<float>(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), DEC:trv) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), DEC:trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC:com) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), DEC:com));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), DEC:dac) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), DEC:dac));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), DEC:def) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), DEC:def));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<float>( REP<float>(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")), DEC:trv) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")), DEC:trv));
 
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(-DNORM_MIN_F,+0.0), p1788::decoration::decoration::trv));
-    BOOST_CHECK( !std::signbit( F<float>::convert_hull( REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), p1788::decoration::decoration::trv) ).first.second ));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(-DNORM_MIN_F, DNORM_MIN_F), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(-0.0, DNORM_MIN_F), p1788::decoration::decoration::trv));
-    BOOST_CHECK( std::signbit( F<float>::convert_hull( REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), p1788::decoration::decoration::trv) ).first.first ));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<float>( REP<float>(DNORM_MIN_F, DNORM_MIN_F), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(DNORM_MIN_F, DNORM_MIN_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), DEC:trv) ), REP_DEC<float>( REP<float>(-DNORM_MIN_F,+0.0), DEC:trv));
+    BOOST_CHECK( !std::signbit( F<float>::convert_hull( REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), DEC:trv) ).first.second ));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-DNORM_MIN_D, DNORM_MIN_D), DEC:trv) ), REP_DEC<float>( REP<float>(-DNORM_MIN_F, DNORM_MIN_F), DEC:trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), DEC:trv) ), REP_DEC<float>( REP<float>(-0.0, DNORM_MIN_F), DEC:trv));
+    BOOST_CHECK( std::signbit( F<float>::convert_hull( REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), DEC:trv) ).first.first ));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<float>( REP<float>(DNORM_MIN_F, DNORM_MIN_F), DEC:trv) ), REP_DEC<float>( REP<float>(DNORM_MIN_F, DNORM_MIN_F), DEC:trv));
 
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(-INF_F, -MAX_F), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-MAX_D, MAX_D), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(-INF_F, INF_F), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(MAX_D, MAX_D), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(MAX_F, INF_F), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<float>( REP<float>(MAX_F, MAX_F), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(MAX_F, MAX_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), DEC:def) ), REP_DEC<float>( REP<float>(-INF_F, -MAX_F), DEC:def));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-MAX_D, MAX_D), DEC:trv) ), REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC:trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(MAX_D, MAX_D), DEC:dac) ), REP_DEC<float>( REP<float>(MAX_F, INF_F), DEC:dac));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<float>( REP<float>(MAX_F, MAX_F), DEC:trv) ), REP_DEC<float>( REP<float>(MAX_F, MAX_F), DEC:trv));
 
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-INF_D, INF_D), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(-INF_F, INF_F), p1788::decoration::decoration::trv));
-    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<float>( REP<float>(-INF_F, INF_F), p1788::decoration::decoration::trv) ), REP_DEC<float>( REP<float>(-INF_F, INF_F), p1788::decoration::decoration::trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), DEC:com) ), REP_DEC<float>( REP<float>(-INF_F, -MAX_F), DEC:dac));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-MAX_D, MAX_D), DEC:com) ), REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC:dac));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(MAX_D, MAX_D), DEC:com) ), REP_DEC<float>( REP<float>(MAX_F, INF_F), DEC:dac));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<float>( REP<float>(MAX_F, MAX_F), DEC:com) ), REP_DEC<float>( REP<float>(MAX_F, MAX_F), DEC:com));
 
-    BOOST_CHECK( F<float>::is_empty(F<float>::convert_hull( REP_DEC<double>(REP<double>(NAN_D, NAN_D), p1788::decoration::decoration::trv) )));
-    BOOST_CHECK( F<float>::is_empty(F<float>::convert_hull( REP_DEC<float>(REP<float>(NAN_D, NAN_D), p1788::decoration::decoration::trv) )));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC:trv) ), REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC:trv));
+    BOOST_CHECK_EQUAL(F<float>::convert_hull( REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC:trv) ), REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC:trv));
+
+    BOOST_CHECK( F<float>::is_empty(F<float>::convert_hull( REP_DEC<double>(REP<double>(NAN_D, NAN_D), DEC:trv) )));
+    BOOST_CHECK( F<float>::is_empty(F<float>::convert_hull( REP_DEC<float>(REP<float>(NAN_D, NAN_D), DEC:trv) )));
+
+    BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC:com) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC:com));
 }

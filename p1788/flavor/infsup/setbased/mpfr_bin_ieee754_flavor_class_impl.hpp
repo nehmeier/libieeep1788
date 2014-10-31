@@ -43,14 +43,14 @@ namespace setbased
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::constructor_infsup()
+mpfr_bin_ieee754_flavor<T>::constructor()
 {
     return empty();
 }
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec()
+mpfr_bin_ieee754_flavor<T>::constructor_dec()
 {
     return empty_dec();
 }
@@ -58,77 +58,64 @@ mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec()
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::constructor_infsup(T lower, T upper)
+mpfr_bin_ieee754_flavor<T>::constructor(T lower, T upper)
 {
-//TODO  invalid arguments => exception?
-
-    return representation(lower, upper);
+    // Comparison with NaN is always false!
+    if (lower <= upper
+    && lower != std::numeric_limits<T>::infinity()
+    && upper != -std::numeric_limits<T>::infinity())
+    {
+        return representation(lower, upper);
+    }
+    else
+    {
+        return empty();
+    }
 }
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(T lower, T upper)
+mpfr_bin_ieee754_flavor<T>::constructor_dec(T lower, T upper)
 {
-//TODO  invalid arguments => exception?
+    // Comparison with NaN is always false!
+    if (lower <= upper
+    && lower != std::numeric_limits<T>::infinity()
+    && upper != -std::numeric_limits<T>::infinity())
+    {
+        return constructor_dec(constructor(lower,upper));
+    }
+    else
+    {
+        return nai();
+    }
+}
 
-    return representation_dec(representation(lower, upper), p1788::decoration::decoration::trv);
+template<typename T>
+template<typename L_, typename U_>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::constructor(L_ lower, U_ upper)
+{
+    static_assert(std::numeric_limits<L_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<U_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    return constructor(convert_rndd(lower), convert_rndu(upper));
+}
+
+template<typename T>
+template<typename L_, typename U_>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::constructor_dec(L_ lower, U_ upper)
+{
+    static_assert(std::numeric_limits<L_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<U_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    return constructor_dec(convert_rndd(lower), convert_rndu(upper));
 }
 
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::constructor_infsup(T point)
-{
-//TODO  invalid argument => exception?
-
-    return representation(point, point);
-}
-
-template<typename T>
-typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(T point)
-{
-//TODO  invalid argument => exception?
-
-    return representation_dec(representation(point, point), p1788::decoration::decoration::trv);
-}
-
-template<typename T>
-template<typename L, typename U>
-typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::constructor_infsup(L lower, U upper)
-{
-    return representation(lower, upper);
-}
-
-template<typename T>
-template<typename L, typename U>
-typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(L lower, U upper)
-{
-    return representation_dec(representation(lower, upper));
-}
-
-
-template<typename T>
-template<typename T_>
-typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::constructor_infsup(T_ point)
-{
-    return representation(point, point);
-}
-
-template<typename T>
-template<typename T_>
-typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(T_ point)
-{
-    return representation_dec(representation(point, point));
-}
-
-template<typename T>
-typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::constructor_infsup(std::string const& str)
+mpfr_bin_ieee754_flavor<T>::constructor(std::string const& str)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -148,7 +135,7 @@ mpfr_bin_ieee754_flavor<T>::constructor_infsup(std::string const& str)
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(std::string const& str)
+mpfr_bin_ieee754_flavor<T>::constructor_dec(std::string const& str)
 {
     LIBIEEEP1788_NOT_IMPLEMENTED;
 
@@ -167,54 +154,25 @@ mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(std::string const& str)
 }
 
 
-//TODO necessary?
-//template<typename T>
-//template<typename ConstRandomAccessIterator>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::constructor_infsup(ConstRandomAccessIterator first,
-//                                   ConstRandomAccessIterator last)
-//{
-//    //TODO check iterator
-//    auto result = std::minmax_element(first, last);
-//
-//TODO  invalid argument => exception?
-//    return representation(*result.first, *result.second);
-//}
-//
-//template<typename T>
-//template<typename ConstRandomAccessIterator>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(ConstRandomAccessIterator first,
-//                                   ConstRandomAccessIterator last)
-//{
-//    //TODO check iterator
-//    auto result = std::minmax_element(first, last);
-//
-//TODO  invalid argument => exception?
-//    return representation_dec(representation(*result.first, *result.second), p1788::decoration::decoration::trv);
-//}
-
-
-
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::constructor_infsup(representation const& other)
+mpfr_bin_ieee754_flavor<T>::constructor(representation const& other)
 {
     return other;
 }
 
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(representation_dec const& other)
+mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_dec const& other)
 {
     return other;
 }
 
 
 template<typename T>
-template<typename TT>
+template<typename T_>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::constructor_infsup(representation_type<TT> const& other)
+mpfr_bin_ieee754_flavor<T>::constructor(representation_type<T_> const& other)
 {
     mpfr_var::setup();
 
@@ -225,9 +183,9 @@ mpfr_bin_ieee754_flavor<T>::constructor_infsup(representation_type<TT> const& ot
 }
 
 template<typename T>
-template<typename TT>
+template<typename T_>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(representation_dec_type<TT> const& other)
+mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_dec_type<T_> const& other)
 {
     mpfr_var::setup();
 
@@ -238,81 +196,60 @@ mpfr_bin_ieee754_flavor<T>::constructor_infsup_dec(representation_dec_type<TT> c
 }
 
 
-// Methods
 
 template<typename T>
-T
-mpfr_bin_ieee754_flavor<T>::method_lower(mpfr_bin_ieee754_flavor<T>::representation const& x)
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::constructor(representation_dec const& other)
 {
-    return x.first;
+    return empty();
 }
 
 template<typename T>
-T
-mpfr_bin_ieee754_flavor<T>::method_lower(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
+template<typename T_>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::constructor(representation_dec_type<T_> const& other)
 {
-    return x.first.first;
-}
-
-
-template<typename T>
-T
-mpfr_bin_ieee754_flavor<T>::method_upper(mpfr_bin_ieee754_flavor<T>::representation const& x)
-{
-    return x.second;
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+        return empty();
 }
 
 template<typename T>
-T
-mpfr_bin_ieee754_flavor<T>::method_upper(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other)
 {
-    return x.first.second;
-}
-
-
-template<typename T>
-T
-mpfr_bin_ieee754_flavor<T>::method_mid(mpfr_bin_ieee754_flavor<T>::representation const& x)
-{
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return (x.first + x.second) / 2.0;
+    if (is_empty(other)) {
+        return representation_dec(other, p1788::decoration::decoration::trv);
+    } else if (other.first == -std::numeric_limits<T>::infinity() || other.second == std::numeric_limits<T>::infinity()) {
+        return representation_dec(other, p1788::decoration::decoration::dac);
+    } else {
+        return representation_dec(other, p1788::decoration::decoration::com);
+    }
 }
 
 template<typename T>
-T
-mpfr_bin_ieee754_flavor<T>::method_mid(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
+template<typename T_>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_type<T_> const& other)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    return (x.first.first + x.first.second) / 2.0;
+    return constructor(convert_hull(other));
 }
 
 
 template<typename T>
-T
-mpfr_bin_ieee754_flavor<T>::method_rad(mpfr_bin_ieee754_flavor<T>::representation const& x)
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other, p1788::decoration::decoration dec)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return (x.second - x.first) / 2.0;
+    return empty_dec();
 }
 
 template<typename T>
-T
-mpfr_bin_ieee754_flavor<T>::method_rad(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
+template<typename T_>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_type<T_> const& other, p1788::decoration::decoration dec)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-    return (x.first.second - x.first.first) / 2.0;
-}
-
-
-template<typename T>
-p1788::decoration::decoration
-mpfr_bin_ieee754_flavor<T>::method_decoration(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
-{
-    return x.second;
+    return empty_dec();
 }
 
 // -----------------------------------------------------------------------------

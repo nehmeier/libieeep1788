@@ -31,6 +31,7 @@
 
 
 
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 //                       Definition of class base_interval
@@ -45,7 +46,6 @@ namespace p1788
 
 namespace infsup
 {
-
 
 
 /// \brief Base class for a level 2 infsup interval
@@ -559,6 +559,11 @@ public:
 // Boolean functions on intervals
 // -----------------------------------------------------------------------------
 
+///@name Boolean functions on intervals
+///
+///
+///@{
+
     /// \brief Checks if an interval \p x is the empty set
     ///
     /// The computation is delegated to the static function
@@ -593,53 +598,315 @@ public:
     /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::is_entire(representation_dec const& x) mpfr_bin_ieee754_flavor::is_entire(representation_dec const& x) \endlink</c>
     ///
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool is_entire(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+    friend bool is_entire(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x);
 
-//TODO operator==?
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool is_equal(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-
-//TODO subset oder contained_in?
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool subset(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-
-//TODO superset oder contains?
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool superset(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool less(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool greater(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool precedes(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool succeeds(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool is_interior(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool contains_interior(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool strictly_less(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool strictly_greater(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+// \brief Check if two intervals <B>x</B> and <B>y</B> are equal
+//
+// <B>Required by IEEE P1788</B>
+//
+// Two intervals <B>x</B> and <B>y</B> are equal if the condition
+// \f[
+//     \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, x = y  \,
+//     \wedge \, \forall_{y \in \mathbf{y}}\exists_{x \in \mathbf{x}} \, y = x
+// \f]
+// is fulfilled.
+//
+// The computation is delegated to the static function
+// \code
+// Flavor<T>::is_equal(Flavor<T>::representation const&, Flavor<T>::representation const&)
+// \endcode
+// of the policy class <TT>Flavor<T></TT> by passing only the internal
+// representation of the intervals.
+//
+//
+// \see #is_equal(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+//
+// \param x interval
+// \param y interval
+// \retval true    <B>x</B> and <B>y</B> are equal
+// \retval false   otherwise
+//
+//    /// \todo Docu, Test
+//    ///
+//    ///
+template<typename T_, typename RepType_, class ConcreteInterval_>
+static bool is_equal(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y);
 
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool strictly_precedes(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+    friend bool operator==(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& y);
 
     template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool strictly_succeeds(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
+    friend bool operator!=(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& y);
 
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool are_disjoint(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
+//    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+//    friend bool is_equal(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+//
+//    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+//    friend bool operator==(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+//
+//    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+//    friend bool operator!=(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+
+// \brief Check if intervals <B>x</B> is a subset of interval <B>y</B>
+//
+// <B>Required by IEEE P1788</B>
+//
+// An interval <B>x</B> is a subset of an interval <B>y</B> if the condition
+// \f[
+//     \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, x = y
+// \f]
+// is fulfilled.
+//
+// The computation is delegated to the static function
+// \code
+// Flavor<T>::subset(Flavor<T>::representation const&, Flavor<T>::representation const&)
+// \endcode
+// of the policy class <TT>Flavor<T></TT> by passing only the internal
+// representation of the intervals.
+//
+//
+// \see #subset(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+//
+// \param x interval
+// \param y interval
+// \retval true    <B>x</B> is subset of <B>y</B>
+// \retval false   otherwise
+//
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool subset(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool superset(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+// \brief Check if intervals <B>x</B> is weakly less then interval <B>y</B>
+//
+// <B>Required by IEEE P1788</B>
+//
+// An interval <B>x</B> is weakly less then an interval <B>y</B> if the condition
+// \f[
+//     \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, x \leq y  \,
+//     \wedge \, \forall_{y \in \mathbf{y}}\exists_{x \in \mathbf{x}} \, x \leq y
+// \f]
+// is fulfilled.
+//
+// The computation is delegated to the static function
+// \code
+// Flavor<T>::less(Flavor<T>::representation const&, Flavor<T>::representation const&)
+// \endcode
+// of the policy class <TT>Flavor<T></TT> by passing only the internal
+// representation of the intervals.
+//
+//
+// \see #less(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+//
+// \param x interval
+// \param y interval
+// \retval true    <B>x</B> is weakly less then <B>y</B>
+// \retval false   otherwise
+//
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool less(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool greater(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+// \brief Check if intervals <B>x</B> is to left of but may touch interval <B>y</B>
+//
+// <B>Required by IEEE P1788</B>
+//
+// An interval <B>x</B> is to left of but may touch an interval <B>y</B> if the condition
+// \f[
+//     \forall_{x \in \mathbf{x}}\forall_{y \in \mathbf{y}} \, x \leq y
+// \f]
+// is fulfilled.
+//
+// The computation is delegated to the static function
+// \code
+// Flavor<T>::precedes(Flavor<T>::representation const&, Flavor<T>::representation const&)
+// \endcode
+// of the policy class <TT>Flavor<T></TT> by passing only the internal
+// representation of the intervals.
+//
+//
+// \see #precedes(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+//
+// \param x interval
+// \param y interval
+// \retval true    <B>x</B> is to left of but may touch <B>y</B>
+// \retval false   otherwise
+//
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool precedes(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool succeeds(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+
+// \brief Check if intervals <B>x</B> is interior to interval <B>y</B>
+//
+// <B>Required by IEEE P1788</B>
+//
+// An interval <B>x</B> is interior to an interval <B>y</B> if the condition
+// \f[
+//     \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, x < y  \,
+//     \wedge \, \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, y < x
+// \f]
+// is fulfilled.
+//
+// The computation is delegated to the static function
+// \code
+// Flavor<T>::is_interior(Flavor<T>::representation const&, Flavor<T>::representation const&)
+// \endcode
+// of the policy class <TT>Flavor<T></TT> by passing only the internal
+// representation of the intervals.
+//
+//
+// \see #is_interior(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+//
+// \param x interval
+// \param y interval
+// \retval true    <B>x</B> is interior to <B>y</B>
+// \retval false   otherwise
+//
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool is_interior(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool contains_interior(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+// \brief Check if intervals <B>x</B> is strictly less then interval <B>y</B>
+//
+// <B>Required by IEEE P1788</B>
+//
+// An interval <B>x</B> is strictly less then an interval <B>y</B> if the condition
+// \f[
+//     \forall_{x \in \mathbf{x}}\exists_{y \in \mathbf{y}} \, x < y  \,
+//     \wedge \, \forall_{y \in \mathbf{y}}\exists_{x \in \mathbf{x}} \, x < y
+// \f]
+// is fulfilled.
+//
+// The computation is delegated to the static function
+// \code
+// Flavor<T>::strictly_less(Flavor<T>::representation const&, Flavor<T>::representation const&)
+// \endcode
+// of the policy class <TT>Flavor<T></TT> by passing only the internal
+// representation of the intervals.
+//
+//
+// \see #strictly_less(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+//
+// \param x interval
+// \param y interval
+// \retval true    <B>x</B> is strictly less then <B>y</B>
+// \retval false   otherwise
+//
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool strictly_less(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool strictly_greater(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+// \brief Check if intervals <B>x</B> is strictly to left of interval <B>y</B>
+//
+// <B>Required by IEEE P1788</B>
+//
+// An interval <B>x</B> is strictly to left of an interval <B>y</B> if the condition
+// \f[
+//     \forall_{x \in \mathbf{x}}\forall_{y \in \mathbf{y}} \, x < y
+// \f]
+// is fulfilled.
+//
+// The computation is delegated to the static function
+// \code
+// Flavor<T>::strictly_precedes(Flavor<T>::representation const&, Flavor<T>::representation const&)
+// \endcode
+// of the policy class <TT>Flavor<T></TT> by passing only the internal
+// representation of the intervals.
+//
+//
+// \see #strictly_precedes(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+//
+// \param x interval
+// \param y interval
+// \retval true    <B>x</B> is strictly to left of <B>y</B>
+// \retval false   otherwise
+//
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool strictly_precedes(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool strictly_succeeds(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+// \brief Check if intervals <B>x</B> and interval <B>y</B> are disjoint
+//
+// <B>Required by IEEE P1788</B>
+//
+// The intervals <B>x</B> and <B>y</B> are disjoint if the condition
+// \f[
+//     \forall_{x \in \mathbf{x}}\forall_{y \in \mathbf{y}} \, x \not= y
+// \f]
+// is fulfilled.
+//
+// The computation is delegated to the static function
+// \code
+// Flavor<T>::are_disjoint(Flavor<T>::representation const&, Flavor<T>::representation const&)
+// \endcode
+// of the policy class <TT>Flavor<T></TT> by passing only the internal
+// representation of the intervals.
+//
+//
+// \see #are_disjoint(interval<T,Flavor> const& x, interval<Ty,Flavor> const& y)
+//
+// \param x interval
+// \param y interval
+// \retval true    <B>x</B> and <B>y</B> are disjoint
+// \retval false   otherwise
+//
+    /// \todo Docu, Test
+    ///
+    ///
+    template<template<typename> class Flavor_, typename T1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, typename RepType2_, class ConcreteInterval2_>
+    friend bool are_disjoint(base_interval<T1_, Flavor_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor_, RepType2_, ConcreteInterval2_> const& y);
+
+///@}
 
 // -----------------------------------------------------------------------------
 // Forward elementary functions
@@ -1018,6 +1285,13 @@ public:
 
 
 };
+
+
+// funktionen
+template<typename T1_, template<typename> class Flavor1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, template<typename> class Flavor2_, typename RepType2_, class ConcreteInterval2_>
+bool is_equal(base_interval<T1_, Flavor1_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor2_, RepType2_, ConcreteInterval2_> const& y);
+
+
 
 } // namespace infsup
 

@@ -34,9 +34,9 @@ namespace infsup
 
 
 // inf( base_interval )
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-T inf(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-    return Flavor<T>::inf(x.rep_);
+template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+T_ inf(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
+    return Flavor_<T_>::inf(x.rep_);
 }
 
 // inf( base_interval ) mixed type
@@ -60,9 +60,9 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::inf(base_interval<T_, Flavor, 
 
 
 // sup( base_interval )
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-T sup(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-    return Flavor<T>::sup(x.rep_);
+template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+T_ sup(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
+    return Flavor_<T_>::sup(x.rep_);
 }
 
 // sup( base_interval ) mixed type
@@ -86,9 +86,9 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::sup(base_interval<T_, Flavor, 
 
 
 // mid( base_interval )
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-T mid(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-    return Flavor<T>::mid(x.rep_);
+template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+T_ mid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
+    return Flavor_<T_>::mid(x.rep_);
 }
 
 // mid( base_interval ) mixed type
@@ -112,9 +112,9 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::mid(base_interval<T_, Flavor, 
 
 
 // rad( base_interval )
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-T rad(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-    return Flavor<T>::rad(x.rep_);
+template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+T_ rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
+    return Flavor_<T_>::rad(x.rep_);
 }
 
 // rad( base_interval ) mixed type
@@ -136,9 +136,9 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::rad(base_interval<T_, Flavor, 
 }
 
 // mid_rad( base_interval )
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-std::pair<T, T> mid_rad(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-    return Flavor<T>::mid_rad(x.rep_);
+template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+std::pair<T_, T_> mid_rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
+    return Flavor_<T_>::mid_rad(x.rep_);
 }
 
 // mid_rad( base_interval ) mixed type
@@ -162,9 +162,9 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::mid_rad(base_interval<T_, Flav
 
 
 // wid( base_interval )
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-T wid(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-    return Flavor<T>::wid(x.rep_);
+template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+T_ wid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
+    return Flavor_<T_>::wid(x.rep_);
 }
 
 // wid( base_interval ) mixed type
@@ -188,9 +188,9 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::wid(base_interval<T_, Flavor, 
 
 
 // mag( base_interval )
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-T mag(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-    return Flavor<T>::mag(x.rep_);
+template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+T_ mag(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
+    return Flavor_<T_>::mag(x.rep_);
 }
 
 // mag( base_interval ) mixed type
@@ -214,9 +214,9 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::mag(base_interval<T_, Flavor, 
 
 
 // mig( base_interval )
-template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-T mig(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-    return Flavor<T>::mig(x.rep_);
+template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
+T_ mig(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
+    return Flavor_<T_>::mig(x.rep_);
 }
 
 // mig( base_interval ) mixed type

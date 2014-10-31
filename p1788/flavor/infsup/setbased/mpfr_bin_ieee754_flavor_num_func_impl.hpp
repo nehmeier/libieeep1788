@@ -401,6 +401,8 @@ template<typename T_>
 std::pair<T, T>
 mpfr_bin_ieee754_flavor<T>::mid_rad(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& x)
 {
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
     // call of bare mixed type version
     return is_nai(x) ? std::pair<T, T>(std::numeric_limits<T>::quiet_NaN(), std::numeric_limits<T>::quiet_NaN())
         : mid_rad(x.first);
@@ -464,6 +466,8 @@ template<typename T_>
 T
 mpfr_bin_ieee754_flavor<T>::wid(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& x)
 {
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
     // call of bare mixed type version
     return is_nai(x) ? std::numeric_limits<T>::quiet_NaN() : wid(x.first);
 }
@@ -522,6 +526,8 @@ template<typename T_>
 T
 mpfr_bin_ieee754_flavor<T>::mag(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& x)
 {
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
     // call of bare mixed type version
     return is_nai(x) ? std::numeric_limits<T>::quiet_NaN() : mag(x.first);
 }
@@ -587,6 +593,8 @@ template<typename T_>
 T
 mpfr_bin_ieee754_flavor<T>::mig(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& x)
 {
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
     // call of bare mixed type version
     return is_nai(x) ? std::numeric_limits<T>::quiet_NaN() : mig(x.first);
 }

@@ -83,7 +83,7 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
     std::string str;
     std::getline(std::cin, str);
 
-    x = constructor_infsup(str);
+    x = constructor(str);
 
     return is;
 }
@@ -99,7 +99,7 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
     std::string str;
     std::getline(std::cin, str);
 
-    x = constructor_infsup_dec(str);
+    x = constructor_dec(str);
 
     return is;
 }

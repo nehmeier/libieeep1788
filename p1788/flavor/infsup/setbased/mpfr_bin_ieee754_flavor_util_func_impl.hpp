@@ -106,7 +106,17 @@ mpfr_bin_ieee754_flavor<T>::convert_hull(representation_dec_type<T_> const& x)
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    return representation_dec(representation(convert_rndd(x.first.first), convert_rndu(x.first.second)), x.second);
+    representation bare(convert_rndd(x.first.first), convert_rndu(x.first.second));
+
+    if (x.second == p1788::decoration::decoration::com
+            && (bare.first == -std::numeric_limits<T>::infinity() || bare.second == std::numeric_limits<T>::infinity()))
+    {
+        return representation_dec(bare, p1788::decoration::decoration::dac);
+    }
+    else
+    {
+        return representation_dec(bare, x.second);
+    }
 }
 
 

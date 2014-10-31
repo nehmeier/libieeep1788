@@ -23,9 +23,9 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
+add_subdirectory(decoration)
+add_subdirectory(util)
 add_subdirectory(flavor)
-
-# TODO wieder mit rein!!!
 add_subdirectory(infsup)
 
-add_subdirectory(util)
+

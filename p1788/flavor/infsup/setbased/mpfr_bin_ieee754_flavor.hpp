@@ -231,7 +231,9 @@ public:
     ///
     /// \param x Decorated interval representation with the original bound type \p T_.
     ///
-    /// \return Tightest decorated interval representation with bound type \p T containing \p x. The decoration is unchanged.
+    /// \return Tightest decorated interval representation with bound type \p T containing \p x.
+    /// If the old decoration was <c>com</c> and the returning interval is unbounded than the decoration is <c>dac</c>,
+    /// otherwise the decoration is unchange.
     ///
     /// \note \ref pageAccuracy "Accuracy:" Tightest
     /// \note Outward rounding uses round toward negative and positive which follow the IEEE754 specification.
@@ -251,59 +253,42 @@ public:
 // -----------------------------------------------------------------------------
 
     // Constructors
-    static representation constructor_infsup();
-    static representation_dec constructor_infsup_dec();
+    static representation constructor();
+    static representation_dec constructor_dec();
 
-    static representation constructor_infsup(T lower, T upper);
-    static representation_dec constructor_infsup_dec(T lower, T upper);
+    static representation constructor(T lower, T upper);
+    static representation_dec constructor_dec(T lower, T upper);
 
-    static representation constructor_infsup(T point);
-    static representation_dec constructor_infsup_dec(T point);
+    // Mixed type
+    template<typename L_, typename U_>
+    static representation constructor(L_ lower, U_ upper);
+    template<typename L_, typename U_>
+    static representation_dec constructor_dec(L_ lower, U_ upper);
 
-    template<typename L, typename U>
-    static representation constructor_infsup(L lower, U upper);
-    template<typename L, typename U>
-    static representation_dec constructor_infsup_dec(L lower, U upper);
+    static representation constructor(std::string const& str);
+    static representation_dec constructor_dec(std::string const& str);
+
+    static representation constructor(representation const& other);
+    static representation_dec constructor_dec(representation_dec const& other);
 
     template<typename T_>
-    static representation constructor_infsup(T_ point);
+    static representation constructor(representation_type<T_> const& other);
     template<typename T_>
-    static representation_dec constructor_infsup_dec(T_ point);
+    static representation_dec constructor_dec(representation_dec_type<T_> const& other);
 
-    static representation constructor_infsup(std::string const& str);
-    static representation_dec constructor_infsup_dec(std::string const& str);
+    // Convert: see intervalPart
+    static representation constructor(representation_dec const& other);
+    template<typename T_>
+    static representation constructor(representation_dec_type<T_> const& other);
+    // Convert: newDec
+    static representation_dec constructor_dec(representation const& other);
+    template<typename T_>
+    static representation_dec constructor_dec(representation_type<T_> const& other);
 
-//TODO Points constructor necessary? initializer list?
-//    template<typename ConstRandomAccessIterator>
-//    static representation constructor_infsup(ConstRandomAccessIterator first,
-//            ConstRandomAccessIterator last);
-//    template<typename ConstRandomAccessIterator>
-//    static representation_dec constructor_infsup_dec(ConstRandomAccessIterator first,
-//            ConstRandomAccessIterator last);
-
-    static representation constructor_infsup(representation const& other);
-    static representation_dec constructor_infsup_dec(representation_dec const& other);
-
-    template<typename TT>
-    static representation constructor_infsup(representation_type<TT> const& other);
-    template<typename TT>
-    static representation_dec constructor_infsup_dec(representation_dec_type<TT> const& other);
-
-    // Methods
-    static T method_lower(representation const& x);
-    static T method_lower(representation_dec const& x);
-
-    static T method_upper(representation const& x);
-    static T method_upper(representation_dec const& x);
-
-    static T method_mid(representation const& x);
-    static T method_mid(representation_dec const& x);
-
-    static T method_rad(representation const& x);
-    static T method_rad(representation_dec const& x);
-
-    static p1788::decoration::decoration method_decoration(representation_dec const& x);
-
+    // setDec
+    static representation_dec constructor_dec(representation const& other, p1788::decoration::decoration dec);
+    template<typename T_>
+    static representation_dec constructor_dec(representation_type<T_> const& other, p1788::decoration::decoration dec);
 
 ///@name Interval constants
 ///
@@ -344,6 +329,9 @@ public:
     ///
     ///
     static representation_dec nai();
+
+
+    static p1788::decoration::decoration decoration(representation_dec const& x);
 
 ///@}
 
@@ -462,6 +450,8 @@ public:
 
 // -----------------------------------------------------------------------------
 // Numeric functions on intervals
+//
+// p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_num_func_impl.hpp
 // -----------------------------------------------------------------------------
 
 ///@name Numeric functions on intervals
@@ -798,6 +788,8 @@ public:
 
 // -----------------------------------------------------------------------------
 // Boolean functions of intervals
+//
+// p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_bool_func_impl.hpp
 // -----------------------------------------------------------------------------
 
 ///@name Boolean functions of intervals
@@ -809,7 +801,7 @@ public:
     /// \brief Checks if \p x is a representation for an empty bare interval.
     ///
     /// \param x Interval representation
-    /// \return \li <c>true</c> if x is a representation of an empty bare interval
+    /// \return \li <c>true</c> if \p x is a representation of an empty bare interval
     ///         \li <c>false</c> otherwise.
     ///
     static bool is_empty(representation const& x);
@@ -817,7 +809,7 @@ public:
     /// \brief Checks if \p x is a representation for an empty decorated interval.
     ///
     /// \param x Decorated interval representation
-    /// \return \li <c>true</c> if x is a representation of an empty decorated interval
+    /// \return \li <c>true</c> if \p x is a representation of an empty decorated interval
     ///         \li <c>false</c> otherwise.
     ///
     static bool is_empty(representation_dec const& x);
@@ -825,7 +817,7 @@ public:
     /// \brief Checks if \p x is a representation for an entire bare interval.
     ///
     /// \param x Interval representation
-    /// \return \li <c>true</c> if x is a representation of an entire bare interval
+    /// \return \li <c>true</c> if \p x is a representation of an entire bare interval
     ///         \li <c>false</c> otherwise.
     ///
     static bool is_entire(representation const& x);
@@ -833,7 +825,7 @@ public:
     /// \brief Checks if \p x is a representation for an entire decorated interval.
     ///
     /// \param x Interval representation
-    /// \return \li <c>true</c> if x is a representation of an entire decorated interval
+    /// \return \li <c>true</c> if \p x is a representation of an entire decorated interval
     ///         \li <c>false</c> otherwise.
     ///
     static bool is_entire(representation_dec const& x);
@@ -841,90 +833,400 @@ public:
     /// \brief Checks if \p x is a representation for an ill-formed decorated interval (Not an Interval).
     ///
     /// \param x Interval representation
-    /// \return \li <c>true</c> if x is a representation of NaI
+    /// \return \li <c>true</c> if \p x is a representation of NaI
     ///         \li <c>false</c> otherwise.
     ///
     static bool is_nai(representation_dec const& x);
 
-    /// \todo TODO
+    /// \brief Checks if \p x equals \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c>.
     ///
     static bool is_equal(representation const& x, representation const& y);
 
-    /// \todo TODO
+    /// \brief Decorated version. Checks if \p x equals \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static bool is_equal(representation_dec const& x, representation_dec const& y);
 
-    /// \todo TODO
+    /// \brief Mixed-type version. Checks if \p x equals \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li <c>true</c> if \p x  and \p y are both empty or if
+    ///             \f$\underline{x} = \underline{y} \wedge \overline{x} = \overline{y}\f$
+    ///         \li <c>false</c> otherwise.
+    ///
+    template<typename T_>
+    static bool is_equal(representation const& x, representation_type<T_> const& y);
+
+    /// \brief Decorated mixed-type version. Checks if \p x equals \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c>
+    ///             called with the bare interval part otherwise
+    ///
+    template<typename T_>
+    static bool is_equal(representation_dec const& x, representation_dec_type<T_> const& y);
+
+
+    /// \brief Checks if \p x is a subset of \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::subset(representation const& x, representation_type<T_> const& y) subset\endlink</c>.
     ///
     static bool subset(representation const& x, representation const& y);
 
-    /// \todo TODO
+    /// \brief Decorated version. Checks if \p x is a subset of \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::subset(representation const& x, representation_type<T_> const& y) subset\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static bool subset(representation_dec const& x, representation_dec const& y);
 
-    /// \todo TODO
+    /// \brief Mixed-type version. Checks if \p x is a subset of \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li <c>true</c> if \p x is empty or if
+    ///             \f$\underline{y} \leq \underline{x} \wedge \overline{x} \leq \overline{y}\f$
+    ///         \li <c>false</c> otherwise.
+    ///
+    template<typename T_>
+    static bool subset(representation const& x, representation_type<T_> const& y);
+
+    /// \brief Decorated mixed-type version. Checks if \p x is a subset of \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::subset(representation const& x, representation_type<T_> const& y) subset\endlink</c>
+    ///             called with the bare interval part otherwise
+    ///
+    template<typename T_>
+    static bool subset(representation_dec const& x, representation_dec_type<T_> const& y);
+
+    /// \brief Checks if \p x is weakly less than \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::less(representation const& x, representation_type<T_> const& y) less\endlink</c>.
     ///
     static bool less(representation const& x, representation const& y);
 
-    /// \todo TODO
+    /// \brief Decorated version. Checks if \p x is weakly less than \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::less(representation const& x, representation_type<T_> const& y) less\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static bool less(representation_dec const& x, representation_dec const& y);
 
-    /// \todo TODO
+    /// \brief Mixed-type version. Checks if \p x is weakly less than \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li <c>true</c> if \p x  and \p y are both empty or if
+    ///             \f$\underline{x} \leq \underline{y} \wedge \overline{x} \leq \overline{y}\f$
+    ///         \li <c>false</c> otherwise.
+    ///
+    template<typename T_>
+    static bool less(representation const& x, representation_type<T_> const& y);
+
+    /// \brief Decorated mixed-type version. Checks if \p x is weakly less than \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::less(representation const& x, representation_type<T_> const& y) less\endlink</c>
+    ///             called with the bare interval part otherwise
+    ///
+    template<typename T_>
+    static bool less(representation_dec const& x, representation_dec_type<T_> const& y);
+
+
+    /// \brief Checks if \p x is left of but may touch \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::precedes(representation const& x, representation_type<T_> const& y) precedes\endlink</c>.
     ///
     static bool precedes(representation const& x, representation const& y);
 
-    /// \todo TODO
+    /// \brief Decorated version. Checks if \p x is left of but may touch \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::precedes(representation const& x, representation_type<T_> const& y) precedes\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static bool precedes(representation_dec const& x, representation_dec const& y);
 
-    /// \todo TODO
+    /// \brief Mixed-type version. Checks if \p x is left of but may touch \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li <c>true</c> if \p x  or \p y is empty or if
+    ///             \f$\overline{x} \leq \underline{y}\f$
+    ///         \li <c>false</c> otherwise.
+    ///
+    template<typename T_>
+    static bool precedes(representation const& x, representation_type<T_> const& y);
+
+    /// \brief Decorated mixed-type version. Checks if \p x is left of but may touch \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::precedes(representation const& x, representation_type<T_> const& y) precedes\endlink</c>
+    ///             called with the bare interval part otherwise
+    ///
+    template<typename T_>
+    static bool precedes(representation_dec const& x, representation_dec_type<T_> const& y);
+
+
+    /// \brief Checks if \p x is interior to \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c>.
     ///
     static bool is_interior(representation const& x, representation const& y);
 
-    /// \todo TODO
+    /// \brief Decorated version. Checks if \p x is interior to \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static bool is_interior(representation_dec const& x, representation_dec const& y);
 
-    /// \todo TODO
+    /// \brief Mixed-type version. Checks if \p x is interior to \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li <c>true</c> if \p x  is empty or if
+    ///             \f$(\underline{y} < \underline{x} \vee \underline{y} = \underline{x} = -\infty) \wedge (\overline{x} < \overline{y} \vee \overline{x} = \overline{y} = +\infty)\f$
+    ///         \li <c>false</c> otherwise.
+    ///
+    template<typename T_>
+    static bool is_interior(representation const& x, representation_type<T_> const& y);
+
+    /// \brief Decorated mixed-type version. Checks if \p x is interior to \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c>
+    ///             called with the bare interval part otherwise
+    ///
+    template<typename T_>
+    static bool is_interior(representation_dec const& x, representation_dec_type<T_> const& y);
+
+
+    /// \brief Checks if \p x is strictly less than \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_less(representation const& x, representation_type<T_> const& y) strictly_less\endlink</c>.
     ///
     static bool strictly_less(representation const& x, representation const& y);
 
-    /// \todo TODO
+    /// \brief Decorated version. Checks if \p x is strictly less than \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_less(representation const& x, representation_type<T_> const& y) strictly_less\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static bool strictly_less(representation_dec const& x, representation_dec const& y);
 
-    /// \todo TODO
+    /// \brief Mixed-type version. Checks if \p x is strictly less than \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li <c>true</c> if \p x  and \p y are both empty or if
+    ///             \f$(\underline{x} < \underline{y} \vee \underline{x} = \underline{y} = -\infty) \wedge (\overline{x} < \overline{y} \vee \overline{x} = \overline{y} = +\infty)\f$
+    ///         \li <c>false</c> otherwise.
+    ///
+    template<typename T_>
+    static bool strictly_less(representation const& x, representation_type<T_> const& y);
+
+    /// \brief Decorated mixed-type version. Checks if \p x is strictly less than \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_less(representation const& x, representation_type<T_> const& y) strictly_less\endlink</c>
+    ///             called with the bare interval part otherwise
+    ///
+    template<typename T_>
+    static bool strictly_less(representation_dec const& x, representation_dec_type<T_> const& y);
+
+
+    /// \brief Checks if \p x is strictly left of  \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_precedes(representation const& x, representation_type<T_> const& y) strictly_precedes\endlink</c>.
     ///
     static bool strictly_precedes(representation const& x, representation const& y);
 
-    /// \todo TODO
+    /// \brief Decorated version. Checks if \p x is strictly left of  \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_precedes(representation const& x, representation_type<T_> const& y) strictly_precedes\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static bool strictly_precedes(representation_dec const& x, representation_dec const& y);
 
-    /// \todo TODO
+    /// \brief Mixed-type version. Checks if \p x is strictly left of  \p y.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li <c>true</c> if \p x  or \p y is empty or if
+    ///             \f$\overline{x} < \underline{y}\f$
+    ///         \li <c>false</c> otherwise.
+    ///
+    template<typename T_>
+    static bool strictly_precedes(representation const& x, representation_type<T_> const& y);
+
+    /// \brief Decorated mixed-type version. Checks if \p x is strictly left of  \p y.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_precedes(representation const& x, representation_type<T_> const& y) strictly_precedes\endlink</c>
+    ///             called with the bare interval part otherwise
+    ///
+    template<typename T_>
+    static bool strictly_precedes(representation_dec const& x, representation_dec_type<T_> const& y);
+
+    /// \brief Checks if \p x and \p y are disjoint.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c>.
     ///
     static bool are_disjoint(representation const& x, representation const& y);
 
-    /// \todo TODO
+    /// \brief Decorated version. Checks if \p x and \p y are disjoint.
     ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c>
+    ///             called with the bare interval part otherwise
     ///
     static bool are_disjoint(representation_dec const& x, representation_dec const& y);
+
+    /// \brief Mixed-type version. Checks if \p x and \p y are disjoint.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li <c>true</c> if \p x  or \p y is empty or if
+    ///             \f$\overline{x} < \underline{y} \vee \overline{y} < \underline{x}\f$
+    ///         \li <c>false</c> otherwise.
+    ///
+    template<typename T_>
+    static bool are_disjoint(representation const& x, representation_type<T_> const& y);
+
+    /// \brief Decorated mixed-type version. Checks if \p x and \p y are disjoint.
+    ///
+    /// \param x Interval representation
+    /// \param y Interval representation
+    ///
+    /// \tparam T_ Bound type of the interval representation of \p y
+    ///
+    /// \return \li NaN if \p x  or \p y is NaI
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c>
+    ///             called with the bare interval part otherwise
+    ///
+    template<typename T_>
+    static bool are_disjoint(representation_dec const& x, representation_dec_type<T_> const& y);
+
 
 ///@}
 

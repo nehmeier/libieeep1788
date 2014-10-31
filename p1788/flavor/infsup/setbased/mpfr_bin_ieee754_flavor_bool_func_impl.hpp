@@ -52,8 +52,11 @@ template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::is_empty(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
+    // call bare version if not ill
     return x.second != p1788::decoration::decoration::ill && is_empty(x.first);
 }
+
+
 
 // is_entire ( bare interval )
 template<typename T>
@@ -69,8 +72,11 @@ template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::is_entire(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
+    // call bare version
     return is_entire(x.first);
 }
+
+
 
 // is_nai ( decorated interval )
 template<typename T>
@@ -80,89 +86,227 @@ mpfr_bin_ieee754_flavor<T>::is_nai(mpfr_bin_ieee754_flavor<T>::representation_de
     return std::isnan(x.first.first) && std::isnan(x.first.second) && x.second == p1788::decoration::decoration::ill;
 }
 
+
+
+// is_equal ( bare interval, bare interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::is_equal(mpfr_bin_ieee754_flavor<T>::representation const& x,
                          mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
+    // call bare mixed type version
+    return is_equal<T>(x,y);
+}
+
+// is_equal ( decorated interval, decorated interval )
+template<typename T>
+bool
+mpfr_bin_ieee754_flavor<T>::is_equal(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                         mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
+{
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && is_equal<T>(x.first, y.first);
+}
+
+// is_equal ( bare interval, bare interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::is_equal(mpfr_bin_ieee754_flavor<T>::representation const& x,
+                         mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
     return (is_empty(x) && is_empty(y))
            || (x.first == y.first && x.second == y.second);
 }
 
+// is_equal ( decorated interval, decorated interval ) mixed type
 template<typename T>
+template<typename T_>
 bool
-mpfr_bin_ieee754_flavor<T>::is_equal(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-                         mpfr_bin_ieee754_flavor<T>::representation_dec const&)
+mpfr_bin_ieee754_flavor<T>::is_equal(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                         mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    return false;
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && is_equal(x.first, y.first);
 }
 
 
+
+// subset ( bare interval, bare interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::subset(mpfr_bin_ieee754_flavor<T>::representation const& x,
                              mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
+    // call bare mixed type version
+    return subset<T>(x,y);
+}
+
+// subset ( decorated interval, decorated interval )
+template<typename T>
+bool
+mpfr_bin_ieee754_flavor<T>::subset(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                             mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
+{
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && subset<T>(x.first, y.first);
+}
+
+// subset ( bare interval, bare interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::subset(mpfr_bin_ieee754_flavor<T>::representation const& x,
+                             mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
     return is_empty(x) || (y.first <= x.first && x.second <= y.second);
 }
 
+// subset ( decorated interval, decorated interval ) mixed type
 template<typename T>
+template<typename T_>
 bool
-mpfr_bin_ieee754_flavor<T>::subset(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-                             mpfr_bin_ieee754_flavor<T>::representation_dec const&)
+mpfr_bin_ieee754_flavor<T>::subset(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                             mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    return false;
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && subset(x.first, y.first);
 }
 
 
+
+// less ( bare interval, bare interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::less(mpfr_bin_ieee754_flavor<T>::representation const& x,
                      mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
+    // call bare mixed type version
+    return less<T>(x,y);
+}
+
+// less ( decorated interval, decorated interval )
+template<typename T>
+bool
+mpfr_bin_ieee754_flavor<T>::less(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                     mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
+{
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && less<T>(x.first, y.first);
+}
+
+// less ( bare interval, bare interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::less(mpfr_bin_ieee754_flavor<T>::representation const& x,
+                     mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
     return (is_empty(x) && is_empty(y))
            || (x.first <= y.first && x.second <= y.second);
 }
 
+// less ( decorated interval, decorated interval ) mixed type
 template<typename T>
+template<typename T_>
 bool
-mpfr_bin_ieee754_flavor<T>::less(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-                     mpfr_bin_ieee754_flavor<T>::representation_dec const&)
+mpfr_bin_ieee754_flavor<T>::less(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                     mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    return false;
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && less(x.first, y.first);
 }
 
 
+
+// precedes ( bare interval, bare interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::precedes(mpfr_bin_ieee754_flavor<T>::representation const& x,
                          mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
-    return is_empty(x) || is_empty(y) || x.second <= y.first;
+    // call bare mixed type version
+    return precedes<T>(x,y);
 }
 
+// precedes ( decorated interval, decorated interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::precedes(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                          mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && precedes<T>(x.first, y.first);
+}
 
-    return false;
+// precedes ( bare interval, bare interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::precedes(mpfr_bin_ieee754_flavor<T>::representation const& x,
+                         mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    return is_empty(x) || is_empty(y) || x.second <= y.first;
+}
+
+// precedes ( decorated interval, decorated interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::precedes(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                         mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && precedes(x.first, y.first);
 }
 
 
+
+// is_interior ( bare interval, bare interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::is_interior(mpfr_bin_ieee754_flavor<T>::representation const& x,
                             mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
+    // call bare mixed type version
+    return is_interior<T>(x,y);
+}
+
+// is_interior ( decorated interval, decorated interval )
+template<typename T>
+bool
+mpfr_bin_ieee754_flavor<T>::is_interior(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                            mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
+{
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && is_interior<T>(x.first, y.first);
+}
+
+// is_interior ( bare interval, bare interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::is_interior(mpfr_bin_ieee754_flavor<T>::representation const& x,
+                            mpfr_bin_ieee754_flavor<T>::representation_type<T_>  const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
     return is_empty(x)
            || ((y.first < x.first
                 || (y.first == -std::numeric_limits<T>::infinity()
@@ -172,22 +316,50 @@ mpfr_bin_ieee754_flavor<T>::is_interior(mpfr_bin_ieee754_flavor<T>::representati
                        && y.second == std::numeric_limits<T>::infinity())));
 }
 
+// is_interior ( decorated interval, decorated interval ) mixed type
 template<typename T>
+template<typename T_>
 bool
 mpfr_bin_ieee754_flavor<T>::is_interior(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
-                            mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
+                            mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_>  const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    return false;
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && is_interior(x.first, y.first);
 }
 
 
+
+// strictly_less ( bare interval, bare interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::strictly_less(mpfr_bin_ieee754_flavor<T>::representation const& x,
                               mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
+    // call bare mixed type version
+    return strictly_less<T>(x,y);
+}
+
+// strictly_less ( decorated interval, decorated interval )
+template<typename T>
+bool
+mpfr_bin_ieee754_flavor<T>::strictly_less(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                              mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
+{
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && strictly_less<T>(x.first, y.first);
+}
+
+// strictly_less ( bare interval, bare interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::strictly_less(mpfr_bin_ieee754_flavor<T>::representation const& x,
+                              mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
     return (is_empty(x) && is_empty(y))
            || ((x.first < y.first
                 || (x.first == -std::numeric_limits<T>::infinity()
@@ -197,52 +369,111 @@ mpfr_bin_ieee754_flavor<T>::strictly_less(mpfr_bin_ieee754_flavor<T>::representa
                        && y.second == std::numeric_limits<T>::infinity())));
 }
 
+// strictly_less ( decorated interval, decorated interval ) mixed type
 template<typename T>
+template<typename T_>
 bool
 mpfr_bin_ieee754_flavor<T>::strictly_less(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
-                              mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
+                              mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    return false;
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && strictly_less(x.first, y.first);
 }
 
 
+
+// strictly_precedes ( bare interval, bare interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::strictly_precedes(mpfr_bin_ieee754_flavor<T>::representation const& x,
                                   mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
-    return is_empty(x) || is_empty(y) || x.second < y.first;
+    // call bare mixed type version
+    return strictly_precedes<T>(x,y);
 }
 
+// strictly_precedes ( decorated interval, decorated interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::strictly_precedes(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                   mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && strictly_precedes<T>(x.first, y.first);
+}
 
-    return false;
+// strictly_precedes ( bare interval, bare interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::strictly_precedes(mpfr_bin_ieee754_flavor<T>::representation const& x,
+                                  mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    return is_empty(x) || is_empty(y) || x.second < y.first;
+}
+
+// strictly_precedes ( decorated interval, decorated interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::strictly_precedes(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                                  mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && strictly_precedes(x.first, y.first);
 }
 
 
+
+// are_disjoint ( bare interval, bare interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::are_disjoint(mpfr_bin_ieee754_flavor<T>::representation const& x,
                              mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
-    return is_empty(x) || is_empty(y) || x.second < y.first || y.second < x.first;
+    // call bare mixed type version
+    return are_disjoint<T>(x,y);
 }
 
+// are_disjoint ( decorated interval, decorated interval )
 template<typename T>
 bool
 mpfr_bin_ieee754_flavor<T>::are_disjoint(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                              mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && are_disjoint<T>(x.first, y.first);
+}
 
-    return false;
+// are_disjoint ( bare interval, bare interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::are_disjoint(mpfr_bin_ieee754_flavor<T>::representation const& x,
+                             mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    return is_empty(x) || is_empty(y) || x.second < y.first || y.second < x.first;
+}
+
+// are_disjoint ( decorated interval, decorated interval ) mixed type
+template<typename T>
+template<typename T_>
+bool
+mpfr_bin_ieee754_flavor<T>::are_disjoint(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                             mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& y)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && !is_nai(y) && are_disjoint(x.first, y.first);
 }
 
 
