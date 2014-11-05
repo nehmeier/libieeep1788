@@ -26,6 +26,8 @@
 #define BOOST_TEST_MODULE "Decorations [p1788/decoration/decoration]"
 #include "test/util/boost_test_wrapper.hpp"
 
+#include <sstream>
+
 #include <boost/test/output_test_stream.hpp>
 
 #include "p1788/decoration/decoration.hpp"
@@ -251,9 +253,230 @@ BOOST_AUTO_TEST_CASE(minimal_decoration_output_test)
     output << DEC::ill;
     BOOST_CHECK( output.is_equal( "ill" ) );
 
+    output << p1788::decoration::no_dec_alpha;
+
+    output << DEC::trv;
+    BOOST_CHECK( output.is_equal( "4" ) );
+
+    output << DEC::def;
+    BOOST_CHECK( output.is_equal( "8" ) );
+
+    output << DEC::dac;
+    BOOST_CHECK( output.is_equal( "12" ) );
+
+    output << DEC::com;
+    BOOST_CHECK( output.is_equal( "16" ) );
+
+    output << DEC::ill;
+    BOOST_CHECK( output.is_equal( "0" ) );
+
+    output << p1788::decoration::dec_alpha;
+
+    output << DEC::trv;
+    BOOST_CHECK( output.is_equal( "trv" ) );
+
+    output << DEC::def;
+    BOOST_CHECK( output.is_equal( "def" ) );
+
+    output << DEC::dac;
+    BOOST_CHECK( output.is_equal( "dac" ) );
+
+    output << DEC::com;
+    BOOST_CHECK( output.is_equal( "com" ) );
+
+    output << DEC::ill;
+    BOOST_CHECK( output.is_equal( "ill" ) );
 }
 
 BOOST_AUTO_TEST_CASE(minimal_decoration_input_test)
 {
-    BOOST_CHECK( false );
+    {
+        DEC dec;
+        std::istringstream is("ill");
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::ill);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("0");
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::ill);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("trv");
+        is >> p1788::decoration::dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::trv);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("4");
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::trv);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("def");
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::def);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("8");
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::def);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("DAC");
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::dac);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("12");
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::dac);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("com");
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::com);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("16");
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::com);
+        BOOST_CHECK(is);
+    }
+
+
+    {
+        DEC dec;
+        std::istringstream is("dac4");
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::dac);
+        BOOST_CHECK(is);
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::ill);
+        BOOST_CHECK(!is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("  DAC  16");
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::dac);
+        BOOST_CHECK(is);
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::com);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("4def");
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::trv);
+        BOOST_CHECK(is);
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::ill);
+        BOOST_CHECK(!is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("  def");
+        is >> std::noskipws;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::ill);
+        BOOST_CHECK(!is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("  12");
+        is >> std::noskipws;
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::ill);
+        BOOST_CHECK(!is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("\n 4 \t DEF \n");
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::trv);
+        BOOST_CHECK(is);
+        is >> p1788::decoration::dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::def);
+        BOOST_CHECK(is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("foo com");
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::ill);
+        BOOST_CHECK(!is);
+    }
+
+
+    {
+        DEC dec;
+        std::istringstream is(" \t \n \t ");
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::ill);
+        BOOST_CHECK(!is);
+    }
+
+
+    {
+        DEC dec;
+        std::istringstream is("7");
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::ill);
+        BOOST_CHECK(!is);
+    }
+
+    {
+        DEC dec;
+        std::istringstream is("-2");
+        is >> p1788::decoration::no_dec_alpha;
+        is >> dec;
+        BOOST_CHECK_EQUAL(dec, DEC::ill);
+        BOOST_CHECK(!is);
+    }
 }
