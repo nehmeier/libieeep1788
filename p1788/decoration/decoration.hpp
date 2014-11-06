@@ -31,7 +31,6 @@
 #include <cctype>
 #include <cstdint>
 
-#include "p1788/util/assert.hpp"
 
 namespace p1788
 {

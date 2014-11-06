@@ -41,6 +41,8 @@ namespace setbased
 
 // Constructors
 
+
+// empty bare interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::constructor()
@@ -48,6 +50,7 @@ mpfr_bin_ieee754_flavor<T>::constructor()
     return empty();
 }
 
+// empty decorated interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::constructor_dec()
@@ -56,6 +59,7 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec()
 }
 
 
+// bare inf-sup interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::constructor(T lower, T upper)
@@ -73,6 +77,7 @@ mpfr_bin_ieee754_flavor<T>::constructor(T lower, T upper)
     }
 }
 
+// decorated inf-sup interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::constructor_dec(T lower, T upper)
@@ -90,6 +95,7 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec(T lower, T upper)
     }
 }
 
+// bare inf-sup interval mixed type
 template<typename T>
 template<typename L_, typename U_>
 typename mpfr_bin_ieee754_flavor<T>::representation
@@ -101,6 +107,7 @@ mpfr_bin_ieee754_flavor<T>::constructor(L_ lower, U_ upper)
     return constructor(convert_rndd(lower), convert_rndu(upper));
 }
 
+// decorated inf-sup interval mixed type
 template<typename T>
 template<typename L_, typename U_>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
@@ -113,6 +120,7 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec(L_ lower, U_ upper)
 }
 
 
+// string literal bare interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::constructor(std::string const& str)
@@ -133,6 +141,7 @@ mpfr_bin_ieee754_flavor<T>::constructor(std::string const& str)
     return representation(0.0, 0.0);
 }
 
+// string literal decorated interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::constructor_dec(std::string const& str)
@@ -154,6 +163,7 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec(std::string const& str)
 }
 
 
+// copy constructor bare interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::constructor(representation const& other)
@@ -161,6 +171,7 @@ mpfr_bin_ieee754_flavor<T>::constructor(representation const& other)
     return other;
 }
 
+// copy constructor decorated interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_dec const& other)
@@ -169,34 +180,30 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_dec const& other)
 }
 
 
+// convert bare interval mixed type
 template<typename T>
 template<typename T_>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::constructor(representation_type<T_> const& other)
 {
-    mpfr_var::setup();
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    mpfr_var lower(other.first, MPFR_RNDD);
-    mpfr_var upper(other.second, MPFR_RNDU);
-
-    return representation(lower.template get<T>(MPFR_RNDD), upper.template get<T>(MPFR_RNDU));
+    return convert_hull(other);
 }
 
+// convert decorated interval mixed type
 template<typename T>
 template<typename T_>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_dec_type<T_> const& other)
 {
-    mpfr_var::setup();
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    mpfr_var lower(other.first.first, MPFR_RNDD);
-    mpfr_var upper(other.first.second, MPFR_RNDU);
-
-    return representation_dec(representation(lower.template get<T>(MPFR_RNDD), upper.template get<T>(MPFR_RNDU)), other.second);
+    return convert_hull(other);
 }
 
 
-
+// convert decorated interval -> bare interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::constructor(representation_dec const& other)
@@ -204,6 +211,7 @@ mpfr_bin_ieee754_flavor<T>::constructor(representation_dec const& other)
     return empty();
 }
 
+// convert decorated interval -> bare interval mixed type
 template<typename T>
 template<typename T_>
 typename mpfr_bin_ieee754_flavor<T>::representation
@@ -213,6 +221,7 @@ mpfr_bin_ieee754_flavor<T>::constructor(representation_dec_type<T_> const& other
         return empty();
 }
 
+// convert bare interval ->  decorated interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other)
@@ -226,6 +235,7 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other)
     }
 }
 
+// convert bare interval ->  decorated interval mixed type
 template<typename T>
 template<typename T_>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
@@ -236,7 +246,7 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_type<T_> const& other
     return constructor(convert_hull(other));
 }
 
-
+// set decoration constructor
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other, p1788::decoration::decoration dec)
@@ -244,6 +254,7 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other, p1788::
     return empty_dec();
 }
 
+// set decoration constructor mixed type
 template<typename T>
 template<typename T_>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec

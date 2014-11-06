@@ -23,10 +23,21 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-add_subdirectory(decoration)
-add_subdirectory(exception)
-add_subdirectory(util)
-add_subdirectory(flavor)
-add_subdirectory(infsup)
 
+# relevant header files of this directory
+set(P1788_HEADER_FILES
+    exception.hpp
+   )
+
+# relative path of this directory
+string(REGEX REPLACE "${PROJECT_SOURCE_DIR}" "" P1788_RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+
+# prefix for custom target
+string(REGEX REPLACE "/" "_" P1788_HEADERS_TARGET_SUFFIX ${P1788_RELATIVE_PATH})
+
+# custom_target to include headers in IDE-project-managers
+add_custom_target("header${P1788_HEADERS_TARGET_SUFFIX}" SOURCES ${P1788_HEADER_FILES})
+
+# install header files
+install(FILES ${P1788_HEADER_FILES} DESTINATION "include${P1788_RELATIVE_PATH}")
 

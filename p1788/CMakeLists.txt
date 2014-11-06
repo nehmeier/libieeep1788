@@ -44,6 +44,7 @@ install(FILES ${P1788_HEADER_FILES} DESTINATION "include${P1788_RELATIVE_PATH}")
 
 # include headers of subdirectories
 add_subdirectory(decoration)
+add_subdirectory(exception)
 add_subdirectory(flavor)
 add_subdirectory(infsup)
 add_subdirectory(overlapping)

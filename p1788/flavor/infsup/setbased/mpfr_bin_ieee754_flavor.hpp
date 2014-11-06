@@ -265,9 +265,11 @@ public:
     template<typename L_, typename U_>
     static representation_dec constructor_dec(L_ lower, U_ upper);
 
+    // Literal
     static representation constructor(std::string const& str);
     static representation_dec constructor_dec(std::string const& str);
 
+    // Copy
     static representation constructor(representation const& other);
     static representation_dec constructor_dec(representation_dec const& other);
 

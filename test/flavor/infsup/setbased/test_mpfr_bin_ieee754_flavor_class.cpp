@@ -44,10 +44,12 @@ using REP_DEC = typename F<T>::representation_dec;
 
 typedef p1788::decoration::decoration DEC;
 
+const double NAN_D = std::numeric_limits<double>::quiet_NaN();
 const double INF_D = std::numeric_limits<double>::infinity();
 const double MAX_D = std::numeric_limits<double>::max();
 const double DNORM_MIN_D = std::numeric_limits<double>::denorm_min();
 
+const float NAN_F = std::numeric_limits<float>::quiet_NaN();
 const float INF_F = std::numeric_limits<float>::infinity();
 const float MAX_F = std::numeric_limits<float>::max();
 const float DNORM_MIN_F = std::numeric_limits<float>::denorm_min();
@@ -192,23 +194,104 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_dec_test)
 
 BOOST_AUTO_TEST_CASE(minimal_copy_constructor_test)
 {
-    BOOST_CHECK( false );
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")) ), REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")) ), REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")) ), REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")) ), REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")));
+
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D) ), REP<double>(-DNORM_MIN_D, -DNORM_MIN_D));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(-DNORM_MIN_D, DNORM_MIN_D) ), REP<double>(-DNORM_MIN_D, DNORM_MIN_D));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(DNORM_MIN_D, DNORM_MIN_D) ), REP<double>(DNORM_MIN_D, DNORM_MIN_D));
+
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(-MAX_D, -MAX_D) ), REP<double>(-MAX_D, -MAX_D));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(-MAX_D, MAX_D) ), REP<double>(-MAX_D, MAX_D));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(MAX_D, MAX_D) ), REP<double>(MAX_D, MAX_D));
+
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<double>(-INF_D, INF_D) ), REP<double>(-INF_D, INF_D));
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor( REP<double>(NAN_D, NAN_D) )));
 }
 
 BOOST_AUTO_TEST_CASE(minimal_copy_constructor_dec_test)
 {
-    BOOST_CHECK( false );
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), DEC::trv) ), REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), DEC::trv));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC::com) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC::com));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), DEC::dac) ), REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), DEC::dac));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), DEC::def) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), DEC::def));
+
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), DEC::trv) ), REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), DEC::trv));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(-DNORM_MIN_D, DNORM_MIN_D), DEC::trv) ), REP_DEC<double>( REP<double>(-DNORM_MIN_D, DNORM_MIN_D), DEC::trv));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), DEC::trv) ), REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), DEC::trv));
+
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), DEC::trv) ), REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), DEC::trv));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(-MAX_D, MAX_D), DEC::trv) ), REP_DEC<double>( REP<double>(-MAX_D, MAX_D), DEC::trv));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(MAX_D, MAX_D), DEC::trv) ), REP_DEC<double>( REP<double>(MAX_D, MAX_D), DEC::trv));
+
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC::trv) ), REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC::trv));
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor_dec( REP_DEC<double>(REP<double>(NAN_D, NAN_D), DEC::trv) )));
+
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC::com) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC::com));
 }
 
 BOOST_AUTO_TEST_CASE(minimal_copy_constructor_mixedtype_test)
 {
-    BOOST_CHECK( false );
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")) ), REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")));
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")) ), REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")));
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")) ), REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")));
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")) ), REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<float>(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")) ), REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")));
+
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D) ), REP<float>(-DNORM_MIN_F,+0.0));
+    BOOST_CHECK( !std::signbit( F<float>::constructor( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D) ).second ));
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(-DNORM_MIN_D, DNORM_MIN_D) ), REP<float>(-DNORM_MIN_F, DNORM_MIN_F));
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(DNORM_MIN_D, DNORM_MIN_D) ), REP<float>(-0.0, DNORM_MIN_F));
+    BOOST_CHECK( std::signbit( F<float>::constructor( REP<double>(DNORM_MIN_D, DNORM_MIN_D) ).first ));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<float>(DNORM_MIN_F, DNORM_MIN_F) ), REP<double>(DNORM_MIN_F, DNORM_MIN_F));
+
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(-MAX_D, -MAX_D) ), REP<float>(-INF_F, -MAX_F));
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(-MAX_D, MAX_D) ), REP<float>(-INF_F, INF_F));
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(MAX_D, MAX_D) ), REP<float>(MAX_F, INF_F));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<float>(MAX_F, MAX_F) ), REP<double>(MAX_F, MAX_F));
+
+    BOOST_CHECK_EQUAL(F<float>::constructor( REP<double>(-INF_D, INF_D) ), REP<float>(-INF_F, INF_F));
+    BOOST_CHECK_EQUAL(F<double>::constructor( REP<float>(-INF_F, INF_F) ), REP<double>(-INF_D, INF_D));
+
+    BOOST_CHECK( F<float>::is_empty(F<float>::constructor( REP<double>(NAN_D, NAN_D) )));
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor( REP<float>(NAN_D, NAN_D) )));
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_copy_constructor_dec_mixedtype_test)
 {
-    BOOST_CHECK( false );
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), DEC::trv) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), DEC::trv));
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC::com) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), DEC::com));
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0x1.99999A0000000p-4")), DEC::dac) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), DEC::dac));
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), DEC::def) ), REP_DEC<float>( REP<float>(std::stof("-0X1.99999CP+4"), std::stof("0X1.99999AP-4")), DEC::def));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<float>( REP<float>(std::stof("-0X1.99999Cp+4"), std::stof("0x1.99999Ap-4")), DEC::trv) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0x1.99999A0000000p-4")), DEC::trv));
+
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), DEC::trv) ), REP_DEC<float>( REP<float>(-DNORM_MIN_F,+0.0), DEC::trv));
+    BOOST_CHECK( !std::signbit( F<float>::constructor_dec( REP_DEC<double>( REP<double>(-DNORM_MIN_D, -DNORM_MIN_D), DEC::trv) ).first.second ));
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(-DNORM_MIN_D, DNORM_MIN_D), DEC::trv) ), REP_DEC<float>( REP<float>(-DNORM_MIN_F, DNORM_MIN_F), DEC::trv));
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), DEC::trv) ), REP_DEC<float>( REP<float>(-0.0, DNORM_MIN_F), DEC::trv));
+    BOOST_CHECK( std::signbit( F<float>::constructor_dec( REP_DEC<double>( REP<double>(DNORM_MIN_D, DNORM_MIN_D), DEC::trv) ).first.first ));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<float>( REP<float>(DNORM_MIN_F, DNORM_MIN_F), DEC::trv) ), REP_DEC<double>( REP<double>(DNORM_MIN_F, DNORM_MIN_F), DEC::trv));
+
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), DEC::def) ), REP_DEC<float>( REP<float>(-INF_F, -MAX_F), DEC::def));
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(-MAX_D, MAX_D), DEC::trv) ), REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC::trv));
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(MAX_D, MAX_D), DEC::dac) ), REP_DEC<float>( REP<float>(MAX_F, INF_F), DEC::dac));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<float>( REP<float>(MAX_F, MAX_F), DEC::trv) ), REP_DEC<double>( REP<double>(MAX_F, MAX_F), DEC::trv));
+
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(-MAX_D, -MAX_D), DEC::com) ), REP_DEC<float>( REP<float>(-INF_F, -MAX_F), DEC::dac));
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(-MAX_D, MAX_D), DEC::com) ), REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC::dac));
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(MAX_D, MAX_D), DEC::com) ), REP_DEC<float>( REP<float>(MAX_F, INF_F), DEC::dac));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC::trv) ), REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC::trv));
+
+    BOOST_CHECK_EQUAL(F<float>::constructor_dec( REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC::trv) ), REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC::trv));
+    BOOST_CHECK_EQUAL(F<double>::constructor_dec( REP_DEC<float>( REP<float>(-INF_F, INF_F), DEC::trv) ), REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC::trv));
+
+    BOOST_CHECK( F<float>::is_empty(F<float>::constructor_dec( REP_DEC<double>(REP<double>(NAN_D, NAN_D), DEC::trv) )));
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor_dec( REP_DEC<float>(REP<float>(NAN_D, NAN_D), DEC::trv) )));
 }
 
 BOOST_AUTO_TEST_CASE(minimal_convert_constructor_test)
