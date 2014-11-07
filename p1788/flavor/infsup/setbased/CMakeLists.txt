@@ -42,6 +42,7 @@ set(P1788_HEADER_FILES
 	mpfr_bin_ieee754_flavor_set_op_impl.hpp
 	mpfr_bin_ieee754_flavor_setup_func_impl.hpp
 	mpfr_bin_ieee754_flavor_util_func_impl.hpp
+	mpfr_bin_ieee754_flavor_validation_func_impl.hpp
    )
 
 # relative path of this directory

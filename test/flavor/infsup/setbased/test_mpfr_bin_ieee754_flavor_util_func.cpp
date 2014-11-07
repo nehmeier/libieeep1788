@@ -55,7 +55,7 @@ const double NAN_D = std::numeric_limits<double>::quiet_NaN();
 const float NAN_F = std::numeric_limits<float>::quiet_NaN();
 
 
-BOOST_AUTO_TEST_CASE(minimal_convert_rndd)
+BOOST_AUTO_TEST_CASE(minimal_convert_rndd_test)
 {
     BOOST_CHECK_EQUAL(F<double>::convert_rndd(std::stod("0X1.9999999999999P-4")), std::stod("0X1.9999999999999P-4"));
     BOOST_CHECK_EQUAL(F<float>::convert_rndd(std::stod("0X1.9999999999999P-4")), std::stof("0X1.999998P-4"));
@@ -97,7 +97,7 @@ BOOST_AUTO_TEST_CASE(minimal_convert_rndd)
 }
 
 
-BOOST_AUTO_TEST_CASE(minimal_convert_rndn)
+BOOST_AUTO_TEST_CASE(minimal_convert_rndn_test)
 {
     BOOST_CHECK_EQUAL(F<double>::convert_rndn(std::stod("0X1.9999999999999P-4")), std::stod("0X1.9999999999999P-4"));
     BOOST_CHECK_EQUAL(F<float>::convert_rndn(std::stod("0X1.9999999999999P-4")), std::stof("0X1.99999AP-4"));
@@ -139,7 +139,7 @@ BOOST_AUTO_TEST_CASE(minimal_convert_rndn)
 }
 
 
-BOOST_AUTO_TEST_CASE(minimal_convert_rndu)
+BOOST_AUTO_TEST_CASE(minimal_convert_rndu_test)
 {
     BOOST_CHECK_EQUAL(F<double>::convert_rndu(std::stod("0X1.9999999999999P-4")), std::stod("0X1.9999999999999P-4"));
     BOOST_CHECK_EQUAL(F<float>::convert_rndu(std::stod("0X1.9999999999999P-4")), std::stof("0X1.99999AP-4"));
@@ -180,7 +180,7 @@ BOOST_AUTO_TEST_CASE(minimal_convert_rndu)
 }
 
 
-BOOST_AUTO_TEST_CASE(minimal_convert_hull)
+BOOST_AUTO_TEST_CASE(minimal_convert_hull_test)
 {
     BOOST_CHECK_EQUAL(F<double>::convert_hull( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")) ), REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")));
     BOOST_CHECK_EQUAL(F<double>::convert_hull( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")) ), REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")));
@@ -230,7 +230,7 @@ BOOST_AUTO_TEST_CASE(minimal_convert_hull)
 }
 
 
-BOOST_AUTO_TEST_CASE(minimal_convert_hull_dec)
+BOOST_AUTO_TEST_CASE(minimal_convert_hull_dec_test)
 {
     BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), DEC:trv) ), REP_DEC<double>( REP<double>(std::stod("-0x1.99999A842549Ap+4"), std::stod("0X1.9999999999999P-4")), DEC:trv));
     BOOST_CHECK_EQUAL(F<double>::convert_hull( REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC:com) ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC:com));

@@ -32,75 +32,101 @@ using namespace p1788;
 
 BOOST_AUTO_TEST_CASE(minimal_exception_test)
 {
-    BOOST_CHECK_EQUAL(exception::state(), exception::good_bit);
+    BOOST_CHECK_EQUAL(exception::get_throw_exception_cwd(), exception::none_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::none_bit);
     BOOST_CHECK(!exception::state());
     BOOST_CHECK(!exception::undefined_operation());
     BOOST_CHECK(!exception::possibly_undefined_operation());
     BOOST_CHECK(!exception::interval_part_of_nai());
     BOOST_CHECK(!exception::invalid_operand());
 
-    BOOST_CHECK_EQUAL(exception::raise_undefined_operation(), exception::undefined_operation_bit);
+    BOOST_CHECK_EQUAL(exception::signal_undefined_operation(), exception::undefined_operation_bit);
     BOOST_CHECK_EQUAL(exception::state(), exception::undefined_operation_bit);
     BOOST_CHECK(exception::state());
     BOOST_CHECK(exception::undefined_operation());
-    BOOST_CHECK_EQUAL(exception::clear(), exception::good_bit);
-    BOOST_CHECK_EQUAL(exception::state(), exception::good_bit);
+    BOOST_CHECK_EQUAL(exception::clear(), exception::none_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::none_bit);
     BOOST_CHECK(!exception::state());
     BOOST_CHECK(!exception::undefined_operation());
 
     BOOST_CHECK(!exception::state());
     BOOST_CHECK(!exception::possibly_undefined_operation());
-    BOOST_CHECK_EQUAL(exception::raise_possibly_undefined_operation(), exception::possibly_undefined_operation_bit);
+    BOOST_CHECK_EQUAL(exception::signal_possibly_undefined_operation(), exception::possibly_undefined_operation_bit);
     BOOST_CHECK_EQUAL(exception::state(), exception::possibly_undefined_operation_bit);
     BOOST_CHECK(exception::state());
     BOOST_CHECK(exception::possibly_undefined_operation());
-    BOOST_CHECK_EQUAL(exception::clear(), exception::good_bit);
-    BOOST_CHECK_EQUAL(exception::state(), exception::good_bit);
+    BOOST_CHECK_EQUAL(exception::clear(), exception::none_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::none_bit);
     BOOST_CHECK(!exception::state());
     BOOST_CHECK(!exception::possibly_undefined_operation());
 
     BOOST_CHECK(!exception::state());
     BOOST_CHECK(!exception::interval_part_of_nai());
-    BOOST_CHECK_EQUAL(exception::raise_interval_part_of_nai(), exception::interval_part_of_nai_bit);
+    BOOST_CHECK_EQUAL(exception::signal_interval_part_of_nai(), exception::interval_part_of_nai_bit);
     BOOST_CHECK_EQUAL(exception::state(), exception::interval_part_of_nai_bit);
     BOOST_CHECK(exception::state());
     BOOST_CHECK(exception::interval_part_of_nai());
-    BOOST_CHECK_EQUAL(exception::clear(), exception::good_bit);
-    BOOST_CHECK_EQUAL(exception::state(), exception::good_bit);
+    BOOST_CHECK_EQUAL(exception::clear(), exception::none_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::none_bit);
     BOOST_CHECK(!exception::state());
     BOOST_CHECK(!exception::interval_part_of_nai());
 
     BOOST_CHECK(!exception::state());
     BOOST_CHECK(!exception::invalid_operand());
-    BOOST_CHECK_EQUAL(exception::raise_invalid_operand(), exception::invalid_operand_bit);
+    BOOST_CHECK_EQUAL(exception::signal_invalid_operand(), exception::invalid_operand_bit);
     BOOST_CHECK_EQUAL(exception::state(), exception::invalid_operand_bit);
     BOOST_CHECK(exception::state());
     BOOST_CHECK(exception::invalid_operand());
-    BOOST_CHECK_EQUAL(exception::clear(), exception::good_bit);
-    BOOST_CHECK_EQUAL(exception::state(), exception::good_bit);
+    BOOST_CHECK_EQUAL(exception::clear(), exception::none_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::none_bit);
     BOOST_CHECK(!exception::state());
     BOOST_CHECK(!exception::invalid_operand());
 
-
+    BOOST_CHECK_EQUAL(exception::set_throw_exception_cwd(exception::invalid_operand_bit | exception::interval_part_of_nai_bit | exception::possibly_undefined_operation_bit | exception::undefined_operation_bit), exception::invalid_operand_bit | exception::interval_part_of_nai_bit | exception::possibly_undefined_operation_bit | exception::undefined_operation_bit);
     BOOST_CHECK(!exception::state());
-    BOOST_CHECK_EQUAL(exception::raise_invalid_operand(), exception::invalid_operand_bit);
+    BOOST_CHECK_THROW(exception::signal_invalid_operand(), exception::invalid_operand_exception);
     BOOST_CHECK_EQUAL(exception::state(), exception::invalid_operand_bit);
     BOOST_CHECK(exception::state());
     BOOST_CHECK(exception::invalid_operand());
-    BOOST_CHECK_EQUAL(exception::raise_interval_part_of_nai(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit);
+    BOOST_CHECK_THROW(exception::signal_interval_part_of_nai(), exception::interval_part_of_nai_exception);
     BOOST_CHECK_EQUAL(exception::state(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit);
     BOOST_CHECK(exception::state());
     BOOST_CHECK(exception::interval_part_of_nai());
-    BOOST_CHECK_EQUAL(exception::raise_possibly_undefined_operation(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit | exception::possibly_undefined_operation_bit);
+    BOOST_CHECK_THROW(exception::signal_possibly_undefined_operation(), exception::possibly_undefined_operation_exception);
     BOOST_CHECK_EQUAL(exception::state(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit | exception::possibly_undefined_operation_bit);
     BOOST_CHECK(exception::state());
     BOOST_CHECK(exception::possibly_undefined_operation());
-    BOOST_CHECK_EQUAL(exception::raise_undefined_operation(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit | exception::possibly_undefined_operation_bit | exception::undefined_operation_bit);
+    BOOST_CHECK_THROW(exception::signal_undefined_operation(), exception::undefined_operation_exception);
     BOOST_CHECK_EQUAL(exception::state(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit | exception::possibly_undefined_operation_bit | exception::undefined_operation_bit);
     BOOST_CHECK(exception::state());
     BOOST_CHECK(exception::undefined_operation());
-    BOOST_CHECK_EQUAL(exception::clear(), exception::good_bit);
-    BOOST_CHECK_EQUAL(exception::state(), exception::good_bit);
+    BOOST_CHECK_EQUAL(exception::clear(), exception::none_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::none_bit);
+    BOOST_CHECK(!exception::state());
+    BOOST_CHECK(!exception::invalid_operand());
+    BOOST_CHECK_EQUAL(exception::set_throw_exception_cwd(exception::none_bit), exception::none_bit);
+    BOOST_CHECK_EQUAL(exception::get_throw_exception_cwd(), exception::none_bit);
+
+
+    BOOST_CHECK(!exception::state());
+    BOOST_CHECK_EQUAL(exception::signal_invalid_operand(), exception::invalid_operand_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::invalid_operand_bit);
+    BOOST_CHECK(exception::state());
+    BOOST_CHECK(exception::invalid_operand());
+    BOOST_CHECK_EQUAL(exception::signal_interval_part_of_nai(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit);
+    BOOST_CHECK(exception::state());
+    BOOST_CHECK(exception::interval_part_of_nai());
+    BOOST_CHECK_EQUAL(exception::signal_possibly_undefined_operation(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit | exception::possibly_undefined_operation_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit | exception::possibly_undefined_operation_bit);
+    BOOST_CHECK(exception::state());
+    BOOST_CHECK(exception::possibly_undefined_operation());
+    BOOST_CHECK_EQUAL(exception::signal_undefined_operation(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit | exception::possibly_undefined_operation_bit | exception::undefined_operation_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::invalid_operand_bit | exception::interval_part_of_nai_bit | exception::possibly_undefined_operation_bit | exception::undefined_operation_bit);
+    BOOST_CHECK(exception::state());
+    BOOST_CHECK(exception::undefined_operation());
+    BOOST_CHECK_EQUAL(exception::clear(), exception::none_bit);
+    BOOST_CHECK_EQUAL(exception::state(), exception::none_bit);
     BOOST_CHECK(!exception::state());
     BOOST_CHECK(!exception::invalid_operand());
 }

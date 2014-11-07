@@ -46,6 +46,7 @@ if(Boost_FOUND)
             test_mpfr_bin_ieee754_flavor_num_func.cpp
             #test_mpfr_bin_ieee754_flavor_set_op.cpp
             test_mpfr_bin_ieee754_flavor_util_func.cpp
+            test_mpfr_bin_ieee754_flavor_validation_func.cpp
            )
 
         # relative path of this directory

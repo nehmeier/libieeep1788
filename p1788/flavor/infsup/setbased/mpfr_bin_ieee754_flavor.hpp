@@ -34,6 +34,7 @@
 #include <algorithm>
 
 #include "p1788/decoration/decoration.hpp"
+#include "p1788/exception/exception.hpp"
 #include "p1788/overlapping/overlapping.hpp"
 #include "p1788/util/eft.hpp"
 #include "p1788/util/assert.hpp"
@@ -146,6 +147,67 @@ public:
     ///
     static void teardown();
 ///@}
+
+
+// -----------------------------------------------------------------------------
+// Validation functions
+//
+// p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_validation_func_impl.hpp
+// -----------------------------------------------------------------------------
+
+///@name Validation functions
+///
+///
+///@{
+
+    /// \brief Checks if it is a valid representation of a bare interval.
+    ///
+    /// \param x representation of a bare interval
+    /// \return true if it is a valid representation and if no exception is thrown.
+    /// \exception p1788::exception::possibly_undefined_operation_exception  Throws exception if the
+    /// <c>possibly_undefined_operation_bit</c> is set for the <c>throw_exception_cwd</c> using
+    /// \link p1788::exception::set_throw_exception_cwd(exception_bits)\endlink.
+    /// \note if it is an invalid representation \link p1788::exception::signal_invalid_operand() \endlink
+    /// is called to signal an invalid operand.
+    static bool is_valid(representation const& x);
+
+    /// \brief Checks if it is a valid representation of a decorated interval.
+    ///
+    /// \param x representation of a decorated interval
+    /// \return true if it is a valid representation and if no exception is thrown.
+    /// \exception p1788::exception::possibly_undefined_operation_exception  Throws exception if the
+    /// <c>possibly_undefined_operation_bit</c> is set for the <c>throw_exception_cwd</c> using
+    /// \link p1788::exception::set_throw_exception_cwd(exception_bits)\endlink.
+    /// \note if it is an invalid representation \link p1788::exception::signal_invalid_operand() \endlink
+    /// is called to signal an invalid operand.
+    static bool is_valid(representation_dec const& x);
+
+    /// \brief Mixed-type version. Checks if it is a valid representation of a bare interval.
+    ///
+    /// \param x representation of a bare interval
+    /// \return true if it is a valid representation and if no exception is thrown.
+    /// \exception p1788::exception::possibly_undefined_operation_exception  Throws exception if the
+    /// <c>possibly_undefined_operation_bit</c> is set for the <c>throw_exception_cwd</c> using
+    /// \link p1788::exception::set_throw_exception_cwd(exception_bits)\endlink.
+    /// \note if it is an invalid representation \link p1788::exception::signal_invalid_operand() \endlink
+    /// is called to signal an invalid operand.
+    template<typename T_>
+    static bool is_valid(representation_type<T_> const& x);
+
+    /// \brief Mixed-type version. Checks if it is a valid representation of a decorated interval.
+    ///
+    /// \param x representation of a decorated interval
+    /// \return true if it is a valid representation and if no exception is thrown.
+    /// \exception p1788::exception::possibly_undefined_operation_exception  Throws exception if the
+    /// <c>possibly_undefined_operation_bit</c> is set for the <c>throw_exception_cwd</c> using
+    /// \link p1788::exception::set_throw_exception_cwd(exception_bits)\endlink.
+    /// \note if it is an invalid representation \link p1788::exception::signal_invalid_operand() \endlink
+    /// is called to signal an invalid operand.
+    template<typename T_>
+    static bool is_valid(representation_dec_type<T_> const& x);
+
+///@}
+
 
 
 // -----------------------------------------------------------------------------
@@ -2479,5 +2541,6 @@ public:
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_slope_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_setup_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_util_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_validation_func_impl.hpp"
 
 #endif // LIBIEEEP1788_P1788_FLAVOR_INFSUP_SETBASED_MPFR_BIN_IEEE754_FLAVOR_HPP
