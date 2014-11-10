@@ -517,7 +517,7 @@ public:
     ///         \li lower bound of \p x otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T inf(representation const& x);
 
     /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::inf(representation const& x) inf\endlink</c>.
@@ -528,7 +528,7 @@ public:
     ///         to the type \p T using rounding to \f$-\infty\f$.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T inf(representation_type<T_> const& x);
 
@@ -542,7 +542,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T inf(representation_dec const& x);
 
     /// \brief Mixed-type version of the infimum of a decorated interval representation.
@@ -555,7 +555,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T inf(representation_dec_type<T_> const& x);
 
@@ -568,7 +568,7 @@ public:
     ///         \li upper bound of \p x otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T sup(representation const& x);
 
     /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::sup(representation const& x) sup\endlink</c>.
@@ -579,7 +579,7 @@ public:
     ///         to the type \p T using rounding to \f$+\infty\f$.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T sup(representation_type<T_> const& x);
 
@@ -592,7 +592,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T sup(representation_dec const& x);
 
     /// \brief Mixed-type version of the supremum of a decorated interval representation.
@@ -605,7 +605,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T sup(representation_dec_type<T_> const& x);
 
@@ -621,7 +621,7 @@ public:
     ///              It returns +0.0 in case of a zero
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T mid(representation const& x);
 
     /// \brief Mixed-type version of the midpoint of a bare interval representation
@@ -637,7 +637,7 @@ public:
     ///              It returns +0.0 in case of a zero
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T mid(representation_type<T_> const& x);
 
@@ -650,7 +650,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T mid(representation_dec const& x);
 
     /// \brief Mixed-type version of the midpoint of a decorated interval representation.
@@ -663,7 +663,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T mid(representation_dec_type<T_> const& x);
 
@@ -676,7 +676,7 @@ public:
     ///              It returns +0.0 in case of a zero
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T rad(representation const& x);
 
     /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::rad(representation const& x) rad\endlink</c>.
@@ -689,7 +689,7 @@ public:
     ///              It returns +0.0 in case of a zero
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T rad(representation_type<T_> const& x);
 
@@ -702,7 +702,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T rad(representation_dec const& x);
 
     /// \brief Mixed-type version of the radius of a decorated interval representation.
@@ -715,7 +715,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T rad(representation_dec_type<T_> const& x);
 
@@ -726,7 +726,7 @@ public:
     /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation const& x) rad\endlink</c>
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static std::pair<T, T> mid_rad(representation const& x);
 
     /// \brief Mixed-type version of the midpoint and radius of a bare interval representation.
@@ -737,7 +737,7 @@ public:
     /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation_type<T_> const& x) rad\endlink</c>
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static std::pair<T, T> mid_rad(representation_type<T_> const& x);
 
@@ -748,7 +748,7 @@ public:
     /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation_dec const& x) rad\endlink</c>
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static std::pair<T, T> mid_rad(representation_dec const& x);
 
     /// \brief Mixed-type version of the midpoint and radius of a decorated interval representation.
@@ -759,7 +759,7 @@ public:
     /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation_dec_type<T_> const& x) rad\endlink</c>
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static std::pair<T, T> mid_rad(representation_dec_type<T_> const& x);
 
@@ -772,7 +772,7 @@ public:
     ///              It returns +0.0 in case of a zero
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T wid(representation const& x);
 
     /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::wid(representation const& x) wid\endlink</c>.
@@ -783,7 +783,7 @@ public:
     ///         to the type \p T using rounding to \f$+\infty\f$.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T wid(representation_type<T_> const& x);
 
@@ -796,7 +796,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T wid(representation_dec const& x);
 
     /// \brief Mixed-type version of the width of a decorated interval representation.
@@ -809,7 +809,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T wid(representation_dec_type<T_> const& x);
 
@@ -822,7 +822,7 @@ public:
     ///              It returns +0.0 in case of a zero
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T mag(representation const& x);
 
     /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::mag(representation const& x) mag\endlink</c>.
@@ -833,7 +833,7 @@ public:
     ///         to the type \p T using rounding to \f$+\infty\f$.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T mag(representation_type<T_> const& x);
 
@@ -846,7 +846,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T mag(representation_dec const& x);
 
     /// \brief Mixed-type version of the magnitude of a decorated interval representation.
@@ -859,7 +859,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T mag(representation_dec_type<T_> const& x);
 
@@ -873,7 +873,7 @@ public:
     ///              It returns +0.0 in case of a zero
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T mig(representation const& x);
 
     /// \brief Mixed-type version of <c>\link mpfr_bin_ieee754_flavor::mig(representation const& x) mig\endlink</c>.
@@ -884,7 +884,7 @@ public:
     ///         to the type \p T using rounding to \f$-\infty\f$.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T mig(representation_type<T_> const& x);
 
@@ -897,7 +897,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static T mig(representation_dec const& x);
 
     /// \brief Mixed-type version of the mignitude of a decorated interval representation.
@@ -910,7 +910,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static T mig(representation_dec_type<T_> const& x);
 
@@ -936,7 +936,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool is_empty(representation const& x);
 
     /// \brief Checks if \p x is a representation for an empty decorated interval.
@@ -947,7 +947,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x  the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool is_empty(representation_dec const& x);
 
     /// \brief Checks if \p x is a representation for an entire bare interval.
@@ -958,7 +958,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool is_entire(representation const& x);
 
     /// \brief Checks if \p x is a representation for an entire decorated interval.
@@ -969,7 +969,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool is_entire(representation_dec const& x);
 
     /// \brief Checks if \p x is a representation for an ill-formed decorated interval (Not an Interval).
@@ -980,7 +980,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool is_nai(representation_dec const& x);
 
     /// \brief Checks if \p x equals \p y.
@@ -992,7 +992,7 @@ public:
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool is_equal(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x equals \p y.
@@ -1006,7 +1006,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool is_equal(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x equals \p y.
@@ -1022,7 +1022,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool is_equal(representation const& x, representation_type<T_> const& y);
 
@@ -1039,7 +1039,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool is_equal(representation_dec const& x, representation_dec_type<T_> const& y);
 
@@ -1053,7 +1053,7 @@ public:
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::subset(representation const& x, representation_type<T_> const& y) subset\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool subset(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x is a subset of \p y.
@@ -1067,7 +1067,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool subset(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x is a subset of \p y.
@@ -1083,7 +1083,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool subset(representation const& x, representation_type<T_> const& y);
 
@@ -1100,7 +1100,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool subset(representation_dec const& x, representation_dec_type<T_> const& y);
 
@@ -1113,7 +1113,7 @@ public:
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::less(representation const& x, representation_type<T_> const& y) less\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool less(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x is weakly less than \p y.
@@ -1127,7 +1127,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool less(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x is weakly less than \p y.
@@ -1143,7 +1143,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool less(representation const& x, representation_type<T_> const& y);
 
@@ -1160,7 +1160,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool less(representation_dec const& x, representation_dec_type<T_> const& y);
 
@@ -1174,7 +1174,7 @@ public:
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::precedes(representation const& x, representation_type<T_> const& y) precedes\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool precedes(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x is left of but may touch \p y.
@@ -1188,7 +1188,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool precedes(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x is left of but may touch \p y.
@@ -1204,7 +1204,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool precedes(representation const& x, representation_type<T_> const& y);
 
@@ -1221,7 +1221,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool precedes(representation_dec const& x, representation_dec_type<T_> const& y);
 
@@ -1235,7 +1235,7 @@ public:
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool is_interior(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x is interior to \p y.
@@ -1249,7 +1249,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool is_interior(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x is interior to \p y.
@@ -1265,7 +1265,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool is_interior(representation const& x, representation_type<T_> const& y);
 
@@ -1282,7 +1282,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool is_interior(representation_dec const& x, representation_dec_type<T_> const& y);
 
@@ -1296,7 +1296,7 @@ public:
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_less(representation const& x, representation_type<T_> const& y) strictly_less\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool strictly_less(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x is strictly less than \p y.
@@ -1310,7 +1310,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool strictly_less(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x is strictly less than \p y.
@@ -1326,7 +1326,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool strictly_less(representation const& x, representation_type<T_> const& y);
 
@@ -1343,7 +1343,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool strictly_less(representation_dec const& x, representation_dec_type<T_> const& y);
 
@@ -1357,7 +1357,7 @@ public:
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_precedes(representation const& x, representation_type<T_> const& y) strictly_precedes\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool strictly_precedes(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x is strictly left of  \p y.
@@ -1371,7 +1371,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool strictly_precedes(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x is strictly left of  \p y.
@@ -1387,7 +1387,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool strictly_precedes(representation const& x, representation_type<T_> const& y);
 
@@ -1404,7 +1404,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool strictly_precedes(representation_dec const& x, representation_dec_type<T_> const& y);
 
@@ -1417,7 +1417,7 @@ public:
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool are_disjoint(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x and \p y are disjoint.
@@ -1431,7 +1431,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     static bool are_disjoint(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x and \p y are disjoint.
@@ -1447,7 +1447,7 @@ public:
     ///         \li <c>false</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool are_disjoint(representation const& x, representation_type<T_> const& y);
 
@@ -1464,7 +1464,7 @@ public:
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
-    ///
+    /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
     static bool are_disjoint(representation_dec const& x, representation_dec_type<T_> const& y);
 
