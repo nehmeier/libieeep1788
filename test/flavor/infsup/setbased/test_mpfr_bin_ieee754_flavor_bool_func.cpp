@@ -49,6 +49,8 @@ const float NaN_F = std::numeric_limits<float>::quiet_NaN();
 
 BOOST_AUTO_TEST_CASE(minimal_is_empty_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::is_empty(REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( !F<double>::is_empty(REP<double>(-INF_D,+INF_D)) );
     BOOST_CHECK( !F<double>::is_empty(REP<double>(1.0,2.0)) );
@@ -63,10 +65,24 @@ BOOST_AUTO_TEST_CASE(minimal_is_empty_test)
     BOOST_CHECK( !F<double>::is_empty(REP<double>(0.0,-0.0)) );
     BOOST_CHECK( !F<double>::is_empty(REP<double>(0.0,0.0)) );
     BOOST_CHECK( !F<double>::is_empty(REP<double>(-0.0,-0.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_empty(REP<double>(1.0,-2.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_empty(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_empty_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill)) );
     BOOST_CHECK( F<double>::is_empty(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::trv)) );
     BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-INF_D,+INF_D), DEC::def)) );
@@ -82,10 +98,24 @@ BOOST_AUTO_TEST_CASE(minimal_is_empty_dec_test)
     BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv)) );
     BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(0.0,0.0), DEC::trv)) );
     BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_empty(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_empty(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_entire_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::is_entire(REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( F<double>::is_entire(REP<double>(-INF_D,+INF_D)) );
     BOOST_CHECK( !F<double>::is_entire(REP<double>(1.0,2.0)) );
@@ -100,10 +130,24 @@ BOOST_AUTO_TEST_CASE(minimal_is_entire_test)
     BOOST_CHECK( !F<double>::is_entire(REP<double>(0.0,-0.0)) );
     BOOST_CHECK( !F<double>::is_entire(REP<double>(0.0,0.0)) );
     BOOST_CHECK( !F<double>::is_entire(REP<double>(-0.0,-0.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_entire(REP<double>(-1.0,-2.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_entire(REP<double>(-1.0,-2.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_entire_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill)) );
     BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::trv)) );
     BOOST_CHECK( F<double>::is_entire(REP_DEC<double>(REP<double>(-INF_D,+INF_D), DEC::trv)) );
@@ -121,10 +165,24 @@ BOOST_AUTO_TEST_CASE(minimal_is_entire_dec_test)
     BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv)) );
     BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(0.0,0.0), DEC::trv)) );
     BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_entire(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_entire(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_nai_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::is_nai(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill)) );
     BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::trv)) );
     BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-INF_D,+INF_D), DEC::trv)) );
@@ -142,10 +200,24 @@ BOOST_AUTO_TEST_CASE(minimal_is_nai_dec_test)
     BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv)) );
     BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(0.0,0.0), DEC::trv)) );
     BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_nai(REP_DEC<double>(REP<double>(-1.0,-2.0), DEC::trv)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_nai(REP_DEC<double>(REP<double>(-1.0,-2.0), DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_equal_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::is_equal(REP<double>(1.0,2.0), REP<double>(1.0,2.0)) );
     BOOST_CHECK( !F<double>::is_equal(REP<double>(1.0,2.1), REP<double>(1.0,2.0)) );
     BOOST_CHECK( F<double>::is_equal(REP<double>(NaN_D,NaN_D), REP<double>(NaN_D,NaN_D)) );
@@ -161,10 +233,24 @@ BOOST_AUTO_TEST_CASE(minimal_is_equal_test)
     BOOST_CHECK( F<double>::is_equal(REP<double>(-0.0,-0.0), REP<double>(0.0,0.0)) );
     BOOST_CHECK( F<double>::is_equal(REP<double>(-0.0,0.0), REP<double>(0.0,0.0)) );
     BOOST_CHECK( F<double>::is_equal(REP<double>(0.0,-0.0), REP<double>(0.0,0.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_equal(REP<double>(1.0,-2.4), REP<double>(-INF_D,+INF_D)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_equal(REP<double>(1.0,2.4), REP<double>(-INF_D,-INF_D)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_equal_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::is_equal(REP<float>(1.0f,2.0f), REP<double>(1.0,2.0)) );
     BOOST_CHECK( !F<double>::is_equal(REP<double>(1.0,2.1), REP<float>(1.0f,2.0f)) );
     BOOST_CHECK( F<double>::is_equal(REP<float>(NaN_F,NaN_F), REP<double>(NaN_D,NaN_D)) );
@@ -181,6 +267,18 @@ BOOST_AUTO_TEST_CASE(minimal_is_equal_mixedtype_test)
     BOOST_CHECK( F<double>::is_equal(REP<float>(-0.0f,0.0f), REP<double>(0.0,0.0)) );
     BOOST_CHECK( F<double>::is_equal(REP<double>(0.0,-0.0), REP<float>(0.0f,0.0f)) );
 
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_equal(REP<double>(1.0,-2.4), REP<float>(-INF_F,+INF_F)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_equal(REP<double>(1.0,2.4), REP<float>(+INF_F,+INF_F)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
+
     BOOST_CHECK( F<float>::is_equal(REP<float>(1.0f,2.0f), REP<double>(1.0,2.0)) );
     BOOST_CHECK( !F<float>::is_equal(REP<double>(1.0,2.1), REP<float>(1.0f,2.0f)) );
     BOOST_CHECK( F<float>::is_equal(REP<float>(NaN_F,NaN_F), REP<double>(NaN_D,NaN_D)) );
@@ -196,10 +294,24 @@ BOOST_AUTO_TEST_CASE(minimal_is_equal_mixedtype_test)
     BOOST_CHECK( F<float>::is_equal(REP<double>(-0.0,-0.0), REP<float>(0.0f,0.0f)) );
     BOOST_CHECK( F<float>::is_equal(REP<float>(-0.0f,0.0f), REP<double>(0.0,0.0)) );
     BOOST_CHECK( F<float>::is_equal(REP<double>(0.0,-0.0), REP<float>(0.0f,0.0f)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<float>::is_equal(REP<float>(+INF_F,-2.4f), REP<double>(-INF_D,2.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<float>::is_equal(REP<float>(-INF_F,2.4f), REP<double>(+INF_D,2.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_equal_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::is_equal(REP_DEC<double>(REP<double>(1.0,2.0),DEC::def), REP_DEC<double>(REP<double>(1.0,2.0),DEC::trv)) );
     BOOST_CHECK( !F<double>::is_equal(REP_DEC<double>(REP<double>(1.0,2.1),DEC::trv), REP_DEC<double>(REP<double>(1.0,2.0),DEC::trv)) );
     BOOST_CHECK( F<double>::is_equal(REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
@@ -219,10 +331,24 @@ BOOST_AUTO_TEST_CASE(minimal_is_equal_dec_test)
     BOOST_CHECK( F<double>::is_equal(REP_DEC<double>(REP<double>(-0.0,-0.0),DEC::trv), REP_DEC<double>(REP<double>(0.0,0.0),DEC::trv)) );
     BOOST_CHECK( F<double>::is_equal(REP_DEC<double>(REP<double>(-0.0,0.0),DEC::def), REP_DEC<double>(REP<double>(0.0,0.0),DEC::trv)) );
     BOOST_CHECK( F<double>::is_equal(REP_DEC<double>(REP<double>(0.0,-0.0),DEC::trv), REP_DEC<double>(REP<double>(0.0,0.0),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_equal(REP_DEC<double>(REP<double>(-INF_D,2.4),DEC::def), REP_DEC<double>(REP<double>(+INF_D,2.0),DEC::trv)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_equal(REP_DEC<double>(REP<double>(+INF_D,2.4),DEC::def), REP_DEC<double>(REP<double>(-INF_D,2.0),DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_equal_dec_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::is_equal(REP_DEC<float>(REP<float>(1.0f,2.0f),DEC::com), REP_DEC<double>(REP<double>(1.0,2.0),DEC::trv)) );
     BOOST_CHECK( !F<double>::is_equal(REP_DEC<double>(REP<double>(1.0,2.1),DEC::trv), REP_DEC<float>(REP<float>(1.0f,2.0f),DEC::trv)) );
     BOOST_CHECK( F<double>::is_equal(REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
@@ -243,11 +369,23 @@ BOOST_AUTO_TEST_CASE(minimal_is_equal_dec_mixedtype_test)
     BOOST_CHECK( F<double>::is_equal(REP_DEC<float>(REP<float>(-0.0f,0.0f),DEC::trv), REP_DEC<double>(REP<double>(0.0,0.0),DEC::dac)) );
     BOOST_CHECK( F<double>::is_equal(REP_DEC<double>(REP<double>(0.0,-0.0),DEC::com), REP_DEC<float>(REP<float>(0.0f,0.0f),DEC::def)) );
 
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_equal(REP_DEC<float>(REP<float>(+INF_F,2.4f),DEC::trv), REP_DEC<double>(REP<double>(-INF_D,2.0),DEC::trv)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_equal(REP_DEC<float>(REP<float>(-INF_F,2.4f),DEC::trv), REP_DEC<double>(REP<double>(+INF_D,2.0),DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
+
     BOOST_CHECK( F<float>::is_equal(REP_DEC<float>(REP<float>(1.0f,2.0f),DEC::com), REP_DEC<double>(REP<double>(1.0,2.0),DEC::trv)) );
     BOOST_CHECK( !F<float>::is_equal(REP_DEC<double>(REP<double>(1.0,2.1),DEC::trv), REP_DEC<float>(REP<float>(1.0f,2.0f),DEC::trv)) );
     BOOST_CHECK( F<float>::is_equal(REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
     BOOST_CHECK( !F<float>::is_equal(REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
-    BOOST_CHECK( !F<float>::is_equal(REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::def), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
+    BOOST_CHECK( !F<float>::is_equal(REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<float>::is_equal(REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<float>::is_equal(REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv), REP_DEC<float>(REP<float>(1.0f,2.0f),DEC::trv)) );
     BOOST_CHECK( F<float>::is_equal(REP_DEC<float>(REP<float>(-INF_F,+INF_F),DEC::trv), REP_DEC<double>(REP<double>(-INF_D,+INF_D),DEC::def)) );
@@ -261,11 +399,25 @@ BOOST_AUTO_TEST_CASE(minimal_is_equal_dec_mixedtype_test)
     BOOST_CHECK( F<float>::is_equal(REP_DEC<double>(REP<double>(-0.0,-0.0),DEC::trv), REP_DEC<float>(REP<float>(0.0f,0.0f),DEC::trv)) );
     BOOST_CHECK( F<float>::is_equal(REP_DEC<float>(REP<float>(-0.0f,0.0f),DEC::com), REP_DEC<double>(REP<double>(0.0,0.0),DEC::def)) );
     BOOST_CHECK( F<float>::is_equal(REP_DEC<double>(REP<double>(0.0,-0.0),DEC::trv), REP_DEC<float>(REP<float>(0.0f,0.0f),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<float>::is_equal(REP_DEC<double>(REP<double>(1.0,-2.4),DEC::trv), REP_DEC<float>(REP<float>(-INF_F,+INF_F),DEC::trv)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<float>::is_equal(REP_DEC<double>(REP<double>(1.0,2.4),DEC::trv), REP_DEC<float>(REP<float>(-INF_F,+INF_F),DEC::com)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_subset_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::subset(REP<double>(NaN_D,NaN_D), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( F<double>::subset(REP<double>(NaN_D,NaN_D), REP<double>(0.0,4.0)) );
     BOOST_CHECK( F<double>::subset(REP<double>(NaN_D,NaN_D), REP<double>(-0.0,4.0)) );
@@ -297,11 +449,25 @@ BOOST_AUTO_TEST_CASE(minimal_subset_test)
     BOOST_CHECK( F<double>::subset(REP<double>(-0.0,0.0), REP<double>(0.0,-0.0)) );
     BOOST_CHECK( F<double>::subset(REP<double>(0.0,-0.0), REP<double>(0.0,0.0)) );
     BOOST_CHECK( F<double>::subset(REP<double>(0.0,-0.0), REP<double>(-0.0,0.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::subset(REP<double>(1.0,-2.0), REP<double>(-0.0,4.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::subset(REP<double>(1.0,2.0), REP<double>(-0.0,-4.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_subset_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::subset(REP<float>(NaN_F,NaN_F), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( F<double>::subset(REP<double>(NaN_D,NaN_D), REP<float>(0.0f,4.0f)) );
     BOOST_CHECK( F<double>::subset(REP<float>(NaN_F,NaN_F), REP<double>(-0.0,4.0)) );
@@ -366,11 +532,25 @@ BOOST_AUTO_TEST_CASE(minimal_subset_mixedtype_test)
     BOOST_CHECK( F<float>::subset(REP<float>(-0.0f,0.0f), REP<double>(0.0,-0.0)) );
     BOOST_CHECK( F<float>::subset(REP<double>(0.0,-0.0), REP<float>(0.0f,0.0f)) );
     BOOST_CHECK( F<float>::subset(REP<float>(0.0f,-0.0f), REP<double>(-0.0,0.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<float>::subset(REP<float>(1.0f,-2.0f), REP<double>(0.0,4.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<float>::subset(REP<float>(1.0f,2.0f), REP<double>(0.0,-4.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_subset_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::subset(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::subset(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
     BOOST_CHECK( !F<double>::subset(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(0.0,4.0),DEC::trv)) );
@@ -406,11 +586,25 @@ BOOST_AUTO_TEST_CASE(minimal_subset_dec_test)
     BOOST_CHECK( F<double>::subset(REP_DEC<double>(REP<double>(-0.0,0.0), DEC::trv), REP_DEC<double>(REP<double>(0.0,-0.0),DEC::trv)) );
     BOOST_CHECK( F<double>::subset(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::def), REP_DEC<double>(REP<double>(0.0,0.0),DEC::trv)) );
     BOOST_CHECK( F<double>::subset(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv), REP_DEC<double>(REP<double>(-0.0,0.0),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::subset(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::trv), REP_DEC<double>(REP<double>(1.0,2.0),DEC::trv)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::subset(REP_DEC<double>(REP<double>(1.0,2.0), DEC::trv), REP_DEC<double>(REP<double>(1.0,2.0),DEC::ill)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_subset_dec_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::subset(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::subset(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
     BOOST_CHECK( !F<double>::subset(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<float>(REP<float>(0.0f,4.0f),DEC::trv)) );
@@ -482,11 +676,25 @@ BOOST_AUTO_TEST_CASE(minimal_subset_dec_mixedtype_test)
     BOOST_CHECK( F<float>::subset(REP_DEC<float>(REP<float>(-0.0f,0.0f), DEC::trv), REP_DEC<double>(REP<double>(0.0,-0.0),DEC::def)) );
     BOOST_CHECK( F<float>::subset(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv), REP_DEC<float>(REP<float>(0.0f,0.0f),DEC::trv)) );
     BOOST_CHECK( F<float>::subset(REP_DEC<float>(REP<float>(0.0f,-0.0f), DEC::trv), REP_DEC<double>(REP<double>(-0.0,0.0),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<float>::subset(REP_DEC<double>(REP<double>(0.0,4.0), DEC::trv), REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::def)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<float>::subset(REP_DEC<double>(REP<double>(0.0,4.0), DEC::ill), REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_less_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::less(REP<double>(NaN_D,NaN_D), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( !F<double>::less(REP<double>(1.0,2.0), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( !F<double>::less(REP<double>(NaN_D,NaN_D), REP<double>(1.0,2.0)) );
@@ -517,11 +725,25 @@ BOOST_AUTO_TEST_CASE(minimal_less_test)
     BOOST_CHECK( F<double>::less(REP<double>(-0.0,0.0), REP<double>(0.0,-0.0)) );
     BOOST_CHECK( F<double>::less(REP<double>(0.0,-0.0), REP<double>(0.0,0.0)) );
     BOOST_CHECK( F<double>::less(REP<double>(0.0,-0.0), REP<double>(-0.0,0.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::less(REP<double>(0.0,2.0), REP<double>(1.0,-2.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::less(REP<double>(0.0,NaN_D), REP<double>(1.0,2.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_less_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::less(REP<double>(NaN_D,NaN_D), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( !F<double>::less(REP<double>(1.0,2.0), REP<float>(NaN_F,NaN_F)) );
     BOOST_CHECK( !F<double>::less(REP<float>(NaN_F,NaN_F), REP<double>(1.0,2.0)) );
@@ -584,10 +806,24 @@ BOOST_AUTO_TEST_CASE(minimal_less_mixedtype_test)
     BOOST_CHECK( F<float>::less(REP<double>(-0.0,0.0), REP<float>(0.0f,-0.0f)) );
     BOOST_CHECK( F<float>::less(REP<float>(0.0f,-0.0f), REP<double>(0.0,0.0)) );
     BOOST_CHECK( F<float>::less(REP<double>(0.0,-0.0), REP<float>(-0.0f,0.0f)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::less(REP<float>(1.0f,2.0f), REP<double>(1.0,-2.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::less(REP<float>(1.0f,-2.0f), REP<double>(1.0,2.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_less_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::less(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::less(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::less(REP_DEC<double>(REP<double>(1.0,2.0), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
@@ -623,11 +859,25 @@ BOOST_AUTO_TEST_CASE(minimal_less_dec_test)
     BOOST_CHECK( F<double>::less(REP_DEC<double>(REP<double>(-0.0,0.0), DEC::trv), REP_DEC<double>(REP<double>(0.0,-0.0),DEC::trv)) );
     BOOST_CHECK( F<double>::less(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::def), REP_DEC<double>(REP<double>(0.0,0.0),DEC::trv)) );
     BOOST_CHECK( F<double>::less(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv), REP_DEC<double>(REP<double>(-0.0,0.0),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::less(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::trv), REP_DEC<double>(REP<double>(3.0,4.0),DEC::def)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::less(REP_DEC<double>(REP<double>(1.0,2.0), DEC::trv), REP_DEC<double>(REP<double>(3.0,-4.0),DEC::def)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_less_dec_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::less(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::less(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::less(REP_DEC<double>(REP<double>(1.0,2.0), DEC::trv), REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::ill)) );
@@ -700,11 +950,25 @@ BOOST_AUTO_TEST_CASE(minimal_less_dec_mixedtype_test)
     BOOST_CHECK( F<float>::less(REP_DEC<double>(REP<double>(-0.0,0.0), DEC::trv), REP_DEC<float>(REP<float>(0.0f,-0.0f),DEC::trv)) );
     BOOST_CHECK( F<float>::less(REP_DEC<float>(REP<float>(0.0f,-0.0f), DEC::def), REP_DEC<double>(REP<double>(0.0,0.0),DEC::trv)) );
     BOOST_CHECK( F<float>::less(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv), REP_DEC<float>(REP<float>(-0.0f,0.0f),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::less(REP_DEC<float>(REP<float>(1.0f,-2.0f), DEC::trv), REP_DEC<double>(REP<double>(1.0,2.0),DEC::trv)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::less(REP_DEC<float>(REP<float>(1.0f,2.0f), DEC::trv), REP_DEC<double>(REP<double>(-1.0,-2.0),DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_precedes_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::precedes(REP<double>(NaN_D,NaN_D), REP<double>(3.0,4.0)) );
     BOOST_CHECK( F<double>::precedes(REP<double>(3.0,4.0), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( F<double>::precedes(REP<double>(NaN_D,NaN_D), REP<double>(NaN_D,NaN_D)) );
@@ -731,10 +995,24 @@ BOOST_AUTO_TEST_CASE(minimal_precedes_test)
     BOOST_CHECK( F<double>::precedes(REP<double>(-0.0,0.0), REP<double>(0.0,-0.0)) );
     BOOST_CHECK( F<double>::precedes(REP<double>(0.0,-0.0), REP<double>(0.0,0.0)) );
     BOOST_CHECK( F<double>::precedes(REP<double>(0.0,-0.0), REP<double>(-0.0,0.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::precedes(REP<double>(-3.0, -1.0), REP<double>(1.0,0.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::precedes(REP<double>(3.0, -1.0), REP<double>(-1.0,0.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_precedes_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::precedes(REP<float>(NaN_F,NaN_F), REP<double>(3.0,4.0)) );
     BOOST_CHECK( F<double>::precedes(REP<double>(3.0,4.0), REP<float>(NaN_F,NaN_F)) );
     BOOST_CHECK( F<double>::precedes(REP<float>(NaN_F,NaN_F), REP<double>(NaN_D,NaN_D)) );
@@ -786,11 +1064,25 @@ BOOST_AUTO_TEST_CASE(minimal_precedes_mixedtype_test)
     BOOST_CHECK( F<float>::precedes(REP<float>(-0.0f,0.0f), REP<double>(0.0,-0.0)) );
     BOOST_CHECK( F<float>::precedes(REP<double>(0.0,-0.0), REP<float>(0.0f,0.0f)) );
     BOOST_CHECK( F<float>::precedes(REP<float>(0.0f,-0.0f), REP<double>(-0.0,0.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::precedes(REP<float>(1.0f,3.5f), REP<double>(3.0,-4.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW(!F<double>::precedes(REP<float>(1.0f,-3.5f), REP<double>(3.0,4.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_precedes_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::precedes(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(3.0,4.0),DEC::def)) );
     BOOST_CHECK( !F<double>::precedes(REP_DEC<double>(REP<double>(3.0,4.0), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::precedes(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
@@ -822,10 +1114,24 @@ BOOST_AUTO_TEST_CASE(minimal_precedes_dec_test)
     BOOST_CHECK( F<double>::precedes(REP_DEC<double>(REP<double>(-0.0,0.0), DEC::def), REP_DEC<double>(REP<double>(0.0,-0.0),DEC::trv)) );
     BOOST_CHECK( F<double>::precedes(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv), REP_DEC<double>(REP<double>(0.0,0.0),DEC::trv)) );
     BOOST_CHECK( F<double>::precedes(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv), REP_DEC<double>(REP<double>(-0.0,0.0),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::precedes(REP_DEC<double>(REP<double>(1.0,3.5), DEC::ill), REP_DEC<double>(REP<double>(3.0,4.0),DEC::trv)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::precedes(REP_DEC<double>(REP<double>(1.0,3.5), DEC::trv), REP_DEC<double>(REP<double>(3.0,-4.0),DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_precedes_dec_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::precedes(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::ill), REP_DEC<double>(REP<double>(3.0,4.0),DEC::trv)) );
     BOOST_CHECK( !F<double>::precedes(REP_DEC<double>(REP<double>(3.0,4.0), DEC::trv), REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::ill)) );
     BOOST_CHECK( !F<double>::precedes(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
@@ -887,11 +1193,25 @@ BOOST_AUTO_TEST_CASE(minimal_precedes_dec_mixedtype_test)
     BOOST_CHECK( F<float>::precedes(REP_DEC<float>(REP<float>(-0.0f,0.0f), DEC::trv), REP_DEC<double>(REP<double>(0.0,-0.0),DEC::trv)) );
     BOOST_CHECK( F<float>::precedes(REP_DEC<double>(REP<double>(0.0,-0.0), DEC::trv), REP_DEC<float>(REP<float>(0.0f,0.0f),DEC::trv)) );
     BOOST_CHECK( F<float>::precedes(REP_DEC<float>(REP<float>(0.0f,-0.0f), DEC::trv), REP_DEC<double>(REP<double>(-0.0,0.0),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::precedes(REP_DEC<double>(REP<double>(1.0,-4.0), DEC::def), REP_DEC<float>(REP<float>(3.0f,4.0f),DEC::trv)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::precedes(REP_DEC<double>(REP<double>(1.0,4.0), DEC::def), REP_DEC<float>(REP<float>(3.0f,-4.0f),DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_is_interior_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::is_interior(REP<double>(NaN_D,NaN_D), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( F<double>::is_interior(REP<double>(NaN_D,NaN_D), REP<double>(0.0,4.0)) );
     BOOST_CHECK( !F<double>::is_interior(REP<double>(0.0,4.0), REP<double>(NaN_D,NaN_D)) );
@@ -911,10 +1231,24 @@ BOOST_AUTO_TEST_CASE(minimal_is_interior_test)
     BOOST_CHECK( !F<double>::is_interior(REP<double>(0.0,4.4), REP<double>(0.0,4.0)) );
     BOOST_CHECK( !F<double>::is_interior(REP<double>(-1.0,-1.0), REP<double>(0.0,4.0)) );
     BOOST_CHECK( !F<double>::is_interior(REP<double>(2.0,2.0), REP<double>(-2.0,-1.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_interior(REP<double>(-0.0,-1.0), REP<double>(-2.0,4.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_interior(REP<double>(-0.0,-0.0), REP<double>(-2.0,-4.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_interior_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::is_interior(REP<float>(NaN_F,NaN_F), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( F<double>::is_interior(REP<double>(NaN_D,NaN_D), REP<float>(0.0f,4.0f)) );
     BOOST_CHECK( !F<double>::is_interior(REP<float>(0.0f,4.0f), REP<double>(NaN_D,NaN_D)) );
@@ -954,11 +1288,25 @@ BOOST_AUTO_TEST_CASE(minimal_is_interior_mixedtype_test)
     BOOST_CHECK( !F<float>::is_interior(REP<double>(0.0,4.4), REP<float>(0.0f,4.0f)) );
     BOOST_CHECK( !F<float>::is_interior(REP<float>(-1.0f,-1.0f), REP<double>(0.0,4.0)) );
     BOOST_CHECK( !F<float>::is_interior(REP<double>(2.0,2.0), REP<float>(-2.0f,-1.0f)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_interior(REP<float>(1.0f,-1.0f), REP<double>(0.0,4.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_interior(REP<float>(-1.0f,-1.0f), REP<double>(10.0,4.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_is_interior_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::is_interior(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::is_interior(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
     BOOST_CHECK( !F<double>::is_interior(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(0.0,4.0),DEC::trv)) );
@@ -983,10 +1331,24 @@ BOOST_AUTO_TEST_CASE(minimal_is_interior_dec_test)
     BOOST_CHECK( !F<double>::is_interior(REP_DEC<double>(REP<double>(0.0,4.4), DEC::trv), REP_DEC<double>(REP<double>(0.0,4.0),DEC::trv)) );
     BOOST_CHECK( !F<double>::is_interior(REP_DEC<double>(REP<double>(-1.0,-1.0), DEC::trv), REP_DEC<double>(REP<double>(0.0,4.0),DEC::def)) );
     BOOST_CHECK( !F<double>::is_interior(REP_DEC<double>(REP<double>(2.0,2.0), DEC::def), REP_DEC<double>(REP<double>(-2.0,-1.0),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::is_interior(REP_DEC<double>(REP<double>(-2.0,-14.0), DEC::trv), REP_DEC<double>(REP<double>(-2.0,4.0),DEC::def)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::is_interior(REP_DEC<double>(REP<double>(-2.0,14.0), DEC::trv), REP_DEC<double>(REP<double>(-2.0,4.0),DEC::ill)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_is_interior_dec_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::is_interior(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::is_interior(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::is_interior(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<float>(REP<float>(0.0f,4.0f),DEC::trv)) );
@@ -1019,7 +1381,7 @@ BOOST_AUTO_TEST_CASE(minimal_is_interior_dec_mixedtype_test)
 
     BOOST_CHECK( F<float>::is_interior(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
     BOOST_CHECK( F<float>::is_interior(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::trv), REP_DEC<float>(REP<float>(0.0f,4.0f),DEC::trv)) );
-    BOOST_CHECK( !F<float>::is_interior(REP_DEC<float>(REP<float>(0.0f,4.0f), DEC::def), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::def)) );
+    BOOST_CHECK( !F<float>::is_interior(REP_DEC<float>(REP<float>(0.0f,4.0f), DEC::def), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
 
     BOOST_CHECK( F<float>::is_interior(REP_DEC<double>(REP<double>(-INF_D,+INF_D), DEC::trv), REP_DEC<float>(REP<float>(-INF_F,+INF_F),DEC::trv)) );
     BOOST_CHECK( F<float>::is_interior(REP_DEC<float>(REP<float>(0.0f,4.0f), DEC::trv), REP_DEC<double>(REP<double>(-INF_D,+INF_D),DEC::trv)) );
@@ -1036,11 +1398,25 @@ BOOST_AUTO_TEST_CASE(minimal_is_interior_dec_mixedtype_test)
     BOOST_CHECK( !F<float>::is_interior(REP_DEC<double>(REP<double>(0.0,4.4), DEC::trv), REP_DEC<float>(REP<float>(0.0f,4.0f),DEC::trv)) );
     BOOST_CHECK( !F<float>::is_interior(REP_DEC<float>(REP<float>(-1.0f,-1.0f), DEC::trv), REP_DEC<double>(REP<double>(0.0,4.0),DEC::trv)) );
     BOOST_CHECK( !F<float>::is_interior(REP_DEC<double>(REP<double>(2.0,2.0), DEC::trv), REP_DEC<float>(REP<float>(-2.0f,-1.0f),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<float>::is_interior(REP_DEC<float>(REP<float>(0.0f,4.0f), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::com)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<float>::is_interior(REP_DEC<float>(REP<float>(0.0f,-4.0f), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_less_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::strictly_less(REP<double>(NaN_D,NaN_D), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( !F<double>::strictly_less(REP<double>(1.0,2.0), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( !F<double>::strictly_less(REP<double>(NaN_D,NaN_D), REP<double>(1.0,2.0)) );
@@ -1058,10 +1434,24 @@ BOOST_AUTO_TEST_CASE(minimal_strictly_less_test)
 
     BOOST_CHECK( !F<double>::strictly_less(REP<double>(-2.0,-1.0), REP<double>(-2.0,-1.0)) );
     BOOST_CHECK( F<double>::strictly_less(REP<double>(-3.0,-1.5), REP<double>(-2.0,-1.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::strictly_less(REP<double>(1.0,4.0), REP<double>(3.0,-4.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::strictly_less(REP<double>(10.0,4.0), REP<double>(3.0,4.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_less_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::strictly_less(REP<float>(NaN_F,NaN_F), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( !F<double>::strictly_less(REP<double>(1.0,2.0), REP<float>(NaN_F,NaN_F)) );
     BOOST_CHECK( !F<double>::strictly_less(REP<float>(NaN_F,NaN_F), REP<double>(1.0,2.0)) );
@@ -1097,11 +1487,25 @@ BOOST_AUTO_TEST_CASE(minimal_strictly_less_mixedtype_test)
 
     BOOST_CHECK( !F<float>::strictly_less(REP<float>(-2.0f,-1.0f), REP<double>(-2.0,-1.0)) );
     BOOST_CHECK( F<float>::strictly_less(REP<double>(-3.0,-1.5), REP<float>(-2.0f,-1.0f)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::strictly_less(REP<float>(1.0f,3.5f), REP<double>(3.0,-4.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::strictly_less(REP<float>(1.0f,-3.5f), REP<double>(3.0,4.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_less_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::strictly_less(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::strictly_less(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::strictly_less(REP_DEC<double>(REP<double>(1.0,2.0), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
@@ -1124,10 +1528,24 @@ BOOST_AUTO_TEST_CASE(minimal_strictly_less_dec_test)
 
     BOOST_CHECK( !F<double>::strictly_less(REP_DEC<double>(REP<double>(-2.0,-1.0), DEC::def), REP_DEC<double>(REP<double>(-2.0,-1.0),DEC::def)) );
     BOOST_CHECK( F<double>::strictly_less(REP_DEC<double>(REP<double>(-3.0,-1.5), DEC::trv), REP_DEC<double>(REP<double>(-2.0,-1.0),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::strictly_less(REP_DEC<double>(REP<double>(1.0,2.0), DEC::trv), REP_DEC<double>(REP<double>(3.0,-4.0),DEC::trv)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::strictly_less(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::trv), REP_DEC<double>(REP<double>(3.0,4.0),DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_less_dec_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::strictly_less(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::strictly_less(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
     BOOST_CHECK( !F<double>::strictly_less(REP_DEC<double>(REP<double>(1.0,2.0), DEC::trv), REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::ill)) );
@@ -1173,12 +1591,26 @@ BOOST_AUTO_TEST_CASE(minimal_strictly_less_dec_mixedtype_test)
 
     BOOST_CHECK( !F<float>::strictly_less(REP_DEC<float>(REP<float>(-2.0f,-1.0f), DEC::trv), REP_DEC<double>(REP<double>(-2.0,-1.0),DEC::trv)) );
     BOOST_CHECK( F<float>::strictly_less(REP_DEC<double>(REP<double>(-3.0,-1.5), DEC::trv), REP_DEC<float>(REP<float>(-2.0f,-1.0f),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<float>::strictly_less(REP_DEC<double>(REP<double>(-INF_D,+INF_D), DEC::trv), REP_DEC<float>(REP<float>(-INF_F,+INF_F),DEC::com)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<float>::strictly_less(REP_DEC<double>(REP<double>(-INF_D,+INF_D), DEC::com), REP_DEC<float>(REP<float>(-INF_F,+INF_F),DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::strictly_precedes(REP<double>(NaN_D,NaN_D), REP<double>(3.0,4.0)) );
     BOOST_CHECK( F<double>::strictly_precedes(REP<double>(3.0,4.0), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( F<double>::strictly_precedes(REP<double>(NaN_D,NaN_D), REP<double>(NaN_D,NaN_D)) );
@@ -1197,11 +1629,25 @@ BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_test)
     BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(1.0,3.5), REP<double>(3.0,4.0)) );
     BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(1.0,4.0), REP<double>(3.0,4.0)) );
     BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(-3.0, -0.1), REP<double>(-1.0,0.0)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::strictly_precedes(REP<double>(1.0,3.0), REP<double>(3.0,-4.0)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::strictly_precedes(REP<double>(16.0,3.0), REP<double>(3.0,4.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::strictly_precedes(REP<double>(NaN_D,NaN_D), REP<float>(3.0f,4.0f)) );
     BOOST_CHECK( F<double>::strictly_precedes(REP<double>(3.0,4.0), REP<float>(NaN_F,NaN_F)) );
     BOOST_CHECK( F<double>::strictly_precedes(REP<float>(NaN_F,NaN_F), REP<double>(NaN_D,NaN_D)) );
@@ -1239,11 +1685,25 @@ BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_mixedtype_test)
     BOOST_CHECK( !F<float>::strictly_precedes(REP<double>(1.0,3.5), REP<float>(3.0f,4.0f)) );
     BOOST_CHECK( !F<float>::strictly_precedes(REP<float>(1.0f,4.0f), REP<double>(3.0,4.0)) );
     BOOST_CHECK( !F<float>::strictly_precedes(REP<double>(-3.0, -0.1), REP<float>(-1.0f,0.0f)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<float>::strictly_precedes(REP<double>(1.0,2.0), REP<float>(-INF_F,-INF_F)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<float>::strictly_precedes(REP<double>(1.0,-2.0), REP<float>(-INF_F,+INF_F)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(3.0,4.0),DEC::trv)) );
     BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<double>(REP<double>(3.0,4.0), DEC::def), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
@@ -1266,11 +1726,25 @@ BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_dec_test)
     BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<double>(REP<double>(1.0,3.5), DEC::trv), REP_DEC<double>(REP<double>(3.0,4.0),DEC::trv)) );
     BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<double>(REP<double>(1.0,4.0), DEC::trv), REP_DEC<double>(REP<double>(3.0,4.0),DEC::def)) );
     BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<double>(REP<double>(-3.0, -0.1), DEC::trv), REP_DEC<double>(REP<double>(-1.0,0.0),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::trv), REP_DEC<double>(REP<double>(3.0,4.0),DEC::ill)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::strictly_precedes(REP_DEC<double>(REP<double>(1.0,2.0), DEC::trv), REP_DEC<double>(REP<double>(3.0,INF_D),DEC::com)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_dec_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<float>(REP<float>(3.0f,4.0f),DEC::trv)) );
     BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<double>(REP<double>(3.0,4.0), DEC::trv), REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::ill)) );
     BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::ill), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::trv)) );
@@ -1316,11 +1790,25 @@ BOOST_AUTO_TEST_CASE(minimal_strictly_precedes_dec_mixedtype_test)
     BOOST_CHECK( !F<float>::strictly_precedes(REP_DEC<double>(REP<double>(1.0,3.5), DEC::trv), REP_DEC<float>(REP<float>(3.0f,4.0f),DEC::trv)) );
     BOOST_CHECK( !F<float>::strictly_precedes(REP_DEC<float>(REP<float>(1.0f,4.0f), DEC::trv), REP_DEC<double>(REP<double>(3.0,4.0),DEC::trv)) );
     BOOST_CHECK( !F<float>::strictly_precedes(REP_DEC<double>(REP<double>(-3.0, -0.1), DEC::trv), REP_DEC<float>(REP<float>(-1.0f,0.0f),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::strictly_precedes(REP_DEC<double>(REP<double>(1.0,3.5), DEC::trv), REP_DEC<float>(REP<float>(3.0f,-4.0f),DEC::trv)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::strictly_precedes(REP_DEC<double>(REP<double>(1.0,-3.5), DEC::trv), REP_DEC<float>(REP<float>(3.0f,4.0f),DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_are_disjoint_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::are_disjoint(REP<double>(NaN_D,NaN_D), REP<double>(3.0,4.0)) );
     BOOST_CHECK( F<double>::are_disjoint(REP<double>(3.0,4.0), REP<double>(NaN_D,NaN_D)) );
     BOOST_CHECK( F<double>::are_disjoint(REP<double>(NaN_D,NaN_D), REP<double>(NaN_D,NaN_D)) );
@@ -1333,10 +1821,24 @@ BOOST_AUTO_TEST_CASE(minimal_are_disjoint_test)
     BOOST_CHECK( !F<double>::are_disjoint(REP<double>(3.0,4.0), REP<double>(-INF_D,+INF_D)) );
     BOOST_CHECK( !F<double>::are_disjoint(REP<double>(-INF_D,+INF_D), REP<double>(1.0,7.0)) );
     BOOST_CHECK( !F<double>::are_disjoint(REP<double>(-INF_D,+INF_D), REP<double>(-INF_D,+INF_D)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::are_disjoint(REP<double>(3.0,-4.0), REP<double>(-INF_D,+INF_D)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::are_disjoint(REP<double>(3.0,4.0), REP<double>(+INF_D,+INF_D)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_are_disjoint_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( F<double>::are_disjoint(REP<double>(NaN_D,NaN_D), REP<float>(3.0f,4.0f)) );
     BOOST_CHECK( F<double>::are_disjoint(REP<double>(3.0,4.0), REP<float>(NaN_F,NaN_F)) );
     BOOST_CHECK( F<double>::are_disjoint(REP<float>(NaN_F,NaN_F), REP<double>(NaN_D,NaN_D)) );
@@ -1362,11 +1864,25 @@ BOOST_AUTO_TEST_CASE(minimal_are_disjoint_mixedtype_test)
     BOOST_CHECK( !F<float>::are_disjoint(REP<double>(3.0,4.0), REP<float>(-INF_F,+INF_F)) );
     BOOST_CHECK( !F<float>::are_disjoint(REP<float>(-INF_F,+INF_F), REP<double>(1.0,7.0)) );
     BOOST_CHECK( !F<float>::are_disjoint(REP<double>(-INF_D,+INF_D), REP<float>(-INF_F,+INF_F)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<float>::are_disjoint(REP<double>(3.0,4.0), REP<float>(-INF_F,-INF_F)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<float>::are_disjoint(REP<double>(30.0,4.0), REP<float>(-INF_F,+INF_F)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 
 BOOST_AUTO_TEST_CASE(minimal_are_disjoint_dec_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::are_disjoint(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<double>(REP<double>(3.0,4.0),DEC::def)) );
     BOOST_CHECK( !F<double>::are_disjoint(REP_DEC<double>(REP<double>(3.0,4.0), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
     BOOST_CHECK( !F<double>::are_disjoint(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
@@ -1384,10 +1900,24 @@ BOOST_AUTO_TEST_CASE(minimal_are_disjoint_dec_test)
     BOOST_CHECK( !F<double>::are_disjoint(REP_DEC<double>(REP<double>(3.0,4.0), DEC::trv), REP_DEC<double>(REP<double>(-INF_D,+INF_D),DEC::trv)) );
     BOOST_CHECK( !F<double>::are_disjoint(REP_DEC<double>(REP<double>(-INF_D,+INF_D), DEC::trv), REP_DEC<double>(REP<double>(1.0,7.0),DEC::trv)) );
     BOOST_CHECK( !F<double>::are_disjoint(REP_DEC<double>(REP<double>(-INF_D,+INF_D), DEC::trv), REP_DEC<double>(REP<double>(-INF_D,+INF_D),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<double>::are_disjoint(REP_DEC<double>(REP<double>(3.0,4.0), DEC::trv), REP_DEC<double>(REP<double>(-INF_D,+INF_D),DEC::com)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::are_disjoint(REP_DEC<double>(REP<double>(3.0,4.0), DEC::ill), REP_DEC<double>(REP<double>(-INF_D,+INF_D),DEC::trv)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_are_disjoint_dec_mixedtype_test)
 {
+    p1788::exception::clear();
+
     BOOST_CHECK( !F<double>::are_disjoint(REP_DEC<double>(REP<double>(NaN_D,NaN_D), DEC::ill), REP_DEC<float>(REP<float>(3.0f,4.0f),DEC::trv)) );
     BOOST_CHECK( !F<double>::are_disjoint(REP_DEC<double>(REP<double>(3.0,4.0), DEC::trv), REP_DEC<float>(REP<float>(NaN_F,NaN_F),DEC::ill)) );
     BOOST_CHECK( !F<double>::are_disjoint(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
@@ -1423,4 +1953,16 @@ BOOST_AUTO_TEST_CASE(minimal_are_disjoint_dec_mixedtype_test)
     BOOST_CHECK( !F<float>::are_disjoint(REP_DEC<double>(REP<double>(3.0,4.0), DEC::trv), REP_DEC<float>(REP<float>(-INF_F,+INF_F),DEC::trv)) );
     BOOST_CHECK( !F<float>::are_disjoint(REP_DEC<float>(REP<float>(-INF_F,+INF_F), DEC::trv), REP_DEC<double>(REP<double>(1.0,7.0),DEC::trv)) );
     BOOST_CHECK( !F<float>::are_disjoint(REP_DEC<double>(REP<double>(-INF_D,+INF_D), DEC::trv), REP_DEC<float>(REP<float>(-INF_F,+INF_F),DEC::trv)) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    p1788::exception::clear();
+    BOOST_CHECK( !F<float>::are_disjoint(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::dac), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill)) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<float>::are_disjoint(REP_DEC<float>(REP<float>(NaN_F,NaN_F), DEC::trv), REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::def)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }

@@ -931,40 +931,55 @@ public:
     /// \brief Checks if \p x is a representation for an empty bare interval.
     ///
     /// \param x Interval representation
-    /// \return \li <c>true</c> if \p x is a representation of an empty bare interval
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x is a representation of an empty bare interval
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool is_empty(representation const& x);
 
     /// \brief Checks if \p x is a representation for an empty decorated interval.
     ///
     /// \param x Decorated interval representation
-    /// \return \li <c>true</c> if \p x is a representation of an empty decorated interval
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x is a representation of an empty decorated interval
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool is_empty(representation_dec const& x);
 
     /// \brief Checks if \p x is a representation for an entire bare interval.
     ///
     /// \param x Interval representation
-    /// \return \li <c>true</c> if \p x is a representation of an entire bare interval
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x is a representation of an entire bare interval
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool is_entire(representation const& x);
 
     /// \brief Checks if \p x is a representation for an entire decorated interval.
     ///
     /// \param x Interval representation
-    /// \return \li <c>true</c> if \p x is a representation of an entire decorated interval
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x is a representation of an entire decorated interval
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool is_entire(representation_dec const& x);
 
     /// \brief Checks if \p x is a representation for an ill-formed decorated interval (Not an Interval).
     ///
     /// \param x Interval representation
-    /// \return \li <c>true</c> if \p x is a representation of NaI
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x is a representation of NaI
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool is_nai(representation_dec const& x);
 
@@ -973,7 +988,10 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c>.
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool is_equal(representation const& x, representation const& y);
 
@@ -982,9 +1000,12 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool is_equal(representation_dec const& x, representation_dec const& y);
 
@@ -995,9 +1016,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li <c>true</c> if \p x  and \p y are both empty or if
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x  and \p y are both empty or if
     ///             \f$\underline{x} = \underline{y} \wedge \overline{x} = \overline{y}\f$
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool is_equal(representation const& x, representation_type<T_> const& y);
@@ -1009,9 +1033,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool is_equal(representation_dec const& x, representation_dec_type<T_> const& y);
@@ -1022,7 +1049,10 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::subset(representation const& x, representation_type<T_> const& y) subset\endlink</c>.
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::subset(representation const& x, representation_type<T_> const& y) subset\endlink</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool subset(representation const& x, representation const& y);
 
@@ -1031,9 +1061,12 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::subset(representation const& x, representation_type<T_> const& y) subset\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool subset(representation_dec const& x, representation_dec const& y);
 
@@ -1044,9 +1077,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li <c>true</c> if \p x is empty or if
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x is empty or if
     ///             \f$\underline{y} \leq \underline{x} \wedge \overline{x} \leq \overline{y}\f$
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool subset(representation const& x, representation_type<T_> const& y);
@@ -1058,9 +1094,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::subset(representation const& x, representation_type<T_> const& y) subset\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool subset(representation_dec const& x, representation_dec_type<T_> const& y);
@@ -1070,7 +1109,10 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::less(representation const& x, representation_type<T_> const& y) less\endlink</c>.
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::less(representation const& x, representation_type<T_> const& y) less\endlink</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool less(representation const& x, representation const& y);
 
@@ -1079,9 +1121,12 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::less(representation const& x, representation_type<T_> const& y) less\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool less(representation_dec const& x, representation_dec const& y);
 
@@ -1092,9 +1137,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li <c>true</c> if \p x  and \p y are both empty or if
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x  and \p y are both empty or if
     ///             \f$\underline{x} \leq \underline{y} \wedge \overline{x} \leq \overline{y}\f$
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool less(representation const& x, representation_type<T_> const& y);
@@ -1106,9 +1154,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::less(representation const& x, representation_type<T_> const& y) less\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool less(representation_dec const& x, representation_dec_type<T_> const& y);
@@ -1119,7 +1170,10 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::precedes(representation const& x, representation_type<T_> const& y) precedes\endlink</c>.
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::precedes(representation const& x, representation_type<T_> const& y) precedes\endlink</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool precedes(representation const& x, representation const& y);
 
@@ -1128,9 +1182,12 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::precedes(representation const& x, representation_type<T_> const& y) precedes\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool precedes(representation_dec const& x, representation_dec const& y);
 
@@ -1141,9 +1198,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li <c>true</c> if \p x  or \p y is empty or if
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x  or \p y is empty or if
     ///             \f$\overline{x} \leq \underline{y}\f$
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool precedes(representation const& x, representation_type<T_> const& y);
@@ -1155,9 +1215,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::precedes(representation const& x, representation_type<T_> const& y) precedes\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool precedes(representation_dec const& x, representation_dec_type<T_> const& y);
@@ -1168,7 +1231,10 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c>.
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool is_interior(representation const& x, representation const& y);
 
@@ -1177,9 +1243,12 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool is_interior(representation_dec const& x, representation_dec const& y);
 
@@ -1190,9 +1259,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li <c>true</c> if \p x  is empty or if
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x  is empty or if
     ///             \f$(\underline{y} < \underline{x} \vee \underline{y} = \underline{x} = -\infty) \wedge (\overline{x} < \overline{y} \vee \overline{x} = \overline{y} = +\infty)\f$
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool is_interior(representation const& x, representation_type<T_> const& y);
@@ -1204,9 +1276,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool is_interior(representation_dec const& x, representation_dec_type<T_> const& y);
@@ -1217,7 +1292,10 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_less(representation const& x, representation_type<T_> const& y) strictly_less\endlink</c>.
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_less(representation const& x, representation_type<T_> const& y) strictly_less\endlink</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool strictly_less(representation const& x, representation const& y);
 
@@ -1226,9 +1304,12 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_less(representation const& x, representation_type<T_> const& y) strictly_less\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool strictly_less(representation_dec const& x, representation_dec const& y);
 
@@ -1239,9 +1320,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li <c>true</c> if \p x  and \p y are both empty or if
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x  and \p y are both empty or if
     ///             \f$(\underline{x} < \underline{y} \vee \underline{x} = \underline{y} = -\infty) \wedge (\overline{x} < \overline{y} \vee \overline{x} = \overline{y} = +\infty)\f$
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool strictly_less(representation const& x, representation_type<T_> const& y);
@@ -1253,9 +1337,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_less(representation const& x, representation_type<T_> const& y) strictly_less\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool strictly_less(representation_dec const& x, representation_dec_type<T_> const& y);
@@ -1266,7 +1353,10 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_precedes(representation const& x, representation_type<T_> const& y) strictly_precedes\endlink</c>.
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_precedes(representation const& x, representation_type<T_> const& y) strictly_precedes\endlink</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool strictly_precedes(representation const& x, representation const& y);
 
@@ -1275,9 +1365,12 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_precedes(representation const& x, representation_type<T_> const& y) strictly_precedes\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool strictly_precedes(representation_dec const& x, representation_dec const& y);
 
@@ -1288,9 +1381,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li <c>true</c> if \p x  or \p y is empty or if
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x  or \p y is empty or if
     ///             \f$\overline{x} < \underline{y}\f$
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool strictly_precedes(representation const& x, representation_type<T_> const& y);
@@ -1302,9 +1398,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::strictly_precedes(representation const& x, representation_type<T_> const& y) strictly_precedes\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool strictly_precedes(representation_dec const& x, representation_dec_type<T_> const& y);
@@ -1314,7 +1413,10 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c>.
+    /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool are_disjoint(representation const& x, representation const& y);
 
@@ -1323,9 +1425,12 @@ public:
     /// \param x Interval representation
     /// \param y Interval representation
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static bool are_disjoint(representation_dec const& x, representation_dec const& y);
 
@@ -1336,9 +1441,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li <c>true</c> if \p x  or \p y is empty or if
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>true</c> if \p x  or \p y is empty or if
     ///             \f$\overline{x} < \underline{y} \vee \overline{y} < \underline{x}\f$
     ///         \li <c>false</c> otherwise.
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool are_disjoint(representation const& x, representation_type<T_> const& y);
@@ -1350,9 +1458,12 @@ public:
     ///
     /// \tparam T_ Bound type of the interval representation of \p y
     ///
-    /// \return \li NaN if \p x  or \p y is NaI
+    /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li <c>false</c> if \p x  or \p y is NaI
     ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static bool are_disjoint(representation_dec const& x, representation_dec_type<T_> const& y);
