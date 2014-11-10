@@ -80,27 +80,6 @@ bool mpfr_bin_ieee754_flavor<T>::is_valid(representation_dec const& x)
     return !p1788::exception::signal_invalid_operand();
 }
 
-// Check if x is a valid bare interval representation mixed type
-template<typename T>
-template<typename T_>
-bool mpfr_bin_ieee754_flavor<T>::is_valid(representation_type<T_> const& x)
-{
-    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-
-    return mpfr_bin_ieee754_flavor<T_>::is_valid(x);
-}
-
-// Check if x is a valid decorated interval representation mixed type
-template<typename T>
-template<typename T_>
-bool mpfr_bin_ieee754_flavor<T>::is_valid(representation_dec_type<T_> const& x)
-{
-    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-
-    return mpfr_bin_ieee754_flavor<T_>::is_valid(x);
-}
-
-
 
 } // namespace setbased
 

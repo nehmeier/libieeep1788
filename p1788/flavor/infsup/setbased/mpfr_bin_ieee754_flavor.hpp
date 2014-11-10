@@ -165,8 +165,8 @@ public:
     /// \param x representation of a bare interval
     /// \return true if it is a valid representation and if no exception is thrown.
     /// \exception p1788::exception::possibly_undefined_operation_exception  Throws exception if the
-    /// <c>possibly_undefined_operation_bit</c> is set for the <c>throw_exception_cwd</c> using
-    /// \link p1788::exception::set_throw_exception_cwd(exception_bits)\endlink.
+    /// <c>possibly_undefined_operation_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note if it is an invalid representation \link p1788::exception::signal_invalid_operand() \endlink
     /// is called to signal an invalid operand.
     static bool is_valid(representation const& x);
@@ -176,35 +176,12 @@ public:
     /// \param x representation of a decorated interval
     /// \return true if it is a valid representation and if no exception is thrown.
     /// \exception p1788::exception::possibly_undefined_operation_exception  Throws exception if the
-    /// <c>possibly_undefined_operation_bit</c> is set for the <c>throw_exception_cwd</c> using
-    /// \link p1788::exception::set_throw_exception_cwd(exception_bits)\endlink.
+    /// <c>possibly_undefined_operation_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note if it is an invalid representation \link p1788::exception::signal_invalid_operand() \endlink
     /// is called to signal an invalid operand.
     static bool is_valid(representation_dec const& x);
 
-    /// \brief Mixed-type version. Checks if it is a valid representation of a bare interval.
-    ///
-    /// \param x representation of a bare interval
-    /// \return true if it is a valid representation and if no exception is thrown.
-    /// \exception p1788::exception::possibly_undefined_operation_exception  Throws exception if the
-    /// <c>possibly_undefined_operation_bit</c> is set for the <c>throw_exception_cwd</c> using
-    /// \link p1788::exception::set_throw_exception_cwd(exception_bits)\endlink.
-    /// \note if it is an invalid representation \link p1788::exception::signal_invalid_operand() \endlink
-    /// is called to signal an invalid operand.
-    template<typename T_>
-    static bool is_valid(representation_type<T_> const& x);
-
-    /// \brief Mixed-type version. Checks if it is a valid representation of a decorated interval.
-    ///
-    /// \param x representation of a decorated interval
-    /// \return true if it is a valid representation and if no exception is thrown.
-    /// \exception p1788::exception::possibly_undefined_operation_exception  Throws exception if the
-    /// <c>possibly_undefined_operation_bit</c> is set for the <c>throw_exception_cwd</c> using
-    /// \link p1788::exception::set_throw_exception_cwd(exception_bits)\endlink.
-    /// \note if it is an invalid representation \link p1788::exception::signal_invalid_operand() \endlink
-    /// is called to signal an invalid operand.
-    template<typename T_>
-    static bool is_valid(representation_dec_type<T_> const& x);
 
 ///@}
 
@@ -228,7 +205,7 @@ public:
     ///
     /// \param x Value in the original number format \p T_.
     ///
-    /// \return Largest number of type \p T \f$\leq\f$ \p x. It returns -0.0 in case of a zero.
+    /// \return Largest number of type \p T \f$\leq\f$ \p x. It returns -0.0 in case of a zero. NaNs are propagated.
     ///
     /// \note Round toward negative follows the IEEE754 specification.
     ///
@@ -245,7 +222,7 @@ public:
     ///
     /// \return Closest number of type \p T to the number \p x.
     /// If \p x lies exactly in the middle of two consecutive numbers of type \p T than it is rounded to the one with least significant equal to zero.
-    /// It returns +0.0 in case of a zero.
+    /// It returns +0.0 in case of a zero.  NaNs are propagated.
     ///
     /// \note Round to nearest follows the IEEE754 specification.
     ///
@@ -260,7 +237,7 @@ public:
     ///
     /// \param x Value in the original number format \p T_.
     ///
-    /// \return Smallest number of type \p T \f$\geq\f$ \p x. It returns +0.0 in case of a zero.
+    /// \return Smallest number of type \p T \f$\geq\f$ \p x. It returns +0.0 in case of a zero. NaNs are propagated.
     ///
     /// \note Round toward positive follows the IEEE754 specification.
     ///
@@ -276,7 +253,11 @@ public:
     ///
     /// \param x Interval representation with the original bound type \p T_.
     ///
-    /// \return Tightest interval representation with bound type \p T containing \p x.
+    /// \return Tightest interval representation with bound type \p T containing \p x. Basically it returns
+    /// the interval representation [\link convert_rndd \endlink (\f$\underline{x}\f$), \link convert_rndu \endlink (\f$\overline{x}\f$)].
+    /// This means that if \p x is not a valid interval representation then the returned result is only a pair of
+    /// numbers with no specific meaning which is
+    /// computed by the two functions \link convert_rndd \endlink and \link convert_rndu \endlink .
     ///
     /// \note \ref pageAccuracy "Accuracy:" Tightest
     /// \note Outward rounding uses round toward negative and positive which follow the IEEE754 specification.
@@ -295,7 +276,10 @@ public:
     ///
     /// \return Tightest decorated interval representation with bound type \p T containing \p x.
     /// If the old decoration was <c>com</c> and the returning interval is unbounded than the decoration is <c>dac</c>,
-    /// otherwise the decoration is unchange.
+    /// otherwise the decoration is unchanged. The bare interval part basically is computed
+    /// as the bare interval representation [\link convert_rndd \endlink (\f$\underline{x}\f$), \link convert_rndu \endlink (\f$\overline{x}\f$)].
+    /// This means that if the pare interval part of \p x is not a valid interval representation then the computed bare interval part
+    /// is only a pair of numbers with no specific meaning.
     ///
     /// \note \ref pageAccuracy "Accuracy:" Tightest
     /// \note Outward rounding uses round toward negative and positive which follow the IEEE754 specification.
@@ -527,9 +511,12 @@ public:
     /// \brief Infimum of a bare interval representation
     ///
     /// \param x Interval representation
-    /// \return \li \f$+\infty\f$ if \p x is empty
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li \f$+\infty\f$ if \p x is empty
     ///         \li -0 if the lower bound of \p x is zero
     ///         \li lower bound of \p x otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T inf(representation const& x);
 
@@ -539,7 +526,8 @@ public:
     /// \param x Interval representation
     /// \return Result of <c>\link mpfr_bin_ieee754_flavor::inf(representation const& x) inf\endlink</c> converted
     ///         to the type \p T using rounding to \f$-\infty\f$.
-    ///
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T inf(representation_type<T_> const& x);
@@ -548,9 +536,12 @@ public:
     /// \brief Infimum of a decorated interval representation
     ///
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::inf(representation const& x) inf\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T inf(representation_dec const& x);
 
@@ -558,9 +549,12 @@ public:
     ///
     /// \tparam T_ Bound type of the input interval representation
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::inf(representation_type<T_> const& x) inf\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T inf(representation_dec_type<T_> const& x);
@@ -568,9 +562,12 @@ public:
     /// \brief Supremum of a bare interval representation
     ///
     /// \param x Interval representation
-    /// \return \li \f$-\infty\f$ if \p x is empty
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li \f$-\infty\f$ if \p x is empty
     ///         \li +0 if the upper bound of \p x is zero
     ///         \li upper bound of \p x otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T sup(representation const& x);
 
@@ -580,7 +577,8 @@ public:
     /// \param x Interval representation
     /// \return Result of <c>\link mpfr_bin_ieee754_flavor::sup(representation const& x) sup\endlink</c> converted
     ///         to the type \p T using rounding to \f$+\infty\f$.
-    ///
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T sup(representation_type<T_> const& x);
@@ -588,9 +586,12 @@ public:
     /// \brief Supremum of a decorated interval representation
     ///
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::sup(representation const& x) sup\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T sup(representation_dec const& x);
 
@@ -598,9 +599,12 @@ public:
     ///
     /// \tparam T_ Bound type of the input interval representation
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::sup(representation_type<T_> const& x) sup\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T sup(representation_dec_type<T_> const& x);
@@ -608,12 +612,15 @@ public:
     /// \brief Midpoint of a bare interval representation
     ///
     /// \param x Interval representation
-    /// \return \li NaN if \p x is empty
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is empty
     ///         \li +0 if \p x is entire
     ///         \li finite negative number with largest magnitude of type \p T if  \f$\underline{x} = -\infty\f$ and \f$\overline{x}\f$ is finite
     ///         \li finite positive number with largest magnitude of type \p T if \f$\underline{x}\f$ is finite and \f$\overline{x} = +\infty\f$
     ///         \li \f$(\underline{x} + \overline{x}) / 2\f$ rounded to the nearest number of type \p T if \f$\underline{x}, \overline{x}\f$ are both finite.
     ///              It returns +0.0 in case of a zero
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T mid(representation const& x);
 
@@ -621,12 +628,15 @@ public:
     ///
     /// \tparam T_ Bound type of the input interval representation
     /// \param x Interval representation
-    /// \return \li NaN if \p x is empty
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is empty
     ///         \li +0 if \p x is entire
     ///         \li finite negative number with largest magnitude of type \p T if  \f$\underline{x} = -\infty\f$ and \f$\overline{x}\f$ is finite
     ///         \li finite positive number with largest magnitude of type \p T if \f$\underline{x}\f$ is f inite and \f$\overline{x} = +\infty\f$
     ///         \li \f$(\underline{x} + \overline{x}) / 2\f$ rounded to the nearest number of type \p T if \f$\underline{x}, \overline{x}\f$ are both finite.
     ///              It returns +0.0 in case of a zero
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T mid(representation_type<T_> const& x);
@@ -634,9 +644,12 @@ public:
     /// \brief Midpoint of a decorated interval representation
     ///
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mid(representation const& x) mid\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T mid(representation_dec const& x);
 
@@ -644,9 +657,12 @@ public:
     ///
     /// \tparam T_ Bound type of the input interval representation
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mid(representation_type<T_> const& x) mid\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T mid(representation_dec_type<T_> const& x);
@@ -654,9 +670,12 @@ public:
     /// \brief Radius of a bare interval representation
     ///
     /// \param x Interval representation
-    /// \return \li NaN if \p x is empty
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is empty
     ///         \li smallest number of type \p T such that \f$mid(x) - rad(x) \leq \underline{x}\f$ and \f$\overline{x} \leq mid(x) + rad(x)\f$, otherwise.
     ///              It returns +0.0 in case of a zero
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T rad(representation const& x);
 
@@ -664,9 +683,12 @@ public:
     ///
     /// \tparam T_ Bound type of the input interval representation
     /// \param x Interval representation
-    /// \return \li NaN if \p x is empty
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is empty
     ///         \li smallest number of type \p T such that \f$mid(x) - rad(x) \leq \underline{x}\f$ and \f$\overline{x} \leq mid(x) + rad(x)\f$, otherwise.
     ///              It returns +0.0 in case of a zero
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T rad(representation_type<T_> const& x);
@@ -674,9 +696,12 @@ public:
     /// \brief Radius of a decorated interval representation
     ///
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::rad(representation const& x) rad\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T rad(representation_dec const& x);
 
@@ -684,9 +709,12 @@ public:
     ///
     /// \tparam T_ Bound type of the input interval representation
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::rad(representation_type<T_> const& x) rad\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T rad(representation_dec_type<T_> const& x);
@@ -696,6 +724,8 @@ public:
     /// \param x Interval representation
     /// \return <c>std::pair<T,T></c> containing the results of <c>\link mpfr_bin_ieee754_flavor::mid(representation const& x) mid\endlink</c>
     /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation const& x) rad\endlink</c>
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static std::pair<T, T> mid_rad(representation const& x);
 
@@ -705,6 +735,8 @@ public:
     /// \param x Interval representation
     /// \return <c>std::pair<T,T></c> containing the results of <c>\link mpfr_bin_ieee754_flavor::mid(representation_type<T_> const& x) mid\endlink</c>
     /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation_type<T_> const& x) rad\endlink</c>
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static std::pair<T, T> mid_rad(representation_type<T_> const& x);
@@ -714,6 +746,8 @@ public:
     /// \param x Decorated interval representation
     /// \return <c>std::pair<T,T></c> containing the results of <c>\link mpfr_bin_ieee754_flavor::mid(representation_dec const& x) mid\endlink</c>
     /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation_dec const& x) rad\endlink</c>
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static std::pair<T, T> mid_rad(representation_dec const& x);
 
@@ -723,6 +757,8 @@ public:
     /// \param x Decorated interval representation
     /// \return <c>std::pair<T,T></c> containing the results of <c>\link mpfr_bin_ieee754_flavor::mid(representation_dec_type<T_> const& x) mid\endlink</c>
     /// and <c>\link mpfr_bin_ieee754_flavor::rad(representation_dec_type<T_> const& x) rad\endlink</c>
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static std::pair<T, T> mid_rad(representation_dec_type<T_> const& x);
@@ -730,9 +766,12 @@ public:
     /// \brief Width of a bare interval representation
     ///
     /// \param x Interval representation
-    /// \return \li NaN if \p x is empty
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is empty
     ///         \li \f$\overline{x} -\underline{x}\f$ rounded upward, otherwise.
     ///              It returns +0.0 in case of a zero
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T wid(representation const& x);
 
@@ -742,7 +781,8 @@ public:
     /// \param x Interval representation
     /// \return Result of <c>\link mpfr_bin_ieee754_flavor::wid(representation const& x) wid\endlink</c> converted
     ///         to the type \p T using rounding to \f$+\infty\f$.
-    ///
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T wid(representation_type<T_> const& x);
@@ -750,9 +790,12 @@ public:
     /// \brief Width of a decorated interval representation
     ///
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::wid(representation const& x) wid\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T wid(representation_dec const& x);
 
@@ -760,9 +803,12 @@ public:
     ///
     /// \tparam T_ Bound type of the input interval representation
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::wid(representation_type<T_> const& x) wid\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T wid(representation_dec_type<T_> const& x);
@@ -770,9 +816,12 @@ public:
     /// \brief Magnitude of a bare interval representation
     ///
     /// \param x Interval representation
-    /// \return \li NaN if \p x is empty
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is empty
     ///         \li \f$ sup \{ |x| \mid x \in \mathbf{x} \}\f$  rounded upward, otherwise.
     ///              It returns +0.0 in case of a zero
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T mag(representation const& x);
 
@@ -782,7 +831,8 @@ public:
     /// \param x Interval representation
     /// \return Result of <c>\link mpfr_bin_ieee754_flavor::mag(representation const& x) mag\endlink</c> converted
     ///         to the type \p T using rounding to \f$+\infty\f$.
-    ///
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T mag(representation_type<T_> const& x);
@@ -790,9 +840,12 @@ public:
     /// \brief Magnitude of a decorated interval representation
     ///
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mag(representation const& x) mag\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T mag(representation_dec const& x);
 
@@ -800,9 +853,12 @@ public:
     ///
     /// \tparam T_ Bound type of the input interval representation
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mag(representation_type<T_> const& x) mag\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T mag(representation_dec_type<T_> const& x);
@@ -811,9 +867,12 @@ public:
     /// \brief Mignitude of a bare interval representation
     ///
     /// \param x Interval representation
-    /// \return \li NaN if \p x is empty
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is empty
     ///         \li \f$ inf \{ |x| \mid x \in \mathbf{x} \}\f$  rounded downward, otherwise.
     ///              It returns +0.0 in case of a zero
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T mig(representation const& x);
 
@@ -823,7 +882,8 @@ public:
     /// \param x Interval representation
     /// \return Result of <c>\link mpfr_bin_ieee754_flavor::mig(representation const& x) mig\endlink</c> converted
     ///         to the type \p T using rounding to \f$-\infty\f$.
-    ///
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T mig(representation_type<T_> const& x);
@@ -831,9 +891,12 @@ public:
     /// \brief Mignitude of a decorated interval representation
     ///
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mig(representation const& x) mig\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     static T mig(representation_dec const& x);
 
@@ -841,9 +904,12 @@ public:
     ///
     /// \tparam T_ Bound type of the input interval representation
     /// \param x Decorated interval representation
-    /// \return \li NaN if \p x is NaI
+    /// \return \li NaN if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
+    ///         \li NaN if \p x is NaI
     ///         \li Result of <c>\link mpfr_bin_ieee754_flavor::mig(representation_type<T_> const& x) mig\endlink</c>
     ///             called with the bare interval part otherwise
+    /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
+    /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     ///
     template<typename T_>
     static T mig(representation_dec_type<T_> const& x);
