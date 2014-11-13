@@ -28,9 +28,9 @@
 
 #include <iostream>
 #include <algorithm>
-#include <cctype>
 #include <cstdint>
 
+#include "p1788/util/io.hpp"
 
 namespace p1788
 {
@@ -61,9 +61,44 @@ enum class decoration : uint8_t
 };
 
 
-// Unique ID for an IO manipulator to print decorations numerical
-static int const no_dec_alpha_manip_id =  std::ios_base::xalloc();
 
+
+
+// -----------------------------------------------------------------------------
+// Input and output
+// -----------------------------------------------------------------------------
+
+
+
+// Unique ID for an IO manipulator to print decorations numerical
+static int const dec_manip_id =  std::ios_base::xalloc();
+
+// enum for the manipulator
+enum dec_manip_flags
+{
+    alpha_numeric,
+    alpha,
+    numeric
+};
+
+///@name Decoration specific IO manipulators
+///
+/// Default manipulator is \link dec_alpha_numeric(std::ios_base& str) dec_alpha_numeric \endlink .
+///
+///@{
+
+
+/// \brief IO manipulator to use the text and numeric representation for decorations.
+/// \param str IO stream which should be manipulated
+/// \return IO stream \p str to support operator chaining
+/// \note Text and numeric representation together are only supported for input operator. For the output operator
+/// this manipulator is equal to \link dec_alpha(std::ios_base& str) dec_alpha \endlink.
+///
+std::ios_base& dec_alpha_numeric(std::ios_base& str)
+{
+    str.iword(dec_manip_id) = dec_manip_flags::alpha_numeric;
+    return str;
+}
 
 /// \brief IO manipulator to use the text representation for decorations.
 /// \param str IO stream which should be manipulated
@@ -71,7 +106,7 @@ static int const no_dec_alpha_manip_id =  std::ios_base::xalloc();
 ///
 std::ios_base& dec_alpha(std::ios_base& str)
 {
-    str.iword(no_dec_alpha_manip_id) = false;
+    str.iword(dec_manip_id) = dec_manip_flags::alpha;
     return str;
 }
 
@@ -79,12 +114,13 @@ std::ios_base& dec_alpha(std::ios_base& str)
 /// \param str IO stream which should be manipulated
 /// \return IO stream \p str to support operator chaining
 ///
-std::ios_base& no_dec_alpha( std::ios_base& str )
+std::ios_base& dec_numeric( std::ios_base& str )
 {
-    str.iword(no_dec_alpha_manip_id) = true;
+    str.iword(dec_manip_id) = dec_manip_flags::numeric;
     return str;
 }
 
+///@}
 
 /// \brief Operator for writing a decoration onto an output stream.
 ///
@@ -92,8 +128,9 @@ std::ios_base& no_dec_alpha( std::ios_base& str )
 /// \param dec Decoration to write onto the output stream \p os
 /// \return Output stream \p os to support operator chaining
 ///
-/// \note The function pays attention to the IO manipulators \link dec_alpha(std::ios_base& str) dec_alpha \endlink
-/// and \link no_dec_alpha(std::ios_base& str) no_dec_alpha \endlink.
+/// \note The function pays attention to the IO manipulators \link dec_alpha(std::ios_base& str) dec_alpha \endlink ,
+/// \link dec_numeric(std::ios_base& str) dec_numeric \endlink and \link dec_alpha_numeric(std::ios_base& str) dec_alpha_numeric \endlink .
+/// The output of \link dec_alpha_numeric(std::ios_base& str) dec_alpha_numeric \endlink equals \link dec_alpha(std::ios_base& str) dec_alpha \endlink .
 ///
 template<typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(
@@ -101,12 +138,12 @@ std::basic_ostream<CharT, Traits>& operator<<(
     decoration dec)
 {
     // numeric
-    if (os.iword(no_dec_alpha_manip_id))
+    if (os.iword(dec_manip_id) == dec_manip_flags::numeric)
     {
         return os << static_cast<unsigned int>(dec);
     }
 
-    // alphabetic
+    // alphabetic (or alpha_numeric)
     switch (dec)
     {
     case decoration::ill:
@@ -131,9 +168,9 @@ std::basic_ostream<CharT, Traits>& operator<<(
 /// \param dec Decoration read from the input stream \p is
 /// \return Input stream \p is to support operator chaining
 ///
-/// \note The function pays attention to the IO manipulators \link dec_alpha(std::ios_base& str) dec_alpha \endlink
-/// and \link no_dec_alpha(std::ios_base& str) no_dec_alpha \endlink as well as to the standard manipulator
-/// <c>std::ios_base::skipws</c>.
+/// \note The function pays attention to the IO manipulators \link dec_alpha(std::ios_base& str) dec_alpha \endlink ,
+/// \link no_dec_alpha(std::ios_base& str) no_dec_alpha \endlink and \link dec_alpha_numeric(std::ios_base& str) dec_alpha_numeric \endlink
+/// as well as to the standard manipulator <c>std::ios_base::skipws</c>.
 ///
 /// \note If no valid textual or numeric representation could be read from the input stream \p is
 /// (with respect to the IO manipulators) then \p dec is set to decoration::ill and the <c>failbit</c>
@@ -146,83 +183,84 @@ std::basic_istream<CharT, Traits>& operator>>(
     // remove whitespaces if necessary
     if (is.flags() & std::ios_base::skipws)
     {
-        while (is && std::isspace(is.peek()))
-        {
-            is.get();
-        }
+        p1788::util::remove_ws(is);
     }
 
-    // numeric
-    if (is.iword(no_dec_alpha_manip_id))
+    if (is)
     {
-        unsigned int n;
-        is >> n;
-
-        if (is)
+        // numeric or alpha_numeric and starts with digit
+        if ((is.iword(dec_manip_id) == dec_manip_flags::numeric)
+                || (is.iword(dec_manip_id) == dec_manip_flags::alpha_numeric
+                    && std::isdigit(is.peek())))
         {
-            switch (n)
+            unsigned int n;
+            is >> n;
+
+            if (is)
             {
-            case 0x00:  // ill
-                dec = decoration::ill;
-                return is;
-            case 0x04:  // trv
-                dec = decoration::trv;
-                return is;
-            case 0x08:  // def
-                dec = decoration::def;
-                return is;
-            case 0x0C:  // dac
-                dec = decoration::dac;
-                return is;
-            case 0x10:  // com
-                dec = decoration::com;
-                return is;
+                switch (n)
+                {
+                case 0x00:  // ill
+                    dec = decoration::ill;
+                    return is;
+                case 0x04:  // trv
+                    dec = decoration::trv;
+                    return is;
+                case 0x08:  // def
+                    dec = decoration::def;
+                    return is;
+                case 0x0C:  // dac
+                    dec = decoration::dac;
+                    return is;
+                case 0x10:  // com
+                    dec = decoration::com;
+                    return is;
+                }
+            }
+        }
+        else    // alphabetic
+        {
+            std::string s;
+            s.resize(3);
+            is.read(&s[0], 3);
+
+            if (is)
+            {
+                // transform all ASCII characters to lowercase
+                std::transform(s.begin(), s.end(), s.begin(),
+                               [](char const c)
+                {
+                    return (c >= 0 && c < 128 ) ? std::tolower(c) : c;
+                });
+
+                if (s == "ill")
+                {
+                    dec = decoration::ill;
+                    return is;
+                }
+                else if (s == "trv")
+                {
+                    dec = decoration::trv;
+                    return is;
+                }
+                else if (s == "def")
+                {
+                    dec = decoration::def;
+                    return is;
+                }
+                else if (s == "dac")
+                {
+                    dec = decoration::dac;
+                    return is;
+                }
+                else if (s == "com")
+                {
+                    dec = decoration::com;
+                    return is;
+                }
             }
         }
     }
-    else    // alphabetic
-    {
-        std::string s;
-        s.resize(3);
-        is.read(&s[0], 3);
-
-        if (is)
-        {
-            // transform all ASCII characters to lowercase
-            std::transform(s.begin(), s.end(), s.begin(),
-                           [](char const c)
-            {
-                return (c >= 0 && c < 128 ) ? std::tolower(c) : c;
-            });
-
-            if (s == "ill")
-            {
-                dec = decoration::ill;
-                return is;
-            }
-            else if (s == "trv")
-            {
-                dec = decoration::trv;
-                return is;
-            }
-            else if (s == "def")
-            {
-                dec = decoration::def;
-                return is;
-            }
-            else if (s == "dac")
-            {
-                dec = decoration::dac;
-                return is;
-            }
-            else if (s == "com")
-            {
-                dec = decoration::com;
-                return is;
-            }
-        }
-    }
-
     // failed
     dec = decoration::ill;
     is.setstate(std::ios_base::failbit);
