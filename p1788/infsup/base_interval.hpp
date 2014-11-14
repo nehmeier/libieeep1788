@@ -1293,6 +1293,11 @@ bool is_equal(base_interval<T1_, Flavor1_, RepType1_, ConcreteInterval1_> const&
 
 
 
+
+
+
+
+
 } // namespace infsup
 
 } // namespace p1788

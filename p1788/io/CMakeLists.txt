@@ -26,7 +26,7 @@
 
 # relevant header files of this directory
 set(P1788_HEADER_FILES
-    p1788.hpp
+    io_manip.hpp
    )
 
 # relative path of this directory
@@ -41,12 +41,3 @@ add_custom_target("header${P1788_HEADERS_TARGET_SUFFIX}" SOURCES ${P1788_HEADER_
 # install header files
 install(FILES ${P1788_HEADER_FILES} DESTINATION "include${P1788_RELATIVE_PATH}")
 
-
-# include headers of subdirectories
-add_subdirectory(decoration)
-add_subdirectory(exception)
-add_subdirectory(flavor)
-add_subdirectory(infsup)
-add_subdirectory(io)
-add_subdirectory(overlapping)
-add_subdirectory(util)

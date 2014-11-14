@@ -30,7 +30,9 @@
 #include <algorithm>
 #include <cstdint>
 
+#include "p1788/io/io_manip.hpp"
 #include "p1788/util/io.hpp"
+
 
 namespace p1788
 {
@@ -69,93 +71,83 @@ enum class decoration : uint8_t
 // -----------------------------------------------------------------------------
 
 
-
-// Unique ID for an IO manipulator to print decorations numerical
-static int const dec_manip_id =  std::ios_base::xalloc();
-
-// enum for the manipulator
-enum dec_manip_flags
-{
-    alpha_numeric,
-    alpha,
-    numeric
-};
-
-///@name Decoration specific IO manipulators
-///
-/// Default manipulator is \link dec_alpha_numeric(std::ios_base& str) dec_alpha_numeric \endlink .
-///
-///@{
-
-
-/// \brief IO manipulator to use the text and numeric representation for decorations.
-/// \param str IO stream which should be manipulated
-/// \return IO stream \p str to support operator chaining
-/// \note Text and numeric representation together are only supported for input operator. For the output operator
-/// this manipulator is equal to \link dec_alpha(std::ios_base& str) dec_alpha \endlink.
-///
-std::ios_base& dec_alpha_numeric(std::ios_base& str)
-{
-    str.iword(dec_manip_id) = dec_manip_flags::alpha_numeric;
-    return str;
-}
-
-/// \brief IO manipulator to use the text representation for decorations.
-/// \param str IO stream which should be manipulated
-/// \return IO stream \p str to support operator chaining
-///
-std::ios_base& dec_alpha(std::ios_base& str)
-{
-    str.iword(dec_manip_id) = dec_manip_flags::alpha;
-    return str;
-}
-
-/// \brief IO manipulator to use the numeric representation for decorations.
-/// \param str IO stream which should be manipulated
-/// \return IO stream \p str to support operator chaining
-///
-std::ios_base& dec_numeric( std::ios_base& str )
-{
-    str.iword(dec_manip_id) = dec_manip_flags::numeric;
-    return str;
-}
-
-///@}
-
 /// \brief Operator for writing a decoration onto an output stream.
 ///
 /// \param os Output stream
 /// \param dec Decoration to write onto the output stream \p os
 /// \return Output stream \p os to support operator chaining
 ///
-/// \note The function pays attention to the IO manipulators \link dec_alpha(std::ios_base& str) dec_alpha \endlink ,
-/// \link dec_numeric(std::ios_base& str) dec_numeric \endlink and \link dec_alpha_numeric(std::ios_base& str) dec_alpha_numeric \endlink .
-/// The output of \link dec_alpha_numeric(std::ios_base& str) dec_alpha_numeric \endlink equals \link dec_alpha(std::ios_base& str) dec_alpha \endlink .
-///
+/// \note The function pays attention to the output manipulators
+/// \link p1788::io::dec_alpha(std::basic_ostream<CharT, Traits>& os) dec_alpha \endlink ,
+/// and \link p1788::io::dec_numeric(std::basic_ostream<CharT, Traits>& os) dec_numeric \endlink
+/// as well as to
+/// \link p1788::io::lower_case(std::basic_ostream<CharT, Traits>& os) lower_case \endlink ,
+/// \link p1788::io::first_upper_case(std::basic_ostream<CharT, Traits>& os) first_upper_case \endlink
+/// and \link p1788::io::upper_case(std::basic_ostream<CharT, Traits>& os) upper_case \endlink .
 template<typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(
     std::basic_ostream<CharT, Traits>& os,
     decoration dec)
 {
     // numeric
-    if (os.iword(dec_manip_id) == dec_manip_flags::numeric)
+    if (os.iword(p1788::io::dec_manip_id) == p1788::io::dec_numeric_representation)
     {
         return os << static_cast<unsigned int>(dec);
     }
 
-    // alphabetic (or alpha_numeric)
+    // alphabetic
     switch (dec)
     {
     case decoration::ill:
-        return os << "ill";
+        switch (os.iword(p1788::io::text_representation_manip_id))
+        {
+        case p1788::io::first_upper_case_text_representation:
+            return os << "Ill";
+        case p1788::io::upper_case_text_representation:
+            return os << "ILL";
+        default:
+            return os << "ill";
+        }
     case decoration::trv:
-        return os << "trv";
+        switch (os.iword(p1788::io::text_representation_manip_id))
+        {
+        case p1788::io::first_upper_case_text_representation:
+            return os << "Trv";
+        case p1788::io::upper_case_text_representation:
+            return os << "TRV";
+        default:
+            return os << "trv";
+        }
     case decoration::def:
-        return os << "def";
+        switch (os.iword(p1788::io::text_representation_manip_id))
+        {
+        case p1788::io::first_upper_case_text_representation:
+            return os << "Def";
+        case p1788::io::upper_case_text_representation:
+            return os << "DEF";
+        default:
+            return os << "def";
+        }
     case decoration::dac:
-        return os << "dac";
+        switch (os.iword(p1788::io::text_representation_manip_id))
+        {
+        case p1788::io::first_upper_case_text_representation:
+            return os << "Dac";
+        case p1788::io::upper_case_text_representation:
+            return os << "DAC";
+        default:
+            return os << "dac";
+        }
     case decoration::com:
-        return os << "com";
+        switch (os.iword(p1788::io::text_representation_manip_id))
+        {
+        case p1788::io::first_upper_case_text_representation:
+            return os << "Com";
+        case p1788::io::upper_case_text_representation:
+            return os << "COM";
+        default:
+            return os << "com";
+        }
     }
 
     // Something went wrong ;-)
@@ -168,12 +160,10 @@ std::basic_ostream<CharT, Traits>& operator<<(
 /// \param dec Decoration read from the input stream \p is
 /// \return Input stream \p is to support operator chaining
 ///
-/// \note The function pays attention to the IO manipulators \link dec_alpha(std::ios_base& str) dec_alpha \endlink ,
-/// \link no_dec_alpha(std::ios_base& str) no_dec_alpha \endlink and \link dec_alpha_numeric(std::ios_base& str) dec_alpha_numeric \endlink
-/// as well as to the standard manipulator <c>std::ios_base::skipws</c>.
+/// \note The function pays attention to the standard manipulator <c>std::ios_base::skipws</c>.
 ///
 /// \note If no valid textual or numeric representation could be read from the input stream \p is
-/// (with respect to the IO manipulators) then \p dec is set to decoration::ill and the <c>failbit</c>
+/// then \p dec is set to decoration::ill and the <c>failbit</c>
 /// of the stream is set.
 template<typename CharT, typename Traits>
 std::basic_istream<CharT, Traits>& operator>>(
@@ -188,10 +178,8 @@ std::basic_istream<CharT, Traits>& operator>>(
 
     if (is)
     {
-        // numeric or alpha_numeric and starts with digit
-        if ((is.iword(dec_manip_id) == dec_manip_flags::numeric)
-                || (is.iword(dec_manip_id) == dec_manip_flags::alpha_numeric
-                    && std::isdigit(is.peek())))
+        // starts with digit
+        if (std::isdigit(is.peek()))
         {
             unsigned int n;
             is >> n;
@@ -261,6 +249,7 @@ std::basic_istream<CharT, Traits>& operator>>(
             }
         }
     }
+
     // failed
     dec = decoration::ill;
     is.setstate(std::ios_base::failbit);
