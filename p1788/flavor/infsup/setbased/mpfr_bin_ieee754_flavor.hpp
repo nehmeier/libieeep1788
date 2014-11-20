@@ -76,9 +76,9 @@ public:
     // Typedef for the corresponding mpfr wrapper class representing the IEEE 754 binary floating point format of type T
     typedef p1788::util::mpfr_var<
     std::numeric_limits<T>::digits,
-        std::numeric_limits<T>::has_denorm != std::denorm_present ? std::numeric_limits<double>::min_exponent
-        : std::numeric_limits<double>::min_exponent - std::numeric_limits<double>::digits + 1,
-        std::numeric_limits<double>::max_exponent,
+        std::numeric_limits<T>::has_denorm != std::denorm_present ? std::numeric_limits<T>::min_exponent
+        : std::numeric_limits<T>::min_exponent - std::numeric_limits<T>::digits + 1,
+        std::numeric_limits<T>::max_exponent,
         std::numeric_limits<T>::has_denorm == std::denorm_present
         >   mpfr_var;
 
@@ -338,6 +338,11 @@ public:
     template<typename T_>
     static representation_dec constructor_dec(representation_type<T_> const& other, p1788::decoration::decoration dec);
 
+
+
+    static p1788::decoration::decoration decoration(representation_dec const& x);
+
+
 ///@name Interval constants
 ///
 ///
@@ -378,8 +383,6 @@ public:
     ///
     static representation_dec nai();
 
-
-    static p1788::decoration::decoration decoration(representation_dec const& x);
 
 ///@}
 

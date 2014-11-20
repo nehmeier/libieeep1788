@@ -33,59 +33,71 @@ namespace p1788
 namespace util
 {
 
+// Trait to return the value as the preferred type
 template<typename T> class mpfr_get_trait
 {
     static_assert(!std::is_same<T,T>::value,
                   "Type is not supported by mpfr_get_trait!");
 };
 
+// float
 template<> class mpfr_get_trait<float>
 {
 public:
-    static float apply(mpfr_t& mp, mpfr_rnd_t rnd) {
+    static float apply(mpfr_t& mp, mpfr_rnd_t rnd)
+    {
         return mpfr_get_flt(mp, rnd);
     }
 };
 
+// double
 template<> class mpfr_get_trait<double>
 {
 public:
-    static double apply(mpfr_t& mp, mpfr_rnd_t rnd) {
+    static double apply(mpfr_t& mp, mpfr_rnd_t rnd)
+    {
         return mpfr_get_d(mp, rnd);
     }
 };
 
+// long double
 template<> class mpfr_get_trait<long double>
 {
 public:
-    static long double apply(mpfr_t& mp, mpfr_rnd_t rnd) {
+    static long double apply(mpfr_t& mp, mpfr_rnd_t rnd)
+    {
         return mpfr_get_ld(mp, rnd);
     }
 };
 
 
 
+// Trait to apply subnormalization if necessary
 template<bool SUBNORMALIZE>
 class subnormalization_trait
 {
 public:
-    static int apply(mpfr_t&, int t, mpfr_rnd_t) {
+    static int apply(mpfr_t&, int t, mpfr_rnd_t)
+    {
         // Nothing to do
         return t;
     }
 };
 
 
+// subnormalize
 template<>
 class subnormalization_trait<true>
 {
 public:
-    static int apply(mpfr_t& x, int t, mpfr_rnd_t rnd) {
+    static int apply(mpfr_t& x, int t, mpfr_rnd_t rnd)
+    {
         return mpfr_subnormalize(x, t, rnd);
     }
 };
 
 
+// setup function - initialize the mpfr system
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::setup()
 {
@@ -93,85 +105,98 @@ void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::setup()
     mpfr_set_emax(EMAX_);
 }
 
+// clears the mpfr cache
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::free_cache()
 {
     mpfr_free_cache();
 }
 
-
+// default constructor - value is NaN
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var()
 {
     mpfr_init2(var_, PREC_);
 }
 
+// constructor - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(unsigned long int op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
+// constructor - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(long int op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
+// constructor - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(float op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
+// constructor - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(double op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
+// constructor - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(long double op, mpfr_rnd_t rnd) : mpfr_var()
 {
     set(op, rnd);
 }
 
+// Destructor
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::~mpfr_var()
 {
     mpfr_clear(var_);
 }
 
+// setter - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::set(unsigned long int op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_ui(var_, op, rnd), rnd);
 }
 
+// setter - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::set(long int op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_si(var_, op, rnd), rnd);
 }
 
+// setter - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::set(float op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_flt(var_, op, rnd), rnd);
 }
 
+// setter - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::set(double op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_d(var_, op, rnd), rnd);
 }
 
+// setter - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 void mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::set(long double op, mpfr_rnd_t rnd)
 {
     subnormalize(mpfr_set_ld(var_, op, rnd), rnd);
 }
 
+// getter - returns the value as the preferred type using the rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 template<typename T>
 T mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::get(mpfr_rnd_t rnd)
@@ -179,81 +204,57 @@ T mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::get(mpfr_rnd_t rnd)
     return p1788::util::mpfr_get_trait<T>::apply(var_, rnd);
 }
 
+// Returns a string representation
+// It is possible to specify the output format
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
-std::string mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::get_str(mpfr_rnd_t rnd, int b, size_t n)
+std::string mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::get_str(mpfr_rnd_t rnd,
+        p1788::io::number_representation_flags rep,
+        size_t width,
+        size_t precision,
+        p1788::io::text_representation_flags text_rep)
 {
-    mpfr_str str(var_, rnd, b, n);
+    std::string format = width > 0 ? "%" + std::to_string(width) : "%";
+    format += precision > 0 ? "." + std::to_string(precision) : "";
+    format += "R*";
 
-    return str();
+
+    switch (rep)
+    {
+    case p1788::io::decimal_representation:
+        format += text_rep == p1788::io::upper_case_text_representation ? "F" : "f";
+        break;
+    case p1788::io::scientific_representation:
+        format += text_rep == p1788::io::upper_case_text_representation ? "E" : "e";
+        break;
+    case p1788::io::hex_representation:
+        format += text_rep == p1788::io::upper_case_text_representation ? "A" : "a";
+        break;
+    default:
+        format += text_rep == p1788::io::upper_case_text_representation ? "G" : "g";
+        break;
+    }
+
+    // TODO check?
+    char buffer [(-EMIN_> EMAX_? -EMIN_ : EMAX_) + 256];
+    mpfr_snprintf(buffer, (-EMIN_> EMAX_? -EMIN_ : EMAX_) + 256, format.c_str(), rnd, var_ );
+    return buffer;
 }
 
-
+// Reference to the underlying mpfr_t
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 mpfr_t& mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::operator() ()
 {
     return var_;
 }
 
-
+// subnormalization of the value
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 int mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::subnormalize(int t, mpfr_rnd_t rnd)
 {
+    // use traite to distinguish to only apply subnormalization if necessary
     return p1788::util::subnormalization_trait<SUBNORMALIZE_>::apply(var_, t, rnd);
 }
 
-
-
-// TODO current local decimal point!!!!
-// TODO Hex etc
-// TODO Check
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_str::mpfr_str(mpfr_t var, mpfr_rnd_t rnd, int b, size_t n)
-    : char_(nullptr), str_()
-{
-    mpfr_exp_t exp;
-
-    char_ = mpfr_get_str(nullptr, &exp, b, n, var, rnd);
-    str_ = char_;
-
-    if (mpfr_regular_p(var)) {
-        if (exp > str_.length()) {
-            str_.insert(mpfr_sgn(var) > 0 ? 1 : 2, ".");
-            str_ = str_ + "e" + std::to_string(exp - 1);
-        } else if (exp) {
-            str_.insert(mpfr_sgn(var) > 0 ? exp : exp + 1, ".");
-        } else {
-            str_.insert(mpfr_sgn(var) < 0 ? 1 : 0, "0.");
-        }
-    }
-
-    if (mpfr_zero_p(var)) {
-        if (str_[0] == '-') {
-            str_.replace(0, 2, "0.");
-        } else {
-            str_.insert(1, ".");
-        }
-    }
-
-    if (mpfr_nan_p(var)) {
-        str_ = "nan";
-    }
-
-    if (mpfr_inf_p(var)) {
-        str_ = mpfr_sgn(var) > 0 ? "Inf" : "-Inf";
-    }
-}
-
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_str::~mpfr_str()
-{
-    mpfr_free_str(char_);
-}
-
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
-std::string mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_str::operator() () const
-{
-    return str_;
-}
 
 
 

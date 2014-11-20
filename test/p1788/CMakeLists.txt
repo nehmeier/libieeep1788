@@ -23,7 +23,14 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-add_subdirectory(p1788)
+add_subdirectory(decoration)
+add_subdirectory(exception)
+add_subdirectory(io)
+add_subdirectory(overlapping)
 add_subdirectory(util)
+
+add_subdirectory(flavor)
+add_subdirectory(infsup)
+
 
 
