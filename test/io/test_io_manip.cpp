@@ -168,3 +168,17 @@ BOOST_AUTO_TEST_CASE(minimal_decoration_test)
     stream << p1788::io::dec_alpha;
     BOOST_CHECK_EQUAL( stream.iword(p1788::io::dec_manip_id), p1788::io::dec_alpha_representation );
 }
+
+
+BOOST_AUTO_TEST_CASE(minimal_overlapping_test)
+{
+    std::stringstream stream;
+
+    BOOST_CHECK_EQUAL( stream.iword(p1788::io::overlapping_manip_id), p1788::io::overlapping_alpha_representation );
+
+    stream << p1788::io::overlapping_numeric;
+    BOOST_CHECK_EQUAL( stream.iword(p1788::io::overlapping_manip_id), p1788::io::overlapping_numeric_representation );
+
+    stream << p1788::io::overlapping_alpha;
+    BOOST_CHECK_EQUAL( stream.iword(p1788::io::overlapping_manip_id), p1788::io::overlapping_alpha_representation );
+}

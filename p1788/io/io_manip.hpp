@@ -411,6 +411,53 @@ std::basic_ostream<CharT, Traits>& dec_numeric(std::basic_ostream<CharT, Traits>
 
 
 
+//-----------------------------------------------------------------------------
+//  Overlapping specific
+//-----------------------------------------------------------------------------
+
+// Unique ID for a manipulator to print decorations
+int const overlapping_manip_id =  std::ios_base::xalloc();
+
+// enum for the manipulator to print decorations
+enum overlapping_manip_flags
+{
+    overlapping_alpha_representation,
+    overlapping_numeric_representation
+};
+
+///@name Overlapping specific output manipulators
+///
+/// Default manipulator is \link overlapping_alpha(std::basic_ostream<CharT, Traits>& os) overlapping_alpha \endlink .
+///
+///@{
+
+
+/// \brief Output manipulator to use the text representation for overlapping states.
+/// \param os Output stream which should be manipulated
+/// \return Output stream \p os to support operator chaining
+///
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& overlapping_alpha(std::basic_ostream<CharT, Traits>& os)
+{
+    os.iword(overlapping_manip_id) = overlapping_alpha_representation;
+    return os;
+}
+
+/// \brief IO manipulator to use the numeric representation for overlapping states.
+/// \param os Output stream which should be manipulated
+/// \return Output stream \p os to support operator chaining
+///
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& overlapping_numeric(std::basic_ostream<CharT, Traits>& os)
+{
+    os.iword(overlapping_manip_id) = overlapping_numeric_representation;
+    return os;
+}
+
+///@}
+
+
+
 } // namespace io
 
 } // namespace p1788

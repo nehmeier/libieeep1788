@@ -81,8 +81,7 @@ enum class decoration : uint8_t
 /// \link p1788::io::dec_alpha(std::basic_ostream<CharT, Traits>& os) dec_alpha \endlink ,
 /// and \link p1788::io::dec_numeric(std::basic_ostream<CharT, Traits>& os) dec_numeric \endlink
 /// as well as to
-/// \link p1788::io::lower_case(std::basic_ostream<CharT, Traits>& os) lower_case \endlink ,
-/// \link p1788::io::first_upper_case(std::basic_ostream<CharT, Traits>& os) first_upper_case \endlink
+/// \link p1788::io::lower_case(std::basic_ostream<CharT, Traits>& os) lower_case \endlink
 /// and \link p1788::io::upper_case(std::basic_ostream<CharT, Traits>& os) upper_case \endlink .
 template<typename CharT, typename Traits>
 std::basic_ostream<CharT, Traits>& operator<<(
