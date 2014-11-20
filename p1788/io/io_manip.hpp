@@ -42,7 +42,6 @@ int const text_representation_manip_id =  std::ios_base::xalloc();
 enum text_representation_flags
 {
     lower_case_text_representation,
-    first_upper_case_text_representation,
     upper_case_text_representation
 };
 
@@ -74,25 +73,15 @@ std::basic_ostream<CharT, Traits>& upper_case(std::basic_ostream<CharT, Traits>&
     return os;
 }
 
-/// \brief Output manipulator to print the text representation in upper case.
-/// \param os Output stream which should be manipulated
-/// \return Output stream \p os to support operator chaining
-///
-template<typename CharT, typename Traits>
-std::basic_ostream<CharT, Traits>& first_upper_case(std::basic_ostream<CharT, Traits>& os)
-{
-    os.iword(text_representation_manip_id) = first_upper_case_text_representation;
-    return os;
-}
 
 ///@}
 
 
 
-// Unique ID for a manipulator to choose the preferred string width of an interval
+// Unique ID for a manipulator to choose the preferred string width of an interval or decorated interval
 int const string_width_manip_id =  std::ios_base::xalloc();
 
-///@name Output manipulators to choose the preferred string width of an interval.
+///@name Output manipulators to choose the preferred width of the whole interval or decorated interval string.
 ///
 /// Default manipulator is \link string_width(0) \endlink .
 ///
@@ -156,6 +145,130 @@ std::basic_ostream<CharT, Traits>& uncertain_form(std::basic_ostream<CharT, Trai
 
 ///@}
 
+
+
+// Unique ID for a manipulator to choose between decimal, scientifc or hex representation
+int const number_representation_manip_id =  std::ios_base::xalloc();
+
+enum number_representation_flags
+{
+    decimal_scientific_representation,
+    decimal_representation,
+    scientific_representation,
+    hex_representation
+};
+
+///@name Output manipulators to choose between decimal, scientifc or hex representation.
+///
+/// Default manipulator is \link decimal_scientific(std::basic_ostream<CharT, Traits>& os) decimal_scientific \endlink .
+///
+///@{
+
+/// \brief Output manipulator to print numbers in decimal or scientific form.
+/// \param os Output stream which should be manipulated
+/// \return Output stream \p os to support operator chaining
+/// \note This equals the "%g" or "%G" format option of the common <c>printf</c> function.
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& decimal_scientific(std::basic_ostream<CharT, Traits>& os)
+{
+    os.iword(number_representation_manip_id) = decimal_scientific_representation;
+    return os;
+}
+
+/// \brief Output manipulator to print numbers in decimal form.
+/// \param os Output stream which should be manipulated
+/// \return Output stream \p os to support operator chaining
+/// \note This equals the "%f" or "%F" format option of the common <c>printf</c> function.
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& decimal(std::basic_ostream<CharT, Traits>& os)
+{
+    os.iword(number_representation_manip_id) = decimal_representation;
+    return os;
+}
+
+/// \brief Output manipulator to print numbers in scientific form.
+/// \param os Output stream which should be manipulated
+/// \return Output stream \p os to support operator chaining
+/// \note This equals the "%e" or "%E" format option of the common <c>printf</c> function.
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& scientific(std::basic_ostream<CharT, Traits>& os)
+{
+    os.iword(number_representation_manip_id) = scientific_representation;
+    return os;
+}
+
+/// \brief Output manipulator to print numbers in hex form.
+/// \param os Output stream which should be manipulated
+/// \return Output stream \p os to support operator chaining
+/// \note This equals the "%a" or "%A" format option of the common <c>printf</c> function.
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& hex(std::basic_ostream<CharT, Traits>& os)
+{
+    os.iword(number_representation_manip_id) = hex_representation;
+    return os;
+}
+
+///@}
+
+
+
+// Unique ID for a manipulator to choose the preferred width of a number
+int const width_manip_id =  std::ios_base::xalloc();
+
+///@name Output manipulators to choose the preferred width of a number.
+///
+/// Default manipulator is \link width(0) \endlink .
+///
+///@{
+
+/// \brief Class used as an output manipulator to set the preferred width of a number.
+/// \note This equals the width format option of the common <c>printf</c> function excepted that
+/// the value 0 means that no width is specified.
+struct width
+{
+    unsigned int width_;
+
+    width(unsigned int width) : width_(width) {}
+};
+
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& operator<< (std::basic_ostream<CharT, Traits>& os, width const& w)
+{
+    os.iword(width_manip_id) = w.width_;
+    return os;
+}
+
+///@}
+
+
+
+// Unique ID for a manipulator to choose the preferred width of a number
+int const precision_manip_id =  std::ios_base::xalloc();
+
+///@name Output manipulators to choose the precision of a number.
+///
+/// Default manipulator is \link precision(0) \endlink .
+///
+///@{
+
+/// \brief Class used as an output manipulator to set the precision of a number.
+/// \note This equals the precision format option of the common <c>printf</c> function excepted that
+/// the value 0 means that no precision is specified.
+struct precision
+{
+    unsigned int precision_;
+
+    precision(unsigned int precision) : precision_(precision) {}
+};
+
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& operator<< (std::basic_ostream<CharT, Traits>& os, precision const& p)
+{
+    os.iword(precision_manip_id) = p.precision_;
+    return os;
+}
+
+///@}
 
 
 // Unique ID for a manipulator to choose between different text representaions for special intervals

@@ -275,11 +275,10 @@ BOOST_AUTO_TEST_CASE(minimal_decoration_output_test)
 
 
     output << p1788::io::dec_alpha;
-    output << p1788::io::first_upper_case;
-    output << DEC::trv;
-    BOOST_CHECK( output.is_equal( "Trv" ) );
-
     output << p1788::io::upper_case;
+    output << DEC::trv;
+    BOOST_CHECK( output.is_equal( "TRV" ) );
+
     output << DEC::def;
     BOOST_CHECK( output.is_equal( "DEF" ) );
 

@@ -101,8 +101,6 @@ std::basic_ostream<CharT, Traits>& operator<<(
     case decoration::ill:
         switch (os.iword(p1788::io::text_representation_manip_id))
         {
-        case p1788::io::first_upper_case_text_representation:
-            return os << "Ill";
         case p1788::io::upper_case_text_representation:
             return os << "ILL";
         default:
@@ -111,8 +109,6 @@ std::basic_ostream<CharT, Traits>& operator<<(
     case decoration::trv:
         switch (os.iword(p1788::io::text_representation_manip_id))
         {
-        case p1788::io::first_upper_case_text_representation:
-            return os << "Trv";
         case p1788::io::upper_case_text_representation:
             return os << "TRV";
         default:
@@ -121,8 +117,6 @@ std::basic_ostream<CharT, Traits>& operator<<(
     case decoration::def:
         switch (os.iword(p1788::io::text_representation_manip_id))
         {
-        case p1788::io::first_upper_case_text_representation:
-            return os << "Def";
         case p1788::io::upper_case_text_representation:
             return os << "DEF";
         default:
@@ -131,8 +125,6 @@ std::basic_ostream<CharT, Traits>& operator<<(
     case decoration::dac:
         switch (os.iword(p1788::io::text_representation_manip_id))
         {
-        case p1788::io::first_upper_case_text_representation:
-            return os << "Dac";
         case p1788::io::upper_case_text_representation:
             return os << "DAC";
         default:
@@ -141,8 +133,6 @@ std::basic_ostream<CharT, Traits>& operator<<(
     case decoration::com:
         switch (os.iword(p1788::io::text_representation_manip_id))
         {
-        case p1788::io::first_upper_case_text_representation:
-            return os << "Com";
         case p1788::io::upper_case_text_representation:
             return os << "COM";
         default:
