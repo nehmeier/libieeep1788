@@ -66,12 +66,16 @@ BOOST_AUTO_TEST_CASE(minimal_ulong_test)
     BOOST_CHECK_EQUAL( var_float1.template get<float>(MPFR_RNDN), 12.0f );
     BOOST_CHECK_EQUAL( var_float1.template get<double>(MPFR_RNDU), 12.0 );
     BOOST_CHECK_EQUAL( var_float1.template get<long double>(MPFR_RNDU), 12.0L );
+    BOOST_CHECK_EQUAL( var_float1.template get<long int>(MPFR_RNDU), 12l );
+    BOOST_CHECK_EQUAL( var_float1.template get<unsigned long int>(MPFR_RNDU), 12ul );
     BOOST_CHECK(mpfr_cmp_ui(var_float1(), 12ul) == 0);
 
     mpfr_var<float> var_float2(47ul, MPFR_RNDU);
     BOOST_CHECK_EQUAL( var_float2.template get<float>(MPFR_RNDD), 47.0f );
     BOOST_CHECK_EQUAL( var_float2.template get<double>(MPFR_RNDN), 47.0 );
     BOOST_CHECK_EQUAL( var_float2.template get<long double>(MPFR_RNDN), 47.0L );
+    BOOST_CHECK_EQUAL( var_float2.template get<long int>(MPFR_RNDN), 47l );
+    BOOST_CHECK_EQUAL( var_float2.template get<unsigned long int>(MPFR_RNDN), 47ul );
     BOOST_CHECK(mpfr_cmp_ui(var_float2(), 47ul) == 0);
 
 
@@ -81,12 +85,16 @@ BOOST_AUTO_TEST_CASE(minimal_ulong_test)
     BOOST_CHECK_EQUAL( var_double1.template get<float>(MPFR_RNDU), 12.0f );
     BOOST_CHECK_EQUAL( var_double1.template get<double>(MPFR_RNDN), 12.0 );
     BOOST_CHECK_EQUAL( var_double1.template get<long double>(MPFR_RNDN), 12.0L );
+    BOOST_CHECK_EQUAL( var_double1.template get<long int>(MPFR_RNDN), 12l );
+    BOOST_CHECK_EQUAL( var_double1.template get<unsigned long int>(MPFR_RNDN), 12ul );
     BOOST_CHECK(mpfr_cmp_ui(var_double1(), 12ul) == 0);
 
     mpfr_var<float> var_double2(47ul, MPFR_RNDN);
     BOOST_CHECK_EQUAL( var_double2.template get<float>(MPFR_RNDN), 47.0f );
     BOOST_CHECK_EQUAL( var_double2.template get<double>(MPFR_RNDD), 47.0 );
     BOOST_CHECK_EQUAL( var_double2.template get<long double>(MPFR_RNDD), 47.0L );
+    BOOST_CHECK_EQUAL( var_double2.template get<long int>(MPFR_RNDD), 47l );
+    BOOST_CHECK_EQUAL( var_double2.template get<unsigned long int>(MPFR_RNDD), 47ul );
     BOOST_CHECK(mpfr_cmp_ui(var_double2(), 47ul) == 0);
 }
 
@@ -98,12 +106,16 @@ BOOST_AUTO_TEST_CASE(minimal_long_test)
     BOOST_CHECK_EQUAL( var_float1.template get<float>(MPFR_RNDU), 12.0f );
     BOOST_CHECK_EQUAL( var_float1.template get<double>(MPFR_RNDN), 12.0 );
     BOOST_CHECK_EQUAL( var_float1.template get<long double>(MPFR_RNDN), 12.0L );
+    BOOST_CHECK_EQUAL( var_float1.template get<long int>(MPFR_RNDN), 12l );
+    BOOST_CHECK_EQUAL( var_float1.template get<unsigned long int>(MPFR_RNDN), 12ul );
     BOOST_CHECK(mpfr_cmp_si(var_float1(), 12l) == 0);
 
     mpfr_var<float> var_float2(-47l, MPFR_RNDD);
     BOOST_CHECK_EQUAL( var_float2.template get<float>(MPFR_RNDN), -47.0f );
     BOOST_CHECK_EQUAL( var_float2.template get<double>(MPFR_RNDD), -47.0 );
     BOOST_CHECK_EQUAL( var_float2.template get<long double>(MPFR_RNDD), -47.0L );
+    BOOST_CHECK_EQUAL( var_float2.template get<long int>(MPFR_RNDD), -47l );
+    BOOST_CHECK_EQUAL( var_float2.template get<unsigned long int>(MPFR_RNDD), 0ul);
     BOOST_CHECK(mpfr_cmp_si(var_float2(), -47l) == 0);
 
 
@@ -113,12 +125,16 @@ BOOST_AUTO_TEST_CASE(minimal_long_test)
     BOOST_CHECK_EQUAL( var_double1.template get<float>(MPFR_RNDN), -12.0f );
     BOOST_CHECK_EQUAL( var_double1.template get<double>(MPFR_RNDD), -12.0 );
     BOOST_CHECK_EQUAL( var_double1.template get<long double>(MPFR_RNDD), -12.0L );
+    BOOST_CHECK_EQUAL( var_double1.template get<long int>(MPFR_RNDD), -12l );
+    BOOST_CHECK_EQUAL( var_double1.template get<unsigned long int>(MPFR_RNDD), 0ul );
     BOOST_CHECK(mpfr_cmp_si(var_double1(), -12l) == 0);
 
     mpfr_var<float> var_double2(47l, MPFR_RNDN);
     BOOST_CHECK_EQUAL( var_double2.template get<float>(MPFR_RNDU), 47.0f );
     BOOST_CHECK_EQUAL( var_double2.template get<double>(MPFR_RNDN), 47.0 );
     BOOST_CHECK_EQUAL( var_double2.template get<long double>(MPFR_RNDN), 47.0L );
+    BOOST_CHECK_EQUAL( var_double2.template get<long int>(MPFR_RNDN), 47l );
+    BOOST_CHECK_EQUAL( var_double2.template get<unsigned long int>(MPFR_RNDN), 47ul );
     BOOST_CHECK(mpfr_cmp_si(var_double2(), 47l) == 0);
 }
 
@@ -130,12 +146,16 @@ BOOST_AUTO_TEST_CASE(minimal_float_test)
     BOOST_CHECK_EQUAL( var_float1.template get<float>(MPFR_RNDN), 12.3f );
     BOOST_CHECK_EQUAL( var_float1.template get<double>(MPFR_RNDU), 12.3f );
     BOOST_CHECK_EQUAL( var_float1.template get<long double>(MPFR_RNDU), 12.3f );
+    BOOST_CHECK_EQUAL( var_float1.template get<long int>(MPFR_RNDU), 13l );
+    BOOST_CHECK_EQUAL( var_float1.template get<unsigned long int>(MPFR_RNDU), 13ul );
     BOOST_CHECK(mpfr_cmp_d(var_float1(), 12.3f) == 0);
 
     mpfr_var<float> var_float2(-4.7f, MPFR_RNDN);
     BOOST_CHECK_EQUAL( var_float2.template get<float>(MPFR_RNDN), -4.7f );
     BOOST_CHECK_EQUAL( var_float2.template get<double>(MPFR_RNDD), -4.7f );
     BOOST_CHECK_EQUAL( var_float2.template get<long double>(MPFR_RNDD), -4.7f );
+    BOOST_CHECK_EQUAL( var_float2.template get<long int>(MPFR_RNDD), -5l );
+    BOOST_CHECK_EQUAL( var_float2.template get<unsigned long int>(MPFR_RNDD), 0ul );
     BOOST_CHECK(mpfr_cmp_d(var_float2(), -4.7f) == 0);
 
 
@@ -145,12 +165,16 @@ BOOST_AUTO_TEST_CASE(minimal_float_test)
     BOOST_CHECK_EQUAL( var_double1.template get<float>(MPFR_RNDN), -12.3f );
     BOOST_CHECK_EQUAL( var_double1.template get<double>(MPFR_RNDD), -12.3f );
     BOOST_CHECK_EQUAL( var_double1.template get<long double>(MPFR_RNDD), -12.3f );
+    BOOST_CHECK_EQUAL( var_double1.template get<long int>(MPFR_RNDD), -13l );
+    BOOST_CHECK_EQUAL( var_double1.template get<unsigned long int>(MPFR_RNDD), 0ul );
     BOOST_CHECK(mpfr_cmp_d(var_double1(), -12.3f) == 0);
 
     mpfr_var<float> var_double2(47.5f, MPFR_RNDN);
     BOOST_CHECK_EQUAL( var_double2.template get<float>(MPFR_RNDN), 47.5f );
     BOOST_CHECK_EQUAL( var_double2.template get<double>(MPFR_RNDU), 47.5f );
     BOOST_CHECK_EQUAL( var_double2.template get<long double>(MPFR_RNDU), 47.5f );
+    BOOST_CHECK_EQUAL( var_double2.template get<long int>(MPFR_RNDU), 48l );
+    BOOST_CHECK_EQUAL( var_double2.template get<unsigned long int>(MPFR_RNDU), 48ul );
     BOOST_CHECK(mpfr_cmp_d(var_double2(), 47.5f) == 0);
 }
 
@@ -162,12 +186,16 @@ BOOST_AUTO_TEST_CASE(minimal_double_test)
     BOOST_CHECK_EQUAL( var_float1.template get<float>(MPFR_RNDU), std::stof("0X1.899998P+3") );
     BOOST_CHECK_EQUAL( var_float1.template get<double>(MPFR_RNDN), std::stof("0X1.899998P+3") );
     BOOST_CHECK_EQUAL( var_float1.template get<long double>(MPFR_RNDN), std::stof("0X1.899998P+3") );
+    BOOST_CHECK_EQUAL( var_float1.template get<long int>(MPFR_RNDN), 12l );
+    BOOST_CHECK_EQUAL( var_float1.template get<unsigned long int>(MPFR_RNDN), 12ul );
     BOOST_CHECK(mpfr_cmp_d(var_float1(), std::stof("0X1.899998P+3")) == 0);
 
     mpfr_var<float> var_float2(-4.7, MPFR_RNDN);
     BOOST_CHECK_EQUAL( var_float2.template get<float>(MPFR_RNDD), -4.7f );
     BOOST_CHECK_EQUAL( var_float2.template get<double>(MPFR_RNDN), -4.7f );
     BOOST_CHECK_EQUAL( var_float2.template get<long double>(MPFR_RNDN), -4.7f );
+    BOOST_CHECK_EQUAL( var_float2.template get<long int>(MPFR_RNDN), -5l );
+    BOOST_CHECK_EQUAL( var_float2.template get<unsigned long int>(MPFR_RNDN), 0ul );
     BOOST_CHECK(mpfr_cmp_d(var_float2(), -4.7f) == 0);
 
 
@@ -177,12 +205,16 @@ BOOST_AUTO_TEST_CASE(minimal_double_test)
     BOOST_CHECK_EQUAL( var_double1.template get<float>(MPFR_RNDN), -12.3f );
     BOOST_CHECK_EQUAL( var_double1.template get<double>(MPFR_RNDU), -12.3 );
     BOOST_CHECK_EQUAL( var_double1.template get<long double>(MPFR_RNDU), -12.3 );
+    BOOST_CHECK_EQUAL( var_double1.template get<long int>(MPFR_RNDU), -12l );
+    BOOST_CHECK_EQUAL( var_double1.template get<unsigned long int>(MPFR_RNDU), 0ul );
     BOOST_CHECK(mpfr_cmp_d(var_double1(), -12.3) == 0);
 
     mpfr_var<float> var_double2(47.5, MPFR_RNDN);
     BOOST_CHECK_EQUAL( var_double2.template get<float>(MPFR_RNDN), 47.5f );
     BOOST_CHECK_EQUAL( var_double2.template get<double>(MPFR_RNDD), 47.5 );
     BOOST_CHECK_EQUAL( var_double2.template get<long double>(MPFR_RNDD), 47.5 );
+    BOOST_CHECK_EQUAL( var_double2.template get<long int>(MPFR_RNDD), 47l );
+    BOOST_CHECK_EQUAL( var_double2.template get<unsigned long int>(MPFR_RNDD), 47ul );
     BOOST_CHECK(mpfr_cmp_d(var_double2(), 47.5) == 0);
 }
 
@@ -194,12 +226,16 @@ BOOST_AUTO_TEST_CASE(minimal_long_double_test)
     BOOST_CHECK_EQUAL( var_float1.template get<float>(MPFR_RNDN), 12.3f );
     BOOST_CHECK_EQUAL( var_float1.template get<double>(MPFR_RNDD), 12.3f );
     BOOST_CHECK_EQUAL( var_float1.template get<long double>(MPFR_RNDD), 12.3f );
+    BOOST_CHECK_EQUAL( var_float1.template get<long int>(MPFR_RNDD), 12l );
+    BOOST_CHECK_EQUAL( var_float1.template get<unsigned long int>(MPFR_RNDD), 12ul );
     BOOST_CHECK(mpfr_cmp_ld(var_float1(), 12.3f) == 0);
 
     mpfr_var<float> var_float2(-4.7L, MPFR_RNDU);
     BOOST_CHECK_EQUAL( var_float2.template get<float>(MPFR_RNDN), -4.7f );
     BOOST_CHECK_EQUAL( var_float2.template get<double>(MPFR_RNDU), -4.7f );
     BOOST_CHECK_EQUAL( var_float2.template get<long double>(MPFR_RNDU), -4.7f );
+    BOOST_CHECK_EQUAL( var_float2.template get<long int>(MPFR_RNDU), -4l );
+    BOOST_CHECK_EQUAL( var_float2.template get<unsigned long int>(MPFR_RNDU), 0ul );
     BOOST_CHECK(mpfr_cmp_ld(var_float2(), -4.7f) == 0);
 
 
@@ -209,12 +245,16 @@ BOOST_AUTO_TEST_CASE(minimal_long_double_test)
     BOOST_CHECK_EQUAL( var_double1.template get<float>(MPFR_RNDD), -12.3f );
     BOOST_CHECK_EQUAL( var_double1.template get<double>(MPFR_RNDU), -12.3 );
     BOOST_CHECK_EQUAL( var_double1.template get<long double>(MPFR_RNDU), -12.3 );
+    BOOST_CHECK_EQUAL( var_double1.template get<long int>(MPFR_RNDU), -12l );
+    BOOST_CHECK_EQUAL( var_double1.template get<unsigned long int>(MPFR_RNDU), 0ul );
     BOOST_CHECK(mpfr_cmp_ld(var_double1(), -12.3) == 0);
 
     mpfr_var<float> var_double2(47.5L, MPFR_RNDN);
     BOOST_CHECK_EQUAL( var_double2.template get<float>(MPFR_RNDN), 47.5f );
     BOOST_CHECK_EQUAL( var_double2.template get<double>(MPFR_RNDN), 47.5 );
     BOOST_CHECK_EQUAL( var_double2.template get<long double>(MPFR_RNDN), 47.5 );
+    BOOST_CHECK_EQUAL( var_double2.template get<long int>(MPFR_RNDN), 48l );
+    BOOST_CHECK_EQUAL( var_double2.template get<unsigned long int>(MPFR_RNDN), 48ul );
     BOOST_CHECK(mpfr_cmp_ld(var_double2(), 47.5) == 0);
 }
 
@@ -228,7 +268,7 @@ BOOST_AUTO_TEST_CASE(minimal_get_str_test)
     BOOST_CHECK_EQUAL( var_float1.get_str(MPFR_RNDU, p1788::io::hex_representation, 20, 7, p1788::io::lower_case_text_representation), "      0xc.4cccc00p+0" );
     BOOST_CHECK_EQUAL( var_float1.get_str(MPFR_RNDD, p1788::io::hex_representation, 3, 7, p1788::io::upper_case_text_representation), "0XC.4CCCC00P+0" );
 
-    BOOST_CHECK_EQUAL( var_float1.get_str(MPFR_RNDD, p1788::io::scientific_representation, 0, 0, p1788::io::upper_case_text_representation), "1.22999992E+01" );
+    BOOST_CHECK_EQUAL( var_float1.get_str(MPFR_RNDD, p1788::io::scientific_representation, 0, 0, p1788::io::upper_case_text_representation), "1.229999E+01" );
     BOOST_CHECK_EQUAL( var_float1.get_str(MPFR_RNDU, p1788::io::scientific_representation, 0, 3, p1788::io::lower_case_text_representation), "1.230e+01" );
     BOOST_CHECK_EQUAL( var_float1.get_str(MPFR_RNDU, p1788::io::scientific_representation, 20, 7, p1788::io::lower_case_text_representation), "       1.2300000e+01" );
     BOOST_CHECK_EQUAL( var_float1.get_str(MPFR_RNDD, p1788::io::scientific_representation, 3, 7, p1788::io::upper_case_text_representation), "1.2299999E+01" );
@@ -250,7 +290,7 @@ BOOST_AUTO_TEST_CASE(minimal_get_str_test)
     BOOST_CHECK_EQUAL( var_float2.get_str(MPFR_RNDU, p1788::io::hex_representation, 20, 7, p1788::io::lower_case_text_representation), "     -0x1.9999980p-4" );
     BOOST_CHECK_EQUAL( var_float2.get_str(MPFR_RNDD, p1788::io::hex_representation, 3, 7, p1788::io::upper_case_text_representation), "-0X1.9999980P-4" );
 
-    BOOST_CHECK_EQUAL( var_float2.get_str(MPFR_RNDD, p1788::io::scientific_representation, 0, 0, p1788::io::upper_case_text_representation), "-9.99999941E-02" );
+    BOOST_CHECK_EQUAL( var_float2.get_str(MPFR_RNDU, p1788::io::scientific_representation, 0, 0, p1788::io::upper_case_text_representation), "-9.999999E-02" );
     BOOST_CHECK_EQUAL( var_float2.get_str(MPFR_RNDU, p1788::io::scientific_representation, 0, 3, p1788::io::lower_case_text_representation), "-9.999e-02" );
     BOOST_CHECK_EQUAL( var_float2.get_str(MPFR_RNDU, p1788::io::scientific_representation, 20, 7, p1788::io::lower_case_text_representation), "      -9.9999994e-02" );
     BOOST_CHECK_EQUAL( var_float2.get_str(MPFR_RNDD, p1788::io::scientific_representation, 3, 7, p1788::io::upper_case_text_representation), "-9.9999995E-02" );
@@ -293,7 +333,7 @@ BOOST_AUTO_TEST_CASE(minimal_get_str_test)
     BOOST_CHECK_EQUAL( var_double1.get_str(MPFR_RNDU, p1788::io::hex_representation, 20, 7, p1788::io::lower_case_text_representation), "      0xc.4cccccdp+0" );
     BOOST_CHECK_EQUAL( var_double1.get_str(MPFR_RNDD, p1788::io::hex_representation, 3, 7, p1788::io::upper_case_text_representation), "0XC.4CCCCCCP+0" );
 
-    BOOST_CHECK_EQUAL( var_double1.get_str(MPFR_RNDD, p1788::io::scientific_representation, 0, 0, p1788::io::upper_case_text_representation), "1.23E+01" );
+    BOOST_CHECK_EQUAL( var_double1.get_str(MPFR_RNDD, p1788::io::scientific_representation, 0, 0, p1788::io::upper_case_text_representation), "1.230000E+01" );
     BOOST_CHECK_EQUAL( var_double1.get_str(MPFR_RNDU, p1788::io::scientific_representation, 0, 3, p1788::io::lower_case_text_representation), "1.231e+01" );
     BOOST_CHECK_EQUAL( var_double1.get_str(MPFR_RNDU, p1788::io::scientific_representation, 20, 7, p1788::io::lower_case_text_representation), "       1.2300001e+01" );
     BOOST_CHECK_EQUAL( var_double1.get_str(MPFR_RNDD, p1788::io::scientific_representation, 3, 7, p1788::io::upper_case_text_representation), "1.2300000E+01" );
@@ -315,7 +355,7 @@ BOOST_AUTO_TEST_CASE(minimal_get_str_test)
     BOOST_CHECK_EQUAL( var_double2.get_str(MPFR_RNDN, p1788::io::hex_representation, 20, 7, p1788::io::lower_case_text_representation), "     -0x1.999999ap-4" );
     BOOST_CHECK_EQUAL( var_double2.get_str(MPFR_RNDD, p1788::io::hex_representation, 3, 7, p1788::io::upper_case_text_representation), "-0X1.999999AP-4" );
 
-    BOOST_CHECK_EQUAL( var_double2.get_str(MPFR_RNDD, p1788::io::scientific_representation, 0, 0, p1788::io::upper_case_text_representation), "-1.0000000000000001E-01" );
+    BOOST_CHECK_EQUAL( var_double2.get_str(MPFR_RNDD, p1788::io::scientific_representation, 0, 0, p1788::io::upper_case_text_representation), "-1.000001E-01" );
     BOOST_CHECK_EQUAL( var_double2.get_str(MPFR_RNDU, p1788::io::scientific_representation, 0, 3, p1788::io::lower_case_text_representation), "-1.000e-01" );
     BOOST_CHECK_EQUAL( var_double2.get_str(MPFR_RNDU, p1788::io::scientific_representation, 20, 7, p1788::io::lower_case_text_representation), "      -1.0000000e-01" );
     BOOST_CHECK_EQUAL( var_double2.get_str(MPFR_RNDD, p1788::io::scientific_representation, 3, 7, p1788::io::upper_case_text_representation), "-1.0000001E-01" );

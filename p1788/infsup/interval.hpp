@@ -79,23 +79,23 @@ public:
 
     // Implementation specific; Empty interval
     interval()
-        : base_interval_type(Flavor<T>::constructor_infsup())
+        : base_interval_type(Flavor<T>::constructor())
     { }
 
     // Required see numsToInterval(l,u) P1788/D8.1 Sect. 12.12.8.
     interval(T lower, T upper)
-        : base_interval_type(Flavor<T>::constructor_infsup(lower, upper))
+        : base_interval_type(Flavor<T>::constructor(lower, upper))
     { }
 
     // Implementation specific, Singleton
     explicit interval(T point)
-        : base_interval_type(Flavor<T>::constructor_infsup(point))
+        : base_interval_type(Flavor<T>::constructor(point))
     { }
 
     // Required for 754-conforming, see numsToInterval(l,u) formatOf P1788/D8.1 Sect. 12.12.8.
     template<typename L, typename U>
     interval(L lower, U upper)
-        : base_interval_type(Flavor<T>::constructor_infsup(lower, upper))
+        : base_interval_type(Flavor<T>::constructor(lower, upper))
     { }
 
 //TODO necessary?
@@ -113,7 +113,7 @@ public:
 
     // Required see textToInterval(l,u) P1788/D8.1 Sect. 12.12.8.
     explicit interval(std::string const& str)
-        : base_interval_type(Flavor<T>::constructor_infsup(str))
+        : base_interval_type(Flavor<T>::constructor(str))
     { }
 
 // Todo necessary? initializer list
@@ -123,13 +123,13 @@ public:
 
     // Implementation specific Copy-constructor
     interval(base_interval_type const& other)  //< Copy-constructor
-        : base_interval_type(Flavor<T>::constructor_infsup(other.rep_))
+        : base_interval_type(Flavor<T>::constructor(other.rep_))
     { }
 
     //Todo P1788/D8.1 Sect. ? Copy-constructor/Conversion
     template<typename T_>
     explicit interval(base_interval<T_, Flavor, typename Flavor<T_>::representation, interval<T_, Flavor>> const& other)
-        : base_interval_type(Flavor<T>::constructor_infsup(other.rep_))
+        : base_interval_type(Flavor<T>::constructor(other.rep_))
     { }
 
 

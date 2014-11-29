@@ -113,23 +113,23 @@ public:
 
     // Implementation specific; Empty interval
     decorated_interval()
-        : base_interval_type(Flavor<T>::constructor_infsup_dec())
+        : base_interval_type(Flavor<T>::constructor_dec())
     { }
 
     // Required see numsToInterval(l,u) P1788/D8.1 Sect. 12.12.8.
     decorated_interval(T lower, T upper)
-        : base_interval_type(Flavor<T>::constructor_infsup_dec(lower, upper))
+        : base_interval_type(Flavor<T>::constructor_dec(lower, upper))
     { }
 
     // Implementation specific, Singleton
     explicit decorated_interval(T point)
-        : base_interval_type(Flavor<T>::constructor_infsup_dec(point))
+        : base_interval_type(Flavor<T>::constructor_dec(point))
     { }
 
     // Required for 754-conforming, see numsToInterval(l,u) formatOf P1788/D8.1 Sect. 12.12.8.
     template<typename L, typename U>
     decorated_interval(L lower, U upper)
-        : base_interval_type(Flavor<T>::constructor_infsup_dec(lower, upper))
+        : base_interval_type(Flavor<T>::constructor_dec(lower, upper))
     {
         //TODO static_assert hier oder im Flavor?
         //TODO int-werte landen hier und funktionieren somit nicht
@@ -153,7 +153,7 @@ public:
 
     // Required see textToInterval(l,u) P1788/D8.1 Sect. 12.12.8.
     explicit decorated_interval(std::string const& str)
-        : base_interval_type(Flavor<T>::constructor_infsup_dec(str))
+        : base_interval_type(Flavor<T>::constructor_dec(str))
     { }
 
 // Todo necessary? initializer list
@@ -163,13 +163,13 @@ public:
 
     // Implementation specific Copy-constructor
     decorated_interval(base_interval_type const& other)  //< Copy-constructor
-        : base_interval_type(Flavor<T>::constructor_infsup_dec(other.rep_))
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
     { }
 
     //Todo P1788/D8.1 Sect. ? Copy-constructor/Conversion
     template<typename T_>
     explicit decorated_interval(base_interval<T_, Flavor, typename Flavor<T_>::representation_dec, decorated_interval<T_, Flavor>> const& other)
-        : base_interval_type(Flavor<T>::constructor_infsup_dec(other.rep_))
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
     { }
 
 // -----------------------------------------------------------------------------

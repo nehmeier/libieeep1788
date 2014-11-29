@@ -72,6 +72,12 @@ BOOST_AUTO_TEST_CASE(minimal_representation_test)
     stream << p1788::io::uncertain_form;
     BOOST_CHECK_EQUAL( stream.iword(p1788::io::representation_manip_id), p1788::io::uncertain_representation );
 
+    stream << p1788::io::uncertain_up_form;
+    BOOST_CHECK_EQUAL( stream.iword(p1788::io::representation_manip_id), p1788::io::uncertain_up_representation );
+
+    stream << p1788::io::uncertain_down_form;
+    BOOST_CHECK_EQUAL( stream.iword(p1788::io::representation_manip_id), p1788::io::uncertain_down_representation );
+
     stream << p1788::io::inf_sup_form;
     BOOST_CHECK_EQUAL( stream.iword(p1788::io::representation_manip_id), p1788::io::inf_sup_representation );
 }
@@ -155,6 +161,20 @@ BOOST_AUTO_TEST_CASE(minimal_punctuation_test)
     stream << p1788::io::punctuation;
     BOOST_CHECK_EQUAL( stream.iword(p1788::io::punctuation_manip_id), p1788::io::show_punctuation );
 }
+
+BOOST_AUTO_TEST_CASE(minimal_uncertain_exponent_test)
+{
+    std::stringstream stream;
+
+    BOOST_CHECK_EQUAL( stream.iword(p1788::io::uncertain_exponent_manip_id), p1788::io::show_no_uncertain_exponent );
+
+    stream << p1788::io::uncertain_exponent;
+    BOOST_CHECK_EQUAL( stream.iword(p1788::io::uncertain_exponent_manip_id), p1788::io::show_uncertain_exponent );
+
+    stream << p1788::io::no_uncertain_exponent;
+    BOOST_CHECK_EQUAL( stream.iword(p1788::io::uncertain_exponent_manip_id), p1788::io::show_no_uncertain_exponent );
+}
+
 
 BOOST_AUTO_TEST_CASE(minimal_decoration_test)
 {

@@ -223,10 +223,6 @@ std::basic_ostream<CharT, Traits>& operator<<(
 }
 
 
-
-// TODO overlapping relation, finish implementation, functions ...
-
-
 } // namespace overlapping
 
 } // namespace p1788

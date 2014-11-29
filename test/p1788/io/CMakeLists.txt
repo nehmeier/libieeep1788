@@ -28,39 +28,33 @@ if(Boost_FOUND)
 
     include_directories(${Boost_INCLUDE_DIRS})
 
-    if(MPFR_FOUND)
+    if(CODE_COVERAGE)
 
-        if(CODE_COVERAGE)
-
-        endif(CODE_COVERAGE)
+    endif(CODE_COVERAGE)
 
 
-        if(NOT Boost_USE_STATIC_LIBS)
-            add_definitions(-DBOOST_TEST_DYN_LINK)
-        endif(NOT Boost_USE_STATIC_LIBS)
+    if(NOT Boost_USE_STATIC_LIBS)
+        add_definitions(-DBOOST_TEST_DYN_LINK)
+    endif(NOT Boost_USE_STATIC_LIBS)
 
-        # relevant test files of this directory
-        set(P1788_TEST_FILES
-            test_io_manip.cpp
-           )
+    # relevant test files of this directory
+    set(P1788_TEST_FILES
+        test_io_manip.cpp
+       )
 
-        # relative path of this directory
-        string(REGEX REPLACE "${PROJECT_SOURCE_DIR}/" "" P1788_RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+    # relative path of this directory
+    string(REGEX REPLACE "${PROJECT_SOURCE_DIR}/" "" P1788_RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
-        # prefix for custom target
-        string(REGEX REPLACE "/" "_" P1788_TEST_TARGET_PREFIX ${P1788_RELATIVE_PATH})
+    # prefix for custom target
+    string(REGEX REPLACE "/" "_" P1788_TEST_TARGET_PREFIX ${P1788_RELATIVE_PATH})
 
-        # add executable/test and link with mpfr and boost
-        foreach(P1788_TEST ${P1788_TEST_FILES})
-            string(REGEX REPLACE ".cpp" "" P1788_TEST_TARGET ${P1788_TEST})
-            add_executable("${P1788_TEST_TARGET_PREFIX}_${P1788_TEST_TARGET}" ${P1788_TEST})
-            target_link_libraries("${P1788_TEST_TARGET_PREFIX}_${P1788_TEST_TARGET}" ${MPFR_LIBRARIES} ${Boost_LIBRARIES})
-            add_test("${P1788_TEST_TARGET_PREFIX}_${P1788_TEST_TARGET}" "${P1788_TEST_TARGET_PREFIX}_${P1788_TEST_TARGET}")
-        endforeach(P1788_TEST ${P1788_TEST_FILES})
-
-    else(MPFR_FOUND)
-        message(WARNING "Unable to compile tests, requires MPFR!")
-    endif(MPFR_FOUND)
+    # add executable/test and link with mpfr and boost
+    foreach(P1788_TEST ${P1788_TEST_FILES})
+        string(REGEX REPLACE ".cpp" "" P1788_TEST_TARGET ${P1788_TEST})
+        add_executable("${P1788_TEST_TARGET_PREFIX}_${P1788_TEST_TARGET}" ${P1788_TEST})
+        target_link_libraries("${P1788_TEST_TARGET_PREFIX}_${P1788_TEST_TARGET}" ${Boost_LIBRARIES})
+        add_test("${P1788_TEST_TARGET_PREFIX}_${P1788_TEST_TARGET}" "${P1788_TEST_TARGET_PREFIX}_${P1788_TEST_TARGET}")
+    endforeach(P1788_TEST ${P1788_TEST_FILES})
 
 else(Boost_FOUND)
     message(WARNING "Unable to compile tests, requires Boost!")

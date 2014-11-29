@@ -65,12 +65,12 @@ int main()
 using namespace p1788::infsup;
 
 
-//    ia_bisect(f1, I<double>(-3,5), 0.0001);
-//    std::cout << std::endl;
-//    ia_bisect(f2, I<double>(-3,5), 0.0001);
-//    std::cout << std::endl;
-    int n = 1;
-    ia_bisect(f, I<double>(1.0,6.0), 0.2, n);
+////    ia_bisect(f1, I<double>(-3,5), 0.0001);
+////    std::cout << std::endl;
+////    ia_bisect(f2, I<double>(-3,5), 0.0001);
+////    std::cout << std::endl;
+//    int n = 1;
+//    ia_bisect(f, I<double>(1.0,6.0), 0.2, n);
 
     return 0;
 }

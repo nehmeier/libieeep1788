@@ -309,17 +309,190 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_test)
 {
     p1788::exception::clear();
 
-    BOOST_CHECK( false );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Nai  ]") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Nai  ]_ill") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Nai  ]_trv") ) );
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Empty  ]") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Empty  ]_trv") ) );
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[ Empty  ]_ill") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[  ]") ) );
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  ]_com") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[  ]_trv") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("[,]"), REP<double>(-INF_D,INF_D) );
+    BOOST_CHECK_EQUAL( F<double>::constructor("[,]_trv"), REP<double>(-INF_D,INF_D));
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[,]_com") ) );
+    BOOST_CHECK_EQUAL( F<double>::constructor("[ entire  ]"), REP<double>(-INF_D,INF_D));
+    BOOST_CHECK_EQUAL( F<double>::constructor("[ ENTIRE ]_dac"), REP<double>(-INF_D,INF_D));
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[   Entire ]_com") ) );
+    BOOST_CHECK_EQUAL( F<double>::constructor("[ -inf , INF  ]"), REP<double>(-INF_D,INF_D));
+    BOOST_CHECK_EQUAL( F<double>::constructor("[ -inf, INF ]_def"), REP<double>(-INF_D,INF_D));
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[ -inf ,  INF ]_com") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("[-1.0,1.0]"), REP<double>(-1.0,1.0));
+    BOOST_CHECK_EQUAL( F<double>::constructor("[  -1.0  ,  1.0  ]_com"), REP<double>(-1.0,1.0));
+    BOOST_CHECK_EQUAL( F<double>::constructor("[  -1.0  , 1.0]_trv"), REP<double>(-1.0,1.0));
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  -1.0  , 1.0]_ill") ) );
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  -1.0  , 1.0]_fooo") ) );
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  -1.0  , 1.0]_da c") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("[-1,]"), REP<double>(-1.0,INF_D));
+    BOOST_CHECK_EQUAL( F<double>::constructor("[-1.0, +inf]_def"), REP<double>(-1.0,INF_D));
+    BOOST_CHECK_EQUAL( F<double>::constructor("[-1.0, +infinity]_def"), REP<double>(-1.0,INF_D));
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-1.0,]_com") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("[-Inf, 1.000 ]"), REP<double>(-INF_D,1.0));
+    BOOST_CHECK_EQUAL( F<double>::constructor("[-Infinity, 1.000 ]_trv"), REP<double>(-INF_D,1.0));
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[-Inf, 1.000 ]_ill") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("[1.0E+400 ]_com"), REP<double>(MAX_D,INF_D));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("[ -4/2, 10/5 ]_com"), REP<double>(-2.0,2.0));
+    BOOST_CHECK_EQUAL( F<double>::constructor("[ -1/10, 1/10 ]_com"), REP<double>(-0.1,0.1));
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ 1/-10, 1/10 ]_com") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-I  nf, 1.000 ]") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-Inf, 1.0  00 ]") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-Inf ]") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[Inf , INF]") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ foo ]") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?"), REP<double>(-0.05,0.05));
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?u_trv"), REP<double>(0.0,0.1));
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?d_dac"), REP<double>(-0.1,0.0));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?"), REP<double>(std::stod("0x1.3999999999999p+1"),std::stod("0x1.4666666666667p+1")));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?u"), REP<double>(2.5,2.6));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?d_trv"), REP<double>(2.4,2.5));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.000?5"), REP<double>(-0.005,0.005));
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.000?5u_def"), REP<double>(0.0,0.005));
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.000?5d"), REP<double>(-0.005,0.0));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5"), REP<double>(std::stod("0x1.3f5c28f5c28f5p+1"),std::stod("0x1.40a3d70a3d70bp+1")));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5u"), REP<double>(2.5,std::stod("0x1.40a3d70a3d70bp+1")));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5d"), REP<double>(std::stod("0x1.3f5c28f5c28f5p+1"),2.5));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.0??_dac"), REP<double>(-INF_D,INF_D));
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.0??u_trv"), REP<double>(0.0,INF_D));
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.0??d"), REP<double>(-INF_D,0.0));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.5??"), REP<double>(-INF_D,INF_D));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.5??u_def"), REP<double>(2.5,INF_D));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.5??d_dac"), REP<double>(-INF_D,2.5));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5e+27"), REP<double>(std::stod("0x1.01fa19a08fe7ep+91"),std::stod("0x1.0302cc4352684p+91")));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5ue4_def"), REP<double>(std::stod("0x1.86ap+14"),std::stod("0x1.8768000000001p+14")));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5de-5"), REP<double>(std::stod("0x1.a2976f1cee4d3p-16"),std::stod("0x1.a36e2eb1c432ep-16")));
+
+    std::string rep = "10?18";
+    rep += std::string(308, '0');
+    rep += "_com";
+    BOOST_CHECK_EQUAL( F<double>::constructor(rep), REP<double>(-INF_D,INF_D));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("10?3_com"), REP<double>(7.0,13.0));
+    BOOST_CHECK_EQUAL( F<double>::constructor("10?3e380_com"), REP<double>(MAX_D,INF_D));
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("0.0??_com") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("0.0??u_ill") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("0.0??d_com") ) );
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
-
 }
 
 BOOST_AUTO_TEST_CASE(minimal_string_constructor_dec_test)
 {
     p1788::exception::clear();
 
-    BOOST_CHECK( false );
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ Nai  ]") ) );
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ Nai  ]_ill") ) );
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ Nai  ]_trv") ) );
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor_dec("[ Empty  ]") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor_dec("[ Empty  ]_trv") ) );
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[ Empty  ]_ill") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor_dec("[  ]") ) );
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  ]_com") ) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor_dec("[  ]_trv") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[,]"), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::dac) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[,]_trv"), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::trv));
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[,]_com") ) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ entire  ]"), F<double>::entire_dec());
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ ENTIRE ]_dac"), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::dac));
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[   Entire ]_com") ) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ -inf , INF  ]"), F<double>::entire_dec());
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ -inf, INF ]_def"), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::def));
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[ -inf ,  INF ]_com") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-1.0,1.0]"), REP_DEC<double>(REP<double>(-1.0,1.0),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[  -1.0  ,  1.0  ]_com"), REP_DEC<double>(REP<double>(-1.0,1.0),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[  -1.0  , 1.0]_trv"), REP_DEC<double>(REP<double>(-1.0,1.0),DEC::trv));
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  -1.0  , 1.0]_ill") ) );
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  -1.0  , 1.0]_fooo") ) );
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  -1.0  , 1.0]_da c") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-1,]"), REP_DEC<double>(REP<double>(-1.0,INF_D),DEC::dac));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-1.0, +inf]_def"), REP_DEC<double>(REP<double>(-1.0,INF_D),DEC::def));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-1.0, +infinity]_def"), REP_DEC<double>(REP<double>(-1.0,INF_D),DEC::def));
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-1.0,]_com") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-Inf, 1.000 ]"), REP_DEC<double>(REP<double>(-INF_D,1.0),DEC::dac));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-Infinity, 1.000 ]_trv"), REP_DEC<double>(REP<double>(-INF_D,1.0),DEC::trv));
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[-Inf, 1.000 ]_ill") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[1.0E+400 ]_com"), REP_DEC<double>(REP<double>(MAX_D,INF_D),DEC::dac));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ -4/2, 10/5 ]_com"), REP_DEC<double>(REP<double>(-2.0,2.0),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ -1/10, 1/10 ]_com"), REP_DEC<double>(REP<double>(-0.1,0.1),DEC::com));
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ 1/-10, 1/10 ]_com") ) );
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-I  nf, 1.000 ]") ) );
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-Inf, 1.0  00 ]") ) );
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-Inf ]") ) );
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[Inf , INF]") ) );
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ foo ]") ) );
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?"), REP_DEC<double>(REP<double>(-0.05,0.05),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?u_trv"), REP_DEC<double>(REP<double>(0.0,0.1),DEC::trv));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?d_dac"), REP_DEC<double>(REP<double>(-0.1,0.0),DEC::dac));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?"), REP_DEC<double>(REP<double>(std::stod("0x1.3999999999999p+1"),std::stod("0x1.4666666666667p+1")),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?u"), REP_DEC<double>(REP<double>(2.5,2.6),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?d_trv"), REP_DEC<double>(REP<double>(2.4,2.5),DEC::trv));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.000?5"), REP_DEC<double>(REP<double>(-0.005,0.005),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.000?5u_def"), REP_DEC<double>(REP<double>(0.0,0.005),DEC::def));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.000?5d"), REP_DEC<double>(REP<double>(-0.005,0.0),DEC::com));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5"), REP_DEC<double>(REP<double>(std::stod("0x1.3f5c28f5c28f5p+1"),std::stod("0x1.40a3d70a3d70bp+1")),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5u"), REP_DEC<double>(REP<double>(2.5,std::stod("0x1.40a3d70a3d70bp+1")),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5d"), REP_DEC<double>(REP<double>(std::stod("0x1.3f5c28f5c28f5p+1"),2.5),DEC::com));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0??_dac"), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::dac));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0??u_trv"), REP_DEC<double>(REP<double>(0.0,INF_D),DEC::trv));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0??d"), REP_DEC<double>(REP<double>(-INF_D,0.0),DEC::dac));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5??"), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::dac));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5??u_def"), REP_DEC<double>(REP<double>(2.5,INF_D),DEC::def));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5??d_dac"), REP_DEC<double>(REP<double>(-INF_D,2.5),DEC::dac));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5e+27"), REP_DEC<double>(REP<double>(std::stod("0x1.01fa19a08fe7ep+91"),std::stod("0x1.0302cc4352684p+91")),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5ue4_def"), REP_DEC<double>(REP<double>(std::stod("0x1.86ap+14"),std::stod("0x1.8768000000001p+14")),DEC::def));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5de-5"), REP_DEC<double>(REP<double>(std::stod("0x1.a2976f1cee4d3p-16"),std::stod("0x1.a36e2eb1c432ep-16")),DEC::com));
+
+    std::string rep = "10?18";
+    rep += std::string(308, '0');
+    rep += "_com";
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(rep), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::dac));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("10?3_com"), REP_DEC<double>(REP<double>(7.0,13.0),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("10?3e380_com"), REP_DEC<double>(REP<double>(MAX_D,INF_D),DEC::dac));
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??_com") ) );
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??u_ill") ) );
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??d_com") ) );
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 

@@ -23,9 +23,28 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_INFSUP_COMPRESSED_INTERVAL_HPP
-#define LIBIEEEP1788_P1788_INFSUP_COMPRESSED_INTERVAL_HPP
+#include <iostream>
 
-//TODO Compressed arithmetic, see P1788/D7.0 Sect. 10.11
+// libieeep1788 main header
+#include "p1788/p1788.hpp"
 
-#endif // LIBIEEEP1788_P1788_INFSUP_COMPRESSED_INTERVAL_HPP
+
+// Template type alias to define a generic bare infsup interval with a setbased
+// infsup flavor based on mpfr supporting IEEE754 bound types.
+template<typename T>
+using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
+
+int main (void)
+{
+    // Instanziation of intervals
+    I<double> a(-1.0,5.0);
+    I<double> b(1.0,2.0);
+
+    // Assignment and arithmetic operations
+    I<double> c = a + b;
+
+    // Writing result onto the output stream
+    std::cout << c << std::endl;
+
+    return 0;
+}

@@ -25,6 +25,9 @@
 
 #include <iostream>
 #include <cctype>
+#include <ctype.h>
+#include <string>
+#include <algorithm>
 
 namespace p1788
 {
@@ -34,14 +37,29 @@ namespace util
 
 // Remove whitespace character from input stream
 template<typename CharT, typename Traits>
-inline void remove_ws(std::basic_istream<CharT, Traits>& is)
+inline std::string remove_ws(std::basic_istream<CharT, Traits>& is)
 {
+    std::string str;
+
     while (is && std::isspace(is.peek()))
     {
-        is.get();
+        str += is.get();
     }
+
+    return str;
 }
 
+
+// transform all ASCII characters to lowercase
+inline void ascii_to_lower(std::string& s)
+{
+    std::transform(s.begin(), s.end(), s.begin(),
+                   [](int const c)
+    {
+        return (c >= 0 && c < 128 ) ? std::tolower(c) : c;
+    }
+                  );
+}
 
 } // namespace util
 

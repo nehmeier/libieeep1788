@@ -23,32 +23,38 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-if(MPFR_FOUND)
+if(GMP_FOUND)
 
-    # relevant example files of this directory
-    set(P1788_EXAMPLE_FILES
-        basic.cpp
-        boolFunc.cpp
-        elementaryFunc.cpp
-        eval_example.cpp
-        ia_newton.cpp
-        ia_bisection.cpp
-        fp_tool.cpp
-       )
+    if(MPFR_FOUND)
 
-    # relative path of this directory
-    string(REGEX REPLACE "${PROJECT_SOURCE_DIR}/" "" P1788_RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+        # relevant example files of this directory
+        set(P1788_EXAMPLE_FILES
+            helloworld.cpp
+            boolFunc.cpp
+            elementaryFunc.cpp
+            eval_example.cpp
+            ia_newton.cpp
+            ia_bisection.cpp
+            fp_tool.cpp
+           )
 
-    # prefix for custom target
-    string(REGEX REPLACE "/" "_" P1788_EXAMPLE_TARGET_PREFIX ${P1788_RELATIVE_PATH})
+        # relative path of this directory
+        string(REGEX REPLACE "${PROJECT_SOURCE_DIR}/" "" P1788_RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
-    # add executable and link with mpfr
-    foreach(P1788_EXAMPLE ${P1788_EXAMPLE_FILES})
-        string(REGEX REPLACE ".cpp" "" P1788_EXAMPLE_TARGET ${P1788_EXAMPLE})
-        add_executable("${P1788_EXAMPLE_TARGET_PREFIX}_${P1788_EXAMPLE_TARGET}" ${P1788_EXAMPLE})
-        target_link_libraries("${P1788_EXAMPLE_TARGET_PREFIX}_${P1788_EXAMPLE_TARGET}" ${MPFR_LIBRARIES})
-    endforeach()
+        # prefix for custom target
+        string(REGEX REPLACE "/" "_" P1788_EXAMPLE_TARGET_PREFIX ${P1788_RELATIVE_PATH})
 
-else(MPFR_FOUND)
-    message(WARNING "Unable to compile examples, requires MPFR!")
-endif(MPFR_FOUND)
+        # add executable and link with mpfr
+        foreach(P1788_EXAMPLE ${P1788_EXAMPLE_FILES})
+            string(REGEX REPLACE ".cpp" "" P1788_EXAMPLE_TARGET ${P1788_EXAMPLE})
+            add_executable("${P1788_EXAMPLE_TARGET_PREFIX}_${P1788_EXAMPLE_TARGET}" ${P1788_EXAMPLE})
+            target_link_libraries("${P1788_EXAMPLE_TARGET_PREFIX}_${P1788_EXAMPLE_TARGET}" ${MPFR_LIBRARIES} ${GMP_LIBRARIES})
+        endforeach()
+
+    else(MPFR_FOUND)
+        message(WARNING "Unable to compile examples, requires MPFR!")
+    endif(MPFR_FOUND)
+
+else(GMP_FOUND)
+    message(WARNING "Unable to compile tests, requires GMP!")
+endif(GMP_FOUND)

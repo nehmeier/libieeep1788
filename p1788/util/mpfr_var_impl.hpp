@@ -70,6 +70,25 @@ public:
     }
 };
 
+// long int
+template<> class mpfr_get_trait<long int>
+{
+public:
+    static long int apply(mpfr_t& mp, mpfr_rnd_t rnd)
+    {
+        return mpfr_get_si(mp, rnd);
+    }
+};
+
+// unsigned long int
+template<> class mpfr_get_trait<unsigned long int>
+{
+public:
+    static unsigned long int apply(mpfr_t& mp, mpfr_rnd_t rnd)
+    {
+        return mpfr_get_ui(mp, rnd);
+    }
+};
 
 
 // Trait to apply subnormalization if necessary
@@ -214,30 +233,120 @@ std::string mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::get_str(mpfr_rnd_t rnd,
         p1788::io::text_representation_flags text_rep)
 {
     std::string format = width > 0 ? "%" + std::to_string(width) : "%";
-    format += precision > 0 ? "." + std::to_string(precision) : "";
-    format += "R*";
 
+    size_t req_string_width =  0;
 
     switch (rep)
     {
     case p1788::io::decimal_representation:
+        format += precision > 0 ? "." + std::to_string(precision) : ".6";   // default precision is 6
+        format += "R*";
         format += text_rep == p1788::io::upper_case_text_representation ? "F" : "f";
+
+        {
+            // Compute  upper bound for required integer digits
+            mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_> req_digits;
+            mpfr_abs(req_digits(), var_, MPFR_RNDU);
+            mpfr_log10(req_digits(), req_digits(), MPFR_RNDU);
+
+            req_string_width = 1                                                             // for the sign
+                               + req_digits.template get<unsigned long int>(MPFR_RNDD) + 1   // for the digits
+                               + 3                                                           // for dot
+                               + precision > 0 ? precision : 6;                              // for the digits
+
+            if (width > req_string_width)
+                req_string_width = width;
+        }
         break;
     case p1788::io::scientific_representation:
+        format += precision > 0 ? "." + std::to_string(precision) : ".6";   // default precision is 6
+        format += "R*";
         format += text_rep == p1788::io::upper_case_text_representation ? "E" : "e";
+        {
+            // Compute  upper bound of required exponent digits
+            mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_> req_exp(std::max(-EMIN_, EMAX_) + 1, MPFR_RNDU);
+            mpfr_div_d(req_exp(), req_exp(), 3.0, MPFR_RNDU);     // 1/3 is an upper bound for log10(2)
+            mpfr_log10(req_exp(), req_exp(), MPFR_RNDU);
+
+            req_string_width = 3                                                            // for the pattern "-1."
+                               + precision > 0 ? precision : 6                              // for the digits
+                               + 2                                                          // for the pattern "E+"
+                               + req_exp.template get<unsigned long int>(MPFR_RNDD) + 1;    // for exponent digits
+
+            if (width > req_string_width)
+                req_string_width = width;
+        }
         break;
     case p1788::io::hex_representation:
+        format += precision > 0 ? "." + std::to_string(precision) : "";     // no precision prints sufficient digits for an exact rep
+        format += "R*";
         format += text_rep == p1788::io::upper_case_text_representation ? "A" : "a";
+        {
+            // Compute  upper bound of required hex digits
+            mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_> req_prec(PREC_, MPFR_RNDU);
+            mpfr_div_d(req_prec(), req_prec(), 4.0, MPFR_RNDU);     // 4 mantissa bits per hex digit
+
+            // Compute  upper bound of required exponent digits
+            mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_> req_exp(std::max(-EMIN_, EMAX_) + 1, MPFR_RNDU);
+            mpfr_div_d(req_exp(), req_exp(), 3.0, MPFR_RNDU);     // 1/3 is an upper bound for log10(2)
+            mpfr_log10(req_exp(), req_exp(), MPFR_RNDU);
+
+            req_string_width = 5                                                            // for the pattern "-0X1."
+                               + req_prec.template get<unsigned long int>(MPFR_RNDU) + 1    // for the hex digits
+                               + 2                                                          // for the pattern "P+"
+                               + req_exp.template get<unsigned long int>(MPFR_RNDD) + 1;    // for exponent digits
+
+            if (width > req_string_width)
+                req_string_width = width;
+        }
         break;
-    default:
+    default:    // decimal_scientific
+        format += precision > 0 ? "." + std::to_string(precision) : ".6";   // default precision is 6
+        format += "R*";
         format += text_rep == p1788::io::upper_case_text_representation ? "G" : "g";
+        {
+            // Compute  upper bound of required integer digits
+            mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_> req_digits;
+            mpfr_abs(req_digits(), var_, MPFR_RNDU);
+            mpfr_log10(req_digits(), req_digits(), MPFR_RNDU);
+
+            // Compute  upper bound of required exponent digits
+            mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_> req_exp(std::max(-EMIN_, EMAX_) + 1, MPFR_RNDU);
+            mpfr_div_d(req_exp(), req_exp(), 3.0, MPFR_RNDU);     // 1/3 is an upper bound for log10(2)
+            mpfr_log10(req_exp(), req_exp(), MPFR_RNDU);
+
+            req_string_width = 1                                                             // for the sign
+                               + req_digits.template get<unsigned long int>(MPFR_RNDD) + 1   // for the digits
+                               + 3                                                           // for dot
+                               + precision > 0 ? precision : 6                               // for the digits
+                               + 2                                                           // for the pattern "E+"
+                               + req_exp.template get<unsigned long int>(MPFR_RNDD) + 1;     // for exponent digits
+
+            if (width > req_string_width)
+                req_string_width = width;
+        }
         break;
     }
 
-    // TODO check?
-    char buffer [(-EMIN_> EMAX_? -EMIN_ : EMAX_) + 256];
-    mpfr_snprintf(buffer, (-EMIN_> EMAX_? -EMIN_ : EMAX_) + 256, format.c_str(), rnd, var_ );
-    return buffer;
+    // RAII for char array
+    struct string_buffer
+    {
+        char* data;
+
+        string_buffer(size_t n)
+        {
+            data = new char[n + 1];     // take "\0" into account
+        }
+
+        ~string_buffer()
+        {
+            delete[] data;
+        };
+    } buffer(req_string_width);
+
+    // generate string
+    mpfr_sprintf(buffer.data, format.c_str(), rnd, var_ );
+    return buffer.data;
 }
 
 // Reference to the underlying mpfr_t

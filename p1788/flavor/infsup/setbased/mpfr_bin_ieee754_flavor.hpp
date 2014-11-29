@@ -32,14 +32,20 @@
 #include <cmath>
 #include <iostream>
 #include <algorithm>
+#include <cctype>
+#include <sstream>
+#include <regex>
 
 #include "p1788/decoration/decoration.hpp"
 #include "p1788/exception/exception.hpp"
 #include "p1788/overlapping/overlapping.hpp"
+#include "p1788/util/io.hpp"
 #include "p1788/util/eft.hpp"
 #include "p1788/util/assert.hpp"
 #include "p1788/util/mpfr_var.hpp"
 #include "p1788/util/mixed_type_traits.hpp"
+
+#include "p1788/infsup/base_interval.hpp"
 
 
 //------------------------------------------------------------------------------

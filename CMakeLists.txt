@@ -92,11 +92,15 @@ endif()
 
 # find MPFR
 find_package(MPFR 3.1.2)
-
 if(MPFR_FOUND)
     include_directories(${MPFR_INCLUDE_DIRS})
 endif()
 
+#find GMP
+find_package(GMP 6.0.0)
+if(GMP_FOUND)
+    include_directories(${GMP_INCLUDE_DIRS})
+endif()
 
 
 # collect and install all header files

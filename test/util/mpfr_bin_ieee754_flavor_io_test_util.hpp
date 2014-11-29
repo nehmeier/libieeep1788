@@ -26,7 +26,9 @@
 #ifndef LIBIEEEP1788_TEST_UTIL_MPFR_BIN_IEEE754_FLAVOR_IO_TEST_UTIL_HPP
 #define LIBIEEEP1788_TEST_UTIL_MPFR_BIN_IEEE754_FLAVOR_IO_TEST_UTIL_HPP
 
+#include <ios>
 #include <iostream>
+#include <sstream>
 
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor.hpp"
 
@@ -34,38 +36,41 @@ namespace std
 {
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<float>::representation const& r)
     {
-        s << '<' << r.first << ',' << r.second << '>';
-        return s;
+        char buff[256];
+        std::sprintf(buff, "<%a,%a>", r.first, r.second);
+
+        return s << buff;
     }
 
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<double>::representation const& r)
     {
-        s << '<' << r.first << ',' << r.second << '>';
-        return s;
+        char buff[256];
+        std::sprintf(buff, "<%a,%a>", r.first, r.second);
+
+        return s << buff;
     }
 
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<long double>::representation const& r)
     {
-        s << '<' << r.first << ',' << r.second << '>';
-        return s;
+        char buff[256];
+        std::sprintf(buff, "<%La,%La>", r.first, r.second);
+
+        return s << buff;
     }
 
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<float>::representation_dec const& r)
     {
-        s << r.first << '_' << r.second;
-        return s;
+        return s << r.first << '_' << r.second;
     }
 
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<double>::representation_dec const& r)
     {
-        s << r.first << '_' << r.second;
-        return s;
+        return s << r.first << '_' << r.second;
     }
 
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<long double>::representation_dec const& r)
     {
-        s << r.first << '_' << r.second;
-        return s;
+        return s << r.first << '_' << r.second;
     }
 }
 

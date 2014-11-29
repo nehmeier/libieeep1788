@@ -159,10 +159,12 @@ std::basic_istream<CharT, Traits>& operator>>(
     std::basic_istream<CharT, Traits>& is,
     decoration& dec )
 {
+    std::string head = "";
+
     // remove whitespaces if necessary
     if (is.flags() & std::ios_base::skipws)
     {
-        p1788::util::remove_ws(is);
+        head = p1788::util::remove_ws(is);
     }
 
     if (is)
@@ -203,12 +205,7 @@ std::basic_istream<CharT, Traits>& operator>>(
 
             if (is)
             {
-                // transform all ASCII characters to lowercase
-                std::transform(s.begin(), s.end(), s.begin(),
-                               [](char const c)
-                {
-                    return (c >= 0 && c < 128 ) ? std::tolower(c) : c;
-                });
+                p1788::util::ascii_to_lower(s);
 
                 if (s == "ill")
                 {

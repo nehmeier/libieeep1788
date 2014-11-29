@@ -28,8 +28,6 @@
 
 #include <iostream>
 
-#include "p1788/util/io.hpp"
-
 namespace p1788
 {
 
@@ -112,7 +110,9 @@ int const representation_manip_id =  std::ios_base::xalloc();
 enum representation_flags
 {
     inf_sup_representation,
-    uncertain_representation
+    uncertain_representation,
+    uncertain_up_representation,
+    uncertain_down_representation
 };
 
 ///@name Output manipulators to choose between inf sup and uncertain representation.
@@ -143,6 +143,28 @@ std::basic_ostream<CharT, Traits>& uncertain_form(std::basic_ostream<CharT, Trai
     return os;
 }
 
+/// \brief Output manipulator to print intervals in uncertain upward form.
+/// \param os Output stream which should be manipulated
+/// \return Output stream \p os to support operator chaining
+///
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& uncertain_up_form(std::basic_ostream<CharT, Traits>& os)
+{
+    os.iword(representation_manip_id) = uncertain_up_representation;
+    return os;
+}
+
+
+/// \brief Output manipulator to print intervals in uncertain downward form.
+/// \param os Output stream which should be manipulated
+/// \return Output stream \p os to support operator chaining
+///
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& uncertain_down_form(std::basic_ostream<CharT, Traits>& os)
+{
+    os.iword(representation_manip_id) = uncertain_down_representation;
+    return os;
+}
 ///@}
 
 
@@ -242,7 +264,7 @@ std::basic_ostream<CharT, Traits>& operator<< (std::basic_ostream<CharT, Traits>
 
 
 
-// Unique ID for a manipulator to choose the preferred width of a number
+// Unique ID for a manipulator to choose the preferred precision of a number
 int const precision_manip_id =  std::ios_base::xalloc();
 
 ///@name Output manipulators to choose the precision of a number.
@@ -252,7 +274,7 @@ int const precision_manip_id =  std::ios_base::xalloc();
 ///@{
 
 /// \brief Class used as an output manipulator to set the precision of a number.
-/// \note This equals the precision format option of the common <c>printf</c> function excepted that
+/// \note This equals the precision format option of the common C99 <c>printf</c> function excepted that
 /// the value 0 means that no precision is specified.
 struct precision
 {
@@ -363,6 +385,49 @@ std::basic_ostream<CharT, Traits>& no_punctuation(std::basic_ostream<CharT, Trai
 
 
 ///@}
+
+
+
+// Unique ID for a manipulator to choose if an exponent is shown in uncertain mode
+int const uncertain_exponent_manip_id =  std::ios_base::xalloc();
+
+enum uncertain_exponent_flags
+{
+    show_no_uncertain_exponent,
+    show_uncertain_exponent
+};
+
+///@name Output manipulators to choose if an exponent is shown in uncertain mode.
+///
+/// Default manipulator is \link no_uncertain_exponent(std::basic_ostream<CharT, Traits>& os) no_uncertain_exponent \endlink .
+///
+///@{
+
+/// \brief Output manipulator to print no exponent in uncertain mode.
+/// \param os Output stream which should be manipulated
+/// \return Output stream \p os to support operator chaining
+///
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& no_uncertain_exponent(std::basic_ostream<CharT, Traits>& os)
+{
+    os.iword(uncertain_exponent_manip_id) = show_no_uncertain_exponent;
+    return os;
+}
+
+/// \brief Output manipulator to print anexponent in uncertain mode.
+/// \param os Output stream which should be manipulated
+/// \return Output stream \p os to support operator chaining
+///
+template<typename CharT, typename Traits>
+std::basic_ostream<CharT, Traits>& uncertain_exponent(std::basic_ostream<CharT, Traits>& os)
+{
+    os.iword(uncertain_exponent_manip_id) = show_uncertain_exponent;
+    return os;
+}
+
+
+///@}
+
 
 //-----------------------------------------------------------------------------
 //  Decoration specific

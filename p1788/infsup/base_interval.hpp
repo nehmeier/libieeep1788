@@ -29,6 +29,7 @@
 
 #include "p1788/infsup/forward_declaration.hpp"
 
+#include "p1788/overlapping/overlapping.hpp"
 
 
 
@@ -96,34 +97,33 @@ public:
     typedef RepType representation_type;
 
 
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-
-    // \brief Foo Bar baz
-    // Implementation specific
-    // \return T
-    //
-    //
-    T lower() const {
-        return Flavor<T>::method_lower(rep_);
-    }
-
-// Implementation specific
-    T upper() const {
-        return Flavor<T>::method_upper(rep_);
-    }
-
-// Implementation specific
-    T mid() const {
-        return Flavor<T>::method_mid(rep_);
-    }
-
-// Implementation specific
-    T rad() const {
-        return Flavor<T>::method_rad(rep_);
-    }
+//// -----------------------------------------------------------------------------
+//// Methods
+//// -----------------------------------------------------------------------------
+//
+//    // \brief Foo Bar baz
+//    // Implementation specific
+//    // \return T
+//    //
+//    //
+//    T lower() const {
+//        return Flavor<T>::method_lower(rep_);
+//    }
+//
+//// Implementation specific
+//    T upper() const {
+//        return Flavor<T>::method_upper(rep_);
+//    }
+//
+//// Implementation specific
+//    T mid() const {
+//        return Flavor<T>::method_mid(rep_);
+//    }
+//
+//// Implementation specific
+//    T rad() const {
+//        return Flavor<T>::method_rad(rep_);
+//    }
 
 
 // -----------------------------------------------------------------------------

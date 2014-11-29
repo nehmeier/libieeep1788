@@ -26,7 +26,7 @@
 #ifndef LIBIEEEP1788_P1788_UTIL_MPFR_VAR_HPP
 #define LIBIEEEP1788_P1788_UTIL_MPFR_VAR_HPP
 
-//#define MPFR_USE_INTMAX_T
+#define MPFR_USE_INTMAX_T
 
 #include <mpfr.h>
 #include <string>

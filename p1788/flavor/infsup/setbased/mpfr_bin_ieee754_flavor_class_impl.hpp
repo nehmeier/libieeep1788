@@ -150,20 +150,20 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::constructor(std::string const& str)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    representation rep;
+    std::istringstream s(str);
 
-    std::string tmp = str;
+    operator_input(s, rep);
 
-    tmp.erase(remove_if(tmp.begin(), tmp.end(), ::isspace), tmp.end());
-    std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::toupper);
+    char c;
+    while(s.get(c))
+        if (!std::isspace(c))
+        {
+            p1788::exception::signal_undefined_operation();
+            return empty();
+        }
 
-    if (tmp == "[ENTIRE]")
-        return entire();
-
-    if (tmp == "[EMPTY]")
-        return empty();
-
-    return representation(0.0, 0.0);
+    return rep;
 }
 
 // string literal decorated interval
@@ -171,20 +171,20 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::constructor_dec(std::string const& str)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    representation_dec rep;
+    std::istringstream s(str);
 
-    std::string tmp = str;
+    operator_input(s, rep);
 
-    tmp.erase(remove_if(tmp.begin(), tmp.end(), ::isspace), tmp.end());
-    std::transform(tmp.begin(), tmp.end(), tmp.begin(), ::toupper);
+    char c;
+    while(s.get(c))
+        if (!std::isspace(c))
+        {
+            p1788::exception::signal_undefined_operation();
+            return nai();
+        }
 
-    if (tmp == "[ENTIRE]")
-        return entire_dec();
-
-    if (tmp == "[EMPTY]")
-        return empty_dec();
-
-    return representation_dec(representation(0.0, 0.0), p1788::decoration::decoration::trv);
+    return rep;
 }
 
 
