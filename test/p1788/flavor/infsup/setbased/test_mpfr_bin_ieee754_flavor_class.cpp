@@ -305,58 +305,168 @@ BOOST_AUTO_TEST_CASE(minimal_infsup_constructor_dec_mixedtype_test)
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
+
+BOOST_AUTO_TEST_CASE(minimal_infsupdec_constructor_dec_test)
+{
+    p1788::exception::clear();
+
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(-1.0,1.0,DEC::trv), REP_DEC<double>(REP<double>(-1.0,1.0), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(-INF_D,1.0,DEC::def), REP_DEC<double>(REP<double>(-INF_D,1.0), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(-1.0,INF_D,DEC::trv), REP_DEC<double>(REP<double>(-1.0,INF_D), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(-INF_D,INF_D,DEC::dac), REP_DEC<double>(REP<double>(-INF_D,INF_D), DEC::dac) );
+
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
+
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(NAN_D,NAN_D,DEC::ill).first.first ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(NAN_D,NAN_D,DEC::ill).first.second ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(NAN_D,NAN_D,DEC::ill).second, DEC::ill );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(NAN_D,NAN_D,DEC::trv).first.first ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(NAN_D,NAN_D,DEC::trv).first.second ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(NAN_D,NAN_D,DEC::trv).second, DEC::ill );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(1.0,-1.0,DEC::def).first.first ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(1.0,-1.0,DEC::def).first.second ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(1.0,-1.0,DEC::def).second, DEC::ill );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(-INF_D,-INF_D,DEC::dac).first.first ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(-INF_D,-INF_D,DEC::dac).first.second ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(-INF_D,-INF_D,DEC::dac).second, DEC::ill );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(INF_D,INF_D,DEC::def).first.first ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(INF_D,INF_D,DEC::def).first.second ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(INF_D,INF_D,DEC::def).second, DEC::ill );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(-INF_D,INF_D,DEC::com).first.first ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::constructor_dec(-INF_D,INF_D,DEC::com).first.second ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(-INF_D,INF_D,DEC::com).second, DEC::ill );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    p1788::exception::set_throw_exception_cwd(p1788::exception::undefined_operation_bit);
+    BOOST_CHECK_THROW( F<double>::constructor_dec(INF_D,INF_D,DEC::trv), p1788::exception::undefined_operation_exception);
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_infsupdec_constructor_dec_mixedtype_test)
+{
+    p1788::exception::clear();
+
+    BOOST_CHECK_EQUAL( F<float>::constructor_dec(-1.0,1.0,DEC::trv), REP_DEC<float>(REP<float>(-1.0f,1.0f), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<float>::constructor_dec(-INF_D,1.0,DEC::def), REP_DEC<float>(REP<float>(-INF_F,1.0f), DEC::def) );
+    BOOST_CHECK_EQUAL( F<float>::constructor_dec(-1.0,INF_D,DEC::def), REP_DEC<float>(REP<float>(-1.0f,INF_F), DEC::def) );
+    BOOST_CHECK_EQUAL( F<float>::constructor_dec(-INF_D,INF_D,DEC::dac), REP_DEC<float>(REP<float>(-INF_F,INF_F), DEC::dac) );
+    BOOST_CHECK_EQUAL( F<float>::constructor_dec(-MAX_D,MAX_D,DEC::com), REP_DEC<float>(REP<float>(-INF_F,INF_F), DEC::dac) );
+    BOOST_CHECK_EQUAL( F<float>::constructor_dec(DNORM_MIN_D,DNORM_MIN_D,DEC::def), REP_DEC<float>(REP<float>(0.0f,DNORM_MIN_F), DEC::def) );
+    BOOST_CHECK_EQUAL( F<float>::constructor_dec(-DNORM_MIN_D,-DNORM_MIN_D,DEC::com), REP_DEC<float>(REP<float>(-DNORM_MIN_F,0.0f), DEC::com) );
+    BOOST_CHECK_EQUAL( F<float>::constructor_dec(-DNORM_MIN_D,DNORM_MIN_D,DEC::def), REP_DEC<float>(REP<float>(-DNORM_MIN_F,DNORM_MIN_F), DEC::def) );
+    BOOST_CHECK_EQUAL( F<float>::constructor_dec(std::stod("-0x1.99999A842549Ap+4"),std::stod("0X1.9999999999999P-4"),DEC::dac), REP_DEC<float>(REP<float>(std::stof("-0X1.99999CP+4"),std::stof("0X1.99999AP-4")), DEC::dac) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(std::stof("-0X1.99999CP+4"),std::stof("0X1.99999AP-4"),DEC::com), REP_DEC<double>(REP<double>(std::stod("-0X1.99999CP+4"),std::stod("0X1.99999AP-4")), DEC::com) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(-1.0f,1.0f,DEC::trv), REP_DEC<double>(REP<double>(-1.0,1.0), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(-INF_F,1.0f,DEC::def), REP_DEC<double>(REP<double>(-INF_D,1.0), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(-1.0f,INF_F,DEC::dac), REP_DEC<double>(REP<double>(-1.0,INF_D), DEC::dac) );
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec(-INF_F,INF_F,DEC::trv), REP_DEC<double>(REP<double>(-INF_D,INF_D), DEC::trv) );
+
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
+
+    BOOST_CHECK( F<float>::is_nai( F<float>::constructor_dec(-DNORM_MIN_D,-DNORM_MIN_F,DEC::trv) ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( F<float>::is_nai( F<float>::constructor_dec(1.0,-1.0,DEC::dac) ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( F<float>::is_nai( F<float>::constructor_dec(-INF_D,-INF_D,DEC::def) ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( F<float>::is_nai( F<float>::constructor_dec(INF_D,INF_D,DEC::def) ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec(1.0f,-1.0f,DEC::trv) ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec(-INF_F,-INF_F,DEC::def) ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec(INF_F,INF_F,DEC::dac) ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec(-INF_F,INF_F,DEC::com) ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    p1788::exception::set_throw_exception_cwd(p1788::exception::undefined_operation_bit);
+    BOOST_CHECK_THROW( F<float>::constructor_dec(-INF_D,-INF_D,DEC::trv), p1788::exception::undefined_operation_exception);
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    BOOST_CHECK_THROW( F<double>::constructor_dec(INF_F,INF_F,DEC::def), p1788::exception::undefined_operation_exception);
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
+}
+
+
 BOOST_AUTO_TEST_CASE(minimal_string_constructor_test)
 {
     p1788::exception::clear();
 
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Nai  ]") ) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Nai  ]_ill") ) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Nai  ]_trv") ) );
-
     BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Empty  ]") ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Empty  ]_trv") ) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[ Empty  ]_ill") ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[  ]") ) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  ]_com") ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[  ]_trv") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor("[,]"), REP<double>(-INF_D,INF_D) );
     BOOST_CHECK_EQUAL( F<double>::constructor("[,]_trv"), REP<double>(-INF_D,INF_D));
-    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[,]_com") ) );
     BOOST_CHECK_EQUAL( F<double>::constructor("[ entire  ]"), REP<double>(-INF_D,INF_D));
     BOOST_CHECK_EQUAL( F<double>::constructor("[ ENTIRE ]_dac"), REP<double>(-INF_D,INF_D));
-    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[   Entire ]_com") ) );
     BOOST_CHECK_EQUAL( F<double>::constructor("[ -inf , INF  ]"), REP<double>(-INF_D,INF_D));
     BOOST_CHECK_EQUAL( F<double>::constructor("[ -inf, INF ]_def"), REP<double>(-INF_D,INF_D));
-    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[ -inf ,  INF ]_com") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor("[-1.0,1.0]"), REP<double>(-1.0,1.0));
     BOOST_CHECK_EQUAL( F<double>::constructor("[  -1.0  ,  1.0  ]_com"), REP<double>(-1.0,1.0));
     BOOST_CHECK_EQUAL( F<double>::constructor("[  -1.0  , 1.0]_trv"), REP<double>(-1.0,1.0));
-    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  -1.0  , 1.0]_ill") ) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  -1.0  , 1.0]_fooo") ) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  -1.0  , 1.0]_da c") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor("[-1,]"), REP<double>(-1.0,INF_D));
     BOOST_CHECK_EQUAL( F<double>::constructor("[-1.0, +inf]_def"), REP<double>(-1.0,INF_D));
     BOOST_CHECK_EQUAL( F<double>::constructor("[-1.0, +infinity]_def"), REP<double>(-1.0,INF_D));
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-1.0,]_com") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor("[-Inf, 1.000 ]"), REP<double>(-INF_D,1.0));
     BOOST_CHECK_EQUAL( F<double>::constructor("[-Infinity, 1.000 ]_trv"), REP<double>(-INF_D,1.0));
-    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[-Inf, 1.000 ]_ill") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor("[1.0E+400 ]_com"), REP<double>(MAX_D,INF_D));
 
     BOOST_CHECK_EQUAL( F<double>::constructor("[ -4/2, 10/5 ]_com"), REP<double>(-2.0,2.0));
     BOOST_CHECK_EQUAL( F<double>::constructor("[ -1/10, 1/10 ]_com"), REP<double>(-0.1,0.1));
-
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ 1/-10, 1/10 ]_com") ) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-I  nf, 1.000 ]") ) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-Inf, 1.0  00 ]") ) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-Inf ]") ) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[Inf , INF]") ) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ foo ]") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor("0.0?"), REP<double>(-0.05,0.05));
     BOOST_CHECK_EQUAL( F<double>::constructor("0.0?u_trv"), REP<double>(0.0,0.1));
@@ -386,73 +496,135 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_test)
     BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5ue4_def"), REP<double>(std::stod("0x1.86ap+14"),std::stod("0x1.8768000000001p+14")));
     BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5de-5"), REP<double>(std::stod("0x1.a2976f1cee4d3p-16"),std::stod("0x1.a36e2eb1c432ep-16")));
 
+    BOOST_CHECK_EQUAL( F<double>::constructor("10?3_com"), REP<double>(7.0,13.0));
+    BOOST_CHECK_EQUAL( F<double>::constructor("10?3e380_com"), REP<double>(MAX_D,INF_D));
+
     std::string rep = "10?18";
     rep += std::string(308, '0');
     rep += "_com";
     BOOST_CHECK_EQUAL( F<double>::constructor(rep), REP<double>(-INF_D,INF_D));
 
-    BOOST_CHECK_EQUAL( F<double>::constructor("10?3_com"), REP<double>(7.0,13.0));
-    BOOST_CHECK_EQUAL( F<double>::constructor("10?3e380_com"), REP<double>(MAX_D,INF_D));
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Nai  ]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::interval_part_of_nai_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Nai  ]_ill") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ Nai  ]_trv") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[ Empty  ]_ill") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  ]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[,]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[   Entire ]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[ -inf ,  INF ]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  -1.0  , 1.0]_ill") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  -1.0  , 1.0]_fooo") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[  -1.0  , 1.0]_da c") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-1.0,]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty(F<double>::constructor("[-Inf, 1.000 ]_ill") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ 1/-10, 1/10 ]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-I  nf, 1.000 ]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-Inf, 1.0  00 ]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[-Inf ]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[Inf , INF]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[ foo ]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
 
     BOOST_CHECK( F<double>::is_empty( F<double>::constructor("0.0??_com") ) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("0.0??u_ill") ) );
-    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("0.0??d_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
 
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("0.0??u_ill") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("0.0??d_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_string_constructor_dec_test)
 {
     p1788::exception::clear();
 
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ Nai  ]") ) );
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ Nai  ]_ill") ) );
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ Nai  ]_trv") ) );
-
     BOOST_CHECK( F<double>::is_empty( F<double>::constructor_dec("[ Empty  ]") ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::constructor_dec("[ Empty  ]_trv") ) );
-    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[ Empty  ]_ill") ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::constructor_dec("[  ]") ) );
-    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  ]_com") ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::constructor_dec("[  ]_trv") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[,]"), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[,]_trv"), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::trv));
-    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[,]_com") ) );
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ entire  ]"), F<double>::entire_dec());
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ ENTIRE ]_dac"), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::dac));
-    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[   Entire ]_com") ) );
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ -inf , INF  ]"), F<double>::entire_dec());
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ -inf, INF ]_def"), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::def));
-    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[ -inf ,  INF ]_com") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-1.0,1.0]"), REP_DEC<double>(REP<double>(-1.0,1.0),DEC::com));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[  -1.0  ,  1.0  ]_com"), REP_DEC<double>(REP<double>(-1.0,1.0),DEC::com));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[  -1.0  , 1.0]_trv"), REP_DEC<double>(REP<double>(-1.0,1.0),DEC::trv));
-    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  -1.0  , 1.0]_ill") ) );
-    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  -1.0  , 1.0]_fooo") ) );
-    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  -1.0  , 1.0]_da c") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-1,]"), REP_DEC<double>(REP<double>(-1.0,INF_D),DEC::dac));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-1.0, +inf]_def"), REP_DEC<double>(REP<double>(-1.0,INF_D),DEC::def));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-1.0, +infinity]_def"), REP_DEC<double>(REP<double>(-1.0,INF_D),DEC::def));
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-1.0,]_com") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-Inf, 1.000 ]"), REP_DEC<double>(REP<double>(-INF_D,1.0),DEC::dac));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[-Infinity, 1.000 ]_trv"), REP_DEC<double>(REP<double>(-INF_D,1.0),DEC::trv));
-    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[-Inf, 1.000 ]_ill") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[1.0E+400 ]_com"), REP_DEC<double>(REP<double>(MAX_D,INF_D),DEC::dac));
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ -4/2, 10/5 ]_com"), REP_DEC<double>(REP<double>(-2.0,2.0),DEC::com));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ -1/10, 1/10 ]_com"), REP_DEC<double>(REP<double>(-0.1,0.1),DEC::com));
-
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ 1/-10, 1/10 ]_com") ) );
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-I  nf, 1.000 ]") ) );
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-Inf, 1.0  00 ]") ) );
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-Inf ]") ) );
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[Inf , INF]") ) );
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ foo ]") ) );
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?"), REP_DEC<double>(REP<double>(-0.05,0.05),DEC::com));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?u_trv"), REP_DEC<double>(REP<double>(0.0,0.1),DEC::trv));
@@ -482,6 +654,8 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_dec_test)
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5ue4_def"), REP_DEC<double>(REP<double>(std::stod("0x1.86ap+14"),std::stod("0x1.8768000000001p+14")),DEC::def));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5de-5"), REP_DEC<double>(REP<double>(std::stod("0x1.a2976f1cee4d3p-16"),std::stod("0x1.a36e2eb1c432ep-16")),DEC::com));
 
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ Nai  ]") ) );
+
     std::string rep = "10?18";
     rep += std::string(308, '0');
     rep += "_com";
@@ -490,12 +664,92 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_dec_test)
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("10?3_com"), REP_DEC<double>(REP<double>(7.0,13.0),DEC::com));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("10?3e380_com"), REP_DEC<double>(REP<double>(MAX_D,INF_D),DEC::dac));
 
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??_com") ) );
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??u_ill") ) );
-    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??d_com") ) );
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ Nai  ]_ill") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ Nai  ]_trv") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[ Empty  ]_ill") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  ]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[,]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[   Entire ]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[ -inf ,  INF ]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  -1.0  , 1.0]_ill") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  -1.0  , 1.0]_fooo") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[  -1.0  , 1.0]_da c") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-1.0,]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::constructor_dec("[-Inf, 1.000 ]_ill") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ 1/-10, 1/10 ]_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-I  nf, 1.000 ]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-Inf, 1.0  00 ]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[-Inf ]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[Inf , INF]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ foo ]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??u_ill") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??d_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_copy_constructor_test)

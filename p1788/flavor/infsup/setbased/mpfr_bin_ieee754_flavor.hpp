@@ -317,6 +317,11 @@ public:
     template<typename L_, typename U_>
     static representation_dec constructor_dec(L_ lower, U_ upper);
 
+    // Kind of SetDec
+    static representation_dec constructor_dec(T lower, T upper, p1788::decoration::decoration dec);
+    template<typename L_, typename U_>
+    static representation_dec constructor_dec(L_ lower, U_ upper, p1788::decoration::decoration dec);
+
     // Literal
     static representation constructor(std::string const& str);
     static representation_dec constructor_dec(std::string const& str);

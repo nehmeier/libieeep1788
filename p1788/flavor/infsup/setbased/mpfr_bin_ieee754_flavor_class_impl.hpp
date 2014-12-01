@@ -145,6 +145,67 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec(L_ lower, U_ upper)
 }
 
 
+// decorated inf-sup-dec interval
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::constructor_dec(T lower, T upper, p1788::decoration::decoration dec)
+{
+    // Comparison with NaN is always false!
+    if (dec != p1788::decoration::decoration::ill
+            && (lower <= upper
+                &&  lower != std::numeric_limits<T>::infinity()
+                && upper != -std::numeric_limits<T>::infinity()
+                && (dec != p1788::decoration::decoration::com
+                    || (lower != -std::numeric_limits<T>::infinity()
+                        && upper != std::numeric_limits<T>::infinity()))
+               )
+       )
+    {
+        return representation_dec(representation(lower,upper), dec);
+    }
+    else
+    {
+        p1788::exception::signal_undefined_operation();
+        return nai();
+    }
+}
+
+
+// decorated inf-sup-dec interval mixed type
+template<typename T>
+template<typename L_, typename U_>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::constructor_dec(L_ lower, U_ upper, p1788::decoration::decoration dec)
+{
+    static_assert(std::numeric_limits<L_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<U_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    // Comparison with NaN is always false!
+    if (dec != p1788::decoration::decoration::ill
+            && (lower <= upper
+                &&  lower != std::numeric_limits<L_>::infinity()
+                && upper != -std::numeric_limits<U_>::infinity()
+                && (dec != p1788::decoration::decoration::com
+                    || (lower != -std::numeric_limits<L_>::infinity()
+                        && upper != std::numeric_limits<U_>::infinity()))
+               )
+       )
+    {
+        representation tmp(convert_rndd(lower), convert_rndu(upper));
+        return representation_dec(tmp,
+                                  std::min(dec,
+                                           std::isinf(tmp.first) || std::isinf(tmp.second)
+                                           ? p1788::decoration::decoration::dac
+                                           : p1788::decoration::decoration::com ));
+    }
+    else
+    {
+        p1788::exception::signal_undefined_operation();
+        return nai();
+    }
+}
+
+
 // string literal bare interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation

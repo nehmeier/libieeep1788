@@ -42,8 +42,6 @@
 
 
 
-
-
 namespace p1788
 {
 
@@ -87,48 +85,36 @@ public:
         : base_interval_type(Flavor<T>::constructor(lower, upper))
     { }
 
-    // Implementation specific, Singleton
-    explicit interval(T point)
-        : base_interval_type(Flavor<T>::constructor(point))
-    { }
-
     // Required for 754-conforming, see numsToInterval(l,u) formatOf P1788/D8.1 Sect. 12.12.8.
     template<typename L, typename U>
     interval(L lower, U upper)
         : base_interval_type(Flavor<T>::constructor(lower, upper))
     { }
 
-//TODO necessary?
-    // Implementation specificfor 754-conforming, Singleton formatOf
-//    template<typename T_>
-//    explicit interval(T_ point)
-//        : base_interval_type(Flavor<T>::constructor_infsup(point))
-//    {
-//        //TODO static_assert hier oder im Flavor?
-//        //TODO int-werte landen hier und funktionieren somit nicht
-//        static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//        static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//    }
-
-
     // Required see textToInterval(l,u) P1788/D8.1 Sect. 12.12.8.
     explicit interval(std::string const& str)
         : base_interval_type(Flavor<T>::constructor(str))
     { }
 
-// Todo necessary? initializer list
-//    explicit interval(std::initializer_list<T> points)
-//        : base_interval_type(Flavor<T>::constructor_infsup(points.begin(), points.end()))
-//    { }
-
     // Implementation specific Copy-constructor
-    interval(base_interval_type const& other)  //< Copy-constructor
+    interval(interval<T, Flavor> const& other)  //< Copy-constructor
         : base_interval_type(Flavor<T>::constructor(other.rep_))
     { }
 
     //Todo P1788/D8.1 Sect. ? Copy-constructor/Conversion
     template<typename T_>
-    explicit interval(base_interval<T_, Flavor, typename Flavor<T_>::representation, interval<T_, Flavor>> const& other)
+    explicit interval(interval<T_, Flavor> const& other)
+        : base_interval_type(Flavor<T>::constructor(other.rep_))
+    { }
+
+    // Interval part
+    interval(decorated_interval<T, Flavor> const& other)  //< Copy-constructor
+        : base_interval_type(Flavor<T>::constructor(other.rep_))
+    { }
+
+    //  Interval part mixed type
+    template<typename T_>
+    explicit interval(decorated_interval<T_, Flavor> const& other)
         : base_interval_type(Flavor<T>::constructor(other.rep_))
     { }
 
@@ -174,8 +160,6 @@ private:
     explicit interval(typename Flavor<T>::representation rep)
         : base_interval_type(rep)
     {}
-
-
 
 
     friend class base_interval<T, Flavor, typename Flavor<T>::representation, interval<T, Flavor>>;

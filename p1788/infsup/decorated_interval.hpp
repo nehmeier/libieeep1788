@@ -32,41 +32,6 @@
 
 
 
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//                        Traits and meta TMP functions
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-
-namespace p1788
-{
-
-namespace util
-{
-
-//------------------------------------------------------------------------------
-// Trait is_infsup_base_interval_implementation
-//------------------------------------------------------------------------------
-
-// Ignore the warning about non-virtual destructors
-// on GCC  push the last diagnostic state and disable -Weffc++
-//TODO support other compiler
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-
-
-
-
-// on GCC  enable the diagnostic state -Weffc++ again
-#pragma GCC diagnostic pop
-
-
-} // namespace util
-
-} // namespace p1788
-
-
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
@@ -86,13 +51,6 @@ namespace infsup
 {
 
 
-/// \brief
-///
-/// \param
-/// \param
-/// \return
-///
-///
 template<typename T, template<typename> class Flavor>
 class decorated_interval final
     : public base_interval<T, Flavor, typename Flavor<T>::representation_dec, decorated_interval<T, Flavor>>
@@ -121,34 +79,23 @@ public:
         : base_interval_type(Flavor<T>::constructor_dec(lower, upper))
     { }
 
-    // Implementation specific, Singleton
-    explicit decorated_interval(T point)
-        : base_interval_type(Flavor<T>::constructor_dec(point))
-    { }
-
     // Required for 754-conforming, see numsToInterval(l,u) formatOf P1788/D8.1 Sect. 12.12.8.
     template<typename L, typename U>
     decorated_interval(L lower, U upper)
         : base_interval_type(Flavor<T>::constructor_dec(lower, upper))
-    {
-        //TODO static_assert hier oder im Flavor?
-        //TODO int-werte landen hier und funktionieren somit nicht
-        static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-        static_assert(std::numeric_limits<L>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-        static_assert(std::numeric_limits<U>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-    }
+    { }
 
-//TODO necessary?
-//    // Implementation specificfor 754-conforming, Singleton formatOf
-//    template<typename T_>
-//    explicit decorated_interval(T_ point)
-//        : base_interval_type(Flavor<T>::constructor_infsup_dec(point))
-//    {
-//        //TODO static_assert hier oder im Flavor?
-//        //TODO int-werte landen hier und funktionieren somit nicht
-//        static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//        static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//    }
+
+    // Kind of setDec
+    decorated_interval(T lower, T upper, p1788::decoration::decoration dec)
+        : base_interval_type(Flavor<T>::constructor_dec(lower, upper, dec))
+    { }
+
+    // Kind of setDec
+    template<typename L, typename U>
+    decorated_interval(L lower, U upper, p1788::decoration::decoration dec)
+        : base_interval_type(Flavor<T>::constructor_dec(lower, upper, dec))
+    { }
 
 
     // Required see textToInterval(l,u) P1788/D8.1 Sect. 12.12.8.
@@ -156,31 +103,38 @@ public:
         : base_interval_type(Flavor<T>::constructor_dec(str))
     { }
 
-// Todo necessary? initializer list
-//    explicit decorated_interval(std::initializer_list<T> points)
-//        : base_interval_type(Flavor<T>::constructor_infsup(points.begin(), points.end()))
-//    { }
-
     // Implementation specific Copy-constructor
-    decorated_interval(base_interval_type const& other)  //< Copy-constructor
+    decorated_interval(decorated_interval<T, Flavor> const& other)  //< Copy-constructor
         : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
     { }
 
     //Todo P1788/D8.1 Sect. ? Copy-constructor/Conversion
     template<typename T_>
-    explicit decorated_interval(base_interval<T_, Flavor, typename Flavor<T_>::representation_dec, decorated_interval<T_, Flavor>> const& other)
+    explicit decorated_interval(decorated_interval<T_, Flavor> const& other)
         : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
     { }
 
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
+    // newDec
+    decorated_interval(interval<T, Flavor> const& other)  //< Copy-constructor
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
+    { }
 
+    // newDec mixedtype
+    template<typename T_>
+    explicit decorated_interval(interval<T_, Flavor> const& other)
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
+    { }
 
-    p1788::decoration::decoration decoration() const {
-        return Flavor<T>::method_decoration(base_interval_type::rep_);
-    }
+    // setDec
+    decorated_interval(interval<T, Flavor> const& other, p1788::decoration::decoration dec)  //< Copy-constructor
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_, dec))
+    { }
 
+    // setDec mixedtype
+    template<typename T_>
+    explicit decorated_interval(interval<T_, Flavor> const& other, p1788::decoration::decoration dec)
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_, dec))
+    { }
 
 // -----------------------------------------------------------------------------
 // Interval constants
@@ -229,6 +183,36 @@ public:
 
 ///@}
 
+
+
+// -----------------------------------------------------------------------------
+// Decorated interval specific methods
+// -----------------------------------------------------------------------------
+
+    /// \brief Checks if the interval is NaI
+    ///
+    /// The computation is delegated to the static function
+    /// <c>Flavor<T>::is_nai(representation_dec const& x)</c>
+    /// of the policy class <c>Flavor<T></c> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \retval true    \p x is NaI
+    /// \retval false   otherwise
+    ///
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) \endlink</c>
+    ///
+    static bool is_nai(decorated_interval<T,Flavor> const& x)
+    {
+        return Flavor<T>::is_nai(x.rep_);
+    }
+
+
+    static p1788::decoration::decoration decoration(decorated_interval<T,Flavor> const& x)
+    {
+        return Flavor<T>::decoration(x.rep_);
+    }
+
+
 private:
 
     explicit decorated_interval(typename Flavor<T>::representation_dec rep)
@@ -244,31 +228,23 @@ private:
     friend class interval;
 
 
-
-// -----------------------------------------------------------------------------
-// Boolean functions on intervals
-// -----------------------------------------------------------------------------
-
-    /// \brief Checks if an interval \p x is NaI
-    ///
-    /// The computation is delegated to the static function
-    /// <c>Flavor<T>::is_nai(representation_dec const& x)</c>
-    /// of the policy class <c>Flavor<T></c> by passing only the internal
-    /// representation of the interval.
-    ///
-    /// \param  x   interval
-    /// \retval true    \p x is NaI
-    /// \retval false   otherwise
-    ///
-    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) \endlink</c>
-    ///
-    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-    friend bool is_nai(decorated_interval<T_, Flavor_> const&);
-
-
-
 }; // class decorated_interval
 
+
+
+
+
+template<typename T, template<typename> class Flavor>
+bool is_nai(decorated_interval<T, Flavor> const& x)
+{
+    return decorated_interval<T, Flavor>::is_nai(x);
+}
+
+
+template<typename T, template<typename> class Flavor>
+p1788::decoration::decoration decoration(decorated_interval<T, Flavor> const& x) {
+    return decorated_interval<T, Flavor>::decoration(x);
+}
 
 
 } // namespace infsup

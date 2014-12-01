@@ -1486,6 +1486,14 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
 
     {
         REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
+        std::istringstream is("[1.0,-1.0]");
+        F<double>::operator_input(is, di);
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
+        BOOST_CHECK(!is);
+    }
+
+    {
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[Inf , INF]");
         F<double>::operator_input(is, di);
         BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
@@ -1778,6 +1786,14 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
         std::istringstream is("[-Inf, 1.0  00 ]");
         F<double>::operator_input(is, i);
         BOOST_CHECK_EQUAL( i, REP<double>(35.0,45.7) );
+        BOOST_CHECK(!is);
+    }
+
+    {
+        REP<double> i(-1.0,2.0);
+        std::istringstream is("[1.0,-1.0]");
+        F<double>::operator_input(is, i);
+        BOOST_CHECK_EQUAL( i, REP<double>(-1.0,2.0) );
         BOOST_CHECK(!is);
     }
 
