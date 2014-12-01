@@ -35,9 +35,8 @@ BOOST_AUTO_TEST_CASE(minimal_remove_ws_test)
 {
     {
         std::stringstream ss("");
-        std::string head = p1788::util::remove_ws(ss);
+        p1788::util::remove_ws(ss);
 
-        BOOST_CHECK_EQUAL(head, "");
         BOOST_CHECK(ss);
 
         std::string tail;
@@ -48,9 +47,8 @@ BOOST_AUTO_TEST_CASE(minimal_remove_ws_test)
 
     {
         std::stringstream ss("foo");
-        std::string head = p1788::util::remove_ws(ss);
+        p1788::util::remove_ws(ss);
 
-        BOOST_CHECK_EQUAL(head, "");
         BOOST_CHECK(ss);
 
         std::string tail;
@@ -61,9 +59,8 @@ BOOST_AUTO_TEST_CASE(minimal_remove_ws_test)
 
     {
         std::stringstream ss("  test");
-        std::string head = p1788::util::remove_ws(ss);
+        p1788::util::remove_ws(ss);
 
-        BOOST_CHECK_EQUAL(head, "  ");
         BOOST_CHECK(ss);
 
         std::string tail;
@@ -74,9 +71,8 @@ BOOST_AUTO_TEST_CASE(minimal_remove_ws_test)
 
     {
         std::stringstream ss(" \t \t t \t");
-        std::string head = p1788::util::remove_ws(ss);
+        p1788::util::remove_ws(ss);
 
-        BOOST_CHECK_EQUAL(head, " \t \t ");
         BOOST_CHECK(ss);
 
         std::string tail;

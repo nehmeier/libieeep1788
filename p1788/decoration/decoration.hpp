@@ -159,12 +159,10 @@ std::basic_istream<CharT, Traits>& operator>>(
     std::basic_istream<CharT, Traits>& is,
     decoration& dec )
 {
-    std::string head = "";
-
     // remove whitespaces if necessary
     if (is.flags() & std::ios_base::skipws)
     {
-        head = p1788::util::remove_ws(is);
+        p1788::util::remove_ws(is);
     }
 
     if (is)
@@ -237,7 +235,6 @@ std::basic_istream<CharT, Traits>& operator>>(
     }
 
     // failed
-    dec = decoration::ill;
     is.setstate(std::ios_base::failbit);
     return is;
 }

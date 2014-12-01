@@ -37,16 +37,11 @@ namespace util
 
 // Remove whitespace character from input stream
 template<typename CharT, typename Traits>
-inline std::string remove_ws(std::basic_istream<CharT, Traits>& is)
+inline void remove_ws(std::basic_istream<CharT, Traits>& is)
 {
-    std::string str;
-
     while (is && std::isspace(is.peek()))
-    {
-        str += is.get();
-    }
+        is.get();
 
-    return str;
 }
 
 

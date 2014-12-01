@@ -155,6 +155,12 @@ mpfr_bin_ieee754_flavor<T>::constructor(std::string const& str)
 
     operator_input(s, rep);
 
+    if (!s)
+    {
+        p1788::exception::signal_undefined_operation();
+        return empty();
+    }
+
     char c;
     while(s.get(c))
         if (!std::isspace(c))
@@ -175,6 +181,12 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec(std::string const& str)
     std::istringstream s(str);
 
     operator_input(s, rep);
+
+    if (!s)
+    {
+        p1788::exception::signal_undefined_operation();
+        return nai();
+    }
 
     char c;
     while(s.get(c))

@@ -405,7 +405,7 @@ BOOST_AUTO_TEST_CASE(minimal_decoration_input_test)
 
     {
         DEC dec;
-        std::istringstream is("8dac4");
+        std::istringstream is("8 dac 4");
         is >> dec;
         BOOST_CHECK_EQUAL(dec, DEC::def);
         BOOST_CHECK(is);
@@ -430,21 +430,21 @@ BOOST_AUTO_TEST_CASE(minimal_decoration_input_test)
 
 
     {
-        DEC dec;
+        DEC dec = DEC::com;
         std::istringstream is("  def");
         is >> std::noskipws;
         is >> dec;
-        BOOST_CHECK_EQUAL(dec, DEC::ill);
-        BOOST_CHECK(!is);
+        BOOST_CHECK_EQUAL(dec, DEC::com);
+        BOOST_CHECK(is.fail());
     }
 
     {
-        DEC dec;
+        DEC dec = DEC::trv;
         std::istringstream is("  12");
         is >> std::noskipws;
         is >> dec;
-        BOOST_CHECK_EQUAL(dec, DEC::ill);
-        BOOST_CHECK(!is);
+        BOOST_CHECK_EQUAL(dec, DEC::trv);
+        BOOST_CHECK(is.fail());
     }
 
     {
@@ -459,36 +459,36 @@ BOOST_AUTO_TEST_CASE(minimal_decoration_input_test)
     }
 
     {
-        DEC dec;
+        DEC dec = DEC::trv;
         std::istringstream is("foo com");
         is >> dec;
-        BOOST_CHECK_EQUAL(dec, DEC::ill);
-        BOOST_CHECK(!is);
+        BOOST_CHECK_EQUAL(dec, DEC::trv);
+        BOOST_CHECK(is.fail());
     }
 
 
     {
-        DEC dec;
+        DEC dec = DEC::dac;
         std::istringstream is(" \t \n \t ");
         is >> dec;
-        BOOST_CHECK_EQUAL(dec, DEC::ill);
-        BOOST_CHECK(!is);
+        BOOST_CHECK_EQUAL(dec, DEC::dac);
+        BOOST_CHECK(is.fail());
     }
 
 
     {
-        DEC dec;
+        DEC dec = DEC::com;
         std::istringstream is("7");
         is >> dec;
-        BOOST_CHECK_EQUAL(dec, DEC::ill);
-        BOOST_CHECK(!is);
+        BOOST_CHECK_EQUAL(dec, DEC::com);
+        BOOST_CHECK(is.fail());
     }
 
     {
-        DEC dec;
+        DEC dec = DEC::def;
         std::istringstream is("-2");
         is >> dec;
-        BOOST_CHECK_EQUAL(dec, DEC::ill);
-        BOOST_CHECK(!is);
+        BOOST_CHECK_EQUAL(dec, DEC::def);
+        BOOST_CHECK(is.fail());
     }
 }

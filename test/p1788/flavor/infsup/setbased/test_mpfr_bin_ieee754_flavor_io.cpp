@@ -1178,18 +1178,18 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[ Nai  ]_ill");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[ Nai  ]_trv");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
@@ -1210,10 +1210,10 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[ Empty  ]_ill");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
@@ -1227,10 +1227,10 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
 
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[  ]_com");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
@@ -1260,10 +1260,10 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[,]_com");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
@@ -1284,10 +1284,10 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[   Entire ]_com");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
@@ -1308,10 +1308,10 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[ -inf ,  INF ]_com");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
@@ -1340,26 +1340,35 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[  -1.0  , 1.0]_ill");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[  -1.0  , 1.0]_fooo");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[  -1.0  , 1.0]_da c");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
+        BOOST_CHECK(!is);
+    }
+
+    {
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
+        std::istringstream is("[  -1.0  , 1.0]_da");
+        is.exceptions(is.eofbit);
+        BOOST_CHECK_THROW(F<double>::operator_input(is, di), std::ios_base::failure);
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
@@ -1388,10 +1397,10 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[-1.0,]_com");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
@@ -1412,10 +1421,10 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-15.0,27.0),DEC::trv);
         std::istringstream is("[-Inf, 1.000 ]_ill");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-15.0,27.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
@@ -1444,55 +1453,53 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[ 1/-10, 1/10 ]_com");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[-I  nf, 1.000 ]");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[-Inf, 1.0  00 ]");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,12.0),DEC::trv);
         std::istringstream is("[-Inf ]");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,12.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,2.0),DEC::trv);
         std::istringstream is("[Inf , INF]");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-1.0,5.0),DEC::trv);
         std::istringstream is("[ foo ]");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,5.0),DEC::trv) );
         BOOST_CHECK(!is);
     }
 }
-
-
 
 
 BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
@@ -1514,10 +1521,10 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[ Empty  ]_ill");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
@@ -1531,10 +1538,10 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
 
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[  ]_com");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
@@ -1564,10 +1571,10 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[,]_com");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
@@ -1588,10 +1595,10 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[   Entire ]_com");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
@@ -1612,10 +1619,10 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[ -inf ,  INF ]_com");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
@@ -1645,26 +1652,26 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[  -1.0  , 1.0]_ill");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[  -1.0  , 1.0]_fooo");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[  -1.0  , 1.0]_da c");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
@@ -1694,10 +1701,10 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[-1.0,]_com");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
@@ -1718,10 +1725,10 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
     }
 
     {
-        REP<double> i;
+        REP<double> i(-35.0,-0.7);
         std::istringstream is("[-Inf, 1.000 ]_ill");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(-35.0,-0.7) );
         BOOST_CHECK(!is);
     }
 
@@ -1733,7 +1740,6 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
         BOOST_CHECK_EQUAL(i, REP<double>(MAX_D,INF_D));
         BOOST_CHECK(is);
     }
-
 
     {
         REP<double> i;
@@ -1752,50 +1758,50 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[ 1/-10, 1/10 ]_com");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,45.7);
         std::istringstream is("[-I  nf, 1.000 ]");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,45.7) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP<double> i;
+        REP<double> i(35.0,45.7);
         std::istringstream is("[-Inf, 1.0  00 ]");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(35.0,45.7) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP<double> i;
+        REP<double> i(-0.5,4.7);
         std::istringstream is("[-Inf ]");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(-0.5,4.7) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[Inf , INF]");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP<double> i;
+        REP<double> i(3.5,4.7);
         std::istringstream is("[ foo ]");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(3.5,4.7) );
         BOOST_CHECK(!is);
     }
 }
@@ -2003,26 +2009,35 @@ BOOST_AUTO_TEST_CASE(minimal_uncertain_interval_dec_input_test)
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-3.7,0.01),DEC::def);
         std::istringstream is("0.0??_com");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL(di, REP_DEC<double>(REP<double>(-3.7,0.01),DEC::def));
         BOOST_CHECK(!is);
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(3.7,12.4),DEC::trv);
         std::istringstream is("0.0??u_ill");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL(di, REP_DEC<double>(REP<double>(3.7,12.4),DEC::trv));
         BOOST_CHECK(!is);
     }
 
     {
-        REP_DEC<double> di;
+        REP_DEC<double> di(REP<double>(-3.3,10.01),DEC::com);
         std::istringstream is("0.0??d_com");
         F<double>::operator_input(is, di);
-        BOOST_CHECK( F<double>::is_nai(di) );
+        BOOST_CHECK_EQUAL(di, REP_DEC<double>(REP<double>(-3.3,10.01),DEC::com));
+        BOOST_CHECK(!is);
+    }
+
+    {
+        REP_DEC<double> di(REP<double>(-3.3,10.01),DEC::com);
+        std::istringstream is("0.0?22d_cm");
+        is.exceptions(is.eofbit);
+        BOOST_CHECK_THROW(F<double>::operator_input(is, di), std::ios_base::failure);
+        BOOST_CHECK_EQUAL(di, REP_DEC<double>(REP<double>(-3.3,10.01),DEC::com));
         BOOST_CHECK(!is);
     }
 
@@ -2233,26 +2248,26 @@ BOOST_AUTO_TEST_CASE(minimal_uncertain_interval_input_test)
     }
 
     {
-        REP<double> i;
+        REP<double> i(2.0,3.0);
         std::istringstream is("0.0??_com");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(2.0,3.0) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP<double> i;
+        REP<double> i(2.5,3.4);
         std::istringstream is("0.0??u_ill");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(2.5,3.4) );
         BOOST_CHECK(!is);
     }
 
     {
-        REP<double> i;
+        REP<double> i(-2.0,-1.0);
         std::istringstream is("0.0??d_com");
         F<double>::operator_input(is, i);
-        BOOST_CHECK( F<double>::is_empty(i) );
+        BOOST_CHECK_EQUAL( i, REP<double>(-2.0,-1.0) );
         BOOST_CHECK(!is);
     }
 }

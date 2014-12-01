@@ -495,7 +495,8 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
 
     operator_input(is, x_dec);
 
-    x = constructor(x_dec);
+    if (is)
+        x = constructor(x_dec);
 
     return is;
 }
@@ -688,35 +689,53 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                             }
                         }
 
-                        if (is.peek() == '_')
+
+                        // check if it is necessary to read a decoration
+                        bool read_decoration = false;
+                        try
                         {
-                            if (dec != p1788::decoration::decoration::ill)
-                            {
-                                is.get();
-
-                                p1788::decoration::decoration d;
-                                is >> d;
-
-                                if (is && d <= dec && d != p1788::decoration::decoration::ill)
-                                {
-                                    // create dec interval
-                                    // and adjust decoration in case of an overflow
-                                    x = constructor_dec(bare,
-                                                        std::isinf(bare.first) || std::isinf(bare.second) ?
-                                                        std::min(d, p1788::decoration::decoration::dac)
-                                                        : d);
-
-                                    // everything was ok
-                                    return is;
-                                }
-                            }
+                            read_decoration = is && is.peek() == '_';
                         }
-                        else
+                        catch (std::ios_base::failure& e)
                         {
+                            // rethrow exception if it is not an eof failure
+                            if (!is.eof())
+                                throw;
+                        }
+
+                        // default decoration
+                        if (!read_decoration)
+                        {
+                            // if is.peek() == '_' reached eof than reset state
+                            if (is.eof())
+                                is.clear(std::ios_base::goodbit);
+
                             x = dec == p1788::decoration::decoration::ill ? nai() : constructor_dec(bare);
 
                             // everything was ok
                             return is;
+                        }
+
+                        // read decoration
+                        if (is && dec != p1788::decoration::decoration::ill)
+                        {
+                            is.get();   // remove underscore
+
+                            p1788::decoration::decoration d;
+                            is >> d;
+
+                            if (is && d <= dec && d != p1788::decoration::decoration::ill)
+                            {
+                                // create dec interval
+                                // and adjust decoration in case of an overflow
+                                x = constructor_dec(bare,
+                                                    std::isinf(bare.first) || std::isinf(bare.second) ?
+                                                    std::min(d, p1788::decoration::decoration::dac)
+                                                    : d);
+
+                                // everything was ok
+                                return is;
+                            }
                         }
                     }
                 }
@@ -735,35 +754,44 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                 if (is)
                     input += '?';
 
-                // read ulps
-                if(is.good() && is.peek() == '?')
+                try
                 {
-                    input += is.get();
-                }
-                else
-                {
-                    while (is.good() && std::isdigit(is.peek()))
+                    // read ulps
+                    if(is && is.peek() == '?')
+                    {
                         input += is.get();
-                }
+                    }
+                    else
+                    {
+                        while (is && std::isdigit(is.peek()))
+                            input += is.get();
+                    }
 
-                // read direction
-                if(is.good() && (is.peek() == 'd' || is.peek() == 'D' || is.peek() == 'u' || is.peek() == 'U'))
-                    input += is.get();
-
-
-                // read exponent
-                if(is.good() && (is.peek() == 'e' || is.peek() == 'E' ))
-                {
-                    input += is.get();
-
-
-                    if(is.good() && (is.peek() == '-' || is.peek() == '+'))
+                    // read direction
+                    if(is && (is.peek() == 'd' || is.peek() == 'D' || is.peek() == 'u' || is.peek() == 'U'))
                         input += is.get();
 
-                    while (is.good() && std::isdigit(is.peek()))
-                        input += is.get();
-                }
 
+                    // read exponent
+                    if(is && (is.peek() == 'e' || is.peek() == 'E' ))
+                    {
+                        input += is.get();
+
+
+                        if(is.good() && (is.peek() == '-' || is.peek() == '+'))
+                            input += is.get();
+
+                        while (is.good() && std::isdigit(is.peek()))
+                            input += is.get();
+                    }
+
+                }
+                catch (std::ios_base::failure& e)
+                {
+                    // rethrow if failure was not eof
+                    if (!is.eof())
+                        throw;
+                }
 
                 if (is || is.eof())
                 {
@@ -870,35 +898,52 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                             bare = mul(bare, exp);
                         }
 
-                        if (is && is.peek() == '_')
+                        // check if it is necessary to read a decoration
+                        bool read_decoration = false;
+                        try
                         {
-                            if (dec != p1788::decoration::decoration::ill)
-                            {
-                                is.get();
-
-                                p1788::decoration::decoration d;
-                                is >> d;
-
-                                if (is && d <= dec && d != p1788::decoration::decoration::ill)
-                                {
-                                    // create dec interval
-                                    // and adjust decoration in case of an overflow
-                                    x = constructor_dec(bare,
-                                                        std::isinf(bare.first) || std::isinf(bare.second) ?
-                                                        std::min(d, p1788::decoration::decoration::dac)
-                                                        : d);
-
-                                    // everything was ok
-                                    return is;
-                                }
-                            }
+                            read_decoration = is && is.peek() == '_';
                         }
-                        else
+                        catch (std::ios_base::failure& e)
                         {
+                            // rethrow exception if it is not an eof failure
+                            if (!is.eof())
+                                throw;
+                        }
+
+                        // default decoration
+                        if (!read_decoration)
+                        {
+                            // if is.peek() == '_' reached eof than reset state
+                            if (is.eof())
+                                is.clear(std::ios_base::goodbit);
+
                             x = dec == p1788::decoration::decoration::ill ? nai() : constructor_dec(bare);
 
                             // everything was ok
                             return is;
+                        }
+
+                        // read decoration
+                        if (is && dec != p1788::decoration::decoration::ill)
+                        {
+                            is.get();   // remove underscore
+
+                            p1788::decoration::decoration d;
+                            is >> d;
+
+                            if (is && d <= dec && d != p1788::decoration::decoration::ill)
+                            {
+                                // create dec interval
+                                // and adjust decoration in case of an overflow
+                                x = constructor_dec(bare,
+                                                    std::isinf(bare.first) || std::isinf(bare.second) ?
+                                                    std::min(d, p1788::decoration::decoration::dac)
+                                                    : d);
+
+                                // everything was ok
+                                return is;
+                            }
                         }
                     }
                 }
