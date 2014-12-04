@@ -43,11 +43,12 @@ if(Boost_FOUND)
 
             # relevant test files of this directory
             set(P1788_TEST_FILES
-		test_integration_mpfr_bin_ieee754_flavor_bool.cpp
-		test_integration_mpfr_bin_ieee754_flavor_rec_bool.cpp
-		test_integration_mpfr_bin_ieee754_flavor_class.cpp
-		test_integration_mpfr_bin_ieee754_flavor_io.cpp
-		test_integration_mpfr_bin_ieee754_flavor_num.cpp
+            		test_integration_mpfr_bin_ieee754_flavor_class.cpp
+                    test_integration_mpfr_bin_ieee754_flavor_io.cpp
+                    test_integration_mpfr_bin_ieee754_flavor_bool.cpp
+                    test_integration_mpfr_bin_ieee754_flavor_rec_bool.cpp
+                    test_integration_mpfr_bin_ieee754_flavor_num.cpp
+                    test_integration_mpfr_bin_ieee754_flavor_set_op.cpp
                )
 
             # relative path of this directory

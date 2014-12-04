@@ -45,6 +45,9 @@ typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation const& x,
                                       mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
+    if (!is_valid(x) || !is_valid(y))
+        return empty();
+
     if (are_disjoint(x, y))
         return empty();
     else
@@ -61,6 +64,9 @@ mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation
 {
     static_assert(std::numeric_limits<T1_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    if (!is_valid(x) || !is_valid(y))
+        return empty();
 
     // determine max. precision
     typedef typename p1788::util::max_precision_type<T,T1_,T2_>::type T_MAX;
@@ -81,8 +87,11 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                       mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
+    if (!is_valid(x) || !is_valid(y))
+        return nai();
+
     return is_nai(x) || is_nai(y) ? nai() : representation_dec(intersect(x.first, y.first),
-                                                               p1788::decoration::decoration::trv);
+            p1788::decoration::decoration::trv);
 }
 
 // intersect ( decorated interval ) mixed type
@@ -94,6 +103,9 @@ mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation
 {
     static_assert(std::numeric_limits<T1_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    if (!is_valid(x) || !is_valid(y))
+        return nai();
 
     // determine max. precision
     typedef typename p1788::util::max_precision_type<T,T1_,T2_>::type T_MAX;
@@ -114,6 +126,9 @@ typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation const& x,
                                  mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
+    if (!is_valid(x) || !is_valid(y))
+        return empty();
+
     if (is_empty(x))
         return y;
     else if (is_empty(y))
@@ -128,10 +143,13 @@ template<typename T>
 template<typename T1_, typename T2_>
 typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_type<T1_> const& x,
-                                      mpfr_bin_ieee754_flavor<T>::representation_type<T2_> const& y)
+                                 mpfr_bin_ieee754_flavor<T>::representation_type<T2_> const& y)
 {
     static_assert(std::numeric_limits<T1_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    if (!is_valid(x) || !is_valid(y))
+        return empty();
 
     // determine max. precision
     typedef typename p1788::util::max_precision_type<T,T1_,T2_>::type T_MAX;
@@ -150,10 +168,13 @@ mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_type
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
-                                      mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
+                                 mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
+    if (!is_valid(x) || !is_valid(y))
+        return nai();
+
     return is_nai(x) || is_nai(y) ? nai() : representation_dec(hull(x.first, y.first),
-                                                               p1788::decoration::decoration::trv);
+            p1788::decoration::decoration::trv);
 }
 
 // hull ( decorated interval ) mixed type
@@ -161,10 +182,13 @@ template<typename T>
 template<typename T1_, typename T2_>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1_> const& x,
-                                      mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2_> const& y)
+                                 mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2_> const& y)
 {
     static_assert(std::numeric_limits<T1_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    if (!is_valid(x) || !is_valid(y))
+        return nai();
 
     // determine max. precision
     typedef typename p1788::util::max_precision_type<T,T1_,T2_>::type T_MAX;

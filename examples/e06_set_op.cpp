@@ -34,17 +34,26 @@
 template<typename T>
 using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
-int main (void)
+// and the same for decorated intervals
+template<typename T>
+using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
+
+
+int main()
 {
-    // Instanziation of intervals
-    I<double> a(-1.0,5.0);
-    I<double> b(1.0,2.0);
+    // 1) All set operations are implemented as (global) functions in namespace p1788::infsup
+    std::cout << intersect( I<double>(1.0,2.0), I<double>(1.5,2.5) ) << std::endl;
 
-    // Assignment and arithmetic operations
-    I<double> c;// = a + b;
+    // 1.1) And as static functions of the interval type
+    std::cout << I<double>::hull( I<double>(1.0,2.0), I<double>(5.0, 5.1) ) << std::endl;
 
-    // Writing result onto the output stream
-    std::cout << c << std::endl;
+    // 2) All numeric functions are implemented for bare and decorated intervals
+    std::cout << intersect( DI<double>(1.1,2.3), DI<double>(2.0,2.5) ) << std::endl;
+
+    // 3) Mixed type functions are static only
+    std::cout << I<float>::hull( I<float>(1.0f,2.0f), I<double>(5.0, 5.1) )  << std::endl;
+
 
     return 0;
 }
+

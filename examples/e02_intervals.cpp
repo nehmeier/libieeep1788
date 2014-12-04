@@ -106,6 +106,10 @@ int main()
     std::cout << DI<double>( i, p1788::decoration::decoration::def ) << std::endl;
     std::cout << DI<float>( i, p1788::decoration::decoration::trv ) << std::endl << std::endl;
 
+    // 6.1) And get a decoration
+    std::cout << decoration( di ) << std::endl;     // function
+    std::cout << DI<double>::decoration( di ) << std::endl << std::endl;    // static
+
     // 7) In case of invalid input an empty interval (bare interval constructor)
     //    or a NaI (decorated interval constructor) will be created
     std::cout << I<double>(5.0,0.0) << std::endl;

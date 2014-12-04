@@ -41,7 +41,6 @@ using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased:
 
 int main()
 {
-
     // 1) All numeric functions are implemented as (global) functions in namespace p1788::infsup
     std::cout << inf( I<double>(1.0,2.0) ) << std::endl;
 

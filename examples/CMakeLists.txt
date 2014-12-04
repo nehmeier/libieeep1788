@@ -32,9 +32,9 @@ if(GMP_FOUND)
             e01_helloworld.cpp
             e02_intervals.cpp
             e03_io.cpp
-            e04_boolFunc.cpp
-            e05_numFunc.cpp
-      
+            e04_bool_func.cpp
+            e05_num_func.cpp
+            e06_set_op.cpp
 #
 #            elementaryFunc.cpp
 #            eval_example.cpp

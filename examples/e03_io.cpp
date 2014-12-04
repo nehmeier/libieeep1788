@@ -42,7 +42,6 @@ using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased:
 
 int main()
 {
-
     // IO supports inf-sup and uncertain form
     // Both bare and decorated interval literals work with or without a decoration specifier
     std::stringstream ss("[1.0,inf]_def   [5.0]   1.234567?12de+3_dac   [,]");
@@ -168,6 +167,15 @@ int main()
 
     std::cout << p1788::io::dec_alpha;     // default
     std::cout << di << std::endl << std::endl;
+
+
+    // 4) Note that an exact text representation can be achieved by using the modifiers
+    //    E.g. the following modifiers create an exact inf-sup representation with hex numbers
+    std::cout << p1788::io::inf_sup_form;   // default
+    std::cout << p1788::io::precision(0);   // default
+    std::cout << p1788::io::hex;
+
+    std::cout << I<double>("[1/10]") << std::endl;
 
     return 0;
 }
