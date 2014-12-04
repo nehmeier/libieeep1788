@@ -304,55 +304,198 @@ public:
 // p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_class_impl.hpp
 // -----------------------------------------------------------------------------
 
-    // Constructors
+///@name Interval constructors
+///
+///
+///@{
+
+    /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation representation\endlink for an empty bare interval
+    ///
+    /// \return representation(NaN, NaN)
     static representation constructor();
+
+    /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an empty decorated interval
+    ///
+    /// \return representation_dec(representation(NaN, NaN), \link p1788::decoration::decoration trv\endlink)
     static representation_dec constructor_dec();
 
+
+
+    /// \brief
+    ///
+    /// \param lower T
+    /// \param upper T
+    /// \return representation
+    ///
+    ///
     static representation constructor(T lower, T upper);
+
+    /// \brief
+    ///
+    /// \param lower T
+    /// \param upper T
+    /// \return representation_dec
+    ///
+    ///
     static representation_dec constructor_dec(T lower, T upper);
 
     // Mixed type
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
     template<typename L_, typename U_>
     static representation constructor(L_ lower, U_ upper);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
     template<typename L_, typename U_>
     static representation_dec constructor_dec(L_ lower, U_ upper);
 
     // Kind of SetDec
+    /// \brief
+    ///
+    /// \param lower T
+    /// \param upper T
+    /// \param dec p1788::decoration::decoration
+    /// \return representation_dec
+    ///
+    ///
     static representation_dec constructor_dec(T lower, T upper, p1788::decoration::decoration dec);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
     template<typename L_, typename U_>
     static representation_dec constructor_dec(L_ lower, U_ upper, p1788::decoration::decoration dec);
 
     // Literal
+    /// \brief
+    ///
+    /// \param str std::string const&
+    /// \return representation
+    ///
+    ///
     static representation constructor(std::string const& str);
+
+    /// \brief
+    ///
+    /// \param str std::string const&
+    /// \return representation_dec
+    ///
+    ///
     static representation_dec constructor_dec(std::string const& str);
 
     // Copy
+    /// \brief
+    ///
+    /// \param other representation const&
+    /// \return representation
+    ///
+    ///
     static representation constructor(representation const& other);
+
+    /// \brief
+    ///
+    /// \param other representation_dec const&
+    /// \return representation_dec
+    ///
+    ///
     static representation_dec constructor_dec(representation_dec const& other);
 
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
     template<typename T_>
     static representation constructor(representation_type<T_> const& other);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
     template<typename T_>
     static representation_dec constructor_dec(representation_dec_type<T_> const& other);
 
     // Convert: see intervalPart
+    /// \brief
+    ///
+    /// \param other representation_dec const&
+    /// \return representation
+    ///
+    ///
     static representation constructor(representation_dec const& other);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
     template<typename T_>
     static representation constructor(representation_dec_type<T_> const& other);
+
     // Convert: newDec
+    /// \brief
+    ///
+    /// \param other representation const&
+    /// \return representation_dec
+    ///
+    ///
     static representation_dec constructor_dec(representation const& other);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
     template<typename T_>
     static representation_dec constructor_dec(representation_type<T_> const& other);
 
     // setDec
+    /// \brief
+    ///
+    /// \param other representation const&
+    /// \param dec p1788::decoration::decoration
+    /// \return representation_dec
+    ///
+    ///
     static representation_dec constructor_dec(representation const& other, p1788::decoration::decoration dec);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
     template<typename T_>
     static representation_dec constructor_dec(representation_type<T_> const& other, p1788::decoration::decoration dec);
 
-
+///@}
 
     static p1788::decoration::decoration decoration(representation_dec const& x);
-
 
 ///@name Interval constants
 ///
@@ -362,40 +505,33 @@ public:
     /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation representation\endlink for an empty bare interval
     ///
     /// \return representation(NaN, NaN)
-    ///
-    ///
     static representation empty();
 
     /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an empty decorated interval
     ///
     /// \return representation_dec(representation(NaN, NaN), \link p1788::decoration::decoration trv\endlink)
-    ///
-    ///
     static representation_dec empty_dec();
+
 
     /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation representation\endlink for an entire bare interval
     ///
     /// \return representation(\f$-\infty\f$, \f$+\infty\f$)
-    ///
-    ///
     static representation entire();
 
     /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an entire decorated interval
     ///
     /// \return representation_dec(representation(\f$-\infty\f$, \f$+\infty\f$), \link p1788::decoration::decoration dac\endlink)
-    ///
-    ///
     static representation_dec entire_dec();
+
 
     /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an ill-formend decorated interval (Not an Interval)
     ///
     /// \return representation_dec(representation(NaN, NaN), \link p1788::decoration::decoration ill\endlink)
-    ///
-    ///
     static representation_dec nai();
 
 
 ///@}
+
 
 // -----------------------------------------------------------------------------
 // Input and output
@@ -2565,32 +2701,44 @@ public:
     /// \todo TODO
     ///
     ///
-    static bool is_common(representation const&);
+    static bool is_common(representation const& x);
 
     /// \todo TODO
     ///
     ///
-    static bool is_common(representation_dec const&);
+    static bool is_common(representation_dec const& x);
 
     /// \todo TODO
     ///
     ///
-    static bool is_singleton(representation const&);
+    static bool is_singleton(representation const& x);
 
     /// \todo TODO
     ///
     ///
-    static bool is_singleton(representation_dec const&);
+    static bool is_singleton(representation_dec const& x);
 
     /// \todo TODO
     ///
     ///
-    static bool is_member(T, representation const&);
+    static bool is_member(T m, representation const& x);
 
     /// \todo TODO
     ///
     ///
-    static bool is_member(T, representation_dec const&);
+    static bool is_member(T m, representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static bool is_member(T_ m, representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static bool is_member(T_ m, representation_dec const& x);
 
 ///@}
 

@@ -39,8 +39,8 @@ project(libieeep1788)
 
 #TODO ueber GIT Tags auslesen
 set (P1788_VERSION_MAJOR 0)
-set (P1788_VERSION_MINOR 0)
-set (P1788_VERSION_PATCH 1)
+set (P1788_VERSION_MINOR 1)
+set (P1788_VERSION_PATCH 0)
 
 configure_file (
   "${PROJECT_SOURCE_DIR}/p1788/version.hpp.in"

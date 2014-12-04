@@ -26,8 +26,9 @@
 #define BOOST_TEST_MODULE "Flavor: Constructors, Methods, Interval constants [p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor]"
 #include "test/util/boost_test_wrapper.hpp"
 
-#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor.hpp"
+#include "p1788/exception/exception.hpp"
 #include "p1788/decoration/decoration.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor.hpp"
 #include "test/util/mpfr_bin_ieee754_flavor_io_test_util.hpp"
 
 #include <cmath>

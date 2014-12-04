@@ -26,14 +26,16 @@
 #define BOOST_TEST_MODULE "Flavor: IO [p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor]"
 #include "test/util/boost_test_wrapper.hpp"
 
+#include "p1788/exception/exception.hpp"
+#include "p1788/decoration/decoration.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor.hpp"
-#include "p1788/infsup/base_interval.hpp"
 
 #include "test/util/mpfr_bin_ieee754_flavor_io_test_util.hpp"
 
 #include <boost/test/output_test_stream.hpp>
 
 #include <limits>
+#include <sstream>
 
 template<typename T>
 using F = p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>;

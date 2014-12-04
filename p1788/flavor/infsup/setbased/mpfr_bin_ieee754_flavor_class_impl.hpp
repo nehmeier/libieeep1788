@@ -60,6 +60,7 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec()
 }
 
 
+
 // bare inf-sup interval
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
@@ -460,7 +461,6 @@ mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_type<T_> const& other
 }
 
 
-
 // get decoration
 template<typename T>
 p1788::decoration::decoration
@@ -473,6 +473,7 @@ mpfr_bin_ieee754_flavor<T>::decoration(representation_dec const& other)
 
     return other.second;
 }
+
 
 // -----------------------------------------------------------------------------
 // Interval constants
@@ -513,6 +514,8 @@ mpfr_bin_ieee754_flavor<T>::entire_dec()
     return representation_dec(representation(-std::numeric_limits<T>::infinity(),
                               std::numeric_limits<T>::infinity()), p1788::decoration::decoration::dac);
 }
+
+
 
 // nai decorated interval
 template<typename T>

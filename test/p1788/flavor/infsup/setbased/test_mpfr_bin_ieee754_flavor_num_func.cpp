@@ -26,6 +26,8 @@
 #define BOOST_TEST_MODULE "Flavor: Numeric functions on intervals [p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor]"
 #include "test/util/boost_test_wrapper.hpp"
 
+#include "p1788/exception/exception.hpp"
+#include "p1788/decoration/decoration.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor.hpp"
 #include "test/util/mpfr_bin_ieee754_flavor_io_test_util.hpp"
 
@@ -79,15 +81,15 @@ BOOST_AUTO_TEST_CASE(minimal_inf_test)
     BOOST_CHECK_EQUAL( F<double>::inf(REP<double>(-0.0,-0.0)), -0.0 );
     BOOST_CHECK( std::signbit(F<double>::inf(REP<double>(-0.0,-0.0))));
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::inf(REP<double>(1.0,-2.0)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::inf(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -123,15 +125,15 @@ BOOST_AUTO_TEST_CASE(minimal_inf_mixedtype_test)
     BOOST_CHECK( std::signbit(F<float>::inf(REP<double>(DNORM_MIN_D,DNORM_MIN_D))));
     BOOST_CHECK_EQUAL( F<float>::inf(REP<double>(-MAX_D,MAX_D)), -INF_F );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<float>::inf(REP<double>(1.0,-2.0)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::inf(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 
@@ -162,15 +164,15 @@ BOOST_AUTO_TEST_CASE(minimal_inf_mixedtype_test)
     BOOST_CHECK_EQUAL( F<double>::inf(REP<float>(DNORM_MIN_F,DNORM_MIN_F)), DNORM_MIN_F );
     BOOST_CHECK_EQUAL( F<double>::inf(REP<float>(-MAX_F,MAX_F)), -MAX_F );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::inf(REP<float>(1.0f,-2.0f)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::inf(REP<float>(1.0f,-2.0f)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -202,16 +204,16 @@ BOOST_AUTO_TEST_CASE(minimal_inf_dec_test)
     BOOST_CHECK_EQUAL( F<double>::inf(REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)), -0.0 );
     BOOST_CHECK( std::signbit(F<double>::inf(REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv))));
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::inf(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::inf(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -250,15 +252,15 @@ BOOST_AUTO_TEST_CASE(minimal_inf_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::inf(REP_DEC<double>(REP<double>(-MAX_D,MAX_D), DEC::trv)), -INF_F );
 
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<float>::inf(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::inf(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 
@@ -290,15 +292,15 @@ BOOST_AUTO_TEST_CASE(minimal_inf_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<double>::inf(REP_DEC<float>(REP<float>(DNORM_MIN_F,DNORM_MIN_F), DEC::def)), DNORM_MIN_F );
     BOOST_CHECK_EQUAL( F<double>::inf(REP_DEC<float>(REP<float>(-MAX_F,MAX_F), DEC::trv)), -MAX_F );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::inf(REP_DEC<float>(REP<float>(1.0f,-2.0f), DEC::com)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::inf(REP_DEC<float>(REP<float>(1.0f,-2.0f), DEC::com)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -330,15 +332,15 @@ BOOST_AUTO_TEST_CASE(minimal_sup_test)
     BOOST_CHECK_EQUAL( F<double>::sup(REP<double>(-0.0,-0.0)), 0.0 );
     BOOST_CHECK( !std::signbit(F<double>::sup(REP<double>(-0.0,-0.0))));
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::sup(REP<double>(1.0,-2.0)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::sup(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -374,15 +376,15 @@ BOOST_AUTO_TEST_CASE(minimal_sup_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::sup(REP<double>(DNORM_MIN_D,DNORM_MIN_D)), DNORM_MIN_F );
     BOOST_CHECK_EQUAL( F<float>::sup(REP<double>(-MAX_D,MAX_D)), INF_F );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<float>::sup(REP<double>(1.0,-2.0)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::sup(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 
@@ -413,15 +415,15 @@ BOOST_AUTO_TEST_CASE(minimal_sup_mixedtype_test)
     BOOST_CHECK_EQUAL( F<double>::sup(REP<float>(-MAX_F,MAX_F)), MAX_F );
 
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::sup(REP<float>(1.0f,-2.0f)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::sup(REP<float>(1.0f,-2.0f)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -453,15 +455,15 @@ BOOST_AUTO_TEST_CASE(minimal_sup_dec_test)
     BOOST_CHECK_EQUAL( F<double>::sup(REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)), +0.0 );
     BOOST_CHECK( !std::signbit(F<double>::sup(REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv))));
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::sup(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::sup(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -499,15 +501,15 @@ BOOST_AUTO_TEST_CASE(minimal_sup_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::sup(REP_DEC<double>(REP<double>(DNORM_MIN_D,DNORM_MIN_D), DEC::def)), DNORM_MIN_F );
     BOOST_CHECK_EQUAL( F<float>::sup(REP_DEC<double>(REP<double>(-MAX_D,MAX_D), DEC::trv)), INF_F );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<float>::sup(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::sup(REP_DEC<double>(REP<double>(1.0,-2.0), DEC::com)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 
@@ -540,15 +542,15 @@ BOOST_AUTO_TEST_CASE(minimal_sup_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<double>::sup(REP_DEC<float>(REP<float>(DNORM_MIN_F,DNORM_MIN_F), DEC::def)), DNORM_MIN_F );
     BOOST_CHECK_EQUAL( F<double>::sup(REP_DEC<float>(REP<float>(-MAX_F,MAX_F), DEC::trv)), MAX_F );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::sup(REP_DEC<float>(REP<float>(1.0f,-2.0f), DEC::com)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::sup(REP_DEC<float>(REP<float>(1.0f,-2.0f), DEC::com)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -579,15 +581,15 @@ BOOST_AUTO_TEST_CASE(minimal_mid_test)
     BOOST_CHECK_EQUAL( F<double>::mid(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000002P-1022"))), std::stod("0X0.0000000000002P-1022") );
 
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::mid(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::mid(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -615,15 +617,15 @@ BOOST_AUTO_TEST_CASE(minimal_mid_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::mid(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000003P-1022"))), 0.0f );
     BOOST_CHECK( !std::signbit(F<float>::mid(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000003P-1022")))) );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<float>::mid(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::mid(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -652,15 +654,15 @@ BOOST_AUTO_TEST_CASE(minimal_mid_dec_test)
     BOOST_CHECK_EQUAL( F<double>::mid(REP_DEC<double>(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000003P-1022")),DEC::trv)), std::stod("0X0.0000000000002P-1022") );
     BOOST_CHECK_EQUAL( F<double>::mid(REP_DEC<double>(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000002P-1022")),DEC::trv)), std::stod("0X0.0000000000002P-1022") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::mid(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::mid(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -689,15 +691,15 @@ BOOST_AUTO_TEST_CASE(minimal_mid_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::mid(REP_DEC<double>(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000003P-1022")),DEC::trv)), 0.0f );
     BOOST_CHECK( !std::signbit(F<float>::mid(REP_DEC<double>(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000003P-1022")),DEC::trv))) );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<float>::mid(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::mid(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -719,15 +721,15 @@ BOOST_AUTO_TEST_CASE(minimal_rad_test)
     BOOST_CHECK_EQUAL( F<double>::rad(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000002P-1022"))), std::stod("0X0.0000000000001P-1022") );
     BOOST_CHECK_EQUAL( F<double>::rad(REP<double>(std::stod("0X1P+0"), std::stod("0X1.0000000000003P+0"))), std::stod("0X1P-51"));
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::rad(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::rad(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -745,15 +747,15 @@ BOOST_AUTO_TEST_CASE(minimal_rad_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::rad(REP<double>(-INF_D, 1.2)), INF_F );
     BOOST_CHECK_EQUAL( F<float>::rad(REP<double>(std::stod("0X1.FFFFFCP+127"),std::stod("0X1.FFFFFFP+127"))), std::stof("0X1P+104") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<float>::rad(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::rad(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -774,15 +776,15 @@ BOOST_AUTO_TEST_CASE(minimal_rad_dec_test)
     BOOST_CHECK_EQUAL( F<double>::rad(REP_DEC<double>(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000002P-1022")),DEC::trv)), std::stod("0X0.0000000000001P-1022") );
     BOOST_CHECK_EQUAL( F<double>::rad(REP_DEC<double>(REP<double>(std::stod("0X1P+0"), std::stod("0X1.0000000000003P+0")),DEC::trv)), std::stod("0X1P-51"));
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<double>::mid(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::mid(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -801,15 +803,15 @@ BOOST_AUTO_TEST_CASE(minimal_rad_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::rad(REP_DEC<double>(REP<double>(-INF_D, 1.2),DEC::trv)), INF_F );
     BOOST_CHECK_EQUAL( F<float>::rad(REP_DEC<double>(REP<double>(std::stod("0X1.FFFFFCP+127"),std::stod("0X1.FFFFFFP+127")),DEC::trv)), std::stof("0X1P+104") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan( F<float>::mid(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)) ) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW(F<float>::mid(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -839,16 +841,16 @@ BOOST_AUTO_TEST_CASE(minimal_mid_rad_test)
     BOOST_CHECK_EQUAL( F<double>::mid_rad(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000002P-1022"))).first, std::stod("0X0.0000000000002P-1022") );
 
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<double>::mid_rad(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))).first) );
     BOOST_CHECK( std::isnan(F<double>::mid_rad(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))).second) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::mid_rad(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 
@@ -863,7 +865,7 @@ BOOST_AUTO_TEST_CASE(minimal_mid_rad_test)
     BOOST_CHECK_EQUAL( F<double>::mid_rad(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000002P-1022"))).second, std::stod("0X0.0000000000001P-1022") );
     BOOST_CHECK_EQUAL( F<double>::mid_rad(REP<double>(std::stod("0X1P+0"), std::stod("0X1.0000000000003P+0"))).second, std::stod("0X1P-51"));
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 }
 
@@ -890,16 +892,16 @@ BOOST_AUTO_TEST_CASE(minimal_mid_rad_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::mid_rad(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000003P-1022"))).first, 0.0f );
     BOOST_CHECK( !std::signbit(F<float>::mid_rad(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000003P-1022"))).first) );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<float>::mid_rad(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))).first) );
     BOOST_CHECK( std::isnan(F<float>::mid_rad(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))).second) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::mid_rad(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1"))), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 
@@ -912,7 +914,7 @@ BOOST_AUTO_TEST_CASE(minimal_mid_rad_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::mid_rad(REP<double>(-INF_D, 1.2)).second, INF_F );
     BOOST_CHECK_EQUAL( F<float>::mid_rad(REP<double>(std::stod("0X1.FFFFFCP+127"),std::stod("0X1.FFFFFFP+127"))).second, std::stof("0X1P+104") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 }
 
@@ -941,17 +943,17 @@ BOOST_AUTO_TEST_CASE(minimal_mid_rad_dec_test)
     BOOST_CHECK_EQUAL( F<double>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000002P-1022")),DEC::trv)).first, std::stod("0X0.0000000000002P-1022") );
 
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<double>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)).first) );
     BOOST_CHECK( std::isnan(F<double>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)).second) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 
@@ -967,7 +969,7 @@ BOOST_AUTO_TEST_CASE(minimal_mid_rad_dec_test)
     BOOST_CHECK_EQUAL( F<double>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000002P-1022")),DEC::trv)).second, std::stod("0X0.0000000000001P-1022") );
     BOOST_CHECK_EQUAL( F<double>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X1P+0"), std::stod("0X1.0000000000003P+0")),DEC::trv)).second, std::stod("0X1P-51"));
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 }
 
@@ -995,17 +997,17 @@ BOOST_AUTO_TEST_CASE(minimal_mid_rad_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000003P-1022")),DEC::trv)).first, 0.0f );
     BOOST_CHECK( !std::signbit(F<float>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X0.0000000000001P-1022"),std::stod("0X0.0000000000003P-1022")),DEC::trv)).first) );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<float>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)).first) );
     BOOST_CHECK( std::isnan(F<float>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)).second) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X1.8P+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 
@@ -1019,7 +1021,7 @@ BOOST_AUTO_TEST_CASE(minimal_mid_rad_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::mid_rad(REP_DEC<double>(REP<double>(-INF_D, 1.2),DEC::trv)).second, INF_F );
     BOOST_CHECK_EQUAL( F<float>::mid_rad(REP_DEC<double>(REP<double>(std::stod("0X1.FFFFFCP+127"),std::stod("0X1.FFFFFFP+127")),DEC::trv)).second, std::stof("0X1P+104") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 }
 
@@ -1038,15 +1040,15 @@ BOOST_AUTO_TEST_CASE(minimal_wid_test)
     BOOST_CHECK_EQUAL( F<double>::wid(REP<double>(std::stod("0X1P+0"),std::stod("0X1.0000000000001P+0"))), std::stod("0X1P-52") );
     BOOST_CHECK_EQUAL( F<double>::wid(REP<double>(std::stod("0X1P-1022"),std::stod("0X1.0000000000001P-1022"))), std::stod("0X0.0000000000001P-1022") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<double>::wid(REP<double>(1.0,-2.0))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::wid(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1064,16 +1066,16 @@ BOOST_AUTO_TEST_CASE(minimal_wid_mixedtype_test)
     BOOST_CHECK( std::isnan(F<float>::wid(REP<double>(NaN_D,NaN_D))) );
     BOOST_CHECK_EQUAL( F<float>::wid(REP<double>(std::stod("0X1P-1022"),std::stod("0X1.0000000000001P-1022"))), std::stof("0X1P-149") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<float>::wid(REP<double>(1.0,-2.0))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::wid(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1093,16 +1095,16 @@ BOOST_AUTO_TEST_CASE(minimal_wid_dec_test)
     BOOST_CHECK_EQUAL( F<double>::wid(REP_DEC<double>(REP<double>(std::stod("0X1P+0"),std::stod("0X1.0000000000001P+0")),DEC::trv)), std::stod("0X1P-52") );
     BOOST_CHECK_EQUAL( F<double>::wid(REP_DEC<double>(REP<double>(std::stod("0X1P-1022"),std::stod("0X1.0000000000001P-1022")),DEC::trv)), std::stod("0X0.0000000000001P-1022") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<double>::wid(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::wid(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1121,15 +1123,15 @@ BOOST_AUTO_TEST_CASE(minimal_wid_dec_mixedtype_test)
     BOOST_CHECK( std::isnan(F<float>::wid(REP_DEC<double>(REP<double>(NaN_D,NaN_D),DEC::ill))) );
     BOOST_CHECK_EQUAL( F<float>::wid(REP_DEC<double>(REP<double>(std::stod("0X1P-1022"),std::stod("0X1.0000000000001P-1022")),DEC::trv)), std::stof("0X1P-149") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<float>::wid(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::wid(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1150,15 +1152,15 @@ BOOST_AUTO_TEST_CASE(minimal_mag_test)
     BOOST_CHECK_EQUAL( F<double>::mag(REP<double>(-0.0,-0.0)), 0.0 );
     BOOST_CHECK( !std::signbit(F<double>::mag(REP<double>(-0.0,-0.0))) );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<double>::mag(REP<double>(1.0,-2.0))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::mag(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1180,16 +1182,16 @@ BOOST_AUTO_TEST_CASE(minimal_mag_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::mag(REP<double>(std::stod("0X1P-1022"),std::stod("0X1.0000000000001P-1022"))), std::stof("0X1P-149") );
     BOOST_CHECK_EQUAL( F<float>::mag(REP<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.6666666666666P-1"))), std::stof("0X1.19999AP+0") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<float>::mag(REP<double>(1.0,-2.0))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::mag(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1211,15 +1213,15 @@ BOOST_AUTO_TEST_CASE(minimal_mag_dec_test)
     BOOST_CHECK( !std::signbit(F<double>::mag(REP_DEC<double>(REP<double>(-0.0,-0.0),DEC::trv))) );
 
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<double>::mag(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::mag(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1243,15 +1245,15 @@ BOOST_AUTO_TEST_CASE(minimal_mag_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::mag(REP_DEC<double>(REP<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.6666666666666P-1")),DEC::trv)), std::stof("0X1.19999AP+0") );
 
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<float>::mag(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::mag(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1277,15 +1279,15 @@ BOOST_AUTO_TEST_CASE(minimal_mig_test)
     BOOST_CHECK_EQUAL( F<double>::mig(REP<double>(-0.0,-0.0)), 0.0 );
     BOOST_CHECK( !std::signbit(F<double>::mig(REP<double>(-0.0,-0.0))) );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<double>::mig(REP<double>(1.0,-2.0))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::mig(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1311,16 +1313,16 @@ BOOST_AUTO_TEST_CASE(minimal_mig_mixedtype_test)
     BOOST_CHECK( !std::signbit(F<float>::mig(REP<double>(-0.0,-0.0))) );
     BOOST_CHECK_EQUAL( F<float>::mig(REP<double>(std::stod("0X1.199999999999AP+0"),std::stod("0X1.6666666666666P+1"))), std::stof("0X1.199998P+0") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<float>::mig(REP<double>(1.0,-2.0))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::mig(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1346,15 +1348,15 @@ BOOST_AUTO_TEST_CASE(minimal_mig_dec_test)
     BOOST_CHECK_EQUAL( F<double>::mig(REP_DEC<double>(REP<double>(-0.0,-0.0),DEC::trv)), 0.0 );
     BOOST_CHECK( !std::signbit(F<double>::mig(REP_DEC<double>(REP<double>(-0.0,-0.0),DEC::trv))) );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<double>::mig(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::mig(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1381,15 +1383,15 @@ BOOST_AUTO_TEST_CASE(minimal_mig_dec_mixedtype_test)
     BOOST_CHECK( !std::signbit(F<float>::mig(REP_DEC<double>(REP<double>(-0.0,-0.0),DEC::trv))) );
     BOOST_CHECK_EQUAL( F<float>::mig(REP_DEC<double>(REP<double>(std::stod("0X1.199999999999AP+0"),std::stod("0X1.6666666666666P+1")),DEC::trv)), std::stof("0X1.199998P+0") );
 
-    BOOST_CHECK(!p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
     BOOST_CHECK( std::isnan(F<float>::mig(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv))) );
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::mig(REP_DEC<double>(REP<double>(1.0,-2.0),DEC::trv)), p1788::exception::invalid_operand_exception);
-    BOOST_CHECK(p1788::exception::invalid_operand());
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }

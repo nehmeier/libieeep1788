@@ -26,6 +26,8 @@
 #ifndef LIBIEEEP1788_P1788_INFSUP_FORWARD_DECLARATION_HPP
 #define LIBIEEEP1788_P1788_INFSUP_FORWARD_DECLARATION_HPP
 
+
+
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 //                        Forward declaration
@@ -40,12 +42,15 @@ namespace infsup
 {
 
 
+// base type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 class base_interval;
 
+// bare interval
 template<typename T, template<typename> class Flavor>
 class interval;
 
+// decorated interval
 template<typename T, template<typename> class Flavor>
 class decorated_interval;
 

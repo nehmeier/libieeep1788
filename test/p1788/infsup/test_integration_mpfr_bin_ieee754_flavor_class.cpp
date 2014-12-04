@@ -23,7 +23,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#define BOOST_TEST_MODULE "Class members [infsup/interval, infsup/setbased/mpfr_bin_ieee754_flavor]"
+#define BOOST_TEST_MODULE "Integration: Constructors, Methods, Interval constants [infsup/interval, infsup/decorated_interval, p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor]"
 #include "test/util/boost_test_wrapper.hpp"
 
 

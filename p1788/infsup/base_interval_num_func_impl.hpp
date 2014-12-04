@@ -32,19 +32,20 @@ namespace p1788
 namespace infsup
 {
 
+// inf
 
-// inf( base_interval )
-template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-T_ inf(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
-    return Flavor_<T_>::inf(x.rep_);
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T base_interval<T,Flavor,RepType,ConcreteInterval>::inf(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return Flavor<T>::inf(x.rep_);
 }
 
-// inf( base_interval ) mixed type
+// static mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-T
-base_interval<T,Flavor,RepType,ConcreteInterval>::inf(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
-
+T base_interval<T,Flavor,RepType,ConcreteInterval>::inf(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x)
+{
     // assert that only bare intervals or decorated intervals are used
     static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
                     && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
@@ -59,18 +60,30 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::inf(base_interval<T_, Flavor, 
 }
 
 
-// sup( base_interval )
-template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-T_ sup(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
-    return Flavor_<T_>::sup(x.rep_);
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T inf(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::inf(x);
 }
 
-// sup( base_interval ) mixed type
+
+
+
+// sup
+
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T base_interval<T,Flavor,RepType,ConcreteInterval>::sup(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return Flavor<T>::sup(x.rep_);
+}
+
+// static mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-T
-base_interval<T,Flavor,RepType,ConcreteInterval>::sup(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
-
+T base_interval<T,Flavor,RepType,ConcreteInterval>::sup(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x)
+{
     // assert that only bare intervals or decorated intervals are used
     static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
                     && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
@@ -85,18 +98,30 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::sup(base_interval<T_, Flavor, 
 }
 
 
-// mid( base_interval )
-template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-T_ mid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
-    return Flavor_<T_>::mid(x.rep_);
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T sup(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::sup(x);
 }
 
-// mid( base_interval ) mixed type
+
+
+
+// mid
+
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T base_interval<T,Flavor,RepType,ConcreteInterval>::mid(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return Flavor<T>::mid(x.rep_);
+}
+
+// static mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-T
-base_interval<T,Flavor,RepType,ConcreteInterval>::mid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
-
+T base_interval<T,Flavor,RepType,ConcreteInterval>::mid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x)
+{
     // assert that only bare intervals or decorated intervals are used
     static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
                     && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
@@ -111,18 +136,30 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::mid(base_interval<T_, Flavor, 
 }
 
 
-// rad( base_interval )
-template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-T_ rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
-    return Flavor_<T_>::rad(x.rep_);
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T mid(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::mid(x);
 }
 
-// rad( base_interval ) mixed type
+
+
+
+// rad
+
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T base_interval<T,Flavor,RepType,ConcreteInterval>::rad(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return Flavor<T>::rad(x.rep_);
+}
+
+// static mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-T
-base_interval<T,Flavor,RepType,ConcreteInterval>::rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
-
+T base_interval<T,Flavor,RepType,ConcreteInterval>::rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x)
+{
     // assert that only bare intervals or decorated intervals are used
     static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
                     && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
@@ -131,22 +168,36 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::rad(base_interval<T_, Flavor, 
                     "It is not supported by mixed type operations to use "
                     "interval and decorated_interval types together!"
                    );
+
     // call of mixed-type version
     return Flavor<T>::rad(x.rep_);
 }
 
-// mid_rad( base_interval )
-template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-std::pair<T_, T_> mid_rad(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
-    return Flavor_<T_>::mid_rad(x.rep_);
+
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T rad(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::rad(x);
 }
 
-// mid_rad( base_interval ) mixed type
+
+
+
+// mid_rad
+
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+std::pair<T,T> base_interval<T,Flavor,RepType,ConcreteInterval>::mid_rad(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return Flavor<T>::mid_rad(x.rep_);
+}
+
+// static mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-std::pair<T, T>
-base_interval<T,Flavor,RepType,ConcreteInterval>::mid_rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
-
+std::pair<T,T> base_interval<T,Flavor,RepType,ConcreteInterval>::mid_rad(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x)
+{
     // assert that only bare intervals or decorated intervals are used
     static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
                     && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
@@ -161,18 +212,30 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::mid_rad(base_interval<T_, Flav
 }
 
 
-// wid( base_interval )
-template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-T_ wid(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
-    return Flavor_<T_>::wid(x.rep_);
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+std::pair<T,T> mid_rad(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::mid_rad(x);
 }
 
-// wid( base_interval ) mixed type
+
+
+
+// wid
+
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T base_interval<T,Flavor,RepType,ConcreteInterval>::wid(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return Flavor<T>::wid(x.rep_);
+}
+
+// static mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-T
-base_interval<T,Flavor,RepType,ConcreteInterval>::wid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
-
+T base_interval<T,Flavor,RepType,ConcreteInterval>::wid(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x)
+{
     // assert that only bare intervals or decorated intervals are used
     static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
                     && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
@@ -187,18 +250,30 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::wid(base_interval<T_, Flavor, 
 }
 
 
-// mag( base_interval )
-template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-T_ mag(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
-    return Flavor_<T_>::mag(x.rep_);
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T wid(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::wid(x);
 }
 
-// mag( base_interval ) mixed type
+
+
+
+// mag
+
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T base_interval<T,Flavor,RepType,ConcreteInterval>::mag(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return Flavor<T>::mag(x.rep_);
+}
+
+// static mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-T
-base_interval<T,Flavor,RepType,ConcreteInterval>::mag(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
-
+T base_interval<T,Flavor,RepType,ConcreteInterval>::mag(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x)
+{
     // assert that only bare intervals or decorated intervals are used
     static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
                     && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
@@ -213,18 +288,30 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::mag(base_interval<T_, Flavor, 
 }
 
 
-// mig( base_interval )
-template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-T_ mig(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const& x) {
-    return Flavor_<T_>::mig(x.rep_);
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T mag(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::mag(x);
 }
 
-// mig( base_interval ) mixed type
+
+
+
+// mig
+
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T base_interval<T,Flavor,RepType,ConcreteInterval>::mig(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return Flavor<T>::mig(x.rep_);
+}
+
+// static mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-T
-base_interval<T,Flavor,RepType,ConcreteInterval>::mig(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x) {
-
+T base_interval<T,Flavor,RepType,ConcreteInterval>::mig(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x)
+{
     // assert that only bare intervals or decorated intervals are used
     static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
                     && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
@@ -237,6 +324,17 @@ base_interval<T,Flavor,RepType,ConcreteInterval>::mig(base_interval<T_, Flavor, 
     // call of mixed-type version
     return Flavor<T>::mig(x.rep_);
 }
+
+
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+T mig(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::mig(x);
+}
+
+
+
 
 
 } // namespace infsup

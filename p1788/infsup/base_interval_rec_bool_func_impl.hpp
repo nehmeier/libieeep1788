@@ -32,30 +32,56 @@ namespace p1788
 namespace infsup
 {
 
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// \name Recommended boolean functions on intervals, see P1788/D8.1 Sect. 10.7.3
-//
-//@{
+// is_common
 
-
+// static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-bool is_common(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
+bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_common(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
     return Flavor<T>::is_common(x.rep_);
 }
 
+// function
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-bool is_singleton(base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
+bool is_common(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T, Flavor, RepType, ConcreteInterval>::is_common(x);
+}
+
+
+// is_singleton
+
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_singleton(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
     return Flavor<T>::is_singleton(x.rep_);
 }
 
+// function
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-bool is_member(T m, base_interval<T, Flavor, RepType, ConcreteInterval> const& x) {
-    return Flavor<T>::is_member(m, x.rep_);
+bool is_singleton(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T, Flavor, RepType, ConcreteInterval>::is_singleton(x);
 }
 
 
-//@}
+// is_member
+
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T_>
+bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_member(T_ m, base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return Flavor<T>::is_member(m, x.rep_);
+}
+
+// function
+template<typename T_, typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+bool is_member(T_ m, base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+{
+    return base_interval<T, Flavor, RepType, ConcreteInterval>::is_member(m, x);
+}
 
 
 } // namespace infsup

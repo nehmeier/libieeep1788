@@ -29,13 +29,18 @@ if(GMP_FOUND)
 
         # relevant example files of this directory
         set(P1788_EXAMPLE_FILES
-            helloworld.cpp
-            boolFunc.cpp
-            elementaryFunc.cpp
-            eval_example.cpp
-            ia_newton.cpp
-            ia_bisection.cpp
-            fp_tool.cpp
+            e01_helloworld.cpp
+            e02_intervals.cpp
+            e03_io.cpp
+            e04_boolFunc.cpp
+            e05_numFunc.cpp
+      
+#
+#            elementaryFunc.cpp
+#            eval_example.cpp
+#            ia_newton.cpp
+#            ia_bisection.cpp
+#            fp_tool.cpp
            )
 
         # relative path of this directory

@@ -39,47 +39,97 @@ namespace infsup
 namespace setbased
 {
 
+// is_common ( bare interval )
 template<typename T>
 bool mpfr_bin_ieee754_flavor<T>::is_common(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
-    //TODO ist das in D8.1 7.2 so gemeint?
+    if (!is_valid(x))
+        return false;
+
     return !is_empty(x)
-        && x.first > -std::numeric_limits<T>::infinity()
-        && x.second < std::numeric_limits<T>::infinity();
+           && x.first > -std::numeric_limits<T>::infinity()
+           && x.second < std::numeric_limits<T>::infinity();
 }
 
+// is_common (decorated interval)
 template<typename T>
 bool mpfr_bin_ieee754_flavor<T>::is_common(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    //TODO ist das in D8.1 7.2 so gemeint? oder hier die decoration verwenden?
-    return is_common(x.first);
+    if (!is_valid(x))
+        return false;
+
+    return x.second == p1788::decoration::decoration::com;
 }
 
-
+// is_singleton ( bare interval )
 template<typename T>
 bool mpfr_bin_ieee754_flavor<T>::is_singleton(mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
+    if (!is_valid(x))
+        return false;
+
     return x.first == x.second;
 }
 
+// is_singleton (decorated interval)
 template<typename T>
 bool mpfr_bin_ieee754_flavor<T>::is_singleton(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
+    if (!is_valid(x))
+        return false;
+
+    // call bare version
     return is_singleton(x.first);
 }
 
-
+// is_member (bare interval)
 template<typename T>
 bool mpfr_bin_ieee754_flavor<T>::is_member(T m, mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
-    return x.first <= m && m <= x.second
-        && std::abs(m) != std::numeric_limits<T>::infinity();
+    if (!is_valid(x))
+        return false;
+
+    // call bare mixed type
+    return is_member<T>(m, x);
 }
 
+// is_member (decorated interval)
 template<typename T>
 bool mpfr_bin_ieee754_flavor<T>::is_member(T m, mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    return is_member(m, x.first);
+    if (!is_valid(x))
+        return false;
+
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && is_member<T>(m, x.first);
+}
+
+// is_member (bare interval) mixed type
+template<typename T>
+template<typename T_>
+bool mpfr_bin_ieee754_flavor<T>::is_member(T_ m, mpfr_bin_ieee754_flavor<T>::representation const& x)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    if (!is_valid(x))
+        return false;
+
+    return x.first <= m && m <= x.second
+           && !std::isinf(m);
+}
+
+// is_member (decorated interval)  mixed type
+template<typename T>
+template<typename T_>
+bool mpfr_bin_ieee754_flavor<T>::is_member(T_ m, mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    if (!is_valid(x))
+        return false;
+
+    // call bare mixed type version if not NaI
+    return !is_nai(x) && is_member(m, x.first);
 }
 
 
