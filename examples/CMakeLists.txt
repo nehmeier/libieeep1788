@@ -35,6 +35,7 @@ if(GMP_FOUND)
             e04_bool_func.cpp
             e05_num_func.cpp
             e06_set_op.cpp
+	    e07_elem_func.cpp
 #
 #            elementaryFunc.cpp
 #            eval_example.cpp
