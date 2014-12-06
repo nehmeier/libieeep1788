@@ -57,19 +57,19 @@ mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation
 
 // intersect ( bare interval ) mixed type
 template<typename T>
-template<typename T1_, typename T2_>
+template<typename T1, typename T2>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation_type<T1_> const& x,
-                                      mpfr_bin_ieee754_flavor<T>::representation_type<T2_> const& y)
+mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const& x,
+                                      mpfr_bin_ieee754_flavor<T>::representation_type<T2> const& y)
 {
-    static_assert(std::numeric_limits<T1_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-    static_assert(std::numeric_limits<T2_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
     if (!is_valid(x) || !is_valid(y))
         return empty();
 
     // determine max. precision
-    typedef typename p1788::util::max_precision_type<T,T1_,T2_>::type T_MAX;
+    typedef typename p1788::util::max_precision_type<T,T1,T2>::type T_MAX;
 
     // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
     // Error free for floating point inf-sup intervals due to  outward rounding
@@ -96,19 +96,19 @@ mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation
 
 // intersect ( decorated interval ) mixed type
 template<typename T>
-template<typename T1_, typename T2_>
+template<typename T1, typename T2>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1_> const& x,
-                                      mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2_> const& y)
+mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const& x,
+                                      mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const& y)
 {
-    static_assert(std::numeric_limits<T1_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-    static_assert(std::numeric_limits<T2_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
     if (!is_valid(x) || !is_valid(y))
         return nai();
 
     // determine max. precision
-    typedef typename p1788::util::max_precision_type<T,T1_,T2_>::type T_MAX;
+    typedef typename p1788::util::max_precision_type<T,T1,T2>::type T_MAX;
 
     // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
     // Error free for floating point inf-sup intervals due to  outward rounding
@@ -140,19 +140,19 @@ mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation cons
 
 // hull ( bare interval ) mixed type
 template<typename T>
-template<typename T1_, typename T2_>
+template<typename T1, typename T2>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_type<T1_> const& x,
-                                 mpfr_bin_ieee754_flavor<T>::representation_type<T2_> const& y)
+mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const& x,
+                                 mpfr_bin_ieee754_flavor<T>::representation_type<T2> const& y)
 {
-    static_assert(std::numeric_limits<T1_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-    static_assert(std::numeric_limits<T2_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
     if (!is_valid(x) || !is_valid(y))
         return empty();
 
     // determine max. precision
-    typedef typename p1788::util::max_precision_type<T,T1_,T2_>::type T_MAX;
+    typedef typename p1788::util::max_precision_type<T,T1,T2>::type T_MAX;
 
     // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
     // Error free for floating point inf-sup intervals due to  outward rounding
@@ -179,19 +179,19 @@ mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_dec 
 
 // hull ( decorated interval ) mixed type
 template<typename T>
-template<typename T1_, typename T2_>
+template<typename T1, typename T2>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1_> const& x,
-                                 mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2_> const& y)
+mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const& x,
+                                 mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const& y)
 {
-    static_assert(std::numeric_limits<T1_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-    static_assert(std::numeric_limits<T2_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
     if (!is_valid(x) || !is_valid(y))
         return nai();
 
     // determine max. precision
-    typedef typename p1788::util::max_precision_type<T,T1_,T2_>::type T_MAX;
+    typedef typename p1788::util::max_precision_type<T,T1,T2>::type T_MAX;
 
     // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
     // Error free for floating point inf-sup intervals due to  outward rounding

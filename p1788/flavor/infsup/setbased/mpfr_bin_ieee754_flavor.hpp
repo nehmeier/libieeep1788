@@ -91,25 +91,25 @@ public:
 
     /// \brief Type-structure for the internal representation of bare intervals
     ///
-    /// It is a <c>std::pair\<TT,TT\></c> of two values of type \p TT to store the lower (<c>first</c>) and
+    /// It is a <c>std::pair\<T_,T_\></c> of two values of type \p T_ to store the lower (<c>first</c>) and
     /// the upper (<c>second</c>) bound of an bare interval.
     ///
-    /// \tparam TT Type of the lower and upper bound of a bare interval.
+    /// \tparam T_ Type of the lower and upper bound of a bare interval.
     ///
-    template<typename TT>
-    using representation_type = std::pair<TT,TT>;
+    template<typename T_>
+    using representation_type = std::pair<T_,T_>;
 
 
     /// \brief Type-structure for the internal representation of decorated intervals
     ///
-    /// It is a <c>std::pair\<\link mpfr_bin_ieee754_flavor::representation_type representation_type\<TT\>\endlink,p1788::decoration::decoration\></c>
-    /// to store a bare interval of type <c>\link mpfr_bin_ieee754_flavor::representation_type representation_type\<TT\>\endlink</c> in the <c>first</c> member and the
+    /// It is a <c>std::pair\<\link mpfr_bin_ieee754_flavor::representation_type representation_type\<T_\>\endlink,p1788::decoration::decoration\></c>
+    /// to store a bare interval of type <c>\link mpfr_bin_ieee754_flavor::representation_type representation_type\<T_\>\endlink</c> in the <c>first</c> member and the
     /// the decoration of type p1788::decoration::decoration in the (<c>second</c>) member.
     ///
-    /// \tparam TT Type of the lower and upper bound of a decorated interval.
+    /// \tparam T_ Type of the lower and upper bound of a decorated interval.
     ///
-    template<typename TT>
-    using representation_dec_type = std::pair<representation_type<TT>, p1788::decoration::decoration>;
+    template<typename T_>
+    using representation_dec_type = std::pair<representation_type<T_>, p1788::decoration::decoration>;
 
 
 
@@ -246,7 +246,7 @@ public:
     /// \return Smallest number of type \p T \f$\geq\f$ \p x. It returns +0.0 in case of a zero. NaNs are propagated.
     ///
     /// \note Round toward positive follows the IEEE754 specification.
-    ///
+    ///    template<typename T_>
     ///
     template<typename T_>
     static T convert_rndu(T_ x);
@@ -601,9 +601,9 @@ public:
     /// \todo Docu, Test
     ///
     ///
-    template<typename T1_, typename T2_>
-    static representation intersect(representation_type<T1_> const& x,
-                                    representation_type<T2_> const& y);
+    template<typename T1, typename T2>
+    static representation intersect(representation_type<T1> const& x,
+                                    representation_type<T2> const& y);
 
     /// \todo Docu, Test
     ///
@@ -614,9 +614,9 @@ public:
     /// \todo Docu, Test
     ///
     ///
-    template<typename T1_, typename T2_>
-    static representation_dec intersect(representation_dec_type<T1_> const& x,
-                                        representation_dec_type<T2_> const& y);
+    template<typename T1, typename T2>
+    static representation_dec intersect(representation_dec_type<T1> const& x,
+                                        representation_dec_type<T2> const& y);
 
     /// \todo Docu, Test
     ///
@@ -627,9 +627,9 @@ public:
     /// \todo Docu, Test
     ///
     ///
-    template<typename T1_, typename T2_>
-    static representation hull(representation_type<T1_> const& x,
-                               representation_type<T2_> const& y);
+    template<typename T1, typename T2>
+    static representation hull(representation_type<T1> const& x,
+                               representation_type<T2> const& y);
 
     /// \todo Docu, Test
     ///
@@ -640,9 +640,9 @@ public:
     /// \todo Docu, Test
     ///
     ///
-    template<typename T1_, typename T2_>
-    static representation_dec hull(representation_dec_type<T1_> const& x,
-                                   representation_dec_type<T2_> const& y);
+    template<typename T1, typename T2>
+    static representation_dec hull(representation_dec_type<T1> const& x,
+                                   representation_dec_type<T2> const& y);
 
 ///@}
 
@@ -1639,7 +1639,20 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation pos(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pos(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec pos(representation_dec_type<T_> const& x);
+
 
     /// \todo TODO
     ///
@@ -1649,7 +1662,20 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation neg(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec neg(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec neg(representation_dec_type<T_> const& x);
+
 
     /// \todo TODO
     ///
@@ -1659,7 +1685,20 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation add(representation_type<T1> const& x, representation_type<T2> const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec add(representation_dec const& x, representation_dec const& y);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec add(representation_dec_type<T1> const& x, representation_dec_type<T2> const& y);
+
 
     /// \todo TODO
     ///
@@ -1669,7 +1708,20 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation sub(representation_type<T1> const& x, representation_type<T2> const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sub(representation_dec const& x, representation_dec const& y);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec sub(representation_dec_type<T1> const& x, representation_dec_type<T2> const& y);
+
 
     /// \todo TODO
     ///
@@ -1679,7 +1731,20 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation mul(representation_type<T1> const& x, representation_type<T2> const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec mul(representation_dec const& x, representation_dec const& y);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec mul(representation_dec_type<T1> const& x, representation_dec_type<T2> const& y);
+
 
     /// \todo TODO
     ///
@@ -1689,7 +1754,20 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation div(representation_type<T1> const& x, representation_type<T2> const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec div(representation_dec const& x, representation_dec const& y);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec div(representation_dec_type<T1> const& x, representation_dec_type<T2> const& y);
+
 
     /// \todo TODO
     ///
@@ -1699,7 +1777,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation recip(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec recip(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec recip(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1709,7 +1799,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation sqrt(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sqrt(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec sqrt(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1720,16 +1822,22 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2, typename T3>
+    static representation fma(representation_type<T1> const& x, representation_type<T2> const& y,
+                              representation_type<T3> const& z );
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec fma(representation_dec const& x, representation_dec const& y,
                                   representation_dec const& z );
 
-//TODO notwendig?
-//    static representation interval_case(representation const& c,
-//                                        representation const& g,
-//                                        representation const& h );
-//    static representation_dec interval_case(representation_dec const& c,
-//                                        representation_dec const& g,
-//                                        representation_dec const& h );
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2, typename T3>
+    static representation_dec fma(representation_dec_type<T1> const& x, representation_dec_type<T2> const& y,
+                                  representation_dec_type<T3> const& z );
 
     /// \todo TODO
     ///
@@ -1739,7 +1847,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation sqr(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sqr(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec sqr(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1749,7 +1869,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation pown(representation_type<T_> const& x, int p);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pown(representation_dec const& x, int p);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec pown(representation_dec_type<T_> const& x, int p);
 
     /// \todo TODO
     ///
@@ -1759,7 +1891,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation pow(representation_type<T1> const& x, representation_type<T2> const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pow(representation_dec const& x, representation_dec const& y);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec pow(representation_dec_type<T1> const& x, representation_dec_type<T2> const& y);
 
     /// \todo TODO
     ///
@@ -1769,7 +1913,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation exp(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec exp(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec exp(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1779,7 +1935,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation exp2(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec exp2(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec exp2(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1789,7 +1957,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation exp10(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec exp10(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec exp10(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1799,7 +1979,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation log(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec log(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec log(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1809,7 +2001,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation log2(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec log2(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec log2(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1819,7 +2023,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation log10(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec log10(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec log10(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1829,7 +2045,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation sin(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sin(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec sin(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1839,7 +2067,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation cos(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cos(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec cos(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1849,7 +2089,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation tan(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec tan(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec tan(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1859,7 +2111,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation asin(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec asin(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec asin(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1869,7 +2133,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation acos(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec acos(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec acos(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1879,7 +2155,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation atan(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec atan(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1890,8 +2178,22 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation atan2(representation_type<T1> const& y,
+                                representation_type<T2> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan2(representation_dec const& y,
                                     representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec atan2(representation_dec_type<T1> const& y,
+                                    representation_dec_type<T2> const& x);
 
     /// \todo TODO
     ///
@@ -1901,7 +2203,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation sinh(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sinh(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec sinh(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1911,7 +2225,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation cosh(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cosh(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec cosh(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1921,7 +2247,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation tanh(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec tanh(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec tanh(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1931,7 +2269,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation asinh(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec asinh(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec asinh(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1941,7 +2291,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation acosh(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec acosh(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec acosh(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1951,7 +2313,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation atanh(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atanh(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec atanh(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1961,7 +2335,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation sign(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sign(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec sign(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1971,7 +2357,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation ceil(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec ceil(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec ceil(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1981,7 +2379,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation floor(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec floor(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec floor(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -1991,7 +2401,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation trunc(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec trunc(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec trunc(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -2001,7 +2423,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation round_ties_to_even(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec round_ties_to_even(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec round_ties_to_even(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -2011,7 +2445,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation round_ties_to_away(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec round_ties_to_away(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec round_ties_to_away(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -2021,7 +2467,19 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T_>
+    static representation abs(representation_type<T_> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec abs(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec abs(representation_dec_type<T_> const& x);
 
     /// \todo TODO
     ///
@@ -2032,8 +2490,22 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation min(representation_type<T1> const& x,
+                              representation_type<T2> const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec min(representation_dec const& x,
                                   representation_dec const& y);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec min(representation_dec_type<T1> const& x,
+                                  representation_dec_type<T2> const& y);
 
     /// \todo TODO
     ///
@@ -2044,8 +2516,22 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation max(representation_type<T1> const& x,
+                              representation_type<T2> const& y);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec max(representation_dec const& x,
                                   representation_dec const& y);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec max(representation_dec_type<T1> const& x,
+                                  representation_dec_type<T2> const& y);
 
 ///@}
 

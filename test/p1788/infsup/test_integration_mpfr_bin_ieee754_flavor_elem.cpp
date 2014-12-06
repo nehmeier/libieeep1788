@@ -23,7 +23,7 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#define BOOST_TEST_MODULE "Integration: Boolean functions of intervals [infsup/interval, infsup/decorated_interval, p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor]"
+#define BOOST_TEST_MODULE "Integration: Forward-mode elementary functions [infsup/interval, infsup/decorated_interval, p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor]"
 #include "test/util/boost_test_wrapper.hpp"
 
 
@@ -31,357 +31,51 @@
 
 #include "p1788/p1788.hpp"
 
+
+const double INF_D = std::numeric_limits<double>::infinity();
+const double NaN_D = std::numeric_limits<double>::quiet_NaN();
+const double MAX_D = std::numeric_limits<double>::max();
+const double MIN_D = std::numeric_limits<double>::min();
+
+const double INF_F = std::numeric_limits<float>::infinity();
+const double NaN_F = std::numeric_limits<float>::quiet_NaN();
+const double MAX_F = std::numeric_limits<float>::max();
+const double MIN_F = std::numeric_limits<float>::min();
+
+
 template<typename T>
 using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
+
 template<typename T>
 using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
+typedef p1788::decoration::decoration DEC;
 
-
-BOOST_AUTO_TEST_CASE(integration_is_empty_test)
+BOOST_AUTO_TEST_CASE(integration_pos_test)
 {
-    BOOST_CHECK(is_empty(I<double>::empty()));
-    BOOST_CHECK(!is_empty(I<double>::entire()));
-    BOOST_CHECK(I<double>::is_empty(I<double>::empty()));
-    BOOST_CHECK(!I<double>::is_empty(I<double>::entire()));
+    BOOST_CHECK_EQUAL( pos(I<double>(MIN_D, 2.0)), I<double>(MIN_D, 2.0) );
+    BOOST_CHECK_EQUAL( +I<double>(MIN_D, 2.0), I<double>(MIN_D, 2.0) );
+    BOOST_CHECK_EQUAL( I<double>::pos(I<double>(MIN_D, 2.0)), I<double>(MIN_D, 2.0) );
+    BOOST_CHECK_EQUAL( I<float>::pos(I<double>(std::stod("-0X1.99999C0000000p+4"), MAX_D)), I<float>(std::stof("-0X1.99999CP+4"), INF_F) );
 
-    BOOST_CHECK(is_empty(DI<double>::empty()));
-    BOOST_CHECK(!is_empty(DI<double>::entire()));
-    BOOST_CHECK(DI<double>::is_empty(DI<double>::empty()));
-    BOOST_CHECK(!DI<double>::is_empty(DI<double>::entire()));
-}
 
-BOOST_AUTO_TEST_CASE(integration_is_entire_test)
-{
-    BOOST_CHECK(!is_entire(I<double>::empty()));
-    BOOST_CHECK(is_entire(I<double>::entire()));
-    BOOST_CHECK(!I<double>::is_entire(I<double>::empty()));
-    BOOST_CHECK(I<double>::is_entire(I<double>::entire()));
-
-    BOOST_CHECK(!is_entire(DI<double>::empty()));
-    BOOST_CHECK(is_entire(DI<double>::entire()));
-    BOOST_CHECK(!DI<double>::is_entire(DI<double>::empty()));
-    BOOST_CHECK(DI<double>::is_entire(DI<double>::entire()));
-}
-
-BOOST_AUTO_TEST_CASE(integration_is_nai_test)
-{
-    BOOST_CHECK(!is_nai(DI<double>::empty()));
-    BOOST_CHECK(!is_nai(DI<double>::entire()));
-    BOOST_CHECK(is_nai(DI<double>::nai()));
-    BOOST_CHECK(!DI<double>::is_nai(DI<double>::empty()));
-    BOOST_CHECK(!DI<double>::is_nai(DI<double>::entire()));
-    BOOST_CHECK(DI<double>::is_nai(DI<double>::nai()));
+    BOOST_CHECK_EQUAL( pos(DI<double>(MIN_D, 2.0)), DI<double>(MIN_D, 2.0) );
+    BOOST_CHECK_EQUAL( +DI<double>(MIN_D, 2.0, DEC::def), DI<double>(MIN_D, 2.0, DEC::def) );
+    BOOST_CHECK_EQUAL( DI<double>::pos(DI<double>(MIN_D, 2.0)), DI<double>(MIN_D, 2.0) );
+    BOOST_CHECK_EQUAL( DI<float>::pos(DI<double>(std::stod("-0X1.99999C0000000p+4"), MAX_D, DEC::com)), DI<float>(std::stof("-0X1.99999CP+4"), INF_F, DEC::dac) );
 }
 
 
-BOOST_AUTO_TEST_CASE(integration_is_equal_test)
+BOOST_AUTO_TEST_CASE(integration_neg_test)
 {
-    BOOST_CHECK(is_equal(I<double>::empty(), I<double>::empty()));
-    BOOST_CHECK(is_equal(I<double>::empty(), I<float>::empty()));
-    BOOST_CHECK(!is_equal(I<double>::entire(), I<double>::empty()));
-    BOOST_CHECK(!is_equal(I<double>::entire(), I<float>::empty()));
-    BOOST_CHECK(is_equal(I<double>::entire(), I<double>::entire()));
-    BOOST_CHECK(is_equal(I<double>::entire(), I<float>::entire()));
-    BOOST_CHECK( I<double>::entire() != I<double>::empty() );
-    BOOST_CHECK( I<double>::entire() != I<float>::empty() );
-    BOOST_CHECK( I<double>::entire() == I<double>::entire() );
-    BOOST_CHECK( I<double>::entire() == I<float>::entire() );
-    BOOST_CHECK(I<double>::is_equal(I<double>::empty(), I<double>::empty()));
-    BOOST_CHECK(I<double>::is_equal(I<double>::empty(), I<float>::empty()));
-    BOOST_CHECK(!I<double>::is_equal(I<double>::entire(), I<double>::empty()));
-    BOOST_CHECK(!I<double>::is_equal(I<double>::entire(), I<float>::empty()));
-    BOOST_CHECK(I<double>::is_equal(I<double>::entire(), I<double>::entire()));
-    BOOST_CHECK(I<double>::is_equal(I<double>::entire(), I<float>::entire()));
+    BOOST_CHECK_EQUAL( neg(I<double>(MIN_D, 2.0)), I<double>(-2.0, -MIN_D) );
+    BOOST_CHECK_EQUAL( -I<double>(MIN_D, 2.0), I<double>(-2.0, -MIN_D) );
+    BOOST_CHECK_EQUAL( I<double>::neg(I<double>(MIN_D, 2.0)), I<double>(-2.0, -MIN_D) );
+    BOOST_CHECK_EQUAL( I<float>::neg(I<double>(std::stod("-0X1.99999C0000000p+4"), MAX_D)), I<float>(-INF_F, std::stof("0X1.99999CP+4")) );
 
-    BOOST_CHECK(is_equal(DI<double>::empty(), DI<double>::empty()));
-    BOOST_CHECK(is_equal(DI<double>::empty(), DI<float>::empty()));
-    BOOST_CHECK(!is_equal(DI<double>::entire(), DI<double>::empty()));
-    BOOST_CHECK(!is_equal(DI<double>::entire(), DI<float>::empty()));
-    BOOST_CHECK(is_equal(DI<double>::entire(), DI<double>::entire()));
-    BOOST_CHECK(is_equal(DI<double>::entire(), DI<float>::entire()));
-    BOOST_CHECK( DI<double>::entire() != DI<double>::empty() );
-    BOOST_CHECK( DI<double>::entire() != DI<float>::empty() );
-    BOOST_CHECK( DI<double>::entire() == DI<double>::entire() );
-    BOOST_CHECK( DI<double>::entire() == DI<float>::entire() );
-    BOOST_CHECK(DI<double>::is_equal(DI<double>::empty(), DI<double>::empty()));
-    BOOST_CHECK(DI<double>::is_equal(DI<double>::empty(), DI<float>::empty()));
-    BOOST_CHECK(!DI<double>::is_equal(DI<double>::entire(), DI<double>::empty()));
-    BOOST_CHECK(!DI<double>::is_equal(DI<double>::entire(), DI<float>::empty()));
-    BOOST_CHECK(DI<double>::is_equal(DI<double>::entire(), DI<double>::entire()));
-    BOOST_CHECK(DI<double>::is_equal(DI<double>::entire(), DI<float>::entire()));
+
+    BOOST_CHECK_EQUAL( neg(DI<double>(MIN_D, 2.0)), DI<double>(-2.0, -MIN_D) );
+    BOOST_CHECK_EQUAL( -DI<double>(MIN_D, 2.0, DEC::def), DI<double>(-2.0, -MIN_D, DEC::def) );
+    BOOST_CHECK_EQUAL( DI<double>::neg(DI<double>(MIN_D, 2.0)), DI<double>(-2.0, -MIN_D) );
+    BOOST_CHECK_EQUAL( DI<float>::neg(DI<double>(std::stod("-0X1.99999C0000000p+4"), MAX_D, DEC::com)), DI<float>(-INF_F, std::stof("0X1.99999CP+4"), DEC::dac) );
 }
-
-BOOST_AUTO_TEST_CASE(integration_subset_test)
-{
-    BOOST_CHECK(subset(I<double>(2.0,3.0), I<double>(1.0,3.0)));
-    BOOST_CHECK(subset(I<double>(2.0,3.0), I<float>(1.0f,3.0f)));
-    BOOST_CHECK(!subset(I<double>(-1.0,3.0), I<double>(2.0,3.0)));
-    BOOST_CHECK(!subset(I<double>(-1.0,3.0), I<float>(2.0f,3.0f)));
-    BOOST_CHECK(I<double>::subset(I<double>(2.0,3.0), I<double>(1.0,3.0)));
-    BOOST_CHECK(I<double>::subset(I<double>(2.0,3.0), I<float>(1.0f,3.0f)));
-    BOOST_CHECK(!I<double>::subset(I<double>(-1.0,3.0), I<double>(2.0,3.0)));
-    BOOST_CHECK(!I<double>::subset(I<double>(-1.0,3.0), I<float>(2.0f,3.0f)));
-
-    BOOST_CHECK(subset(DI<double>(2.0,3.0), DI<double>(1.0,3.0)));
-    BOOST_CHECK(subset(DI<double>(2.0,3.0), DI<float>(1.0f,3.0f)));
-    BOOST_CHECK(!subset(DI<double>(-1.0,3.0), DI<double>(2.0,3.0)));
-    BOOST_CHECK(!subset(DI<double>(-1.0,3.0), DI<float>(2.0f,3.0f)));
-    BOOST_CHECK(DI<double>::subset(DI<double>(2.0,3.0), DI<double>(1.0,3.0)));
-    BOOST_CHECK(DI<double>::subset(DI<double>(2.0,3.0), DI<float>(1.0f,3.0f)));
-    BOOST_CHECK(!DI<double>::subset(DI<double>(-1.0,3.0), DI<double>(2.0,3.0)));
-    BOOST_CHECK(!DI<double>::subset(DI<double>(-1.0,3.0), DI<float>(2.0f,3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_superset_test)
-{
-    BOOST_CHECK(!superset(I<double>(2.0,3.0), I<double>(1.0,3.0)));
-    BOOST_CHECK(!superset(I<double>(2.0,3.0), I<float>(1.0f,3.0f)));
-    BOOST_CHECK(superset(I<double>(-1.0,3.0), I<double>(2.0,3.0)));
-    BOOST_CHECK(superset(I<double>(-1.0,3.0), I<float>(2.0f,3.0f)));
-    BOOST_CHECK(!I<double>::superset(I<double>(2.0,3.0), I<double>(1.0,3.0)));
-    BOOST_CHECK(!I<double>::superset(I<double>(2.0,3.0), I<float>(1.0f,3.0f)));
-    BOOST_CHECK(I<double>::superset(I<double>(-1.0,3.0), I<double>(2.0,3.0)));
-    BOOST_CHECK(I<double>::superset(I<double>(-1.0,3.0), I<float>(2.0f,3.0f)));
-
-    BOOST_CHECK(!superset(DI<double>(2.0,3.0), DI<double>(1.0,3.0)));
-    BOOST_CHECK(!superset(DI<double>(2.0,3.0), DI<float>(1.0f,3.0f)));
-    BOOST_CHECK(superset(DI<double>(-1.0,3.0), DI<double>(2.0,3.0)));
-    BOOST_CHECK(superset(DI<double>(-1.0,3.0), DI<float>(2.0f,3.0f)));
-    BOOST_CHECK(!DI<double>::superset(DI<double>(2.0,3.0), DI<double>(1.0,3.0)));
-    BOOST_CHECK(!DI<double>::superset(DI<double>(2.0,3.0), DI<float>(1.0f,3.0f)));
-    BOOST_CHECK(DI<double>::superset(DI<double>(-1.0,3.0), DI<double>(2.0,3.0)));
-    BOOST_CHECK(DI<double>::superset(DI<double>(-1.0,3.0), DI<float>(2.0f,3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_less_test)
-{
-    BOOST_CHECK(less(I<double>(2.0,4.5), I<double>(4.0,5.0)));
-    BOOST_CHECK(less(I<double>(2.0,4.5), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(!less(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!less(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(I<double>::less(I<double>(2.0,4.5), I<double>(4.0,5.0)));
-    BOOST_CHECK(I<double>::less(I<double>(2.0,4.5), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(!I<double>::less(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!I<double>::less(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-
-    BOOST_CHECK(less(DI<double>(2.0,4.5), DI<double>(4.0,5.0)));
-    BOOST_CHECK(less(DI<double>(2.0,4.5), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(!less(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!less(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(DI<double>::less(DI<double>(2.0,4.5), DI<double>(4.0,5.0)));
-    BOOST_CHECK(DI<double>::less(DI<double>(2.0,4.5), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(!DI<double>::less(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!DI<double>::less(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_greater_test)
-{
-    BOOST_CHECK(!greater(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(!greater(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(greater(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(greater(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(!I<double>::greater(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(!I<double>::greater(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(I<double>::greater(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(I<double>::greater(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-
-    BOOST_CHECK(!greater(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(!greater(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(greater(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(greater(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(!DI<double>::greater(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(!DI<double>::greater(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(DI<double>::greater(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(DI<double>::greater(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_precedes_test)
-{
-    BOOST_CHECK(precedes(I<double>(2.0,4.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(precedes(I<double>(2.0,4.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(!precedes(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!precedes(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(I<double>::precedes(I<double>(2.0,4.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(I<double>::precedes(I<double>(2.0,4.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(!I<double>::precedes(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!I<double>::precedes(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-
-    BOOST_CHECK(precedes(DI<double>(2.0,4.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(precedes(DI<double>(2.0,4.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(!precedes(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!precedes(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(DI<double>::precedes(DI<double>(2.0,4.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(DI<double>::precedes(DI<double>(2.0,4.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(!DI<double>::precedes(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!DI<double>::precedes(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_succeeds_test)
-{
-    BOOST_CHECK(!succeeds(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(!succeeds(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(succeeds(I<double>(-1.0,3.0), I<double>(-5.0,-1.0)));
-    BOOST_CHECK(succeeds(I<double>(-1.0,3.0), I<float>(-5.0f,-1.0f)));
-    BOOST_CHECK(!I<double>::succeeds(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(!I<double>::succeeds(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(I<double>::succeeds(I<double>(-1.0,3.0), I<double>(-5.0,-1.0)));
-    BOOST_CHECK(I<double>::succeeds(I<double>(-1.0,3.0), I<float>(-5.0f,-1.0f)));
-
-    BOOST_CHECK(!succeeds(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(!succeeds(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(succeeds(DI<double>(-1.0,3.0), DI<double>(-5.0,-1.0)));
-    BOOST_CHECK(succeeds(DI<double>(-1.0,3.0), DI<float>(-5.0f,-1.0f)));
-    BOOST_CHECK(!DI<double>::succeeds(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(!DI<double>::succeeds(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(DI<double>::succeeds(DI<double>(-1.0,3.0), DI<double>(-5.0,-1.0)));
-    BOOST_CHECK(DI<double>::succeeds(DI<double>(-1.0,3.0), DI<float>(-5.0f,-1.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_is_interior_test)
-{
-    BOOST_CHECK(is_interior(I<double>(2.0,3.0), I<double>(0.0,5.0)));
-    BOOST_CHECK(is_interior(I<double>(2.0,3.0), I<float>(0.0f,5.0f)));
-    BOOST_CHECK(!is_interior(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!is_interior(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(I<double>::is_interior(I<double>(2.0,3.0), I<double>(0.0,5.0)));
-    BOOST_CHECK(I<double>::is_interior(I<double>(2.0,3.0), I<float>(0.0f,5.0f)));
-    BOOST_CHECK(!I<double>::is_interior(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!I<double>::is_interior(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-
-    BOOST_CHECK(is_interior(DI<double>(2.0,3.0), DI<double>(0.0,5.0)));
-    BOOST_CHECK(is_interior(DI<double>(2.0,3.0), DI<float>(0.0f,5.0f)));
-    BOOST_CHECK(!is_interior(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!is_interior(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(DI<double>::is_interior(DI<double>(2.0,3.0), DI<double>(0.0,5.0)));
-    BOOST_CHECK(DI<double>::is_interior(DI<double>(2.0,3.0), DI<float>(0.0f,5.0f)));
-    BOOST_CHECK(!DI<double>::is_interior(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!DI<double>::is_interior(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_contains_interior_test)
-{
-    BOOST_CHECK(contains_interior(I<double>(-2.0,13.0), I<double>(0.0,5.0)));
-    BOOST_CHECK(contains_interior(I<double>(-2.0,13.0), I<float>(0.0f,5.0f)));
-    BOOST_CHECK(!contains_interior(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!contains_interior(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(I<double>::contains_interior(I<double>(-2.0,13.0), I<double>(0.0,5.0)));
-    BOOST_CHECK(I<double>::contains_interior(I<double>(-2.0,13.0), I<float>(0.0f,5.0f)));
-    BOOST_CHECK(!I<double>::contains_interior(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!I<double>::contains_interior(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-
-    BOOST_CHECK(contains_interior(DI<double>(-2.0,13.0), DI<double>(0.0,5.0)));
-    BOOST_CHECK(contains_interior(DI<double>(-2.0,13.0), DI<float>(0.0f,5.0f)));
-    BOOST_CHECK(!contains_interior(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!contains_interior(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(DI<double>::contains_interior(DI<double>(-2.0,13.0), DI<double>(0.0,5.0)));
-    BOOST_CHECK(DI<double>::contains_interior(DI<double>(-2.0,13.0), DI<float>(0.0f,5.0f)));
-    BOOST_CHECK(!DI<double>::contains_interior(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!DI<double>::contains_interior(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_strictly_less_test)
-{
-    BOOST_CHECK(strictly_less(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(strictly_less(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(!strictly_less(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!strictly_less(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(I<double>::strictly_less(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(I<double>::strictly_less(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(!I<double>::strictly_less(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!I<double>::strictly_less(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-
-    BOOST_CHECK(strictly_less(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(strictly_less(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(!strictly_less(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!strictly_less(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(DI<double>::strictly_less(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(DI<double>::strictly_less(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(!DI<double>::strictly_less(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!DI<double>::strictly_less(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_strictly_greater_test)
-{
-    BOOST_CHECK(!strictly_greater(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(!strictly_greater(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(strictly_greater(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(strictly_greater(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(!I<double>::strictly_greater(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(!I<double>::strictly_greater(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(I<double>::strictly_greater(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(I<double>::strictly_greater(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-
-    BOOST_CHECK(!strictly_greater(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(!strictly_greater(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(strictly_greater(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(strictly_greater(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(!DI<double>::strictly_greater(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(!DI<double>::strictly_greater(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(DI<double>::strictly_greater(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(DI<double>::strictly_greater(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_strictly_precedes_test)
-{
-    BOOST_CHECK(strictly_precedes(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(strictly_precedes(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(!strictly_precedes(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!strictly_precedes(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(I<double>::strictly_precedes(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(I<double>::strictly_precedes(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(!I<double>::strictly_precedes(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(!I<double>::strictly_precedes(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-
-    BOOST_CHECK(strictly_precedes(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(strictly_precedes(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(!strictly_precedes(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!strictly_precedes(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(DI<double>::strictly_precedes(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(DI<double>::strictly_precedes(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(!DI<double>::strictly_precedes(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(!DI<double>::strictly_precedes(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_strictly_succeeds_test)
-{
-    BOOST_CHECK(!strictly_succeeds(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(!strictly_succeeds(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(strictly_succeeds(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(strictly_succeeds(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(!I<double>::strictly_succeeds(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(!I<double>::strictly_succeeds(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(I<double>::strictly_succeeds(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)));
-    BOOST_CHECK(I<double>::strictly_succeeds(I<double>(-1.0,3.0), I<float>(-5.0f,-3.0f)));
-
-    BOOST_CHECK(!strictly_succeeds(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(!strictly_succeeds(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(strictly_succeeds(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(strictly_succeeds(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-    BOOST_CHECK(!DI<double>::strictly_succeeds(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(!DI<double>::strictly_succeeds(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(DI<double>::strictly_succeeds(DI<double>(-1.0,3.0), DI<double>(-5.0,-3.0)));
-    BOOST_CHECK(DI<double>::strictly_succeeds(DI<double>(-1.0,3.0), DI<float>(-5.0f,-3.0f)));
-}
-
-BOOST_AUTO_TEST_CASE(integration_are_disjoint_test)
-{
-    BOOST_CHECK(are_disjoint(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(are_disjoint(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(!are_disjoint(I<double>(-1.0,3.0), I<double>(-5.0,0.0)));
-    BOOST_CHECK(!are_disjoint(I<double>(-1.0,3.0), I<float>(-5.0f,0.0f)));
-    BOOST_CHECK(I<double>::are_disjoint(I<double>(2.0,3.0), I<double>(4.0,5.0)));
-    BOOST_CHECK(I<double>::are_disjoint(I<double>(2.0,3.0), I<float>(4.0f,5.0f)));
-    BOOST_CHECK(!I<double>::are_disjoint(I<double>(-1.0,3.0), I<double>(-5.0,0.0)));
-    BOOST_CHECK(!I<double>::are_disjoint(I<double>(-1.0,3.0), I<float>(-5.0f,0.0f)));
-
-    BOOST_CHECK(are_disjoint(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(are_disjoint(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(!are_disjoint(DI<double>(-1.0,3.0), DI<double>(-5.0,0.0)));
-    BOOST_CHECK(!are_disjoint(DI<double>(-1.0,3.0), DI<float>(-5.0f,0.0f)));
-    BOOST_CHECK(DI<double>::are_disjoint(DI<double>(2.0,3.0), DI<double>(4.0,5.0)));
-    BOOST_CHECK(DI<double>::are_disjoint(DI<double>(2.0,3.0), DI<float>(4.0f,5.0f)));
-    BOOST_CHECK(!DI<double>::are_disjoint(DI<double>(-1.0,3.0), DI<double>(-5.0,0.0)));
-    BOOST_CHECK(!DI<double>::are_disjoint(DI<double>(-1.0,3.0), DI<float>(-5.0f,0.0f)));
-}
-
