@@ -267,7 +267,7 @@ public:
     /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other, p1788::decoration::decoration dec) \endlink
     ///
     inline
-    decorated_interval(interval<T, Flavor> const& other, p1788::decoration::decoration dec)  //< Copy-constructor
+    decorated_interval(interval<T, Flavor> const& other, p1788::decoration::decoration dec)
         : base_interval_type(Flavor<T>::constructor_dec(other.rep_, dec))
     { }
 

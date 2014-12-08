@@ -211,8 +211,16 @@ mpfr_bin_ieee754_flavor<T>::add(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x) || !is_valid(y))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(add(x.first, y.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = add(x.first, y.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            std::min(x.second, y.second),
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_empty(bare) ? p1788::decoration::decoration::trv :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // add ( decorated interval ) mixed type
@@ -307,8 +315,16 @@ mpfr_bin_ieee754_flavor<T>::sub(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x) || !is_valid(y))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(sub(x.first, y.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = sub(x.first, y.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            std::min(x.second, y.second),
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_empty(bare) ? p1788::decoration::decoration::trv :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // sub ( decorated interval ) mixed type
@@ -518,8 +534,16 @@ mpfr_bin_ieee754_flavor<T>::mul(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x) || !is_valid(y))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(mul(x.first, y.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = mul(x.first, y.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            std::min(x.second, y.second),
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_empty(bare) ? p1788::decoration::decoration::trv :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // mul ( decorated interval ) mixed type
@@ -727,8 +751,16 @@ mpfr_bin_ieee754_flavor<T>::div(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x) || !is_valid(y))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(div(x.first, y.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = div(x.first, y.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            std::min(x.second, y.second),
+                                            is_member(0.0, y) || is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // div ( decorated interval ) mixed type
@@ -803,8 +835,16 @@ mpfr_bin_ieee754_flavor<T>::recip(mpfr_bin_ieee754_flavor<T>::representation_dec
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(recip(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = recip(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_member(0.0, x) || is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // recip ( decorated interval ) mixed type
@@ -829,6 +869,105 @@ mpfr_bin_ieee754_flavor<T>::recip(mpfr_bin_ieee754_flavor<T>::representation_dec
                )
            );
 }
+
+
+
+// sqr
+
+// sqr ( bare interval )
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation const& x)
+{
+    if (!is_valid(x) || is_empty(x))
+        return empty();
+
+    mpfr_var::setup();
+
+    if (x.first < 0.0 && x.second > 0.0)
+    {
+        mpfr_var u(std::abs(x.first) > x.second ? std::abs(x.first) : x.second, MPFR_RNDU);
+        u.subnormalize(mpfr_sqr(u(), u(), MPFR_RNDU), MPFR_RNDU);
+
+        return representation(0.0, u.template get<T>(MPFR_RNDU));
+    }
+
+    mpfr_var l(std::abs(x.first) < std::abs(x.second) ? std::abs(x.first) : std::abs(x.second), MPFR_RNDD);
+    mpfr_var u(std::abs(x.first) > std::abs(x.second) ? std::abs(x.first) : std::abs(x.second), MPFR_RNDU);
+
+    l.subnormalize(mpfr_sqr(l(), l(), MPFR_RNDD), MPFR_RNDD);
+    u.subnormalize(mpfr_sqr(u(), u(), MPFR_RNDU), MPFR_RNDU);
+
+    return representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
+}
+
+// sqr ( bare interval ) mixed type
+template<typename T>
+template<typename T_>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& x)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+        return empty();
+
+    // determine max. precision
+    typedef typename p1788::util::max_precision_type<T,T_>::type T_MAX;
+
+    // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
+    // Error free for floating point inf-sup intervals due to  outward rounding
+    return convert_hull(
+               mpfr_bin_ieee754_flavor<T_MAX>::sqr(
+                   mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x)
+               )
+           );
+}
+
+
+// sqr ( decorated interval )
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
+{
+    if (!is_valid(x))
+        return nai();
+
+    // compute bare result
+    representation bare = sqr(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
+}
+
+// sqr ( decorated interval ) mixed type
+template<typename T>
+template<typename T_>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& x)
+{
+    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+        return nai();
+
+    // determine max. precision
+    typedef typename p1788::util::max_precision_type<T,T_>::type T_MAX;
+
+    // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
+    // Error free for floating point inf-sup intervals due to  outward rounding
+    return convert_hull(
+               mpfr_bin_ieee754_flavor<T_MAX>::sqr(
+                   mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x)
+               )
+           );
+}
+
 
 
 
@@ -894,8 +1033,16 @@ mpfr_bin_ieee754_flavor<T>::sqrt(mpfr_bin_ieee754_flavor<T>::representation_dec 
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(sqrt(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = sqrt(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            x.first.first < 0.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // sqrt ( decorated interval ) mixed type
@@ -1138,8 +1285,16 @@ mpfr_bin_ieee754_flavor<T>::fma(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x) || !is_valid(y) || !is_valid(z))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(fma(x.first, y.first, z.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = fma(x.first, y.first, z.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            std::min(std::min(x.second, y.second), z.second),
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // fma ( decorated interval ) mixed type
@@ -1174,93 +1329,6 @@ mpfr_bin_ieee754_flavor<T>::fma(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 }
 
 
-// sqr
-
-// sqr ( bare interval )
-template<typename T>
-typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation const& x)
-{
-    if (!is_valid(x) || is_empty(x))
-        return empty();
-
-    mpfr_var::setup();
-
-    if (x.first < 0.0 && x.second > 0.0)
-    {
-        mpfr_var u(std::abs(x.first) > x.second ? std::abs(x.first) : x.second, MPFR_RNDU);
-        u.subnormalize(mpfr_sqr(u(), u(), MPFR_RNDU), MPFR_RNDU);
-
-        return representation(0.0, u.template get<T>(MPFR_RNDU));
-    }
-
-    mpfr_var l(std::abs(x.first) < std::abs(x.second) ? std::abs(x.first) : std::abs(x.second), MPFR_RNDD);
-    mpfr_var u(std::abs(x.first) > std::abs(x.second) ? std::abs(x.first) : std::abs(x.second), MPFR_RNDU);
-
-    l.subnormalize(mpfr_sqr(l(), l(), MPFR_RNDD), MPFR_RNDD);
-    u.subnormalize(mpfr_sqr(u(), u(), MPFR_RNDU), MPFR_RNDU);
-
-    return representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
-}
-
-// sqr ( bare interval ) mixed type
-template<typename T>
-template<typename T_>
-typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& x)
-{
-    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
-        return empty();
-
-    // determine max. precision
-    typedef typename p1788::util::max_precision_type<T,T_>::type T_MAX;
-
-    // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
-    // Error free for floating point inf-sup intervals due to  outward rounding
-    return convert_hull(
-               mpfr_bin_ieee754_flavor<T_MAX>::sqr(
-                   mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x)
-               )
-           );
-}
-
-
-// sqr ( decorated interval )
-template<typename T>
-typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
-{
-    if (!is_valid(x))
-        return nai();
-
-    // TODO Decoration berechnen!
-    return representation_dec(sqr(x.first), p1788::decoration::decoration::trv);
-}
-
-// sqr ( decorated interval ) mixed type
-template<typename T>
-template<typename T_>
-typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& x)
-{
-    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
-        return nai();
-
-    // determine max. precision
-    typedef typename p1788::util::max_precision_type<T,T_>::type T_MAX;
-
-    // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
-    // Error free for floating point inf-sup intervals due to  outward rounding
-    return convert_hull(
-               mpfr_bin_ieee754_flavor<T_MAX>::sqr(
-                   mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x)
-               )
-           );
-}
 
 
 // pown

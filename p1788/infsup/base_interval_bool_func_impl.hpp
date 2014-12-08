@@ -74,6 +74,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_equal(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::is_equal(x.rep_, y.rep_);
 }
 
@@ -107,6 +116,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::subset(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::subset(x.rep_, y.rep_);
 }
 
@@ -126,6 +144,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::superset(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::subset(y.rep_, x.rep_);
 }
 
@@ -145,6 +172,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::less(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::less(x.rep_, y.rep_);
 }
 
@@ -164,6 +200,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::greater(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::less(y.rep_, x.rep_);
 }
 
@@ -183,6 +228,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::precedes(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::precedes(x.rep_, y.rep_);
 }
 
@@ -202,6 +256,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::succeeds(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::precedes(y.rep_, x.rep_);
 }
 
@@ -221,6 +284,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_interior(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::is_interior(x.rep_, y.rep_);
 }
 
@@ -240,6 +312,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::contains_interior(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::is_interior(y.rep_, x.rep_);
 }
 
@@ -259,6 +340,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::strictly_less(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::strictly_less(x.rep_, y.rep_);
 }
 
@@ -278,6 +368,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::strictly_greater(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::strictly_less(y.rep_, x.rep_);
 }
 
@@ -297,6 +396,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::strictly_precedes(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::strictly_precedes(x.rep_, y.rep_);
 }
 
@@ -316,6 +424,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::strictly_succeeds(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::strictly_precedes(y.rep_, x.rep_);
 }
 
@@ -335,6 +452,15 @@ template<typename T_, typename RepType_, class ConcreteInterval_>
 bool base_interval<T, Flavor, RepType, ConcreteInterval>::are_disjoint(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::are_disjoint(x.rep_, y.rep_);
 }
 
