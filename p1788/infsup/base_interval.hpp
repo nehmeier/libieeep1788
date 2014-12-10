@@ -606,6 +606,81 @@ public:
     static ConcreteInterval atanh(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x);
 
 
+    inline
+    static ConcreteInterval sign(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    inline
+    static ConcreteInterval sign(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x);
+
+
+    inline
+    static ConcreteInterval ceil(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    inline
+    static ConcreteInterval ceil(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x);
+
+
+    inline
+    static ConcreteInterval floor(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    inline
+    static ConcreteInterval floor(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x);
+
+
+    inline
+    static ConcreteInterval trunc(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    inline
+    static ConcreteInterval trunc(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x);
+
+
+    inline
+    static ConcreteInterval round_ties_to_even(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    inline
+    static ConcreteInterval round_ties_to_even(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x);
+
+
+    inline
+    static ConcreteInterval round_ties_to_away(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    inline
+    static ConcreteInterval round_ties_to_away(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x);
+
+
+    inline
+    static ConcreteInterval abs(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    inline
+    static ConcreteInterval abs(base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& x);
+
+
+    inline
+    static ConcreteInterval min(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                                base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
+
+    template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
+    inline
+    static ConcreteInterval min(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+                                base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
+
+
+    inline
+    static ConcreteInterval max(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                                base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
+
+    template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
+    inline
+    static ConcreteInterval max(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+                                base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
+
 //
 //    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
 //    friend ConcreteInterval_ pow(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
@@ -614,35 +689,6 @@ public:
 //    friend ConcreteInterval_ atan2(b///@}ase_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 //
 
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ sign(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ ceil(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ floor(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ trunc(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ round_ties_to_even(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ round_ties_to_away(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ abs(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ min(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ max(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//
 
 ///@}
 
@@ -1248,6 +1294,52 @@ template<typename T, template<typename> class Flavor, typename RepType, class Co
 inline
 ConcreteInterval atanh(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
 
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval sign(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval ceil(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval floor(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval trunc(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval round_ties_to_even(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval round_ties_to_away(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval abs(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval min(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                     base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval max(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                     base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
 
 ///@}
 

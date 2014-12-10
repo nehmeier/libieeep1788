@@ -501,3 +501,129 @@ BOOST_AUTO_TEST_CASE(integration_atanh_test)
     BOOST_CHECK_EQUAL( decoration( DI<float>::atanh(DI<double>(std::stod("0X1.4C0420F6F08CCP-2"),std::stod("0X1.FFFFFFFFFFFFFP-1"))) ), DEC::com );
 }
 
+
+BOOST_AUTO_TEST_CASE(integration_sign_test)
+{
+    BOOST_CHECK_EQUAL( sign(I<double>(1.0,2.0)), I<double>(1.0,1.0) );
+    BOOST_CHECK_EQUAL( I<double>::sign(I<double>(-0.0,2.0)), I<double>(0.0,1.0) );
+    BOOST_CHECK_EQUAL( I<float>::sign(I<double>(-1.0,2.0)), I<float>(-1.0f,1.0f) );
+
+    BOOST_CHECK_EQUAL( sign(DI<double>(1.0,2.0,DEC::com)), DI<double>(1.0,1.0,DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( sign(DI<double>(1.0,2.0,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::sign(DI<double>(-0.0,2.0,DEC::dac)), DI<double>(0.0,1.0, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::sign(DI<double>(-0.0,2.0,DEC::dac)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::sign(DI<double>(-1.0,2.0)), DI<float>(-1.0f,1.0f, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::sign(DI<double>(-1.0,2.0)) ), DEC::def );
+}
+
+BOOST_AUTO_TEST_CASE(integration_ceil_test)
+{
+    BOOST_CHECK_EQUAL( ceil(I<double>(1.1,2.0)), I<double>(2.0,2.0) );
+    BOOST_CHECK_EQUAL( I<double>::ceil(I<double>(-1.9,2.1)), I<double>(-1.0,3.0) );
+    BOOST_CHECK_EQUAL( I<float>::ceil(I<double>(-1.5,2.2)), I<float>(-1.0f,3.0f) );
+
+    BOOST_CHECK_EQUAL( ceil(DI<double>(1.1,2.0,DEC::com)), DI<double>(2.0,2.0,DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( ceil(DI<double>(1.1,2.0,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::ceil(DI<double>(-0.1,2.1,DEC::dac)), DI<double>(0.0,3.0, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::ceil(DI<double>(-0.1,2.1,DEC::dac)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::ceil(DI<double>(-1.5,0.1)), DI<float>(-1.0f,1.0f, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::ceil(DI<double>(-1.5,0.1)) ), DEC::def );
+}
+
+BOOST_AUTO_TEST_CASE(integration_floor_test)
+{
+    BOOST_CHECK_EQUAL( floor(I<double>(1.1,2.0)), I<double>(1.0,2.0) );
+    BOOST_CHECK_EQUAL( I<double>::floor(I<double>(-1.9,2.1)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( I<float>::floor(I<double>(-1.5,2.2)), I<float>(-2.0f,2.0f) );
+
+    BOOST_CHECK_EQUAL( floor(DI<double>(1.1,1.9,DEC::com)), DI<double>(1.0,1.0,DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( floor(DI<double>(1.1,1.9,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::floor(DI<double>(-0.1,2.1,DEC::dac)), DI<double>(-1.0,2.0, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::floor(DI<double>(-0.1,2.1,DEC::dac)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::floor(DI<double>(-1.5,0.1)), DI<float>(-2.0f,0.0f, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::floor(DI<double>(-1.5,0.1)) ), DEC::def );
+}
+
+BOOST_AUTO_TEST_CASE(integration_trunc_test)
+{
+    BOOST_CHECK_EQUAL( trunc(I<double>(1.1,2.2)), I<double>(1.0,2.0) );
+    BOOST_CHECK_EQUAL( I<double>::trunc(I<double>(-1.9,2.1)), I<double>(-1.0,2.0) );
+    BOOST_CHECK_EQUAL( I<float>::trunc(I<double>(-1.5,2.2)), I<float>(-1.0f,2.0f) );
+
+    BOOST_CHECK_EQUAL( trunc(DI<double>(1.1,1.9,DEC::com)), DI<double>(1.0,1.0,DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( trunc(DI<double>(1.1,1.9,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::trunc(DI<double>(-0.1,2.1,DEC::dac)), DI<double>(0.0,2.0, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::trunc(DI<double>(-0.1,2.1,DEC::dac)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::trunc(DI<double>(-1.5,0.1)), DI<float>(-1.0f,0.0f, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::trunc(DI<double>(-1.5,0.1)) ), DEC::def );
+}
+
+BOOST_AUTO_TEST_CASE(integration_round_ties_to_even_test)
+{
+    BOOST_CHECK_EQUAL( round_ties_to_even(I<double>(1.1,2.2)), I<double>(1.0,2.0) );
+    BOOST_CHECK_EQUAL( I<double>::round_ties_to_even(I<double>(-1.9,2.5)), I<double>(-2.0,2.0) );
+    BOOST_CHECK_EQUAL( I<float>::round_ties_to_even(I<double>(-1.5,2.2)), I<float>(-2.0f,2.0f) );
+
+    BOOST_CHECK_EQUAL( round_ties_to_even(DI<double>(1.5,1.9,DEC::com)), DI<double>(2.0,2.0,DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( round_ties_to_even(DI<double>(1.5,1.9,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::round_ties_to_even(DI<double>(-0.1,2.1,DEC::dac)), DI<double>(0.0,2.0, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::round_ties_to_even(DI<double>(-0.1,2.1,DEC::dac)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::round_ties_to_even(DI<double>(-1.5,0.1)), DI<float>(-2.0f,0.0f, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::round_ties_to_even(DI<double>(-1.5,0.1)) ), DEC::def );
+}
+
+BOOST_AUTO_TEST_CASE(integration_round_ties_to_away_test)
+{
+    BOOST_CHECK_EQUAL( round_ties_to_away(I<double>(1.1,2.2)), I<double>(1.0,2.0) );
+    BOOST_CHECK_EQUAL( I<double>::round_ties_to_away(I<double>(-1.9,2.5)), I<double>(-2.0,3.0) );
+    BOOST_CHECK_EQUAL( I<float>::round_ties_to_away(I<double>(-1.5,2.2)), I<float>(-2.0f,2.0f) );
+
+    BOOST_CHECK_EQUAL( round_ties_to_away(DI<double>(1.5,1.9,DEC::com)), DI<double>(2.0,2.0,DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( round_ties_to_away(DI<double>(1.5,1.9,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::round_ties_to_away(DI<double>(-0.1,2.1,DEC::dac)), DI<double>(0.0,2.0, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::round_ties_to_away(DI<double>(-0.1,2.1,DEC::dac)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::round_ties_to_away(DI<double>(-2.5,0.1)), DI<float>(-3.0f,0.0f, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::round_ties_to_away(DI<double>(-2.5,0.1)) ), DEC::def );
+}
+
+BOOST_AUTO_TEST_CASE(integration_abs_test)
+{
+    BOOST_CHECK_EQUAL( abs(I<double>(1.1,2.2)), I<double>(1.1,2.2) );
+    BOOST_CHECK_EQUAL( I<double>::abs(I<double>(-1.9,0.5)), I<double>(0.0,1.9) );
+    BOOST_CHECK_EQUAL( I<float>::abs(I<double>(-1.5,2.2)), I<float>(0.0,2.2) );
+
+    BOOST_CHECK_EQUAL( abs(DI<double>(1.5,1.9,DEC::com)), DI<double>(1.5,1.9,DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( abs(DI<double>(1.5,1.9,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::abs(DI<double>(-0.1,2.1,DEC::dac)), DI<double>(0.0,2.1, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::abs(DI<double>(-0.1,2.1,DEC::dac)) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<float>::abs(DI<double>(-2.5,0.1)), DI<float>(0.0f,2.5f, DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::abs(DI<double>(-2.5,0.1)) ), DEC::com );
+}
+
+BOOST_AUTO_TEST_CASE(integration_min_test)
+{
+    BOOST_CHECK_EQUAL( min(I<double>(1.1,2.2), I<double>(1.9,2.0)), I<double>(1.1,2.0) );
+    BOOST_CHECK_EQUAL( I<double>::min(I<double>(-1.9,0.5), I<double>(-2.9,2.0)), I<double>(-2.9,0.5) );
+    BOOST_CHECK_EQUAL( I<float>::min(I<double>(-1.5,2.2), I<double>(0.9,1.9)), I<float>(-1.5,1.9) );
+
+    BOOST_CHECK_EQUAL( min(DI<double>(1.5,1.9,DEC::com), DI<double>(1.0,5.9,DEC::com)), DI<double>(1.0,1.9,DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( min(DI<double>(1.5,1.9,DEC::com), DI<double>(1.0,5.9,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::min(DI<double>(-0.1,2.1,DEC::dac), DI<double>(1.0,5.9,DEC::com)), DI<double>(-0.1,2.1, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::min(DI<double>(-0.1,2.1,DEC::dac), DI<double>(1.0,5.9,DEC::com)) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<float>::min(DI<double>(-2.5,3.1), DI<double>(1.0,1.5,DEC::def)), DI<float>(-2.5f, 1.5f, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::min(DI<double>(-2.5,3.1), DI<double>(1.0,1.5,DEC::def)) ), DEC::def );
+}
+
+BOOST_AUTO_TEST_CASE(integration_max_test)
+{
+    BOOST_CHECK_EQUAL( max(I<double>(1.1,2.2), I<double>(1.9,2.0)), I<double>(1.9,2.2) );
+    BOOST_CHECK_EQUAL( I<double>::max(I<double>(-1.9,0.5), I<double>(-2.9,2.0)), I<double>(-1.9,2.0) );
+    BOOST_CHECK_EQUAL( I<float>::max(I<double>(-1.5,2.2), I<double>(0.9,1.9)), I<float>(0.9,2.2) );
+
+    BOOST_CHECK_EQUAL( max(DI<double>(1.5,1.9,DEC::com), DI<double>(1.0,5.9,DEC::com)), DI<double>(1.5,5.9,DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( max(DI<double>(1.5,1.9,DEC::com), DI<double>(1.0,5.9,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::max(DI<double>(-0.1,2.1,DEC::dac), DI<double>(1.0,5.9,DEC::com)), DI<double>(1.0,5.9, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::max(DI<double>(-0.1,2.1,DEC::dac), DI<double>(1.0,5.9,DEC::com)) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<float>::max(DI<double>(-2.5,3.5), DI<double>(1.0,1.5,DEC::def)), DI<float>(1.0f, 3.5f, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::max(DI<double>(-2.5,3.5), DI<double>(1.0,1.5,DEC::def)) ), DEC::def );
+}
