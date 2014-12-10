@@ -217,4 +217,287 @@ BOOST_AUTO_TEST_CASE(integration_fma_test)
 }
 
 
+BOOST_AUTO_TEST_CASE(integration_pown_test)
+{
+    BOOST_CHECK_EQUAL( pown(I<double>(1.0,5.0), 3), I<double>(1.0,125.0) );
+    BOOST_CHECK_EQUAL( I<double>::pown(I<double>(-1.0, 100.0), -7), I<double>(-INF_D, INF_D) );
+    BOOST_CHECK_EQUAL( I<float>::pown(I<double>(0.01,2.33), 2), I<float>(std::stof("0x1.a36e2ep-14"),std::stof("0x1.5b731ap+2")) );
+
+    BOOST_CHECK_EQUAL( pown(DI<double>(-5.0, 25.0, DEC::def), 2), DI<double>(0.0,625.0, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( pown(DI<double>(-5.0, 25.0, DEC::def), 2) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<double>::pown(DI<double>(MIN_D, 1.0, DEC::com), -8), DI<double>(1.0, INF_D, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::pown(DI<double>(MIN_D, 1.0, DEC::com), -8) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<float>::pown(DI<double>(-1.0, 1.0), -3), DI<float>(-INF_D, INF_D, DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::pown(DI<double>(-1.0, 1.0), -3) ), DEC::trv );
+}
+
+
+
+BOOST_AUTO_TEST_CASE(integration_exp_test)
+{
+    BOOST_CHECK_EQUAL( exp(I<double>(-INF_D,0.0)), I<double>(0.0,1.0) );
+    BOOST_CHECK_EQUAL( I<double>::exp(I<double>(std::stod("0X1.62E42FEFA39FP+9"),std::stod("0X1.62E42FEFA39FP+9"))), I<double>(std::stod("0X1.FFFFFFFFFFFFFP+1023"), INF_D) );
+    BOOST_CHECK_EQUAL( I<float>::exp(I<double>(std::stod("0X1.62E42FEFA39FP+9"),std::stod("0X1.62E42FEFA39FP+9"))), I<float>(MAX_F,INF_F) );
+
+    BOOST_CHECK_EQUAL( exp(DI<double>(std::stod("0X1.62E42FEFA39FP+9"),std::stod("0X1.62E42FEFA39FP+9"), DEC::com)), DI<double>(std::stod("0X1.FFFFFFFFFFFFFP+1023"),INF_D, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( exp(DI<double>(std::stod("0X1.62E42FEFA39FP+9"),std::stod("0X1.62E42FEFA39FP+9"), DEC::com)) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<double>::exp(DI<double>(0.0,std::stod("0X1.62E42FEFA39EP+9"), DEC::def)), DI<double>(1.0,std::stod("0X1.FFFFFFFFFC32BP+1023"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::exp(DI<double>(0.0,std::stod("0X1.62E42FEFA39EP+9"), DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::exp(DI<double>(std::stod("0X1.62E42FEFA39FP+9"),std::stod("0X1.62E42FEFA39FP+9"))), DI<float>(MAX_F,INF_F, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::exp(DI<double>(std::stod("0X1.62E42FEFA39FP+9"),std::stod("0X1.62E42FEFA39FP+9"))) ), DEC::dac );
+}
+
+
+BOOST_AUTO_TEST_CASE(integration_exp2_test)
+{
+    BOOST_CHECK_EQUAL( exp2(I<double>(-INF_D,1024.0)), I<double>(0.0,INF_D) );
+    BOOST_CHECK_EQUAL( I<double>::exp2(I<double>(-1022.0,1023.0)), I<double>(std::stod("0X1P-1022"),std::stod("0X1P+1023")) );
+    BOOST_CHECK_EQUAL( I<float>::exp2(I<double>(1024.0,1024.0)), I<float>(MAX_F,INF_F) );
+
+    BOOST_CHECK_EQUAL( exp2(DI<double>(1024.0,1024.0, DEC::com)), DI<double>(std::stod("0X1.FFFFFFFFFFFFFP+1023"),INF_D, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( exp2(DI<double>(1024.0,1024.0, DEC::com)) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<double>::exp2(DI<double>(std::stod("0X1.87F42B972949CP-1"),std::stod("0X1.8B55484710029P+6"), DEC::def)), DI<double>(std::stod("0X1.B333333333332P+0"),std::stod("0X1.C81FD88228B4FP+98"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::exp2(DI<double>(std::stod("0X1.87F42B972949CP-1"),std::stod("0X1.8B55484710029P+6"), DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::exp2(DI<double>(1024.0,1024.0)), DI<float>(MAX_F,INF_F, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::exp2(DI<double>(1024.0,1024.0)) ), DEC::dac );
+}
+
+
+BOOST_AUTO_TEST_CASE(integration_exp10_test)
+{
+    BOOST_CHECK_EQUAL( exp10(I<double>(std::stod("0X1.34413509F79FFP+8"),std::stod("0X1.34413509F79FFP+8"))), I<double>(std::stod("0X1.FFFFFFFFFFFFFP+1023"),INF_D) );
+    BOOST_CHECK_EQUAL( I<double>::exp10(I<double>(std::stod("-0X1.22P+7"),0.0)), I<double>(std::stod("0X1.3FAAC3E3FA1F3P-482"),1.0) );
+    BOOST_CHECK_EQUAL( I<float>::exp10(I<double>(std::stod("0X1.34413509F79FFP+8"),std::stod("0X1.34413509F79FFP+8"))), I<float>(MAX_F,INF_F) );
+
+    BOOST_CHECK_EQUAL( exp10(DI<double>(std::stod("0X1.34413509F79FFP+8"),std::stod("0X1.34413509F79FFP+8"), DEC::com)), DI<double>(std::stod("0X1.FFFFFFFFFFFFFP+1023"),INF_D, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( exp10(DI<double>(std::stod("0X1.34413509F79FFP+8"),std::stod("0X1.34413509F79FFP+8"), DEC::com)) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<double>::exp10(DI<double>(std::stod("0X1.87F42B972949CP-1"),std::stod("0X1.8B55484710029P+6"), DEC::def)), DI<double>(std::stod("0X1.75014B7296807P+2"),std::stod("0X1.3EEC1D47DFB2BP+328"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::exp10(DI<double>(std::stod("0X1.87F42B972949CP-1"),std::stod("0X1.8B55484710029P+6"), DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::exp10(DI<double>(std::stod("0X1.34413509F79FFP+8"),std::stod("0X1.34413509F79FFP+8"))), DI<float>(MAX_F, INF_D, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::exp10(DI<double>(std::stod("0X1.34413509F79FFP+8"),std::stod("0X1.34413509F79FFP+8"))) ), DEC::dac );
+}
+
+
+BOOST_AUTO_TEST_CASE(integration_log_test)
+{
+    BOOST_CHECK_EQUAL( log(I<double>(std::stod("0X1.5BF0A8B145769P+1"),std::stod("0X1.5BF0A8B145769P+1"))), I<double>(std::stod("0X1.FFFFFFFFFFFFFP-1"),std::stod("0X1P+0")) );
+    BOOST_CHECK_EQUAL( I<double>::log(I<double>(std::stod("0X1.5BF0A8B145769P+1"),32.0)), I<double>(std::stod("0X1.FFFFFFFFFFFFFP-1"),std::stod("0X1.BB9D3BEB8C86CP+1")) );
+    BOOST_CHECK_EQUAL( I<float>::log(I<double>(std::stod("0X1.999999999999AP-4"),std::stod("0X1.CP+1"))), I<float>(std::stof("-0x1.26bb1cp+1"),std::stof("0x1.40b514p+0")) );
+
+    BOOST_CHECK_EQUAL( log(DI<double>(MIN_D,MAX_D, DEC::com)), DI<double>(std::stod("-0X1.6232BDD7ABCD3P+9"),std::stod("0X1.62E42FEFA39FP+9"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( log(DI<double>(MIN_D,MAX_D, DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::log(DI<double>(0.0,1.0, DEC::com)), DI<double>(-INF_D,0.0, DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::log(DI<double>(0.0,1.0, DEC::com)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<float>::log(DI<double>(std::stod("0X1.999999999999AP-4"),std::stod("0X1.CP+1"))), DI<float>(std::stof("-0x1.26bb1cp+1"),std::stof("0x1.40b514p+0"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::log(DI<double>(std::stod("0X1.999999999999AP-4"),std::stod("0X1.CP+1"))) ), DEC::com );
+}
+
+
+BOOST_AUTO_TEST_CASE(integration_log2_test)
+{
+    BOOST_CHECK_EQUAL( log2(I<double>(MIN_D,MAX_D)), I<double>(-1022.0,1024.0) );
+    BOOST_CHECK_EQUAL( I<double>::log2(I<double>(std::stod("0X1.B333333333333P+0"),std::stod("0X1.C81FD88228B2FP+98"))), I<double>(std::stod("0X1.87F42B972949CP-1"),std::stod("0X1.8B55484710029P+6")) );
+    BOOST_CHECK_EQUAL( I<float>::log2(I<double>(std::stod("0X1.999999999999AP-4"),std::stod("0X1.CP+1"))), I<float>(std::stof("-0x1.a934f2p+1"),std::stod("0x1.ceaedp+0")) );
+
+    BOOST_CHECK_EQUAL( log2(DI<double>(MIN_D,MAX_D, DEC::com)), DI<double>(-1022.0,1024.0, DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( log2(DI<double>(MIN_D,MAX_D, DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::log2(DI<double>(2.0,32.0, DEC::def)), DI<double>(1.0, 5.0, DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::log2(DI<double>(2.0,32.0, DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::log2(DI<double>(std::stod("0X1.999999999999AP-4"),std::stod("0X1.CP+1"))), DI<float>(std::stof("-0x1.a934f2p+1"),std::stod("0x1.ceaedp+0"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::log2(DI<double>(std::stod("0X1.999999999999AP-4"),std::stod("0X1.CP+1"))) ), DEC::com );
+}
+
+
+BOOST_AUTO_TEST_CASE(integration_log10_test)
+{
+    BOOST_CHECK_EQUAL( log10(I<double>(MIN_D,MAX_D)), I<double>(std::stod("-0X1.33A7146F72A42P+8") ,std::stod("0X1.34413509F79FFP+8")) );
+    BOOST_CHECK_EQUAL( I<double>::log10(I<double>(std::stod("0X1.999999999999AP-4"),std::stod("0X1.999999999999AP-4"))), I<double>(std::stod("-0X1P+0"),std::stod("-0X1.FFFFFFFFFFFFFP-1")) );
+    BOOST_CHECK_EQUAL( I<float>::log10(I<double>(MIN_D,MAX_D)), I<float>(std::stof("-0x1.33a716p+8") ,std::stod("0x1.344136p+8")) );
+
+    BOOST_CHECK_EQUAL( log10(DI<double>(MIN_D,MAX_D, DEC::def)), DI<double>(std::stod("-0X1.33A7146F72A42P+8") ,std::stod("0X1.34413509F79FFP+8"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( log10(DI<double>(MIN_D,MAX_D, DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<double>::log10(DI<double>(0.0,MAX_D, DEC::com)), DI<double>(-INF_D,std::stod("0X1.34413509F79FFP+8"), DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::log10(DI<double>(0.0,MAX_D, DEC::com)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<float>::log10(DI<double>(MIN_D,MAX_D)), DI<float>(std::stof("-0x1.33a716p+8") ,std::stod("0x1.344136p+8"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::log10(DI<double>(MIN_D,MAX_D)) ), DEC::com );
+}
+
+
+BOOST_AUTO_TEST_CASE(integration_sin_test)
+{
+    BOOST_CHECK_EQUAL( sin(I<double>(0.0,INF_D)), I<double>(-1.0,1.0) );
+    BOOST_CHECK_EQUAL( I<double>::sin(I<double>(std::stod("0X1.921FB54442D18P+0"),std::stod("0X1.921FB54442D18P+0"))), I<double>(std::stod("0X1.FFFFFFFFFFFFFP-1"),std::stod("0X1P+0")) );
+    BOOST_CHECK_EQUAL( I<float>::sin(I<double>(std::stod("0X1.921FB54442D18P+1"),std::stod("0X1.921FB54442D19P+1"))), I<float>(std::stof("-0x1.72cedp-52"),std::stof("0x1.1a6264p-53")) );
+
+    BOOST_CHECK_EQUAL( sin(DI<double>(std::stod("-0X1.921FB54442D18P+1"),std::stod("-0X1.921FB54442D18P+0"), DEC::def)), DI<double>(std::stod("-0X1P+0"),std::stod("-0X1.1A62633145C06P-53"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( sin(DI<double>(std::stod("-0X1.921FB54442D18P+1"),std::stod("-0X1.921FB54442D18P+0"), DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<double>::sin(DI<double>(-INF_D,-0.0, DEC::dac)), DI<double>(-1.0,1.0, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::sin(DI<double>(-INF_D,-0.0, DEC::dac)) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<float>::sin(DI<double>(std::stod("0X1.921FB54442D18P+1"),std::stod("0X1.921FB54442D19P+1"))), DI<float>(std::stof("-0x1.72cedp-52"),std::stof("0x1.1a6264p-53"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::sin(DI<double>(std::stod("0X1.921FB54442D18P+1"),std::stod("0X1.921FB54442D19P+1"))) ), DEC::com );
+}
+
+BOOST_AUTO_TEST_CASE(integration_cos_test)
+{
+    BOOST_CHECK_EQUAL( cos(I<double>(-INF_D,0.0)), I<double>(-1.0,1.0) );
+    BOOST_CHECK_EQUAL( I<double>::cos(I<double>(0.0,std::stod("0X1.921FB54442D18P+0"))), I<double>(std::stod("0X1.1A62633145C06P-54"),1.0) );
+    BOOST_CHECK_EQUAL( I<float>::cos(I<double>(std::stod("-0X1.921FB54442D18P+0"),std::stod("-0X1.921FB54442D18P+0"))), I<float>(std::stof("0X1.1A6262P-54"),std::stof("0X1.1A6264P-54")) );
+
+    BOOST_CHECK_EQUAL( cos(DI<double>(std::stod("-0X1.921FB54442D18P+0"),std::stod("-0X1.921FB54442D18P+0"), DEC::def)), DI<double>(std::stod("0X1.1A62633145C06P-54"),std::stod("0X1.1A62633145C07P-54"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( cos(DI<double>(std::stod("-0X1.921FB54442D18P+0"),std::stod("-0X1.921FB54442D18P+0"), DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<double>::cos(DI<double>(0.0,MAX_D, DEC::com)), DI<double>(-1.0,1.0, DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::cos(DI<double>(0.0,MAX_D, DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<float>::cos(DI<double>(std::stod("-0X1.921FB54442D18P+0"),std::stod("-0X1.921FB54442D18P+0"))), DI<float>(std::stod("0X1.1A6262P-54"),std::stod("0X1.1A6264P-54"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::cos(DI<double>(std::stod("-0X1.921FB54442D18P+0"),std::stod("-0X1.921FB54442D18P+0"))) ), DEC::com );
+}
+
+
+BOOST_AUTO_TEST_CASE(integration_tan_test)
+{
+    BOOST_CHECK_EQUAL( tan(I<double>(0.0,INF_D)), I<double>::entire() );
+    BOOST_CHECK_EQUAL( I<double>::tan(I<double>(0.0,std::stod("0X1.921FB54442D18P+0"))), I<double>(0.0,std::stod("0X1.D02967C31CDB5P+53")) );
+    BOOST_CHECK_EQUAL( I<float>::tan(I<double>(std::stod("0X1.921FB54442D19P+0"),std::stod("0X1.921FB54442D19P+0"))), I<float>(std::stof("-0x1.617a16p+52"),std::stof("-0x1.617a14p+52")) );
+
+    BOOST_CHECK_EQUAL( tan(DI<double>(0.0,std::stod("0X1.921FB54442D18P+0"),DEC::com)), DI<double>(0.0,std::stod("0X1.D02967C31CDB5P+53"),DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( tan(DI<double>(0.0,std::stod("0X1.921FB54442D18P+0"),DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::tan(DI<double>(std::stod("0X1P-51"),std::stod("0X1.921FB54442D19P+1"),DEC::com)), DI<double>(-INF_D,INF_D, DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::tan(DI<double>(std::stod("0X1P-51"),std::stod("0X1.921FB54442D19P+1"),DEC::com)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<float>::tan(DI<double>(std::stod("0X1.921FB54442D19P+0"),std::stod("0X1.921FB54442D19P+0"))), DI<float>(std::stof("-0x1.617a16p+52"),std::stof("-0x1.617a14p+52"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::tan(DI<double>(std::stod("0X1.921FB54442D19P+0"),std::stod("0X1.921FB54442D19P+0"))) ), DEC::com );
+}
+
+
+
+BOOST_AUTO_TEST_CASE(integration_asin_test)
+{
+    BOOST_CHECK_EQUAL( asin(I<double>(0.0,INF_D)), I<double>(0.0,std::stod("0X1.921FB54442D19P+0")) );
+    BOOST_CHECK_EQUAL( I<double>::asin(I<double>(std::stod("-0X1.999999999999AP-4"),std::stod("0X1.999999999999AP-4"))), I<double>(std::stod("-0X1.9A49276037885P-4"),std::stod("0X1.9A49276037885P-4")) );
+    BOOST_CHECK_EQUAL( I<float>::asin(I<double>(-1.0,1.0)), I<float>(std::stof("-0X1.921FB6P+0"),std::stof("0X1.921FB6P+0")) );
+
+    BOOST_CHECK_EQUAL( asin(DI<double>(0.0,INF_D, DEC::dac)), DI<double>(0.0,std::stod("0X1.921FB54442D19P+0"), DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( asin(DI<double>(0.0,INF_D, DEC::dac)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<double>::asin(DI<double>(std::stod("-0X1.51EB851EB851FP-2"),std::stod("0X1.FFFFFFFFFFFFFP-1"), DEC::def)), DI<double>(std::stod("-0X1.585FF6E341C3FP-2"),std::stod("0X1.921FB50442D19P+0"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::asin(DI<double>(std::stod("-0X1.51EB851EB851FP-2"),std::stod("0X1.FFFFFFFFFFFFFP-1"), DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::asin(DI<double>(-1.0,1.0)), DI<float>(std::stof("-0X1.921FB6P+0"),std::stof("0X1.921FB6P+0"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::asin(DI<double>(-1.0,1.0)) ), DEC::com );
+}
+
+BOOST_AUTO_TEST_CASE(integration_acos_test)
+{
+    BOOST_CHECK_EQUAL( acos(I<double>(-INF_D,0.0)), I<double>(std::stod("0X1.921FB54442D18P+0"),std::stod("0X1.921FB54442D19P+1")) );
+    BOOST_CHECK_EQUAL( I<double>::acos(I<double>(-1.0,-1.0)), I<double>(std::stod("0X1.921FB54442D18P+1"),std::stod("0X1.921FB54442D19P+1")) );
+    BOOST_CHECK_EQUAL( I<float>::acos(I<double>(-1.0,1.0)), I<float>(0.0f,std::stof("0X1.921FB6P+1")) );
+
+    BOOST_CHECK_EQUAL( acos(DI<double>(0.0,INF_D, DEC::dac)), DI<double>(0.0,std::stod("0X1.921FB54442D19P+0"), DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( acos(DI<double>(0.0,INF_D, DEC::dac)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<double>::acos(DI<double>(std::stod("-0X1.51EB851EB851FP-2"),std::stod("0X1.FFFFFFFFFFFFFP-1"), DEC::def)), DI<double>(std::stod("0X1P-26"),std::stod("0X1.E837B2FD13428P+0"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::acos(DI<double>(std::stod("-0X1.51EB851EB851FP-2"),std::stod("0X1.FFFFFFFFFFFFFP-1"), DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::acos(DI<double>(-1.0,1.0)), DI<float>(0.0f,std::stof("0X1.921FB6P+1"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::acos(DI<double>(-1.0,1.0)) ), DEC::com );
+}
+
+
+BOOST_AUTO_TEST_CASE(integration_atan_test)
+{
+    BOOST_CHECK_EQUAL( atan(I<double>(0.0,INF_D)), I<double>(0.0,std::stod("0X1.921FB54442D19P+0")) );
+    BOOST_CHECK_EQUAL( I<double>::atan(I<double>(1.0,std::stod("0X1.4C2463567C5ACP+25"))), I<double>(std::stod("0X1.921FB54442D18P-1"),std::stod("0X1.921FB4E19ABD7P+0")) );
+    BOOST_CHECK_EQUAL( I<float>::atan(I<double>::entire()), I<float>(std::stof("-0X1.921FB6P+0"),std::stod("0X1.921FB6P+0")) );
+
+    BOOST_CHECK_EQUAL( atan(DI<double>(1.0,std::stod("0X1.4C2463567C5ACP+25"),DEC::trv)), DI<double>(std::stod("0X1.921FB54442D18P-1"),std::stod("0X1.921FB4E19ABD7P+0"),DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( atan(DI<double>(1.0,std::stod("0X1.4C2463567C5ACP+25"),DEC::trv)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<double>::atan(DI<double>(std::stod("-0X1.FD219490EAAC1P+38"),std::stod("-0X1.1AF1C9D74F06DP+9"),DEC::com)), DI<double>(std::stod("-0X1.921FB54440CEBP+0"),std::stod("-0X1.91ABE5C1E4C6DP+0"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::atan(DI<double>(std::stod("-0X1.FD219490EAAC1P+38"),std::stod("-0X1.1AF1C9D74F06DP+9"),DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<float>::atan(DI<double>::entire()), DI<float>(std::stof("-0X1.921FB6P+0"),std::stod("0X1.921FB6P+0"), DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::atan(DI<double>::entire()) ), DEC::dac );
+}
+
+
+
+BOOST_AUTO_TEST_CASE(integration_sinh_test)
+{
+    BOOST_CHECK_EQUAL( sinh(I<double>(0.0,INF_D)), I<double>(0.0,INF_D) );
+    BOOST_CHECK_EQUAL( I<double>::sinh(I<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"))), I<double>(std::stod("0X1.2CD9FC44EB982P+0"),std::stod("0X1.89BCA168970C6P+432")) );
+    BOOST_CHECK_EQUAL( I<float>::sinh(I<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))), I<float>(std::stof("-0x1.55edp+0"),std::stof("0x1.3bf73p+2")) );
+
+    BOOST_CHECK_EQUAL( sinh(DI<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"), DEC::com)), DI<double>(std::stod("0X1.2CD9FC44EB982P+0"),std::stod("0X1.89BCA168970C6P+432"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( sinh(DI<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"), DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::sinh(DI<double>(0.0,INF_D, DEC::dac)), DI<double>(0.0,INF_D, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::sinh(DI<double>(0.0,INF_D, DEC::dac)) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<float>::sinh(DI<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"),DEC::trv)), DI<float>(std::stof("-0x1.55edp+0"),std::stof("0x1.3bf73p+2"), DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::sinh(DI<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"),DEC::trv)) ), DEC::trv );
+}
+
+BOOST_AUTO_TEST_CASE(integration_cosh_test)
+{
+    BOOST_CHECK_EQUAL( cosh(I<double>(0.0,INF_D)), I<double>(1.0,INF_D) );
+    BOOST_CHECK_EQUAL( I<double>::cosh(I<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"))), I<double>(std::stod("0X1.8B07551D9F55P+0"),std::stod("0X1.89BCA168970C6P+432")) );
+    BOOST_CHECK_EQUAL( I<float>::cosh(I<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))), I<float>(1.0f,std::stof("0X1.4261D4P+2")) );
+
+    BOOST_CHECK_EQUAL( cosh(DI<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"), DEC::def)), DI<double>(std::stod("0X1.8B07551D9F55P+0"),std::stod("0X1.89BCA168970C6P+432"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( cosh(DI<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"), DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<double>::cosh(DI<double>(std::stod("-0X1.FD219490EAAC1P+38"),std::stod("-0X1.1AF1C9D74F06DP+9"), DEC::com)), DI<double>(std::stod("0X1.53045B4F849DEP+815"),INF_D, DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::cosh(DI<double>(std::stod("-0X1.FD219490EAAC1P+38"),std::stod("-0X1.1AF1C9D74F06DP+9"), DEC::com)) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<float>::cosh(DI<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))), DI<float>(1.0f,std::stof("0X1.4261D4P+2"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::cosh(DI<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))) ), DEC::com );
+}
+
+
+BOOST_AUTO_TEST_CASE(integration_tanh_test)
+{
+    BOOST_CHECK_EQUAL( tanh(I<double>(0.0,INF_D)), I<double>(0.0,1.0) );
+    BOOST_CHECK_EQUAL( I<double>::tanh(I<double>(std::stod("-0X1.FD219490EAAC1P+38"),std::stod("-0X1.1AF1C9D74F06DP+9"))), I<double>(std::stod("-0X1P+0"),std::stod("-0X1.FFFFFFFFFFFFFP-1")) );
+    BOOST_CHECK_EQUAL( I<float>::tanh(I<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))), I<float>(std::stof("-0X1.99DB02P-1"),std::stof("0X1.F5CF32P-1")) );
+
+    BOOST_CHECK_EQUAL( tanh(DI<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"),DEC::com)), DI<double>(std::stod("0X1.85EFAB514F394P-1"),std::stod("0X1P+0"),DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( tanh(DI<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"),DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::tanh(DI<double>(std::stod("-0X1.FD219490EAAC1P+38"),std::stod("-0X1.1AF1C9D74F06DP+9"),DEC::trv)), DI<double>(std::stod("-0X1P+0"),std::stod("-0X1.FFFFFFFFFFFFFP-1"), DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::tanh(DI<double>(std::stod("-0X1.FD219490EAAC1P+38"),std::stod("-0X1.1AF1C9D74F06DP+9"),DEC::trv)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<float>::tanh(DI<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))), DI<float>(std::stof("-0X1.99DB02P-1"),std::stof("0X1.F5CF32P-1"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::tanh(DI<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))) ), DEC::com );
+}
+
+
+
+BOOST_AUTO_TEST_CASE(integration_asinh_test)
+{
+    BOOST_CHECK_EQUAL( asinh(I<double>(0.0,INF_D)), I<double>(0.0,INF_D) );
+    BOOST_CHECK_EQUAL( I<double>::asinh(I<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"))), I<double>(std::stod("0X1.C34366179D426P-1"),std::stod("0X1.9986127438A87P+2")) );
+    BOOST_CHECK_EQUAL( I<float>::asinh(I<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))), I<float>(std::stof("-0X1.E693EP-1"),std::stof("0X1.91FDC8P+0")) );
+
+    BOOST_CHECK_EQUAL( asinh(DI<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"), DEC::com)), DI<double>(std::stod("0X1.C34366179D426P-1"),std::stod("0X1.9986127438A87P+2"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( asinh(DI<double>(1.0,std::stod("0X1.2C903022DD7AAP+8"), DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::asinh(DI<double>(std::stod("-0X1.FD219490EAAC1P+38"),std::stod("-0X1.1AF1C9D74F06DP+9"), DEC::dac)), DI<double>(std::stod("-0X1.BB86380A6CC45P+4"),std::stod("-0X1.C204D8EB20827P+2"), DEC::dac) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::asinh(DI<double>(std::stod("-0X1.FD219490EAAC1P+38"),std::stod("-0X1.1AF1C9D74F06DP+9"), DEC::dac)) ), DEC::dac );
+    BOOST_CHECK_EQUAL( DI<float>::asinh(DI<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))), DI<float>(std::stof("-0X1.E693EP-1"),std::stof("0X1.91FDC8P+0"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::asinh(DI<double>(std::stod("-0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))) ), DEC::com );
+}
+
+BOOST_AUTO_TEST_CASE(integration_acosh_test)
+{
+    BOOST_CHECK_EQUAL( acosh(I<double>(0.0,INF_D)), I<double>(0.0,INF_D) );
+    BOOST_CHECK_EQUAL( I<double>::acosh(I<double>(std::stod("0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))), I<double>(std::stod("0X1.C636C1A882F2CP-2"),std::stod("0X1.799C88E79140DP+0")) );
+    BOOST_CHECK_EQUAL( I<float>::acosh(I<double>(std::stod("0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))), I<float>(std::stof("0X1.C636CP-2"),std::stof("0X1.799C8AP+0")) );
+
+    BOOST_CHECK_EQUAL( acosh(DI<double>(0.9,std::stod("0X1.2C903022DD7AAP+8"), DEC::com)), DI<double>(0.0,std::stod("0X1.9985FB3D532AFP+2"), DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( acosh(DI<double>(0.9,std::stod("0X1.2C903022DD7AAP+8"), DEC::com)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<double>::acosh(DI<double>(1.0,1.0, DEC::com)), DI<double>(0.0,0.0, DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::acosh(DI<double>(1.0,1.0, DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<float>::acosh(DI<double>(std::stod("0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))), DI<float>(std::stof("0X1.C636CP-2"),std::stof("0X1.799C8AP+0"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::acosh(DI<double>(std::stod("0X1.199999999999AP+0"),std::stod("0X1.2666666666666P+1"))) ), DEC::com );
+}
+
+
+BOOST_AUTO_TEST_CASE(integration_atanh_test)
+{
+    BOOST_CHECK_EQUAL( atanh(I<double>(0.0,INF_D)), I<double>(0.0,INF_D) );
+    BOOST_CHECK_EQUAL( I<double>::atanh(I<double>(std::stod("-0X1.FFB88E9EB6307P-1"),std::stod("0X1.999999999999AP-4"))), I<double>(std::stod("-0X1.06A3A97D7979CP+2"),std::stod("0X1.9AF93CD234413P-4")) );
+    BOOST_CHECK_EQUAL( I<float>::atanh(I<double>(std::stod("0X1.4C0420F6F08CCP-2"),std::stod("0X1.FFFFFFFFFFFFFP-1"))), I<float>(std::stof("0X1.5871DCP-2"),std::stof("0X1.2B708AP+4")) );
+
+    BOOST_CHECK_EQUAL( atanh(DI<double>(-1.0,std::stod("0X1.FFFFFFFFFFFFFP-1"),DEC::com)), DI<double>(-INF_D,std::stod("0X1.2B708872320E2P+4"),DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( atanh(DI<double>(-1.0,std::stod("0X1.FFFFFFFFFFFFFP-1"),DEC::com)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<double>::atanh(DI<double>(std::stod("-0X1.FFB88E9EB6307P-1"),std::stod("0X1.999999999999AP-4"),DEC::def)), DI<double>(std::stod("-0X1.06A3A97D7979CP+2"),std::stod("0X1.9AF93CD234413P-4"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::atanh(DI<double>(std::stod("-0X1.FFB88E9EB6307P-1"),std::stod("0X1.999999999999AP-4"),DEC::def)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::atanh(DI<double>(std::stod("0X1.4C0420F6F08CCP-2"),std::stod("0X1.FFFFFFFFFFFFFP-1"))), DI<float>(std::stof("0X1.5871DCP-2"),std::stof("0X1.2B708AP+4"), DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::atanh(DI<double>(std::stod("0X1.4C0420F6F08CCP-2"),std::stod("0X1.FFFFFFFFFFFFFP-1"))) ), DEC::com );
+}
 

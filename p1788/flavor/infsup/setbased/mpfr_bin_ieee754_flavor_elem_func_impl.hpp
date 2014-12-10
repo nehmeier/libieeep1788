@@ -1474,8 +1474,16 @@ mpfr_bin_ieee754_flavor<T>::pown(mpfr_bin_ieee754_flavor<T>::representation_dec 
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(pown(x.first, p), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = pown(x.first, p);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            (p < 0 && is_member(0.0,x)) || is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // pown ( decorated interval ) mixed type
@@ -1743,8 +1751,16 @@ mpfr_bin_ieee754_flavor<T>::exp(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(exp(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = exp(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // exp ( decorated interval ) mixed type
@@ -1823,8 +1839,16 @@ mpfr_bin_ieee754_flavor<T>::exp2(mpfr_bin_ieee754_flavor<T>::representation_dec 
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(exp2(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = exp2(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // exp2 ( decorated interval ) mixed type
@@ -1903,8 +1927,16 @@ mpfr_bin_ieee754_flavor<T>::exp10(mpfr_bin_ieee754_flavor<T>::representation_dec
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(exp10(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = exp10(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // exp10 ( decorated interval ) mixed type
@@ -1992,8 +2024,16 @@ mpfr_bin_ieee754_flavor<T>::log(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(log(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = log(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            x.first.first <= 0.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // log ( decorated interval ) mixed type
@@ -2081,8 +2121,16 @@ mpfr_bin_ieee754_flavor<T>::log2(mpfr_bin_ieee754_flavor<T>::representation_dec 
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(log2(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = log2(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            x.first.first <= 0.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // log2 ( decorated interval ) mixed type
@@ -2169,8 +2217,16 @@ mpfr_bin_ieee754_flavor<T>::log10(mpfr_bin_ieee754_flavor<T>::representation_dec
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(log10(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = log10(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            x.first.first <= 0.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // log10 ( decorated interval ) mixed type
@@ -2321,8 +2377,16 @@ mpfr_bin_ieee754_flavor<T>::sin(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(sin(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = sin(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // sin ( decorated interval ) mixed type
@@ -2472,8 +2536,16 @@ mpfr_bin_ieee754_flavor<T>::cos(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(cos(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = cos(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // cos ( decorated interval ) mixed type
@@ -2510,7 +2582,6 @@ mpfr_bin_ieee754_flavor<T>::tan(mpfr_bin_ieee754_flavor<T>::representation const
     if (!is_valid(x) || is_empty(x))
         return empty();
 
-//    return div(sin(x), cos(x));
     mpfr_var::setup();
 
     mpfr_var xl(x.first, MPFR_RNDD);
@@ -2567,8 +2638,35 @@ mpfr_bin_ieee754_flavor<T>::tan(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(tan(x.first), p1788::decoration::decoration::trv);
+    if (is_empty(x))
+        return empty_dec();
+
+    mpfr_var::setup();
+
+    mpfr_var xl(x.first.first, MPFR_RNDD);
+    mpfr_var xu(x.first.second, MPFR_RNDU);
+
+    mpfr_var pi;
+    mpfr_const_pi(pi(), MPFR_RNDD);
+
+    mpfr_var w;
+    mpfr_sub(w(), xu(), xl(), MPFR_RNDU);
+
+    if (mpfr_cmp(w(), pi()) > 0)
+        return representation_dec(entire(), p1788::decoration::decoration::trv);
+
+    xl.subnormalize(mpfr_tan(xl(), xl(), MPFR_RNDD), MPFR_RNDD);
+    xu.subnormalize(mpfr_tan(xu(), xu(), MPFR_RNDU), MPFR_RNDU);
+
+    if (mpfr_cmp(xl(), xu()) > 0)
+        return representation_dec(entire(), p1788::decoration::decoration::trv);
+
+    representation bare(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
+    p1788::decoration::decoration dec  = std::min(x.second,
+                                         is_common(bare) ? p1788::decoration::decoration::com :
+                                         p1788::decoration::decoration::dac);
+
+    return representation_dec(bare, dec);
 }
 
 // tan ( decorated interval ) mixed type
@@ -2653,8 +2751,16 @@ mpfr_bin_ieee754_flavor<T>::asin(mpfr_bin_ieee754_flavor<T>::representation_dec 
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(asin(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = asin(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            x.first.first < -1.0 || x.first.second > 1.0 || is_empty(bare) ?  p1788::decoration::decoration::trv
+                                            : p1788::decoration::decoration::com);
+
+    return representation_dec(bare, dec);
 }
 
 // asin ( decorated interval ) mixed type
@@ -2740,8 +2846,16 @@ mpfr_bin_ieee754_flavor<T>::acos(mpfr_bin_ieee754_flavor<T>::representation_dec 
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(acos(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = acos(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            x.first.first < -1.0 || x.first.second > 1.0 || is_empty(bare) ?  p1788::decoration::decoration::trv
+                                            : p1788::decoration::decoration::com);
+
+    return representation_dec(bare, dec);
 }
 
 // acos ( decorated interval ) mixed type
@@ -2822,8 +2936,15 @@ mpfr_bin_ieee754_flavor<T>::atan(mpfr_bin_ieee754_flavor<T>::representation_dec 
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(atan(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = atan(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv : p1788::decoration::decoration::com);
+
+    return representation_dec(bare, dec);
 }
 
 // atan ( decorated interval ) mixed type
@@ -2990,8 +3111,16 @@ mpfr_bin_ieee754_flavor<T>::sinh(mpfr_bin_ieee754_flavor<T>::representation_dec 
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(sinh(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = sinh(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // sinh ( decorated interval ) mixed type
@@ -3080,8 +3209,16 @@ mpfr_bin_ieee754_flavor<T>::cosh(mpfr_bin_ieee754_flavor<T>::representation_dec 
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(cosh(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = cosh(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // cosh ( decorated interval ) mixed type
@@ -3161,8 +3298,15 @@ mpfr_bin_ieee754_flavor<T>::tanh(mpfr_bin_ieee754_flavor<T>::representation_dec 
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(tanh(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = tanh(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv
+                                            : p1788::decoration::decoration::com);
+    return representation_dec(bare, dec);
 }
 
 // tanh ( decorated interval ) mixed type
@@ -3242,8 +3386,16 @@ mpfr_bin_ieee754_flavor<T>::asinh(mpfr_bin_ieee754_flavor<T>::representation_dec
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(asinh(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = asinh(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // asinh ( decorated interval ) mixed type
@@ -3323,8 +3475,16 @@ mpfr_bin_ieee754_flavor<T>::acosh(mpfr_bin_ieee754_flavor<T>::representation_dec
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(acosh(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = acosh(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            x.first.first < 1.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // acosh ( decorated interval ) mixed type
@@ -3404,8 +3564,16 @@ mpfr_bin_ieee754_flavor<T>::atanh(mpfr_bin_ieee754_flavor<T>::representation_dec
     if (!is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(atanh(x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = atanh(x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            x.second,
+                                            x.first.first <= -1.0 || x.first.second >= 1.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // atanh ( decorated interval ) mixed type

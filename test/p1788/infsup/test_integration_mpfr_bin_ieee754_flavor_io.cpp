@@ -55,6 +55,9 @@ BOOST_AUTO_TEST_CASE(integration_output_test)
     output << I<float>(1.0,2.1);
     BOOST_CHECK( output.is_equal( "[1,2.10001]" ) );
 
+    output << I<double>(0.0,-0.0);
+    BOOST_CHECK( output.is_equal( "[-0,0]" ) );
+
     output << DI<double>::nai();
     BOOST_CHECK( output.is_equal( "[nai]" ) );
 
