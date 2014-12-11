@@ -1667,8 +1667,17 @@ mpfr_bin_ieee754_flavor<T>::pow(mpfr_bin_ieee754_flavor<T>::representation_dec c
     if (!is_valid(x) || !is_valid(y))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(pow(x.first, y.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = pow(x.first, y.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            std::min(x.second, y.second),
+                                            x.first.first < 0.0 || (is_member(0.0, x) && y.first.first <= 0.0) || is_empty(bare) ?  p1788::decoration::decoration::trv :
+                                            is_member(0.0, x) && !is_singleton(x) ?  p1788::decoration::decoration::def :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // pow ( decorated interval ) mixed type

@@ -505,6 +505,47 @@ ConcreteInterval pown(base_interval<T, Flavor, RepType, ConcreteInterval> const&
 
 
 
+// pow
+
+// static
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::pow(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+        base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
+{
+    return concrete_interval( Flavor<T>::pow(x.rep_, y.rep_) );
+}
+
+// static mixed type
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
+ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::pow(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+        base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
+{
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T1>::representation, RepType1>::value
+                    && std::is_same<typename Flavor<T2>::representation, RepType2>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T1>::representation_dec, RepType1>::value
+                       && std::is_same<typename Flavor<T2>::representation_dec, RepType2>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
+    // call of mixed-type version
+    return concrete_interval( Flavor<T>::pow(x.rep_, y.rep_) );
+}
+
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+ConcreteInterval pow(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                     base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::pow(x, y);
+}
+
+
+
 // exp
 
 // static

@@ -463,6 +463,16 @@ public:
 
 
     inline
+    static ConcreteInterval pow(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                                base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
+
+    template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
+    inline
+    static ConcreteInterval pow(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+                                base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
+
+
+    inline
     static ConcreteInterval exp(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
 
     template<typename T_, typename RepType_, class ConcreteInterval_>
@@ -681,9 +691,6 @@ public:
     static ConcreteInterval max(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
                                 base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
 
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ pow(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 
 //    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
 //    friend ConcreteInterval_ atan2(b///@}ase_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
@@ -1203,6 +1210,12 @@ ConcreteInterval fma(base_interval<T, Flavor, RepType, ConcreteInterval> const& 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 inline
 ConcreteInterval pown(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, int p);
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval pow(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                     base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>

@@ -233,6 +233,22 @@ BOOST_AUTO_TEST_CASE(integration_pown_test)
 
 
 
+BOOST_AUTO_TEST_CASE(integration_pow_test)
+{
+    BOOST_CHECK_EQUAL( pow(I<double>(0.1,0.5), I<double>(0.0,1.0)), I<double>(std::stod("0X1.999999999999AP-4"),1.0) );
+    BOOST_CHECK_EQUAL( I<double>::pow(I<double>(0.5,1.5), I<double>(-1.0,0.0)), I<double>(std::stod("0X1.5555555555555P-1"),std::stod("0X1P+1")) );
+    BOOST_CHECK_EQUAL( I<float>::pow(I<double>(0.5,1.5), I<double>(-0.1,0.1)), I<float>(std::stof("0X1.DDB680P-1"),std::stof("0X1.125FCP+0")) );
+
+    BOOST_CHECK_EQUAL( pow(DI<double>(0.1,1.0, DEC::com), DI<double>(0.0,2.5, DEC::com)), DI<double>(std::stod("0X1.9E7C6E43390B7P-9"),1.0, DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( pow(DI<double>(0.1,1.0, DEC::com), DI<double>(0.0,2.5, DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( DI<double>::pow(DI<double>(0.0,1.5, DEC::com), DI<double>(0.1,2.5, DEC::dac)), DI<double>(0.0,std::stod("0X1.60B9FD68A4555P+1"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::pow(DI<double>(0.0,1.5, DEC::com), DI<double>(0.1,2.5, DEC::dac)) ), DEC::def );
+    BOOST_CHECK_EQUAL( DI<float>::pow(DI<double>(-0.0,0.5), DI<double>(0.1,0.1)), DI<float>(0.0f,std::stof("0X1.DDB682P-1"), DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::pow(DI<double>(-0.0,0.5), DI<double>(0.1,0.1)) ), DEC::def );
+}
+
+
+
 BOOST_AUTO_TEST_CASE(integration_exp_test)
 {
     BOOST_CHECK_EQUAL( exp(I<double>(-INF_D,0.0)), I<double>(0.0,1.0) );
