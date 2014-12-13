@@ -427,7 +427,19 @@ BOOST_AUTO_TEST_CASE(integration_atan_test)
     BOOST_CHECK_EQUAL( decoration( DI<float>::atan(DI<double>::entire()) ), DEC::dac );
 }
 
+BOOST_AUTO_TEST_CASE(integration_atan2_test)
+{
+    BOOST_CHECK_EQUAL( atan2(I<double>(-2.0, -0.1), I<double>(0.0, 0.0)), I<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")) );
+    BOOST_CHECK_EQUAL( I<double>::atan2(I<double>(0.0, 1.0), I<double>(0.0, 1.0)), I<double>(0.0,std::stod("0X1.921FB54442D19P+0")) );
+    BOOST_CHECK_EQUAL( I<float>::atan2(I<double>(-2.0, 0.0), I<double>(-2.0, 0.0)), I<float>(std::stof("-0X1.921FB6P+1"), std::stof("-0X1.921FB4P+0")) );
 
+    BOOST_CHECK_EQUAL( atan2(DI<double>(0.0,0.0,DEC::dac), DI<double>(-2.0,0.0) ), DI<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1"),DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( atan2(DI<double>(0.0,0.0,DEC::dac), DI<double>(-2.0,0.0) ) ), DEC::trv );
+    BOOST_CHECK_EQUAL( atan2(DI<double>(-2.0,0.0), DI<double>(-2.0,0.0) ), DI<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0"),DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( atan2(DI<double>(-2.0,0.0), DI<double>(-2.0,0.0) ) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<float>::atan2(DI<double>(-2.0, -0.1), DI<double>(-2.0,0.0) ), DI<float>(std::stof("-0X1.8BBAACP+1"), std::stof("-0X1.921FB4P+0"),DEC::com) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::atan2(DI<double>(-2.0, -0.1), DI<double>(-2.0,0.0) ) ), DEC::com );
+}
 
 BOOST_AUTO_TEST_CASE(integration_sinh_test)
 {

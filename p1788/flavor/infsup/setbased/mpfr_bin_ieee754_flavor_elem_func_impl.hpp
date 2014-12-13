@@ -2989,14 +2989,128 @@ typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation const& y,
                                   mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
-
-
     if (!is_valid(y) || !is_valid(x) || is_empty(y) || is_empty(x) ||
-            (y.first == 0.0 && y.second == 0.0 && x.first == 0.0 && y.second == 0.0))
+            (y.first == 0.0 && y.second == 0.0 && x.first == 0.0 && x.second == 0.0))
         return empty();
 
-    return entire();
+    mpfr_var::setup();
+
+    mpfr_var l;
+    mpfr_var u;
+
+    mpfr_var yl(y.first, MPFR_RNDD);
+    mpfr_var yu(y.second, MPFR_RNDU);
+    mpfr_var xl(x.first, MPFR_RNDD);
+    mpfr_var xu(x.second, MPFR_RNDU);
+
+    if (y.first >= 0.0 && y.second > 0.0)
+    {
+        if (x.first == 0.0 && x.second == 0.0)
+        {
+            l.subnormalize(mpfr_atan2(l(), yu(), xl(), MPFR_RNDD), MPFR_RNDD);  // pi/2
+            u.subnormalize(mpfr_atan2(u(), yu(), xl(), MPFR_RNDU), MPFR_RNDU);  // pi/2
+        }
+        else if (x.first >= 0.0)
+        {
+            l.subnormalize(mpfr_atan2(l(), yl(), xu(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_atan2(u(), yu(), xl(), MPFR_RNDU), MPFR_RNDU);
+        }
+        else if (x.second <= 0.0)
+        {
+            l.subnormalize(mpfr_atan2(l(), yu(), xu(), MPFR_RNDD), MPFR_RNDD);
+
+            if (y.first == 0.0)
+                u.subnormalize(mpfr_const_pi(u(), MPFR_RNDU), MPFR_RNDU);   // pi
+            else
+                u.subnormalize(mpfr_atan2(u(), yl(), xl(), MPFR_RNDU), MPFR_RNDU);
+        }
+        else
+        {
+            if (y.first == 0.0)
+            {
+                l.set(0.0, MPFR_RNDD);
+                u.subnormalize(mpfr_const_pi(u(), MPFR_RNDU), MPFR_RNDU);   // pi
+            }
+            else
+            {
+                l.subnormalize(mpfr_atan2(l(), yl(), xu(), MPFR_RNDD), MPFR_RNDD);
+                u.subnormalize(mpfr_atan2(u(), yl(), xl(), MPFR_RNDU), MPFR_RNDU);
+            }
+        }
+    }
+    else if (y.first < 0.0 && y.second <= 0.0)
+    {
+        if (x.first == 0.0 && x.second == 0.0)
+        {
+            l.subnormalize(mpfr_atan2(l(), yl(), xl(), MPFR_RNDD), MPFR_RNDD);  // -pi/2
+            u.subnormalize(mpfr_atan2(u(), yl(), xl(), MPFR_RNDU), MPFR_RNDU);  // -pi/2
+        }
+        else if (x.first >= 0.0)
+        {
+            l.subnormalize(mpfr_atan2(l(), yl(), xl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_atan2(u(), yu(), xu(), MPFR_RNDU), MPFR_RNDU);
+        }
+        else if (x.second <= 0.0)
+        {
+            if (y.second == 0.0)
+            {
+                l.subnormalize(mpfr_const_pi(l(), MPFR_RNDU), MPFR_RNDU);   // pi
+                l.subnormalize(mpfr_neg(l(), l(), MPFR_RNDD), MPFR_RNDD);   // -pi
+            }
+            else
+                l.subnormalize(mpfr_atan2(l(), yu(), xl(), MPFR_RNDD), MPFR_RNDD);
+
+                u.subnormalize(mpfr_atan2(u(), yl(), xu(), MPFR_RNDU), MPFR_RNDU);
+        }
+        else
+        {
+            if (y.second == 0.0)
+            {
+                l.subnormalize(mpfr_const_pi(l(), MPFR_RNDU), MPFR_RNDU);   // pi
+                l.subnormalize(mpfr_neg(l(), l(), MPFR_RNDD), MPFR_RNDD);   // -pi
+                u.set(0.0, MPFR_RNDU);
+            }
+            else
+            {
+                l.subnormalize(mpfr_atan2(l(), yu(), xl(), MPFR_RNDD), MPFR_RNDD);
+                u.subnormalize(mpfr_atan2(u(), yu(), xu(), MPFR_RNDU), MPFR_RNDU);
+            }
+        }
+    }
+    else if (y.first == 0.0 && y.second == 0.0)
+    {
+        if (x.first >= 0.0)
+        {
+            l.set(0.0, MPFR_RNDD);
+            u.set(0.0, MPFR_RNDU);
+        }
+        else if (x.second <= 0.0)
+        {
+            l.subnormalize(mpfr_const_pi(l(), MPFR_RNDD), MPFR_RNDD);   // pi
+            u.subnormalize(mpfr_const_pi(u(), MPFR_RNDU), MPFR_RNDU);   // pi
+        }
+        else
+        {
+            l.set(0.0, MPFR_RNDD);
+            u.subnormalize(mpfr_const_pi(u(), MPFR_RNDU), MPFR_RNDU);   // pi
+        }
+    }
+    else
+    {
+        if (x.first >= 0.0)
+        {
+            l.subnormalize(mpfr_atan2(l(), yl(), xl(), MPFR_RNDD), MPFR_RNDD);
+            u.subnormalize(mpfr_atan2(u(), yu(), xl(), MPFR_RNDU), MPFR_RNDU);
+        }
+        else
+        {
+            u.subnormalize(mpfr_const_pi(u(), MPFR_RNDU), MPFR_RNDU);   // pi
+            l.subnormalize(mpfr_neg(l(), u(), MPFR_RNDD), MPFR_RNDD);   // -pi
+        }
+    }
+
+
+    return representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
 }
 
 // atan2 ( bare interval ) mixed type
@@ -3035,8 +3149,17 @@ mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation_dec
     if (!is_valid(y) || !is_valid(x))
         return nai();
 
-    // TODO Decoration berechnen!
-    return representation_dec(atan2(y.first, x.first), p1788::decoration::decoration::trv);
+    // compute bare result
+    representation bare = atan2(y.first, x.first);
+
+    // compute decoration
+    p1788::decoration::decoration dec = std::min(
+                                            std::min(y.second, x.second),
+                                            (is_member(0.0, y) && is_member(0.0, x)) || is_empty(bare) ? p1788::decoration::decoration::trv :
+                                            is_member(0.0, y) && x.first.first < 0.0 ? p1788::decoration::decoration::def :
+                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
+    return representation_dec(bare, dec);
 }
 
 // atan2 ( decorated interval ) mixed type
