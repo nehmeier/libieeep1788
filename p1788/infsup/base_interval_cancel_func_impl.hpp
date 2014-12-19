@@ -33,77 +33,94 @@ namespace infsup
 {
 
 
-
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// \name Cancellative addition and subtraction, see P1788/D7.0 Sect. 9.6.6
-//
-//@{
-
-
 // cancel_plus
 
+// static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval cancel_plus(base_interval<T, Flavor, RepType, ConcreteInterval> const& a,
-                                       base_interval<T, Flavor, RepType, ConcreteInterval> const& b) {     //< Required, necessary for bare intervals? see, 11.11.6 // TODO nicht fuer bare interval
-    return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::cancel_plus(a.rep_, b.rep_));
+ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::cancel_plus(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+        base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
+{
+    return concrete_interval( Flavor<T>::cancel_plus(x.rep_, y.rep_) );
 }
 
-//template<typename Interval, typename T, typename Tb, template<typename> class Flavor>
-//Interval cancel_plus(interval<T, Flavor> const& a,
-//                            interval<Tb, Flavor> const& b) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T,
-//             Tb
-//             >::type TMax;
-//
-//    return Interval(cancel_plus(static_cast<interval<TMax, Flavor>>(a),
-//                                static_cast<interval<TMax, Flavor>>(b)));
-//}
+// static mixed type
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
+ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::cancel_plus(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+        base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
+{
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T1>::representation, RepType1>::value
+                    && std::is_same<typename Flavor<T2>::representation, RepType2>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T1>::representation_dec, RepType1>::value
+                       && std::is_same<typename Flavor<T2>::representation_dec, RepType2>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
+    // call of mixed-type version
+    return concrete_interval( Flavor<T>::cancel_plus(x.rep_, y.rep_) );
+}
+
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+ConcreteInterval cancel_plus(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                             base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::cancel_plus(x, y);
+}
 
 
 // cancel_minus
 
+// static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval cancel_minus(base_interval<T, Flavor, RepType, ConcreteInterval> const& a,
-                                        base_interval<T, Flavor, RepType, ConcreteInterval> const& b) {    //< Required, necessary for bare intervals? see, 11.11.6 // TODO nicht fuer bare interval
-    return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::cancel_minus(a.rep_, b.rep_));
+ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::cancel_minus(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+        base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
+{
+    return concrete_interval( Flavor<T>::cancel_minus(x.rep_, y.rep_) );
 }
 
-//template<typename Interval, typename T, typename Tb, template<typename> class Flavor>
-//Interval cancel_minus(interval<T, Flavor> const& a,
-//                             interval<Tb, Flavor> const& b) {
-//    static_assert(p1788::util::is_infsup_interval<Interval>::value,
-//                  "Return type is not supported by mixed type operations!");
-//    static_assert(std::is_same<typename Interval::flavor_type,
-//                  Flavor<typename Interval::bound_type>>::value,
-//                  "Different flavors are not supported by "
-//                  "mixed type operations!");
-//
-//    typedef typename p1788::util::max_precision_type<
-//    typename Interval::bound_type,
-//             T,
-//             Tb
-//             >::type TMax;
-//
-//    return Interval(cancel_minus(static_cast<interval<TMax, Flavor>>(a),
-//                                 static_cast<interval<TMax, Flavor>>(b)));
-//}
+// static mixed type
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
+ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::cancel_minus(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+        base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
+{
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T1>::representation, RepType1>::value
+                    && std::is_same<typename Flavor<T2>::representation, RepType2>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T1>::representation_dec, RepType1>::value
+                       && std::is_same<typename Flavor<T2>::representation_dec, RepType2>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
 
-//@}
+    // call of mixed-type version
+    return concrete_interval( Flavor<T>::cancel_minus(x.rep_, y.rep_) );
+}
+
+// function
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+ConcreteInterval cancel_minus(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                              base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
+{
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::cancel_minus(x, y);
+}
+
+
+
+
 
 
 } // namespace infsup
 
 } // namespace p1788
+
 
 
 #endif // LIBIEEEP1788_P1788_INFSUP_BASE_INTERVAL_CANCEL_FUNC_IMPL_HPP

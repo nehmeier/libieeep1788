@@ -27,11 +27,11 @@
 # relevant header files of this directory
 set(P1788_HEADER_FILES
     assert.hpp
-    eft.hpp
     io.hpp
     mixed_type_traits.hpp
     mpfr_var.hpp
     mpfr_var_impl.hpp
+    mpfr_util.hpp
     variadic_templates.hpp
    )
 

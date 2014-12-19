@@ -50,6 +50,7 @@ if(Boost_FOUND)
                     test_integration_mpfr_bin_ieee754_flavor_num.cpp
                     test_integration_mpfr_bin_ieee754_flavor_set_op.cpp
                     test_integration_mpfr_bin_ieee754_flavor_elem.cpp
+		    test_integration_mpfr_bin_ieee754_flavor_cancel.cpp
                )
 
             # relative path of this directory

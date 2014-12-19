@@ -1,3 +1,6 @@
+//
+//                              libieeep1788
+//
 //   An implementation of the preliminary IEEE P1788 standard for
 //   interval arithmetic
 //
@@ -14,41 +17,21 @@
 //
 //       http://www.apache.org/licenses/LICENSE-2.0
 //
-//   Unless required by applicable law or agreed to in writing, software
+//   UnF<double>::less required by applicable law or agreed to in writing, software
 //   distributed under the License is distributed on an "AS IS" BASIS,
 //   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
-#ifndef LIBIEEEP1788_P1788_UTIL_EFT_HPP
-#define LIBIEEEP1788_P1788_UTIL_EFT_HPP
+#define BOOST_TEST_MODULE "MPFR utility funcitons [p1788/util/mpfr_util]"
+#include "test/util/boost_test_wrapper.hpp"
 
-#include <utility>
 
-namespace p1788
+#include "p1788/util/mpfr_util.hpp"
+
+
+
+BOOST_AUTO_TEST_CASE(minimal_two_sum_test)
 {
-
-namespace util
-{
-
-// TODO Nicht ueber FPU!!!
-template<typename T>
-std::pair<T,T> two_sum(T const& a, T const& b)
-{
-    T s = a + b;
-    T a_eps = s - b;
-    T b_eps = s - a_eps;
-    T a_delta = a - a_eps;
-    T b_delta = b - b_eps;
-    T r = a_delta + b_delta;
-
-    return std::pair<T,T>(s,r);
+    BOOST_CHECK( false );
 }
-
-
-
-} // namespace util
-
-} // namespace p1788
-
-#endif // LIBIEEEP1788_P1788_UTIL_EFT_HPP

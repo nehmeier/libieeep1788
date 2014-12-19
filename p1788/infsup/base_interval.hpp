@@ -703,6 +703,38 @@ public:
 
 ///@}
 
+
+// -----------------------------------------------------------------------------
+// Cancellative addition and subtraction
+// -----------------------------------------------------------------------------
+
+///@name Cancellative addition and subtraction
+///
+///
+///@{
+
+    inline
+    static ConcreteInterval cancel_plus(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                                        base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
+
+    template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
+    inline
+    static ConcreteInterval cancel_plus(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+                                        base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
+
+    inline
+    static ConcreteInterval cancel_minus(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                                         base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
+
+    template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
+    inline
+    static ConcreteInterval cancel_minus(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+                                         base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
+
+
+///@}
+
+
 //// -----------------------------------------------------------------------------
 ////  Recommended div to pair function
 //// -----------------------------------------------------------------------------
@@ -821,17 +853,7 @@ public:
 //    friend ConcreteInterval_ atan2_rev2(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 //
 //
-//// -----------------------------------------------------------------------------
-//// Cancellative addition and subtraction
-//// -----------------------------------------------------------------------------
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ cancel_plus(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend ConcreteInterval_ cancel_minus(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//
+
 
 //// -----------------------------------------------------------------------------
 //// Recommended forward elementary functions on intervals
@@ -934,11 +956,6 @@ public:
 
 
 };
-
-//
-//// funktionen
-//template<typename T1_, template<typename> class Flavor1_, typename RepType1_, class ConcreteInterval1_,  typename T2_, template<typename> class Flavor2_, typename RepType2_, class ConcreteInterval2_>
-//bool is_equal(base_interval<T1_, Flavor1_, RepType1_, ConcreteInterval1_> const& x, base_interval<T2_, Flavor2_, RepType2_, ConcreteInterval2_> const& y);
 
 
 
@@ -1284,7 +1301,7 @@ ConcreteInterval atan(base_interval<T, Flavor, RepType, ConcreteInterval> const&
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 inline
 ConcreteInterval atan2(base_interval<T, Flavor, RepType, ConcreteInterval> const& y,
-                      base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+                       base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 inline
@@ -1366,6 +1383,25 @@ ConcreteInterval max(base_interval<T, Flavor, RepType, ConcreteInterval> const& 
 
 
 
+///@name Cancellative addition and subtraction
+///
+///
+///@{
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval cancel_plus(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                             base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
+
+
+template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
+inline
+ConcreteInterval cancel_minus(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+                              base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
+
+///@}
+
 } // namespace infsup
 
 } // namespace p1788
@@ -1377,10 +1413,12 @@ ConcreteInterval max(base_interval<T, Flavor, RepType, ConcreteInterval> const& 
 #include "p1788/infsup/base_interval_rec_bool_func_impl.hpp"
 #include "p1788/infsup/base_interval_set_op_impl.hpp"
 #include "p1788/infsup/base_interval_elem_func_impl.hpp"
+#include "p1788/infsup/base_interval_cancel_func_impl.hpp"
+
 
 //#include "p1788/infsup/base_interval_div_pair_func_impl.hpp"
-//#include "p1788/infsup/base_interval_rev_elem_func_impl.hpp"
-//#include "p1788/infsup/base_interval_cancel_func_impl.hpp"
+//#include "p1788/infsup/base_interval_rev_func_impl.hpp"
+
 
 //#include "p1788/infsup/base_interval_rec_elem_func_impl.hpp"
 //#include "p1788/infsup/base_interval_rec_overlap_impl.hpp"

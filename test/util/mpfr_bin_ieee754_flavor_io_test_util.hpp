@@ -37,7 +37,7 @@ namespace std
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<float>::representation const& r)
     {
         char buff[256];
-        std::sprintf(buff, "<%a,%a>", r.first, r.second);
+        std::sprintf(buff, "<%a(%f),%a(%f)>", r.first, r.first, r.second, r.second);
 
         return s << buff;
     }
@@ -45,7 +45,7 @@ namespace std
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<double>::representation const& r)
     {
         char buff[256];
-        std::sprintf(buff, "<%a,%a>", r.first, r.second);
+        std::sprintf(buff, "<%a(%f),%a(%f)>", r.first, r.first, r.second, r.second);
 
         return s << buff;
     }
@@ -53,7 +53,7 @@ namespace std
     ostream& operator<<(ostream& s, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<long double>::representation const& r)
     {
         char buff[256];
-        std::sprintf(buff, "<%La,%La>", r.first, r.second);
+        std::sprintf(buff, "<%La(%Lf),%La(%Lf)>", r.first, r.first, r.second, r.second);
 
         return s << buff;
     }

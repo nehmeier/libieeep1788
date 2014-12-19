@@ -38,7 +38,7 @@ set(P1788_HEADER_FILES
     base_interval_rec_elem_func_impl.hpp
     base_interval_rec_overlap_impl.hpp
     base_interval_rec_slope_func_impl.hpp
-    base_interval_rev_elem_func_impl.hpp
+    base_interval_rev_func_impl.hpp
     base_interval_set_op_impl.hpp
     interval.hpp
     decorated_interval.hpp

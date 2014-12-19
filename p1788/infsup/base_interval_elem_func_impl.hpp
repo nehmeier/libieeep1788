@@ -984,7 +984,7 @@ ConcreteInterval atan(base_interval<T, Flavor, RepType, ConcreteInterval> const&
 // static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::atan2(base_interval<T, Flavor, RepType, ConcreteInterval> const& y,
-                                                                         base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+        base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
 {
     return concrete_interval( Flavor<T>::atan2(y.rep_, x.rep_) );
 }
@@ -1570,29 +1570,6 @@ ConcreteInterval max(base_interval<T, Flavor, RepType, ConcreteInterval> const& 
 {
     return base_interval<T,Flavor,RepType,ConcreteInterval>::max(x, y);
 }
-
-
-
-//// pow
-//
-//template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-//ConcreteInterval pow(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
-//                     base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
-//{
-//    return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::pow(x.rep_, y.rep_));
-//}
-//
-
-
-//
-//// atan2
-//
-//template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-//ConcreteInterval atan2(base_interval<T, Flavor, RepType, ConcreteInterval> const& y,
-//                       base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
-//{
-//    return base_interval<T, Flavor, RepType, ConcreteInterval>::concrete_interval(Flavor<T>::atan2(y.rep_, x.rep_));
-//}
 
 
 

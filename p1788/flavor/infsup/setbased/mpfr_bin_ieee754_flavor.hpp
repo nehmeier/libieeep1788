@@ -40,7 +40,7 @@
 #include "p1788/exception/exception.hpp"
 #include "p1788/overlapping/overlapping.hpp"
 #include "p1788/util/io.hpp"
-#include "p1788/util/eft.hpp"
+#include "p1788/util/mpfr_util.hpp"
 #include "p1788/util/assert.hpp"
 #include "p1788/util/mpfr_var.hpp"
 #include "p1788/util/mixed_type_traits.hpp"
@@ -2536,6 +2536,72 @@ public:
 ///@}
 
 // -----------------------------------------------------------------------------
+// Cancellative addition and subtraction
+// -----------------------------------------------------------------------------
+
+///@name Cancellative addition and subtraction
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
+    static representation cancel_plus(representation const& a,
+                                      representation const& b);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation cancel_plus(representation_type<T1> const& a,
+                                      representation_type<T2> const& b);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec cancel_plus(representation_dec const& a,
+                                          representation_dec const& b);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec cancel_plus(representation_dec_type<T1> const& a,
+                                          representation_dec_type<T2> const& b);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation cancel_minus(representation const& a,
+                                       representation const& b);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation cancel_minus(representation_type<T1> const& a,
+                                       representation_type<T2> const& b);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec cancel_minus(representation_dec const& a,
+                                           representation_dec const& b);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec cancel_minus(representation_dec_type<T1> const& a,
+                                           representation_dec_type<T2> const& b);
+
+///@}
+
+
+
+
+// -----------------------------------------------------------------------------
 // Two-output division
 // -----------------------------------------------------------------------------
 
@@ -2576,40 +2642,46 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation sqr_rev(representation_type<T1> const& c,
+                                  representation_type<T2> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sqr_rev(representation_dec const& c,
                                       representation_dec const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation sqr_rev(representation const& x);
+    template<typename T1, typename T2>
+    static representation_dec sqr_rev(representation_dec_type<T1> const& c,
+                                      representation_dec_type<T2> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec sqr_rev(representation_dec const& x);
+    static representation sqr_rev(representation const& c);
 
     /// \todo TODO
     ///
     ///
-    static representation recip_rev(representation const& c,
-                                    representation const& x);
+    template<typename T_>
+    static representation sqr_rev(representation_type<T_> const& c);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec recip_rev(representation_dec const& c,
-                                        representation_dec const& x);
+    static representation_dec sqr_rev(representation_dec const& c);
 
     /// \todo TODO
     ///
     ///
-    static representation recip_rev(representation const& x);
+    template<typename T_>
+    static representation_dec sqr_rev(representation_dec_type<T_> const& c);
 
-    /// \todo TODO
-    ///
-    ///
-    static representation_dec recip_rev(representation_dec const& x);
+
 
     /// \todo TODO
     ///
@@ -2620,44 +2692,106 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation abs_rev(representation_type<T1> const& c,
+                                  representation_type<T2> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec abs_rev(representation_dec const& c,
                                       representation_dec const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation abs_rev(representation const& x);
+    template<typename T1, typename T2>
+    static representation_dec abs_rev(representation_dec_type<T1> const& c,
+                                      representation_dec_type<T2> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec abs_rev(representation_dec const& x);
+    static representation abs_rev(representation const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation abs_rev(representation_type<T_> const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec abs_rev(representation_dec const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec abs_rev(representation_dec_type<T_> const& c);
+
+
+
 
     /// \todo TODO
     ///
     ///
     static representation pown_rev(representation const& c,
                                    representation const& x,
-                                   int n);
+                                   int p);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation pown_rev(representation_type<T1> const& c,
+                                   representation_type<T2> const& x,
+                                   int p);
 
     /// \todo TODO
     ///
     ///
     static representation_dec pown_rev(representation_dec const& c,
                                        representation_dec const& x,
-                                       int n);
+                                       int p);
 
     /// \todo TODO
     ///
     ///
-    static representation pown_rev(representation const& x,
-                                   int n);
+    template<typename T1, typename T2>
+    static representation_dec pown_rev(representation_dec_type<T1> const& c,
+                                       representation_dec_type<T2> const& x,
+                                       int p);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec pown_rev(representation_dec const& x,
-                                       int n);
+    static representation pown_rev(representation const& c,
+                                   int p);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation pown_rev(representation_type<T_> const& c,
+                                   int p);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec pown_rev(representation_dec const& c,
+                                       int p);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec pown_rev(representation_dec_type<T_> const& c,
+                                       int p);
+
+
+
 
     /// \todo TODO
     ///
@@ -2668,18 +2802,48 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation sin_rev(representation_type<T1> const& c,
+                                  representation_type<T2> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec sin_rev(representation_dec const& c,
                                       representation_dec const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation sin_rev(representation const& x);
+    template<typename T1, typename T2>
+    static representation_dec sin_rev(representation_dec_type<T1> const& c,
+                                      representation_dec_type<T2> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec sin_rev(representation_dec const& x);
+    static representation sin_rev(representation const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation sin_rev(representation_type<T_> const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec sin_rev(representation_dec const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec sin_rev(representation_dec_type<T_> const& c);
+
+
+
+
 
     /// \todo TODO
     ///
@@ -2690,18 +2854,47 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation cos_rev(representation_type<T1> const& c,
+                                  representation_type<T2> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cos_rev(representation_dec const& c,
                                       representation_dec const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation cos_rev(representation const& x);
+    template<typename T1, typename T2>
+    static representation_dec cos_rev(representation_dec_type<T1> const& c,
+                                      representation_dec_type<T2> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec cos_rev(representation_dec const& x);
+    static representation cos_rev(representation const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation cos_rev(representation_type<T_> const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec cos_rev(representation_dec const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec cos_rev(representation_dec_type<T_> const& c);
+
+
+
 
     /// \todo TODO
     ///
@@ -2712,18 +2905,47 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation tan_rev(representation_type<T1> const& c,
+                                  representation_type<T2> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec tan_rev(representation_dec const& c,
                                       representation_dec const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation tan_rev(representation const& x);
+    template<typename T1, typename T2>
+    static representation_dec tan_rev(representation_dec_type<T1> const& c,
+                                      representation_dec_type<T2> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec tan_rev(representation_dec const& x);
+    static representation tan_rev(representation const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation tan_rev(representation_type<T_> const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec tan_rev(representation_dec const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec tan_rev(representation_dec_type<T_> const& c);
+
+
+
 
     /// \todo TODO
     ///
@@ -2734,18 +2956,46 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2>
+    static representation cosh_rev(representation_type<T1> const& c,
+                                   representation_type<T2> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec cosh_rev(representation_dec const& c,
                                        representation_dec const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation cosh_rev(representation const& x);
+    template<typename T1, typename T2>
+    static representation_dec cosh_rev(representation_dec_type<T1> const& c,
+                                       representation_dec_type<T2> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec cosh_rev(representation_dec const& x);
+    static representation cosh_rev(representation const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation cosh_rev(representation_type<T_> const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec cosh_rev(representation_dec const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static representation_dec cosh_rev(representation_dec_type<T_> const& c);
+
+
 
     /// \todo TODO
     ///
@@ -2757,6 +3007,14 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2, typename T3>
+    static representation mul_rev(representation_type<T1> const& b,
+                                  representation_type<T2> const& c,
+                                  representation_type<T3> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec mul_rev(representation_dec const& b,
                                       representation_dec const& c,
                                       representation_dec const& x);
@@ -2764,66 +3022,39 @@ public:
     /// \todo TODO
     ///
     ///
-    static representation mul_rev(representation const& c,
-                                  representation const& x);
+    template<typename T1, typename T2, typename T3>
+    static representation_dec mul_rev(representation_dec_type<T1> const& b,
+                                      representation_dec_type<T2> const& c,
+                                      representation_dec_type<T3> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec mul_rev(representation_dec const& c,
-                                      representation_dec const& x);
+    static representation mul_rev(representation const& b,
+                                  representation const& c);
 
     /// \todo TODO
     ///
     ///
-    static representation div_rev1(representation const& b,
-                                   representation const& c,
-                                   representation const& x);
+    template<typename T1, typename T2>
+    static representation mul_rev(representation_type<T1> const& b,
+                                  representation_type<T2> const& c);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec div_rev1(representation_dec const& b,
-                                       representation_dec const& c,
-                                       representation_dec const& x);
+    static representation_dec mul_rev(representation_dec const& b,
+                                      representation_dec const& c);
 
     /// \todo TODO
     ///
     ///
-    static representation div_rev1(representation const& c,
-                                   representation const& x);
+    template<typename T1, typename T2>
+    static representation_dec mul_rev(representation_dec_type<T1> const& b,
+                                      representation_dec_type<T2> const& c);
 
-    /// \todo TODO
-    ///
-    ///
-    static representation_dec div_rev1(representation_dec const& c,
-                                       representation_dec const& x);
 
-    /// \todo TODO
-    ///
-    ///
-    static representation div_rev2(representation const& a,
-                                   representation const& c,
-                                   representation const& x);
 
-    /// \todo TODO
-    ///
-    ///
-    static representation_dec div_rev2(representation_dec const& a,
-                                       representation_dec const& c,
-                                       representation_dec const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    static representation div_rev2(representation const& c,
-                                   representation const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    static representation_dec div_rev2(representation_dec const& c,
-                                       representation_dec const& x);
 
     /// \todo TODO
     ///
@@ -2835,6 +3066,14 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2, typename T3>
+    static representation pow_rev1(representation_type<T1> const& b,
+                                   representation_type<T2> const& c,
+                                   representation_type<T3> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pow_rev1(representation_dec const& b,
                                        representation_dec const& c,
                                        representation_dec const& x);
@@ -2842,14 +3081,39 @@ public:
     /// \todo TODO
     ///
     ///
-    static representation pow_rev1(representation const& c,
-                                   representation const& x);
+    template<typename T1, typename T2, typename T3>
+    static representation_dec pow_rev1(representation_dec_type<T1> const& b,
+                                       representation_dec_type<T2> const& c,
+                                       representation_dec_type<T3> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec pow_rev1(representation_dec const& c,
-                                       representation_dec const& x);
+    static representation pow_rev1(representation const& b,
+                                   representation const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation pow_rev1(representation_type<T1> const& b,
+                                   representation_type<T2> const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec pow_rev1(representation_dec const& b,
+                                       representation_dec const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec pow_rev1(representation_dec_type<T1> const& b,
+                                       representation_dec_type<T2> const& c);
+
+
+
 
     /// \todo TODO
     ///
@@ -2861,6 +3125,14 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2, typename T3>
+    static representation pow_rev2(representation_type<T1> const& a,
+                                   representation_type<T2> const& c,
+                                   representation_type<T3> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec pow_rev2(representation_dec const& a,
                                        representation_dec const& c,
                                        representation_dec const& x);
@@ -2868,14 +3140,39 @@ public:
     /// \todo TODO
     ///
     ///
-    static representation pow_rev2(representation const& c,
-                                   representation const& x);
+    template<typename T1, typename T2, typename T3>
+    static representation_dec pow_rev2(representation_dec_type<T1> const& a,
+                                       representation_dec_type<T2> const& c,
+                                       representation_dec_type<T3> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec pow_rev2(representation_dec const& c,
-                                       representation_dec const& x);
+    static representation pow_rev2(representation const& a,
+                                   representation const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation pow_rev2(representation_type<T1> const& a,
+                                   representation_type<T2> const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec pow_rev2(representation_dec const& a,
+                                       representation_dec const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec pow_rev2(representation_dec_type<T1> const& a,
+                                       representation_dec_type<T2> const& c);
+
+
+
 
     /// \todo TODO
     ///
@@ -2887,6 +3184,14 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2, typename T3>
+    static representation atan2_rev1(representation_type<T1> const& b,
+                                     representation_type<T2> const& c,
+                                     representation_type<T3> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan2_rev1(representation_dec const& b,
                                          representation_dec const& c,
                                          representation_dec const& x);
@@ -2894,14 +3199,39 @@ public:
     /// \todo TODO
     ///
     ///
-    static representation atan2_rev1(representation const& c,
-                                     representation const& x);
+    template<typename T1, typename T2, typename T3>
+    static representation_dec atan2_rev1(representation_dec_type<T1> const& b,
+                                         representation_dec_type<T2> const& c,
+                                         representation_dec_type<T3> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec atan2_rev1(representation_dec const& c,
-                                         representation_dec const& x);
+    static representation atan2_rev1(representation const& b,
+                                     representation const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation atan2_rev1(representation_type<T1> const& b,
+                                     representation_type<T2> const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec atan2_rev1(representation_dec const& b,
+                                         representation_dec const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec atan2_rev1(representation_dec_type<T1> const& b,
+                                         representation_dec_type<T2> const& c);
+
+
+
 
     /// \todo TODO
     ///
@@ -2913,6 +3243,14 @@ public:
     /// \todo TODO
     ///
     ///
+    template<typename T1, typename T2, typename T3>
+    static representation atan2_rev2(representation_type<T1> const& a,
+                                     representation_type<T2> const& c,
+                                     representation_type<T3> const& x);
+
+    /// \todo TODO
+    ///
+    ///
     static representation_dec atan2_rev2(representation_dec const& a,
                                          representation_dec const& c,
                                          representation_dec const& x);
@@ -2920,51 +3258,39 @@ public:
     /// \todo TODO
     ///
     ///
-    static representation atan2_rev2(representation const& c,
-                                     representation const& x);
+    template<typename T1, typename T2, typename T3>
+    static representation_dec atan2_rev2(representation_dec_type<T1> const& a,
+                                         representation_dec_type<T2> const& c,
+                                         representation_dec_type<T3> const& x);
 
     /// \todo TODO
     ///
     ///
-    static representation_dec atan2_rev2(representation_dec const& c,
-                                         representation_dec  const& x);
+    static representation atan2_rev2(representation const& a,
+                                     representation const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation atan2_rev2(representation_type<T1> const& a,
+                                     representation_type<T2> const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    static representation_dec atan2_rev2(representation_dec const& a,
+                                         representation_dec const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec atan2_rev2(representation_dec_type<T1> const& a,
+                                         representation_dec_type<T2> const& c);
 
 ///@}
 
-// -----------------------------------------------------------------------------
-// Cancellative addition and subtraction
-// -----------------------------------------------------------------------------
-
-///@name Cancellative addition and subtraction
-///
-///
-///@{
-
-    /// \todo TODO
-    ///
-    ///
-    static representation cancel_plus(representation const& a,
-                                      representation const& b);
-
-    /// \todo TODO
-    ///
-    ///
-    static representation_dec cancel_plus(representation_dec const& a,
-                                          representation_dec const& b);
-
-    /// \todo TODO
-    ///
-    ///
-    static representation cancel_minus(representation const& a,
-                                       representation const& b);
-
-    /// \todo TODO
-    ///
-    ///
-    static representation_dec cancel_minus(representation_dec const& a,
-                                           representation_dec const& b);
-
-///@}
 
 // -----------------------------------------------------------------------------
 // Forward-mode elementary functions (Recommended)
@@ -3358,7 +3684,7 @@ public:
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_bool_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_elem_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_div_pair_func_impl.hpp"
-#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rev_elem_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rev_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_cancel_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_elem_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_overlap_impl.hpp"

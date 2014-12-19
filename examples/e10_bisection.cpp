@@ -24,45 +24,60 @@
 //   limitations under the License.
 
 #include <iostream>
+#include <vector>
+#include <iterator>
 
-// libieeep1788 main header
 #include "p1788/p1788.hpp"
-
 
 // Template type alias to define a generic bare infsup interval with a setbased
 // infsup flavor based on mpfr supporting IEEE754 bound types.
 template<typename T>
 using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
-// and the same for decorated intervals
+
+// root finding method using bisection
+template<typename T, class OutputIt>
+void ia_bisect(I<T> (*f) (I<T> const&),     // function to be analyzed
+               I<T> const& x,               // start interval
+               T eps,                       // epsilon
+               OutputIt it)                 // output iterator
+{
+    // compute interval y = f(x);
+    I<T> y = f(x);
+
+    // check if 0 is a member of y
+    if (is_member(0.0, y))
+    {
+        // check if y is a tight enough enclosure of 0
+        if (wid(y) < eps)
+            *it++ = x;      // save root
+        else
+        {
+            // recursive call with subintervals [inf(x),mid(x)] and [mid(x),sup(x)]
+            ia_bisect(f, I<T>(inf(x), mid(x)), eps, it);
+            ia_bisect(f, I<T>(mid(x), sup(x)), eps, it);
+        }
+    }
+}
+
+// f(x) = x^2 - 2
 template<typename T>
-using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
+I<T> f (I<T> const& x)
+{
+    return x * x - I<T>(2.0,2.0);
+}
 
 
 int main()
 {
+    std::vector<I<double>> roots;
 
-    // 1) all numeric functions are implemented as (global) functions in namespace p1788::infsup
-    std::cout << inf( I<double>(1.0,2.0) ) << std::endl;
+    // start root finding
+    ia_bisect(f, I<double>(-2.0,2.0), 0.00001, std::back_inserter(roots));
 
-    // 1.1) and as static functions of the interval type
-    std::cout << I<double>::sup( I<double>(1.0,2.0) ) << std::endl;
-
-    // 2) all numeric functions are implemented for bare and decorated intervals
-    std::cout << mid( DI<double>(1.1,2.3) ) << std::endl;
-
-    // 3) mixed type functions are static only
-    std::cout << I<float>::rad( I<double>(1.1,2.3) )  << std::endl;
-
-    // The remaining functions
-    std::cout << wid( I<double>(1.0,2.0) ) << std::endl;
-    std::cout << mag( I<double>(1.0,2.0) ) << std::endl;
-    std::cout << mig( I<double>(1.0,2.0) ) << std::endl;
-
-
-    // midpoint and radius are provided as a combined function returning a pair (mid, rad)
-    std::cout << mid_rad(I<double>(2.0,3.0)).first << std::endl;
-    std::cout << mid_rad(I<double>(2.0,3.0)).second << std::endl;
+    std::cout << "roots of f(x) = x^2 - 2 (over the range [-2,2]):" << std::endl;
+    for (auto i : roots)
+        std::cout << "    " << i << std::endl;
 
     return 0;
 }

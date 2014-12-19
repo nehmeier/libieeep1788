@@ -45,6 +45,7 @@ if(Boost_FOUND)
             set(P1788_TEST_FILES
                 test_io.cpp
                 test_mpfr_var.cpp
+                test_mpfr_util.cpp
                )
 
             # relative path of this directory
