@@ -46,7 +46,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::sqr_rev(mpfr_bin_ieee754_flavor<T>::representation const& c,
                                     mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
-    if (!is_valid(c) || !is_valid(x) || is_empty(x))
+    if (!is_valid(c) || !is_valid(x) || is_empty(c) || is_empty(x))
         return empty();
 
     representation p = sqrt(c);
@@ -67,6 +67,7 @@ mpfr_bin_ieee754_flavor<T>::sqr_rev(mpfr_bin_ieee754_flavor<T>::representation_t
 
     if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c)
             || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+            || mpfr_bin_ieee754_flavor<T1>::is_empty(c)
             || mpfr_bin_ieee754_flavor<T2>::is_empty(x))
         return empty();
 
@@ -164,7 +165,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::abs_rev(mpfr_bin_ieee754_flavor<T>::representation const& c,
                                     mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
-    if (!is_valid(c) || !is_valid(x) || is_empty(x))
+    if (!is_valid(c) || !is_valid(x) || is_empty(c) || is_empty(x))
         return empty();
 
     if (c.second < 0.0)
@@ -188,6 +189,7 @@ mpfr_bin_ieee754_flavor<T>::abs_rev(mpfr_bin_ieee754_flavor<T>::representation_t
 
     if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c)
             || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+            || mpfr_bin_ieee754_flavor<T1>::is_empty(c)
             || mpfr_bin_ieee754_flavor<T2>::is_empty(x))
         return empty();
 
@@ -286,7 +288,7 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
                                      mpfr_bin_ieee754_flavor<T>::representation const& x,
                                      int p)
 {
-    if (!is_valid(c) || !is_valid(x) || is_empty(x))
+    if (!is_valid(c) || !is_valid(x) || is_empty(c) || is_empty(x))
         return empty();
 
     if (p == 0)
@@ -314,8 +316,11 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
             mpfr_var cl(c.first <= 0.0 ? 0.0 : c.first, MPFR_RNDD);
             mpfr_var cu(c.second, MPFR_RNDU);
 
-            cl.subnormalize(mpfr_root(cl(), cl(), p, MPFR_RNDU), MPFR_RNDU);
-            cu.subnormalize(mpfr_root(cu(), cu(), p, MPFR_RNDD), MPFR_RNDD);
+            cl.subnormalize(mpfr_root(cl(), cl(), -p, MPFR_RNDD), MPFR_RNDD);
+            cl.subnormalize(mpfr_si_div(cl(), 1, cl(), MPFR_RNDU), MPFR_RNDU);  // 1 / root(lower, abs(p))
+
+            cu.subnormalize(mpfr_root(cu(), cu(), -p, MPFR_RNDU), MPFR_RNDU);
+            cu.subnormalize(mpfr_si_div(cu(), 1, cu(), MPFR_RNDD), MPFR_RNDD);  // 1 / root(upper, abs(p))
 
             return hull(intersect(x, representation(-cl.template get<T>(MPFR_RNDU), -cu.template get<T>(MPFR_RNDD))),
                         intersect(x, representation(cu.template get<T>(MPFR_RNDD), cl.template get<T>(MPFR_RNDU))));
@@ -354,7 +359,7 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
             {
                 return empty();
             }
-            else if (c.first <= 0.0 || c.second >= 0.0)
+            else if (c.first >= 0.0 || c.second <= 0.0)
             {
                 mpfr_var::setup();
 
@@ -362,10 +367,16 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
                 mpfr_var cu(c.second, MPFR_RNDU);
 
                 if (c.first != 0.0)
-                    cl.subnormalize(mpfr_root(cl(), cl(), p, MPFR_RNDU), MPFR_RNDU);
+                {
+                    cl.subnormalize(mpfr_root(cl(), cl(), -p, MPFR_RNDD), MPFR_RNDD);
+                    cl.subnormalize(mpfr_si_div(cl(), 1, cl(), MPFR_RNDU), MPFR_RNDU);  // 1 / root(lower, abs(p))
+                }
 
                 if (c.second != 0.0)
-                    cu.subnormalize(mpfr_root(cu(), cu(), p, MPFR_RNDD), MPFR_RNDD);
+                {
+                    cu.subnormalize(mpfr_root(cu(), cu(), -p, MPFR_RNDU), MPFR_RNDU);
+                    cu.subnormalize(mpfr_si_div(cu(), 1, cu(), MPFR_RNDD), MPFR_RNDD);  // 1 / root(upper, abs(p))
+                }
 
                 return intersect(x, representation(c.second != 0.0 ? cu.template get<T>(MPFR_RNDD) : -std::numeric_limits<T>::infinity(),
                                                    c.first != 0.0 ? cl.template get<T>(MPFR_RNDU) : std::numeric_limits<T>::infinity()));
@@ -377,8 +388,11 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
                 mpfr_var cl(c.first, MPFR_RNDD);
                 mpfr_var cu(c.second, MPFR_RNDU);
 
-                cl.subnormalize(mpfr_root(cl(), cl(), p, MPFR_RNDU), MPFR_RNDU);
-                cu.subnormalize(mpfr_root(cu(), cu(), p, MPFR_RNDD), MPFR_RNDD);
+                cl.subnormalize(mpfr_root(cl(), cl(), -p, MPFR_RNDD), MPFR_RNDD);
+                cl.subnormalize(mpfr_si_div(cl(), 1, cl(), MPFR_RNDU), MPFR_RNDU);  // 1 / root(lower, abs(p))
+
+                cu.subnormalize(mpfr_root(cu(), cu(), -p, MPFR_RNDU), MPFR_RNDU);
+                cu.subnormalize(mpfr_si_div(cu(), 1, cu(), MPFR_RNDD), MPFR_RNDD);  // 1 / root(upper, abs(p))
 
                 return hull(intersect(x, representation(-std::numeric_limits<T>::infinity(), cl.template get<T>(MPFR_RNDU))),
                             intersect(x, representation(cu.template get<T>(MPFR_RNDD), std::numeric_limits<T>::infinity())));
@@ -412,6 +426,7 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation_
 
     if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c)
             || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+            || mpfr_bin_ieee754_flavor<T1>::is_empty(c)
             || mpfr_bin_ieee754_flavor<T2>::is_empty(x))
         return empty();
 
