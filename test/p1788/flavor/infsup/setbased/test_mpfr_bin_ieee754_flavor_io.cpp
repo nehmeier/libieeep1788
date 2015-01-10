@@ -1742,6 +1742,21 @@ BOOST_AUTO_TEST_CASE(minimal_interval_input_test)
         BOOST_CHECK(!is);
     }
 
+    {
+        REP<double> i;
+        std::istringstream is("[ 0.1 ]_com");
+        F<double>::operator_input(is, i);
+        BOOST_CHECK_EQUAL(i, REP<double>(std::stod("0x1.9999999999999p-4"),std::stod("0x1.999999999999ap-4")));
+        BOOST_CHECK(is);
+    }
+
+    {
+        REP<double> i;
+        std::istringstream is("[ 1/10 ]");
+        F<double>::operator_input(is, i);
+        BOOST_CHECK_EQUAL(i, REP<double>(std::stod("0x1.9999999999999p-4"),std::stod("0x1.999999999999ap-4")));
+        BOOST_CHECK(is);
+    }
 
     {
         REP<double> i;

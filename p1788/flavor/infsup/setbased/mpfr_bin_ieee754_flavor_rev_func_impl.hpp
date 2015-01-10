@@ -528,25 +528,32 @@ typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation const& c,
                                     mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
-    if (is_empty(x))
-        return x;
+    if (!is_valid(c) || !is_valid(x) || is_empty(x))
+        return empty();
 
     representation cc = intersect(c, representation(-1.0, 1.0));
 
+    // c is disjoint with [-1,1]
     if (is_empty(cc))
         return cc;
+
+    // c contains the whole range [-1,1]
+    if (is_equal(cc, representation(-1.0, 1.0)))
+        return x;
 
     mpfr_var::setup();
 
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_var cld(cc.first, MPFR_RNDD);
-    mpfr_var cuu(cc.second, MPFR_RNDU);
+    mpfr_var cl(cc.first, MPFR_RNDD);
+    mpfr_var cu(cc.second, MPFR_RNDU);
 
-    mpfr_asin(cld(), cld(), MPFR_RNDD);
-    mpfr_asin(cuu(), cuu(), MPFR_RNDU);
+    // lower and the upper bound of asin(c), result is contained in [-1/2pi, 1/2pi]
+    mpfr_asin(cl(), cl(), MPFR_RNDD);
+    mpfr_asin(cu(), cu(), MPFR_RNDU);
 
+    // lower and upper bound of pi
     mpfr_var pid;
     mpfr_var piu;
     mpfr_const_pi(pid(), MPFR_RNDD);
@@ -554,93 +561,105 @@ mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation c
 
     mpfr_var rl;
     mpfr_var ru;
-
     mpfr_var tmp;
-    long nu;
+    long n;
 
-    // left bound of x
-    mpfr_remquo(tmp(), &nu, xl(), pid(), MPFR_RNDD);
 
-    // normalize
-    if (tmp.template get<T>(MPFR_RNDA) < 0.0)
-        --nu;
+    // move result of asin(c) to the left bound of x (pi-stepwise)
+    // to compute the left box of the result
 
-    tmp.set(nu, MPFR_RNDN);
 
-    if (nu % 2 == 0)
-        mpfr_fma(rl(), tmp(), piu(), cuu(), MPFR_RNDU);
-    else
-        mpfr_fms(rl(), tmp(), piu(), cld(), MPFR_RNDU);
+    representation lbox = empty();  // left box
 
-    if (rl.template get<T>(MPFR_RNDU) >= x.first)
+    // if left bound of x is -oo then the left box is [-oo,-max]
+    if (x.first == -std::numeric_limits<T>::infinity())
     {
-        if (nu % 2 == 0)
-            mpfr_fma(rl(), tmp(), pid(), cld(), MPFR_RNDD);
-        else
-            mpfr_fms(rl(), tmp(), pid(), cuu(), MPFR_RNDD);
-
-        if (rl.template get<T>(MPFR_RNDD) > x.second)
-            return empty();
-
-        mpfr_max(rl(), rl(), xl(), MPFR_RNDD);
+        lbox.first = -std::numeric_limits<T>::infinity();
+        lbox.second = -std::numeric_limits<T>::max();
     }
     else
     {
-        tmp.set(++nu, MPFR_RNDN);
+        // Compute max integer n with: n * pi <= lower bound of x
+        mpfr_remquo(tmp(), &n, xl(), x.first < 0.0 ? pid() : piu(), MPFR_RNDD);
+        if (mpfr_cmp_si(tmp(),0) < 0)
+            --n;
 
-        if (nu % 2 == 0)
-            mpfr_fma(rl(), tmp(), piu(), cuu(), MPFR_RNDU);
-        else
-            mpfr_fms(rl(), tmp(), piu(), cld(), MPFR_RNDU);
+        for (int i = 0; is_empty(lbox) && i <= 1; i++)
+        {
+            if ((n + i) % 2 == 0)     // n is even => move asin(x)
+            {
+                tmp.set(n + i, MPFR_RNDN);
 
-        if (rl.template get<T>(MPFR_RNDU) < x.first)
-            return empty();
+                mpfr_fma(rl(), tmp(), x.first < 0.0 ? piu() : pid(), cl(), MPFR_RNDD);
+                mpfr_fma(ru(), tmp(), x.first < 0.0 ? pid() : piu(), cu(), MPFR_RNDU);
 
-        if (nu % 2 == 0)
-            mpfr_fma(rl(), tmp(), pid(), cld(), MPFR_RNDD);
-        else
-            mpfr_fms(rl(), tmp(), pid(), cuu(), MPFR_RNDD);
+                lbox.first = rl.template get<T>(MPFR_RNDD);
+                lbox.second = ru.template get<T>(MPFR_RNDU);
+            }
+            else    // n is even => move mirrored asin(x)
+            {
+                tmp.set(-n - i, MPFR_RNDN);
 
-        mpfr_max(rl(), rl(), xl(), MPFR_RNDD);
+                mpfr_fma(rl(), tmp(), x.first < 0.0 ? piu() : pid(), cu(), MPFR_RNDU);
+                mpfr_fma(ru(), tmp(), x.first < 0.0 ? pid() : piu(), cl(), MPFR_RNDD);
+
+                lbox.first = -rl.template get<T>(MPFR_RNDD);
+                lbox.second = -ru.template get<T>(MPFR_RNDU);
+            }
+
+            lbox = intersect(lbox, x);
+        }
     }
 
 
-    // right bound of x
-    mpfr_remquo(tmp(), &nu, xu(), piu(), MPFR_RNDU);
 
-    // normalize
-    if (tmp.template get<T>(MPFR_RNDA) > 0.0)
-        ++nu;
+    // move result of asin(c) to the right bound of x (pi-stepwise)
+    // to compute the right box of the result
 
-    tmp.set(nu, MPFR_RNDN);
 
-    if (nu % 2 == 0)
-        mpfr_fma(ru(), tmp(), pid(), cld(), MPFR_RNDD);
-    else
-        mpfr_fms(ru(), tmp(), pid(), cuu(), MPFR_RNDD);
+    representation rbox = empty();  // right box
 
-    if (ru.template get<T>(MPFR_RNDD) <= x.second)
+    // if right bound of x is +oo then the right box is [max,+oo]
+    if (x.second == std::numeric_limits<T>::infinity())
     {
-        if (nu % 2 == 0)
-            mpfr_fma(ru(), tmp(), piu(), cuu(), MPFR_RNDU);
-        else
-            mpfr_fms(ru(), tmp(), piu(), cld(), MPFR_RNDU);
-
-        mpfr_min(ru(), ru(), xu(), MPFR_RNDU);
+        rbox.first = std::numeric_limits<T>::max();
+        rbox.second = std::numeric_limits<T>::infinity();
     }
     else
     {
-        tmp.set(--nu, MPFR_RNDN);
+        // Compute min integer n with: n * pi >= upper bound of x
+        mpfr_remquo(tmp(), &n, xu(), x.second > 0.0 ? pid() : piu(), MPFR_RNDU);
+        if (mpfr_cmp_si(tmp(),0) > 0)
+            ++n;
 
-        if (nu % 2 == 0)
-            mpfr_fma(ru(), tmp(), piu(), cuu(), MPFR_RNDU);
-        else
-            mpfr_fms(ru(), tmp(), piu(), cld(), MPFR_RNDU);
+        for (int i = 0; is_empty(rbox) && i <= 1; i++)
+        {
+            if ((n - i) % 2 == 0)     // n is even => move asin(x)
+            {
+                tmp.set(n - i, MPFR_RNDN);
 
-        mpfr_min(ru(), ru(), xu(), MPFR_RNDU);
+                mpfr_fma(rl(), tmp(), x.second > 0.0 ? pid() : piu(), cl(), MPFR_RNDD);
+                mpfr_fma(ru(), tmp(), x.second > 0.0 ? piu() : pid(), cu(), MPFR_RNDU);
+
+                rbox.first = rl.template get<T>(MPFR_RNDD);
+                rbox.second = ru.template get<T>(MPFR_RNDU);
+            }
+            else    // n is even => move mirrored asin(x)
+            {
+                tmp.set(-n + i, MPFR_RNDN);
+
+                mpfr_fma(rl(), tmp(), x.second > 0.0 ? pid() : piu(), cu(), MPFR_RNDU);
+                mpfr_fma(ru(), tmp(), x.second > 0.0 ? piu() : pid(), cl(), MPFR_RNDD);
+
+                rbox.first = -rl.template get<T>(MPFR_RNDD);
+                rbox.second = -ru.template get<T>(MPFR_RNDU);
+            }
+
+            rbox = intersect(rbox, x);
+        }
     }
 
-    return representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
+    return hull(lbox, rbox);
 }
 
 // bare mixed type version
@@ -655,6 +674,7 @@ mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation_t
 
     if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c)
             || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+            || mpfr_bin_ieee754_flavor<T1>::is_empty(c)
             || mpfr_bin_ieee754_flavor<T2>::is_empty(x))
         return empty();
 
@@ -744,6 +764,8 @@ mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation_d
 
 
 
+
+
 // cos_rev
 
 // bare version
@@ -752,25 +774,32 @@ typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::cos_rev(mpfr_bin_ieee754_flavor<T>::representation const& c,
                                     mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
-    if (is_empty(x))
-        return x;
+    if (!is_valid(c) || !is_valid(x) || is_empty(x))
+        return empty();
 
     representation cc = intersect(c, representation(-1.0, 1.0));
 
+    // c is disjoint with [-1,1]
     if (is_empty(cc))
         return cc;
+
+    // c contains the whole range [-1,1]
+    if (is_equal(cc, representation(-1.0, 1.0)))
+        return x;
 
     mpfr_var::setup();
 
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_var cld(cc.second, MPFR_RNDU);
-    mpfr_var cuu(cc.first, MPFR_RNDD);
+    mpfr_var cl(cc.second, MPFR_RNDU);
+    mpfr_var cu(cc.first, MPFR_RNDD);
 
-    mpfr_acos(cld(), cld(), MPFR_RNDD);
-    mpfr_acos(cuu(), cuu(), MPFR_RNDU);
+    // lower and the upper bound of acos(c), result is contained in [0, pi]
+    mpfr_acos(cl(), cl(), MPFR_RNDD);
+    mpfr_acos(cu(), cu(), MPFR_RNDU);
 
+    // lower and upper bound of pi
     mpfr_var pid;
     mpfr_var piu;
     mpfr_const_pi(pid(), MPFR_RNDD);
@@ -778,108 +807,237 @@ mpfr_bin_ieee754_flavor<T>::cos_rev(mpfr_bin_ieee754_flavor<T>::representation c
 
     mpfr_var rl;
     mpfr_var ru;
-
     mpfr_var tmp;
-    long nu;
+    long n;
 
-    // left bound of x
-    mpfr_remquo(tmp(), &nu, xl(), pid(), MPFR_RNDD);
 
-    // normalize
-    if (tmp.template get<T>(MPFR_RNDA) < 0.0)
-        --nu;
+    // move result of acos(c) to the left bound of x (pi-stepwise)
+    // to compute the left box of the result
 
-    if (nu % 2 == 0)
+
+    representation lbox = empty();  // left box
+
+    // if left bound of x is -oo then the left box is [-oo,-max]
+    if (x.first == -std::numeric_limits<T>::infinity())
     {
-        tmp.set(nu, MPFR_RNDN);
-        mpfr_fma(rl(), tmp(), piu(), cuu(), MPFR_RNDU);
+        lbox.first = -std::numeric_limits<T>::infinity();
+        lbox.second = -std::numeric_limits<T>::max();
     }
     else
     {
-        tmp.set(nu + 1, MPFR_RNDN);
-        mpfr_fms(rl(), tmp(), piu(), cld(), MPFR_RNDU);
+        // Compute max integer n with: n * pi <= lower bound of x
+        mpfr_remquo(tmp(), &n, xl(), x.first < 0.0 ? pid() : piu(), MPFR_RNDD);
+        if (mpfr_cmp_si(tmp(),0) < 0)
+            --n;
+
+        for (int i = 0; is_empty(lbox) && i <= 1; i++)
+        {
+            if ((n + i) % 2 == 0)     // n is even => move acos(x)
+            {
+                tmp.set(n + i, MPFR_RNDN);
+
+                mpfr_fma(rl(), tmp(), x.first < 0.0 ? piu() : pid(), cl(), MPFR_RNDD);
+                mpfr_fma(ru(), tmp(), x.first < 0.0 ? pid() : piu(), cu(), MPFR_RNDU);
+
+                lbox.first = rl.template get<T>(MPFR_RNDD);
+                lbox.second = ru.template get<T>(MPFR_RNDU);
+            }
+            else    // n is even => move mirrored acos(x)
+            {
+                tmp.set(-n - i - 1, MPFR_RNDN);
+
+                mpfr_fma(rl(), tmp(), x.first < 0.0 ? piu() : pid(), cu(), MPFR_RNDU);
+                mpfr_fma(ru(), tmp(), x.first < 0.0 ? pid() : piu(), cl(), MPFR_RNDD);
+
+                lbox.first = -rl.template get<T>(MPFR_RNDD);
+                lbox.second = -ru.template get<T>(MPFR_RNDU);
+            }
+
+            lbox = intersect(lbox, x);
+        }
     }
 
-    if (rl.template get<T>(MPFR_RNDU) >= x.first)
+
+
+    // move result of acos(c) to the right bound of x (pi-stepwise)
+    // to compute the right box of the result
+
+
+    representation rbox = empty();  // right box
+
+    // if right bound of x is +oo then the right box is [max,+oo]
+    if (x.second == std::numeric_limits<T>::infinity())
     {
-        if (nu % 2 == 0)
-            mpfr_fma(rl(), tmp(), pid(), cld(), MPFR_RNDD);
-        else
-            mpfr_fms(rl(), tmp(), pid(), cuu(), MPFR_RNDD);
-
-        if (rl.template get<T>(MPFR_RNDD) > x.second)
-            return empty();
-
-        mpfr_max(rl(), rl(), xl(), MPFR_RNDD);
+        rbox.first = std::numeric_limits<T>::max();
+        rbox.second = std::numeric_limits<T>::infinity();
     }
     else
     {
-        ++nu;
+        // Compute max integer n with: n * pi <= upper bound of x
+        mpfr_remquo(tmp(), &n, xu(), x.second > 0.0 ? pid() : piu(), MPFR_RNDU);
+        if (mpfr_cmp_si(tmp(),0) < 0)
+            --n;
 
-        if (nu % 2 == 0)
+        for (int i = 0; is_empty(rbox) && i <= 1; i++)
         {
-            tmp.set(nu, MPFR_RNDN);
-            mpfr_fma(rl(), tmp(), pid(), cld(), MPFR_RNDD);
+            if ((n - i) % 2 == 0)     // n is even => move acos(x)
+            {
+                tmp.set(n - i, MPFR_RNDN);
+
+                mpfr_fma(rl(), tmp(), x.second > 0.0 ? pid() : piu(), cl(), MPFR_RNDD);
+                mpfr_fma(ru(), tmp(), x.second > 0.0 ? piu() : pid(), cu(), MPFR_RNDU);
+
+                rbox.first = rl.template get<T>(MPFR_RNDD);
+                rbox.second = ru.template get<T>(MPFR_RNDU);
+            }
+            else    // n is even => move mirrored acos(x)
+            {
+                tmp.set(-n + i - 1, MPFR_RNDN);
+
+                mpfr_fma(rl(), tmp(), x.second > 0.0 ? pid() : piu(), cu(), MPFR_RNDU);
+                mpfr_fma(ru(), tmp(), x.second > 0.0 ? piu() : pid(), cl(), MPFR_RNDD);
+
+                rbox.first = -rl.template get<T>(MPFR_RNDD);
+                rbox.second = -ru.template get<T>(MPFR_RNDU);
+            }
+
+            rbox = intersect(rbox, x);
         }
-        else
-        {
-            tmp.set(nu + 1, MPFR_RNDN);
-            mpfr_fms(rl(), tmp(), pid(), cuu(), MPFR_RNDD);
-        }
-
-        if (rl.template get<T>(MPFR_RNDD) > x.second)
-            return empty();
-
-        mpfr_max(rl(), rl(), xl(), MPFR_RNDD);
     }
 
+    return hull(lbox, rbox);
 
-    // right bound of x
-    mpfr_remquo(tmp(), &nu, xu(), piu(), MPFR_RNDU);
 
-    // normalize
-    if (tmp.template get<T>(MPFR_RNDA) < 0.0)
-        --nu;
 
-    if (nu % 2 == 0)
-    {
-        tmp.set(nu, MPFR_RNDN);
-        mpfr_fma(ru(), tmp(), pid(), cld(), MPFR_RNDD);
-    }
-    else
-    {
-        tmp.set(nu + 1, MPFR_RNDN);
-        mpfr_fms(ru(), tmp(), pid(), cuu(), MPFR_RNDD);
-    }
 
-    if (ru.template get<T>(MPFR_RNDD) <= x.second)
-    {
-        if (nu % 2 == 0)
-            mpfr_fma(ru(), tmp(), piu(), cuu(), MPFR_RNDU);
-        else
-            mpfr_fms(ru(), tmp(), piu(), cld(), MPFR_RNDU);
-
-        mpfr_min(ru(), ru(), xu(), MPFR_RNDU);
-    }
-    else
-    {
-        --nu;
-
-        if (nu % 2 == 0)
-        {
-            tmp.set(nu, MPFR_RNDN);
-            mpfr_fma(ru(), tmp(), piu(), cuu(), MPFR_RNDU);
-        }
-        else
-        {
-            tmp.set(nu + 1, MPFR_RNDN);
-            mpfr_fms(ru(), tmp(), piu(), cld(), MPFR_RNDU);
-        }
-
-        mpfr_min(ru(), ru(), xu(), MPFR_RNDU);
-    }
-
-    return representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
+//    if (is_empty(x))
+//        return x;
+//
+//    representation cc = intersect(c, representation(-1.0, 1.0));
+//
+//    if (is_empty(cc))
+//        return cc;
+//
+//    mpfr_var::setup();
+//
+//    mpfr_var xl(x.first, MPFR_RNDD);
+//    mpfr_var xu(x.second, MPFR_RNDU);
+//
+//    mpfr_var cld(cc.second, MPFR_RNDU);
+//    mpfr_var cuu(cc.first, MPFR_RNDD);
+//
+//    mpfr_acos(cld(), cld(), MPFR_RNDD);
+//    mpfr_acos(cuu(), cuu(), MPFR_RNDU);
+//
+//    mpfr_var pid;
+//    mpfr_var piu;
+//    mpfr_const_pi(pid(), MPFR_RNDD);
+//    mpfr_const_pi(piu(), MPFR_RNDU);
+//
+//    mpfr_var rl;
+//    mpfr_var ru;
+//
+//    mpfr_var tmp;
+//    long nu;
+//
+//    // left bound of x
+//    mpfr_remquo(tmp(), &nu, xl(), pid(), MPFR_RNDD);
+//
+//    // normalize
+//    if (tmp.template get<T>(MPFR_RNDA) < 0.0)
+//        --nu;
+//
+//    if (nu % 2 == 0)
+//    {
+//        tmp.set(nu, MPFR_RNDN);
+//        mpfr_fma(rl(), tmp(), piu(), cuu(), MPFR_RNDU);
+//    }
+//    else
+//    {
+//        tmp.set(nu + 1, MPFR_RNDN);
+//        mpfr_fms(rl(), tmp(), piu(), cld(), MPFR_RNDU);
+//    }
+//
+//    if (rl.template get<T>(MPFR_RNDU) >= x.first)
+//    {
+//        if (nu % 2 == 0)
+//            mpfr_fma(rl(), tmp(), pid(), cld(), MPFR_RNDD);
+//        else
+//            mpfr_fms(rl(), tmp(), pid(), cuu(), MPFR_RNDD);
+//
+//        if (rl.template get<T>(MPFR_RNDD) > x.second)
+//            return empty();
+//
+//        mpfr_max(rl(), rl(), xl(), MPFR_RNDD);
+//    }
+//    else
+//    {
+//        ++nu;
+//
+//        if (nu % 2 == 0)
+//        {
+//            tmp.set(nu, MPFR_RNDN);
+//            mpfr_fma(rl(), tmp(), pid(), cld(), MPFR_RNDD);
+//        }
+//        else
+//        {
+//            tmp.set(nu + 1, MPFR_RNDN);
+//            mpfr_fms(rl(), tmp(), pid(), cuu(), MPFR_RNDD);
+//        }
+//
+//        if (rl.template get<T>(MPFR_RNDD) > x.second)
+//            return empty();
+//
+//        mpfr_max(rl(), rl(), xl(), MPFR_RNDD);
+//    }
+//
+//
+//    // right bound of x
+//    mpfr_remquo(tmp(), &nu, xu(), piu(), MPFR_RNDU);
+//
+//    // normalize
+//    if (tmp.template get<T>(MPFR_RNDA) < 0.0)
+//        --nu;
+//
+//    if (nu % 2 == 0)
+//    {
+//        tmp.set(nu, MPFR_RNDN);
+//        mpfr_fma(ru(), tmp(), pid(), cld(), MPFR_RNDD);
+//    }
+//    else
+//    {
+//        tmp.set(nu + 1, MPFR_RNDN);
+//        mpfr_fms(ru(), tmp(), pid(), cuu(), MPFR_RNDD);
+//    }
+//
+//    if (ru.template get<T>(MPFR_RNDD) <= x.second)
+//    {
+//        if (nu % 2 == 0)
+//            mpfr_fma(ru(), tmp(), piu(), cuu(), MPFR_RNDU);
+//        else
+//            mpfr_fms(ru(), tmp(), piu(), cld(), MPFR_RNDU);
+//
+//        mpfr_min(ru(), ru(), xu(), MPFR_RNDU);
+//    }
+//    else
+//    {
+//        --nu;
+//
+//        if (nu % 2 == 0)
+//        {
+//            tmp.set(nu, MPFR_RNDN);
+//            mpfr_fma(ru(), tmp(), piu(), cuu(), MPFR_RNDU);
+//        }
+//        else
+//        {
+//            tmp.set(nu + 1, MPFR_RNDN);
+//            mpfr_fms(ru(), tmp(), piu(), cld(), MPFR_RNDU);
+//        }
+//
+//        mpfr_min(ru(), ru(), xu(), MPFR_RNDU);
+//    }
+//
+//    return representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
 }
 
 // bare mixed type version

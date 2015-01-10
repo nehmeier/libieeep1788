@@ -26,12 +26,18 @@
 #define BOOST_TEST_MODULE "MPFR utility funcitons [p1788/util/mpfr_util]"
 #include "test/util/boost_test_wrapper.hpp"
 
+#include <string>
 
 #include "p1788/util/mpfr_util.hpp"
 
-
-
 BOOST_AUTO_TEST_CASE(minimal_two_sum_test)
 {
-    BOOST_CHECK( false );
+    BOOST_CHECK_EQUAL( p1788::util::two_sum(std::stod("0X1.1111111111111P+100"), std::stod("0X1.1111111111111P+1")).first, std::stod("0X1.1111111111111P+100") );
+    BOOST_CHECK_EQUAL( p1788::util::two_sum(std::stod("0X1.1111111111111P+100"), std::stod("0X1.1111111111111P+1")).second, std::stod("0X1.1111111111111P+1") );
+
+    BOOST_CHECK_EQUAL( p1788::util::two_sum(std::stod("0X1.1111111111111P+53"), std::stod("0X1.1111111111111P+1")).first, std::stod("0X1.1111111111112P+53") );
+    BOOST_CHECK_EQUAL( p1788::util::two_sum(std::stod("0X1.1111111111111P+53"), std::stod("0X1.1111111111111P+1")).second, std::stod("0X1.111111111111P-3") );
+
+    BOOST_CHECK_EQUAL( p1788::util::two_sum(std::stod("0X1.1111111111111P+2"), std::stod("0X1.1111111111111P+1")).first, std::stod("0X1.999999999999AP+2") );
+    BOOST_CHECK_EQUAL( p1788::util::two_sum(std::stod("0X1.1111111111111P+2"), std::stod("0X1.1111111111111P+1")).second, std::stod("-0X1P-51") );
 }
