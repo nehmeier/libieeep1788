@@ -42,7 +42,7 @@ namespace overlapping
 // \brief Enum describing the 16 states of the interval overlapping
 // see P1788/D7.0 Sect. 9.7.2 Table 6
 //
-enum class overlapping_state : uint16_t
+enum class overlapping_state : uint32_t
 {
     both_empty      = 0,
     first_empty     = 1,
@@ -59,7 +59,11 @@ enum class overlapping_state : uint16_t
     started_by      = 1 << 11,
     overlapped_by   = 1 << 12,
     met_by          = 1 << 13,
-    after           = 1 << 14
+    after           = 1 << 14,
+    both_nai        = 1 << 15,
+    first_nai       = 1 << 16,
+    second_nai      = 1 << 17,
+    undefined       = 1 << 18
 };
 
 
@@ -215,6 +219,38 @@ std::basic_ostream<CharT, Traits>& operator<<(
             return os << "AFTER";
         default:
             return os << "after";
+        }
+    case overlapping_state::both_nai:
+        switch (os.iword(p1788::io::text_representation_manip_id))
+        {
+        case p1788::io::upper_case_text_representation:
+            return os << "BOTH_NAI";
+        default:
+            return os << "both_nai";
+        }
+    case overlapping_state::first_nai:
+        switch (os.iword(p1788::io::text_representation_manip_id))
+        {
+        case p1788::io::upper_case_text_representation:
+            return os << "FIRST_NAI";
+        default:
+            return os << "first_nai";
+        }
+    case overlapping_state::second_nai:
+        switch (os.iword(p1788::io::text_representation_manip_id))
+        {
+        case p1788::io::upper_case_text_representation:
+            return os << "SECOND_NAI";
+        default:
+            return os << "second_nai";
+        }
+        case overlapping_state::undefined:
+        switch (os.iword(p1788::io::text_representation_manip_id))
+        {
+        case p1788::io::upper_case_text_representation:
+            return os << "UNDEFINED";
+        default:
+            return os << "undefined";
         }
     }
 

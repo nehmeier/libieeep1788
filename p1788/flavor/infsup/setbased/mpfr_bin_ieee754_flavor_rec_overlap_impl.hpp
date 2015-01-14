@@ -38,46 +38,81 @@ namespace infsup
 namespace setbased
 {
 
+// overlap ( bare interval, bare interval )
 template<typename T>
 p1788::overlapping::overlapping_state
 mpfr_bin_ieee754_flavor<T>::overlap(mpfr_bin_ieee754_flavor<T>::representation const& x,
-        mpfr_bin_ieee754_flavor<T>::representation const& y)
+                                    mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
-    if (is_empty(x)) {
-        if (is_empty(y)) {
+    // call bare mixed type version
+    return overlap<T>(x,y);
+}
+
+
+// overlap ( bare interval, bare interval ) mixedtype
+template<typename T>
+template<typename T_>
+p1788::overlapping::overlapping_state
+mpfr_bin_ieee754_flavor<T>::overlap(mpfr_bin_ieee754_flavor<T>::representation const& x,
+                                    mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& y)
+{
+    if (!is_valid(x) || !mpfr_bin_ieee754_flavor<T_>::is_valid(y))
+        return p1788::overlapping::overlapping_state::undefined;
+
+    if (is_empty(x))
+    {
+        if (mpfr_bin_ieee754_flavor<T_>::is_empty(y))
+        {
             return p1788::overlapping::overlapping_state::both_empty;
-        } else {
+        }
+        else
+        {
             return p1788::overlapping::overlapping_state::first_empty;
         }
     }
-    if (is_empty(y)) {
+    if (mpfr_bin_ieee754_flavor<T_>::is_empty(y))
+    {
         return p1788::overlapping::overlapping_state::second_empty;
     }
 
     // !before
-    if (x.second >= y.first) {
+    if (x.second >= y.first)
+    {
 
-        if (x.second <= y.second) {
-            if (x.first == y.first) {
-                if (x.second < y.second) {
+        if (x.second <= y.second)
+        {
+            if (x.first == y.first)
+            {
+                if (x.second < y.second)
+                {
                     return p1788::overlapping::overlapping_state::starts;
-                } else {
+                }
+                else
+                {
                     return p1788::overlapping::overlapping_state::equal;
                 }
             }
 
-            if (x.second == y.second) {
-                if (x.first < y.first) {
+            if (x.second == y.second)
+            {
+                if (x.first < y.first)
+                {
                     return p1788::overlapping::overlapping_state::finished_by;
-                } else {
+                }
+                else
+                {
                     return p1788::overlapping::overlapping_state::finishes;
                 }
             }
 
-            if (x.second > y.first) {
-                if (x.first < y.first) {
+            if (x.second > y.first)
+            {
+                if (x.first < y.first)
+                {
                     return p1788::overlapping::overlapping_state::overlaps;
-                } else {
+                }
+                else
+                {
                     return p1788::overlapping::overlapping_state::contained_by;
                 }
             }
@@ -85,16 +120,22 @@ mpfr_bin_ieee754_flavor<T>::overlap(mpfr_bin_ieee754_flavor<T>::representation c
             return p1788::overlapping::overlapping_state::meets;
         }
 
-        if (x.first <= y.second) {
-            if (x.first <= y.first) {
-                if (x.first < y.first) {
+        if (x.first <= y.second)
+        {
+            if (x.first <= y.first)
+            {
+                if (x.first < y.first)
+                {
                     return p1788::overlapping::overlapping_state::contains;
-                } else {
+                }
+                else
+                {
                     return p1788::overlapping::overlapping_state::started_by;
                 }
             }
 
-            if (x.first < y.second) {
+            if (x.first < y.second)
+            {
                 return p1788::overlapping::overlapping_state::overlapped_by;
             }
 
@@ -107,13 +148,45 @@ mpfr_bin_ieee754_flavor<T>::overlap(mpfr_bin_ieee754_flavor<T>::representation c
     return p1788::overlapping::overlapping_state::before;
 }
 
+
+// overlap ( decorated interval, decorated interval )
 template<typename T>
 p1788::overlapping::overlapping_state
 mpfr_bin_ieee754_flavor<T>::overlap(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
-        mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
+                                    mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    LIBIEEEP1788_NOT_IMPLEMENTED;
+    // call decorated mixed type version
+    return overlap<T>(x,y);
+}
 
+
+// overlap ( decorated interval, decorated interval ) mixedtyoe
+template<typename T>
+template<typename T_>
+p1788::overlapping::overlapping_state
+mpfr_bin_ieee754_flavor<T>::overlap(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+                                    mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& y)
+{
+    if (!is_valid(x) || !mpfr_bin_ieee754_flavor<T_>::is_valid(y))
+        return p1788::overlapping::overlapping_state::undefined;
+
+    if (is_nai(x))
+    {
+        if (mpfr_bin_ieee754_flavor<T_>::is_nai(y))
+        {
+            return p1788::overlapping::overlapping_state::both_nai;
+        }
+        else
+        {
+            return p1788::overlapping::overlapping_state::first_nai;
+        }
+    }
+    if (mpfr_bin_ieee754_flavor<T_>::is_nai(y))
+    {
+        return p1788::overlapping::overlapping_state::second_nai;
+    }
+
+    // call bare mixed type version
     return overlap(x.first, y.first);
 }
 

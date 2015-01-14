@@ -32,33 +32,36 @@ namespace p1788
 namespace infsup
 {
 
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// \name Recommended interval overlapping, see P1788/D7.0 Sect. 9.7.2
-//
-//@{
 
+// overlap
 
+// static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-p1788::overlapping::overlapping_state overlap(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
-        base_interval<T, Flavor, RepType, ConcreteInterval> const& y) {
+template<typename T_, typename RepType_, class ConcreteInterval_>
+p1788::overlapping::overlapping_state
+base_interval<T, Flavor, RepType, ConcreteInterval>::overlap(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+        base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
+{
+    // assert that only bare intervals or decorated intervals are used
+    static_assert( (std::is_same<typename Flavor<T>::representation, RepType>::value
+                    && std::is_same<typename Flavor<T_>::representation, RepType_>::value)
+                   || (std::is_same<typename Flavor<T>::representation_dec, RepType>::value
+                       && std::is_same<typename Flavor<T_>::representation_dec, RepType_>::value),
+                   "It is not supported by mixed type operations to use "
+                   "interval and decorated_interval types together!"
+                 );
+
     return Flavor<T>::overlap(x.rep_, y.rep_);
 }
 
-//TODO Mixed Type???
-//template<typename T, typename Ty, template<typename> class Flavor>
-//p1788::overlapping::overlapping_state overlap(interval<T, Flavor> const& x,
-//        interval<Ty, Flavor> const& y) {
-//    typedef typename p1788::util::max_precision_type<
-//    T,
-//    Ty
-//    >::type TMax;
-//
-//    return overlap(static_cast<interval<TMax, Flavor>>(x),
-//                   static_cast<interval<TMax, Flavor>>(y));
-//}
+// function
+template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
+p1788::overlapping::overlapping_state
+overlap(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
+{
+    return base_interval<T1, Flavor, RepType1, ConcreteInterval1>::overlap(x, y);
+}
 
-//@}
 
 
 } // namespace infsup

@@ -3306,6 +3306,101 @@ public:
 ///@}
 
 
+
+
+// -----------------------------------------------------------------------------
+// Boolean functions of intervals (Recommended)
+// -----------------------------------------------------------------------------
+
+///@name Boolean functions of intervals (Recommended)
+///
+///
+///@{
+
+    /// \todo TODO
+    ///
+    ///
+    static bool is_common(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    static bool is_common(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    static bool is_singleton(representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    static bool is_singleton(representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    static bool is_member(T m, representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    static bool is_member(T m, representation_dec const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static bool is_member(T_ m, representation const& x);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static bool is_member(T_ m, representation_dec const& x);
+
+///@}
+
+// -----------------------------------------------------------------------------
+// Extended interval comparisons (Recommended)
+// -----------------------------------------------------------------------------
+
+///@name Extended interval comparisons (Recommended)
+///
+///
+///@{
+
+
+    /// \todo TODO
+    ///
+    ///
+    static p1788::overlapping::overlapping_state overlap(representation const& x,
+            representation const& y);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static p1788::overlapping::overlapping_state overlap(representation const& x,
+            representation_type<T_> const& y);
+
+
+    /// \todo TODO
+    ///
+    ///
+    static p1788::overlapping::overlapping_state overlap(representation_dec const& x,
+            representation_dec const& y);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T_>
+    static p1788::overlapping::overlapping_state overlap(representation_dec const& x,
+            representation_dec_type<T_> const& y);
+
+
+///@}
+
 // -----------------------------------------------------------------------------
 // Forward-mode elementary functions (Recommended)
 // -----------------------------------------------------------------------------
@@ -3493,80 +3588,6 @@ public:
 
 ///@}
 
-// -----------------------------------------------------------------------------
-// Extended interval comparisons (Recommended)
-// -----------------------------------------------------------------------------
-
-///@name Extended interval comparisons (Recommended)
-///
-///
-///@{
-
-    /// \todo TODO
-    ///
-    ///
-    static p1788::overlapping::overlapping_state overlap(representation const&,
-            representation const&);
-
-
-    /// \todo TODO
-    ///
-    ///
-    static p1788::overlapping::overlapping_state overlap(representation_dec const&,
-            representation_dec const&);
-
-// -----------------------------------------------------------------------------
-// Boolean functions of intervals (Recommended)
-// -----------------------------------------------------------------------------
-
-///@name Boolean functions of intervals (Recommended)
-///
-///
-///@{
-
-    /// \todo TODO
-    ///
-    ///
-    static bool is_common(representation const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    static bool is_common(representation_dec const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    static bool is_singleton(representation const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    static bool is_singleton(representation_dec const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    static bool is_member(T m, representation const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    static bool is_member(T m, representation_dec const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    template<typename T_>
-    static bool is_member(T_ m, representation const& x);
-
-    /// \todo TODO
-    ///
-    ///
-    template<typename T_>
-    static bool is_member(T_ m, representation_dec const& x);
-
-///@}
 
 // -----------------------------------------------------------------------------
 // Slope functions (Recommended)

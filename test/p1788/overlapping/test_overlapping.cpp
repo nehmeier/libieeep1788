@@ -87,6 +87,18 @@ BOOST_AUTO_TEST_CASE(minimal_overlapping_output_test)
     output << OS::after;
     BOOST_CHECK( output.is_equal( "after" ) );
 
+    output << OS::both_nai;
+    BOOST_CHECK( output.is_equal( "both_nai" ) );
+
+    output << OS::first_nai;
+    BOOST_CHECK( output.is_equal( "first_nai" ) );
+
+    output << OS::second_nai;
+    BOOST_CHECK( output.is_equal( "second_nai" ) );
+
+    output << OS::undefined;
+    BOOST_CHECK( output.is_equal( "undefined" ) );
+
 
     output << p1788::io::overlapping_numeric;
     output << OS::both_empty;
@@ -137,6 +149,19 @@ BOOST_AUTO_TEST_CASE(minimal_overlapping_output_test)
     output << OS::after;
     BOOST_CHECK( output.is_equal( "16384" ) );
 
+    output << OS::both_nai;
+    BOOST_CHECK( output.is_equal( "32768" ) );
+
+    output << OS::first_nai;
+    BOOST_CHECK( output.is_equal( "65536" ) );
+
+    output << OS::second_nai;
+    BOOST_CHECK( output.is_equal( "131072" ) );
+
+    output << OS::undefined;
+    BOOST_CHECK( output.is_equal( "262144" ) );
+
+
     output << p1788::io::overlapping_alpha;
     output << p1788::io::upper_case;
     output << OS::both_empty;
@@ -186,4 +211,16 @@ BOOST_AUTO_TEST_CASE(minimal_overlapping_output_test)
 
     output << OS::after;
     BOOST_CHECK( output.is_equal( "AFTER" ) );
+
+    output << OS::both_nai;
+    BOOST_CHECK( output.is_equal( "BOTH_NAI" ) );
+
+    output << OS::first_nai;
+    BOOST_CHECK( output.is_equal( "FIRST_NAI" ) );
+
+    output << OS::second_nai;
+    BOOST_CHECK( output.is_equal( "SECOND_NAI" ) );
+
+    output << OS::undefined;
+    BOOST_CHECK( output.is_equal( "UNDEFINED" ) );
 }

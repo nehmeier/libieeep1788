@@ -913,6 +913,24 @@ public:
 ///@}
 
 
+// -----------------------------------------------------------------------------
+// Extended interval comparisons
+// -----------------------------------------------------------------------------
+
+///@name Extended interval comparisons
+///
+///
+///@{
+
+
+    template<typename T_, typename RepType_, class ConcreteInterval_>
+    inline
+    static p1788::overlapping::overlapping_state
+    overlap(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y);
+
+///@}
+
+
 
 //// -----------------------------------------------------------------------------
 //// Recommended forward elementary functions on intervals
@@ -968,15 +986,6 @@ public:
 //
 //    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
 //    friend ConcreteInterval_ atan2_pi(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&, base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
-//
-//
-//// -----------------------------------------------------------------------------
-//// Recommended interval overlapping
-//// -----------------------------------------------------------------------------
-//
-//    template<typename T_, template<typename> class Flavor_, typename RepType_, class ConcreteInterval_>
-//    friend p1788::overlapping::overlapping_state overlap(base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&,
-//            base_interval<T_, Flavor_, RepType_, ConcreteInterval_> const&);
 //
 //
 //// -----------------------------------------------------------------------------
@@ -1566,6 +1575,19 @@ ConcreteInterval mul_rev(base_interval<T, Flavor, RepType, ConcreteInterval> con
 
 
 
+///@name Extended interval comparisons
+///
+///
+///@{
+
+template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
+inline
+p1788::overlapping::overlapping_state
+overlap(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
+
+
+///@}
+
 } // namespace infsup
 
 } // namespace p1788
@@ -1580,10 +1602,10 @@ ConcreteInterval mul_rev(base_interval<T, Flavor, RepType, ConcreteInterval> con
 #include "p1788/infsup/base_interval_cancel_func_impl.hpp"
 #include "p1788/infsup/base_interval_mul_rev_to_pair_func_impl.hpp"
 #include "p1788/infsup/base_interval_rev_func_impl.hpp"
+#include "p1788/infsup/base_interval_rec_overlap_impl.hpp"
 
 
 //#include "p1788/infsup/base_interval_rec_elem_func_impl.hpp"
-//#include "p1788/infsup/base_interval_rec_overlap_impl.hpp"
 //#include "p1788/infsup/base_interval_rec_slope_func_impl.hpp"
 
 #endif // LIBIEEEP1788_P1788_INFSUP_BASE_INTERVAL_HPP

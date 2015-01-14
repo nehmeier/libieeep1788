@@ -53,6 +53,7 @@ if(Boost_FOUND)
 		    test_integration_mpfr_bin_ieee754_flavor_cancel.cpp
                     test_integration_mpfr_bin_ieee754_flavor_mul_rev_to_pair.cpp
 		    test_integration_mpfr_bin_ieee754_flavor_rev.cpp
+                    test_integration_mpfr_bin_ieee754_flavor_rec_overlap.cpp
                )
 
             # relative path of this directory
