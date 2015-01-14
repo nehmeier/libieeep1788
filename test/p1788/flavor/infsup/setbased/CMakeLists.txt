@@ -54,6 +54,7 @@ if(Boost_FOUND)
                 test_mpfr_bin_ieee754_flavor_elem_func.cpp
                 test_mpfr_bin_ieee754_flavor_cancel_func.cpp
                 test_mpfr_bin_ieee754_flavor_rev_func.cpp
+		test_mpfr_bin_ieee754_flavor_mul_rev_to_pair_func.cpp
                )
 
             # relative path of this directory

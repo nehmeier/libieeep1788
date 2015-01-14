@@ -40,33 +40,121 @@ namespace setbased
 
 template<typename T>
 std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
-mpfr_bin_ieee754_flavor<T>::div_to_pair(mpfr_bin_ieee754_flavor<T>::representation const& x,
-        mpfr_bin_ieee754_flavor<T>::representation const& y)
+mpfr_bin_ieee754_flavor<T>::mul_rev_to_pair(mpfr_bin_ieee754_flavor<T>::representation const& b,
+        mpfr_bin_ieee754_flavor<T>::representation const& c)
 {
-    if (x.first <= 0.0 && x.second >= 0.0)
-        return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
-               (div(x, y), empty());
+    if (is_empty(x))
+        return x;
 
-    if (y.first < 0.0 && y.second > 0.0) {
-        representation a =  div(x, representation(y.first, 0.0));
-        representation b =  div(x, representation(0.0, y.second));
+    if (is_empty(b))
+        return b;
 
-        if (is_interior(representation(0.0,0.0), intersect(a,b)))
-            return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
-               (hull(a,b), empty());
+    if (is_empty(c))
+        return c;
 
-        return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
-               (less(a,b) ? a : b, less(a,b) ? b : a);
+    // b == entire  or  c == entire
+    if (is_entire(b) || is_entire(c))
+        return x;                               // intersect(entire, x)
+
+    // c contains 0.0
+    if (c.first <= 0.0 && c.second >= 0.0)
+    {
+        // and b contains 0.0
+        if (b.first <= 0.0 && b.second >= 0.0)
+            return x;                           // intersect(entire, x)
+
+
+        mpfr_var::setup();
+
+        mpfr_var bl(b.first == 0.0 ? +0.0 : b.first , MPFR_RNDD);
+        mpfr_var bu(b.second == 0.0 ? -0.0 : b.second, MPFR_RNDU);
+
+        mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
+        mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
+
+        if (b.second < 0.0)
+        {
+            mpfr_div(cu(), cu(), bu(), MPFR_RNDD);
+            mpfr_div(cl(), cl(), bu(), MPFR_RNDU);
+
+            return intersect(representation(cu.template get<T>(MPFR_RNDD), cl.template get<T>(MPFR_RNDU)), x);
+        }
+
+        // b.first > 0.0
+        mpfr_div(cl(), cl(), bl(), MPFR_RNDD);
+        mpfr_div(cu(), cu(), bl(), MPFR_RNDU);
+
+        return intersect(representation(cl.template get<T>(MPFR_RNDD), cu.template get<T>(MPFR_RNDU)), x);
     }
 
-    return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation, typename mpfr_bin_ieee754_flavor<T>::representation>
-           (div(x, y), empty());
+
+    if (c.second < 0.0)
+    {
+        if (b.first == 0.0 && b.second == 0.0)
+            return empty();
+
+        mpfr_var::setup();
+
+        mpfr_var bl(b.first == 0.0 ? +0.0 : b.first , MPFR_RNDD);
+        mpfr_var bu(b.second == 0.0 ? -0.0 : b.second, MPFR_RNDU);
+
+        mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
+        mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
+
+        if (b.second <= 0.0)
+        {
+            mpfr_div(cu(), cu(), bl(), MPFR_RNDD);
+            mpfr_div(cl(), cl(), bu(), MPFR_RNDU);
+
+            return intersect(representation(cu.template get<T>(MPFR_RNDD), cl.template get<T>(MPFR_RNDU)), x);
+        }
+
+        if (b.first >= 0.0)
+        {
+            mpfr_div(cl(), cl(), bl(), MPFR_RNDD);
+            mpfr_div(cu(), cu(), bu(), MPFR_RNDU);
+
+            return intersect(representation(cl.template get<T>(MPFR_RNDD), cu.template get<T>(MPFR_RNDU)), x);
+        }
+
+        return x;                           // intersect(entire, x)
+    }
+
+    // c.first > 0.0
+    if (b.first == 0.0 && b.second == 0.0)
+        return empty();
+
+    mpfr_var::setup();
+
+    mpfr_var bl(b.first == 0.0 ? +0.0 : b.first , MPFR_RNDD);
+    mpfr_var bu(b.second == 0.0 ? -0.0 : b.second, MPFR_RNDU);
+
+    mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
+    mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
+
+    if (b.second <= 0.0)
+    {
+        mpfr_div(cu(), cu(), bu(), MPFR_RNDD);
+        mpfr_div(cl(), cl(), bl(), MPFR_RNDU);
+
+        return intersect(representation(cu.template get<T>(MPFR_RNDD), cl.template get<T>(MPFR_RNDU)), x);
+    }
+
+    if (b.first >= 0.0)
+    {
+        mpfr_div(cl(), cl(), bu(), MPFR_RNDD);
+        mpfr_div(cu(), cu(), bl(), MPFR_RNDU);
+
+        return intersect(representation(cl.template get<T>(MPFR_RNDD), cu.template get<T>(MPFR_RNDU)), x);
+    }
+
+    return x;                           // intersect(entire, x)
 }
 
 template<typename T>
 std::pair<typename mpfr_bin_ieee754_flavor<T>::representation_dec, typename mpfr_bin_ieee754_flavor<T>::representation_dec>
-mpfr_bin_ieee754_flavor<T>::div_to_pair(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
-        mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
+mpfr_bin_ieee754_flavor<T>::mul_rev_to_pair(mpfr_bin_ieee754_flavor<T>::representation_dec const& b,
+        mpfr_bin_ieee754_flavor<T>::representation_dec const& c)
 {
     if (y.first.first < 0.0 && y.first.second > 0.0)
         return std::pair<typename mpfr_bin_ieee754_flavor<T>::representation_dec, typename mpfr_bin_ieee754_flavor<T>::representation_dec>

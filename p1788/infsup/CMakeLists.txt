@@ -30,7 +30,7 @@ set(P1788_HEADER_FILES
     base_interval.hpp
     base_interval_bool_func_impl.hpp
     base_interval_cancel_func_impl.hpp
-    base_interval_div_pair_func_impl.hpp
+    base_interval_mul_rev_to_pair_func_impl.hpp
     base_interval_elem_func_impl.hpp
     base_interval_io_impl.hpp
     base_interval_num_func_impl.hpp

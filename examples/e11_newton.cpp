@@ -24,52 +24,63 @@
 //   limitations under the License.
 
 #include <iostream>
+#include <vector>
+#include <iterator>
 
 #include "p1788/p1788.hpp"
 
+// Template type alias to define a generic bare infsup interval with a setbased
+// infsup flavor based on mpfr supporting IEEE754 bound types.
 template<typename T>
 using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
 
+// root finding method using Interval Newton
 template<typename T, class OutputIt>
-void ia_newton(I<T> (*f) (I<T> const&),
-               I<T> (*df) (I<T> const&),
-               I<T> const& x,
-               T eps,
-               OutputIt it)
+void ia_newton(I<T> (*f) (I<T> const&),     // function to be analyzed
+               I<T> (*df) (I<T> const&),    // derivative of f
+               I<T> const& x,               // start interval
+               T eps,                       // epsilon
+               OutputIt it)                 // output iterator
 {
+    // check if 0 is a member of f(x)
     if ( !is_member(0.0, f(x)) )
         return;
 
-    I<T> c = I<T>(mid(x));
+    // Newton step
+    T m = mid(x);
+    I<T> c = I<T>(m,m);
+    auto z = mul_rev_to_pair(df(x), f(c));      // z = f(c) / df(x)
 
-    auto z = div_to_pair(f(c), df(y));
-    I<T> z1 = c - z.first;
-    I<T> z2 = c - z.second;
+    // pairwise intersection of z and x
+    I<T> v1 = intersect(x, c - z.first);
+    I<T> v2 = intersect(x, c - z.second);
 
-    I<T> v1 = intersect(y, z1);
-    I<T> v2 = intersect(y, z2);
-
-    if (v1 == y) {
-        v1 = I<T>(inf(y), mid(y));
-        v2 = I<T>(mid(y), sup(y));
+    // bisection if v1 == x
+    if (v1 == x)
+    {
+        v1 = I<T>(inf(x), m);
+        v2 = I<T>(m, sup(x));
     }
 
-    if (!is_empty(v1) && is_empty(v2))
-        unique = unique || is_interior(v1, y);
-
-    if (!is_empty(v1)) {
+    if (!is_empty(v1))
+    {
+        // check if v1 is a tight enough enclosure of 0
         if (wid(v1) < eps)
-            std::cout << v1 << " " << unique << std::endl;
+            *it++ = v1;     // save root
         else
-            ia_newton(f, df, v1, eps, unique);
+            // recursive call with subinterval v1
+            ia_newton(f, df, v1, eps, it);
     }
 
-    if (!is_empty(v2)) {
+    if (!is_empty(v2))
+    {
+        // check if v2 is a tight enough enclosure of 0
         if (wid(v2) < eps)
-            std::cout << v2 << " " << unique << std::endl;
+            *it++ = v2;     // save root
         else
-            ia_newton(f, df, v2, eps, unique);
+            // recursive call with subinterval v2
+            ia_newton(f, df, v2, eps, it);
     }
 }
 

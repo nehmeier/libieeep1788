@@ -2613,14 +2613,28 @@ public:
     /// \todo TODO
     ///
     ///
-    static std::pair<representation,representation> div_to_pair(representation const& x,
-            representation const& y);
+    static std::pair<representation,representation> mul_rev_to_pair(representation const& b,
+            representation const& c);
 
     /// \todo TODO
     ///
     ///
-    static std::pair<representation_dec,representation_dec> div_to_pair(representation_dec const& x,
-            representation_dec const& y);
+    template<typename T1, typename T2>
+    static std::pair<representation,representation> mul_rev_to_pair(representation_type<T1> const& b,
+            representation_type<T2> const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    static std::pair<representation_dec,representation_dec> mul_rev_to_pair(representation_dec const& b,
+            representation_dec const& c);
+
+    /// \todo TODO
+    ///
+    ///
+    template<typename T1, typename T2>
+    static std::pair<representation_dec,representation_dec> mul_rev_to_pair(representation_dec_type<T1> const& b,
+            representation_dec_type<T2> const& c);
 
 ///@}
 
@@ -3683,7 +3697,7 @@ public:
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_num_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_bool_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_elem_func_impl.hpp"
-#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_div_pair_func_impl.hpp"
+#include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_mul_rev_to_pair_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rev_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_cancel_func_impl.hpp"
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_rec_elem_func_impl.hpp"

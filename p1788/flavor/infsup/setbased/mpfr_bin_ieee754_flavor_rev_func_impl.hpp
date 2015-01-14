@@ -1338,603 +1338,137 @@ mpfr_bin_ieee754_flavor<T>::cosh_rev(mpfr_bin_ieee754_flavor<T>::representation_
 
 
 
-//
-//
-//// mul_rev
-//
-//// bare version
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation const& b,
-//                                    mpfr_bin_ieee754_flavor<T>::representation const& c,
-//                                    mpfr_bin_ieee754_flavor<T>::representation const& x)
-//{
-//    if (is_empty(x))
-//        return x;
-//
-//    if (is_empty(b))
-//        return b;
-//
-//    if (is_empty(c))
-//        return c;
-//
-//    // b == entire  or  c == entire
-//    if (is_entire(b) || is_entire(c))
-//        return x;                               // intersect(entire, x)
-//
-//    // c contains 0.0
-//    if (c.first <= 0.0 && c.second >= 0.0)
-//    {
-//        // and b contains 0.0
-//        if (b.first <= 0.0 && b.second >= 0.0)
-//            return x;                           // intersect(entire, x)
-//
-//
-//        mpfr_var::setup();
-//
-//        mpfr_var bl(b.first == 0.0 ? +0.0 : b.first , MPFR_RNDD);
-//        mpfr_var bu(b.second == 0.0 ? -0.0 : b.second, MPFR_RNDU);
-//
-//        mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
-//        mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
-//
-//        if (b.second < 0.0)
-//        {
-//            mpfr_div(cu(), cu(), bu(), MPFR_RNDD);
-//            mpfr_div(cl(), cl(), bu(), MPFR_RNDU);
-//
-//            return intersect(representation(cu.template get<T>(MPFR_RNDD), cl.template get<T>(MPFR_RNDU)), x);
-//        }
-//
-//        // b.first > 0.0
-//        mpfr_div(cl(), cl(), bl(), MPFR_RNDD);
-//        mpfr_div(cu(), cu(), bl(), MPFR_RNDU);
-//
-//        return intersect(representation(cl.template get<T>(MPFR_RNDD), cu.template get<T>(MPFR_RNDU)), x);
-//    }
-//
-//
-//    if (c.second < 0.0)
-//    {
-//        if (b.first == 0.0 && b.second == 0.0)
-//            return empty();
-//
-//        mpfr_var::setup();
-//
-//        mpfr_var bl(b.first == 0.0 ? +0.0 : b.first , MPFR_RNDD);
-//        mpfr_var bu(b.second == 0.0 ? -0.0 : b.second, MPFR_RNDU);
-//
-//        mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
-//        mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
-//
-//        if (b.second <= 0.0)
-//        {
-//            mpfr_div(cu(), cu(), bl(), MPFR_RNDD);
-//            mpfr_div(cl(), cl(), bu(), MPFR_RNDU);
-//
-//            return intersect(representation(cu.template get<T>(MPFR_RNDD), cl.template get<T>(MPFR_RNDU)), x);
-//        }
-//
-//        if (b.first >= 0.0)
-//        {
-//            mpfr_div(cl(), cl(), bl(), MPFR_RNDD);
-//            mpfr_div(cu(), cu(), bu(), MPFR_RNDU);
-//
-//            return intersect(representation(cl.template get<T>(MPFR_RNDD), cu.template get<T>(MPFR_RNDU)), x);
-//        }
-//
-//        return x;                           // intersect(entire, x)
-//    }
-//
-//    // c.first > 0.0
-//    if (b.first == 0.0 && b.second == 0.0)
-//        return empty();
-//
-//    mpfr_var::setup();
-//
-//    mpfr_var bl(b.first == 0.0 ? +0.0 : b.first , MPFR_RNDD);
-//    mpfr_var bu(b.second == 0.0 ? -0.0 : b.second, MPFR_RNDU);
-//
-//    mpfr_var cl(c.first == 0.0 ? +0.0 : c.first , MPFR_RNDD);
-//    mpfr_var cu(c.second == 0.0 ? -0.0 : c.second, MPFR_RNDU);
-//
-//    if (b.second <= 0.0)
-//    {
-//        mpfr_div(cu(), cu(), bu(), MPFR_RNDD);
-//        mpfr_div(cl(), cl(), bl(), MPFR_RNDU);
-//
-//        return intersect(representation(cu.template get<T>(MPFR_RNDD), cl.template get<T>(MPFR_RNDU)), x);
-//    }
-//
-//    if (b.first >= 0.0)
-//    {
-//        mpfr_div(cl(), cl(), bu(), MPFR_RNDD);
-//        mpfr_div(cu(), cu(), bl(), MPFR_RNDU);
-//
-//        return intersect(representation(cl.template get<T>(MPFR_RNDD), cu.template get<T>(MPFR_RNDU)), x);
-//    }
-//
-//    return x;                           // intersect(entire, x)
-//}
-//
-//
-//// bare mixed type version
-//template<typename T>
-//template<typename T1, typename T2, typename T3>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const& b,
-//                                    mpfr_bin_ieee754_flavor<T>::representation_type<T2> const& c,
-//                                    mpfr_bin_ieee754_flavor<T>::representation_type<T3> const& x)
-//{
-//    static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//    static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//    static_assert(std::numeric_limits<T3>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//
-//    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(b)
-//            ||!mpfr_bin_ieee754_flavor<T1>::is_valid(c)
-//            || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
-//            || mpfr_bin_ieee754_flavor<T2>::is_empty(x))
-//        return empty();
-//
-//    // determine max. precision
-//    typedef typename p1788::util::max_precision_type<T,T1,T2,T3>::type T_MAX;
-//
-//    // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
-//    // Error free for floating point inf-sup intervals due to  outward rounding
-//    return convert_hull(
-//               mpfr_bin_ieee754_flavor<T_MAX>::mul_rev(
-//                   mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(b),
-//                   mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(c),
-//                   mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x)
-//               )
-//           );
-//}
-//
-//
-//// decorated version
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& b,
-//mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& c,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
-//{
-//    if (!is_valid(b) || !is_valid(c) || !is_valid(x))
-//        return nai();
-//
-//    // call bare version and set decoration to trv
-//    return representation_dec(mul_rev(b.first, c.first, x.first), p1788::decoration::decoration::trv);
-//}
-//
-//// decorated mixedtype version
-//template<typename T>
-//template<typename T1, typename T2, typename T3>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const& b,
-//mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const& c,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec_type<T3> const& x)
-//{
-//    static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//    static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//    static_assert(std::numeric_limits<T3>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//
-//    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(b) || !mpfr_bin_ieee754_flavor<T2>::is_valid(c) || !mpfr_bin_ieee754_flavor<T3>::is_valid(x))
-//        return nai();
-//
-//    // call bare mixedtype version and set decoration to trv
-//    return representation_dec(mul_rev(c.first, x.first), p1788::decoration::decoration::trv);
-//}
-//
-//
-//// bare unary version
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation const& c)
-//{
-//    // call bare binary version with x = entire
-//    return mul_rev(c, entire());
-//}
-//
-//// bare unary mixedtype version
-//template<typename T>
-//template<typename T_>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_type<T_> const& c)
-//{
-//    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//
-//    // call bare binary version with x = entire
-//    return mul_rev(c, entire());
-//}
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& c)
-//{
-//    // call decorated binary version with x = entire
-//    return mul_rev(c, entire_dec());
-//}
-//
-//template<typename T>
-//template<typename T_>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& c)
-//{
-//    static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
-//
-//    // call decorated binary version with x = entire
-//    return mul_rev(c, entire_dec());
-//}
-//
-//
-//// pow_rev1
-//
-//// bare version
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::pow_rev1(mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2, typename T3>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::pow_rev1(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_type<T2> const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_type<T3> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::pow_rev1(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2, typename T3>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::pow_rev1(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1>  const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2>  const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec_type<T3>  const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::pow_rev1(mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::pow_rev1(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_type<T2> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::pow_rev1(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::pow_rev1(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//
-//// pow_rev2
-//
-//// bare version
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::pow_rev2(mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2, typename T3>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::pow_rev2(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_type<T2> const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_type<T3> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::pow_rev2(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2, typename T3>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::pow_rev2(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1>  const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2>  const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec_type<T3>  const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::pow_rev2(mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::pow_rev2(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_type<T2> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::pow_rev2(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::pow_rev2(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const&,
-//                                     mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//
-//// atan2_rev1
-//
-//// bare version
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::atan2_rev1(mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2, typename T3>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::atan2_rev1(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_type<T2> const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_type<T3> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::atan2_rev1(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2, typename T3>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::atan2_rev1(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1>  const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2>  const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec_type<T3>  const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::atan2_rev1(mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::atan2_rev1(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_type<T2> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::atan2_rev1(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::atan2_rev1(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//// atan2_rev2
-//
-//// bare version
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::atan2_rev2(mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2, typename T3>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::atan2_rev2(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_type<T2> const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_type<T3> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::atan2_rev2(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2, typename T3>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::atan2_rev2(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1>  const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2>  const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec_type<T3>  const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::atan2_rev2(mpfr_bin_ieee754_flavor<T>::representation const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2>
-//typename mpfr_bin_ieee754_flavor<T>::representation
-//mpfr_bin_ieee754_flavor<T>::atan2_rev2(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_type<T2> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire();
-//}
-//
-//template<typename T>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::atan2_rev2(mpfr_bin_ieee754_flavor<T>::representation_dec const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
-//
-//template<typename T>
-//template<typename T1, typename T2>
-//typename mpfr_bin_ieee754_flavor<T>::representation_dec
-//mpfr_bin_ieee754_flavor<T>::atan2_rev2(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const&,
-//                                       mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const&)
-//{
-//    LIBIEEEP1788_NOT_IMPLEMENTED;
-//
-//    return mpfr_bin_ieee754_flavor<T>::entire_dec();
-//}
+
+// mul_rev
+
+// bare version
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation const& b,
+                                    mpfr_bin_ieee754_flavor<T>::representation const& c,
+                                    mpfr_bin_ieee754_flavor<T>::representation const& x)
+{
+    if (!is_valid(b) || !is_valid(c) || !is_valid(x))
+        return empty();
+
+    auto tmp = mul_rev_to_pair(b, c);
+
+    return hull(intersect(tmp.first, x), intersect(tmp.second, x));
+}
+
+// bare mixed type version
+template<typename T>
+template<typename T1, typename T2, typename T3>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const& b,
+                                    mpfr_bin_ieee754_flavor<T>::representation_type<T2> const& c,
+                                    mpfr_bin_ieee754_flavor<T>::representation_type<T3> const& x)
+{
+    static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T3>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(b)
+            || !mpfr_bin_ieee754_flavor<T2>::is_valid(c)
+            || !mpfr_bin_ieee754_flavor<T3>::is_valid(x))
+        return empty();
+
+    // determine max. precision
+    typedef typename p1788::util::max_precision_type<T,T1,T2,T3>::type T_MAX;
+
+    // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
+    // Error free for floating point inf-sup intervals due to  outward rounding
+    return convert_hull(
+               mpfr_bin_ieee754_flavor<T_MAX>::mul_rev(
+                   mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(b),
+                   mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(c),
+                   mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x)
+               )
+           );
+}
+
+// decorated version
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& b,
+                                    mpfr_bin_ieee754_flavor<T>::representation_dec const& c,
+                                    mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
+{
+    if (!is_valid(b) || !is_valid(c) || !is_valid(x) || is_nai(b) || is_nai(c) || is_nai(x))
+        return nai();
+
+    // call bare version and set decoration to trv
+    return representation_dec(mul_rev(b.first, c.first, x.first), p1788::decoration::decoration::trv);
+}
+
+// decorated mixedtype version
+template<typename T>
+template<typename T1, typename T2, typename T3>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const& b,
+                                    mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const& c,
+                                    mpfr_bin_ieee754_flavor<T>::representation_dec_type<T3> const& x)
+{
+    static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T3>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(b) || !mpfr_bin_ieee754_flavor<T2>::is_valid(c) || !mpfr_bin_ieee754_flavor<T3>::is_valid(x)
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(b) || mpfr_bin_ieee754_flavor<T2>::is_nai(c) || mpfr_bin_ieee754_flavor<T3>::is_nai(x))
+        return nai();
+
+    // call bare mixedtype version and set decoration to trv
+    return representation_dec(mul_rev(b.first, c.first, x.first), p1788::decoration::decoration::trv);
+}
+
+
+// bare unary version
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation const& b,
+                                    mpfr_bin_ieee754_flavor<T>::representation const& c)
+{
+    // call bare ternary version with x = entire
+    return mul_rev(b, c, entire());
+}
+
+// bare unary mixedtype version
+template<typename T>
+template<typename T1, typename T2>
+typename mpfr_bin_ieee754_flavor<T>::representation
+mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const& b,
+                                    mpfr_bin_ieee754_flavor<T>::representation_type<T2> const& c)
+{
+    static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    // call bare ternary version with x = entire
+    return mul_rev(b, c, entire());
+}
+
+template<typename T>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& b,
+                                    mpfr_bin_ieee754_flavor<T>::representation_dec const& c)
+{
+    // call decorated ternary version with x = entire
+    return mul_rev(b, c, entire_dec());
+}
+
+template<typename T>
+template<typename T1, typename T2>
+typename mpfr_bin_ieee754_flavor<T>::representation_dec
+mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const& b,
+                                    mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const& c)
+{
+    static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+    static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
+
+    // call decorated ternary version with x = entire
+    return mul_rev(b, c, entire_dec());
+}
+
+
 
 
 } // namespace setbased
