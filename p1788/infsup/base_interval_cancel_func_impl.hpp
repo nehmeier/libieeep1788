@@ -5,10 +5,10 @@
 //   interval arithmetic
 //
 //
-//   Copyright 2013
+//   Copyright 2013 - 2015
 //
 //   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
-//   Institute of Computer Science,
+//   Department of Computer Science,
 //   University of Wuerzburg, Germany
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");

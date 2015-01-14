@@ -5,10 +5,10 @@
 #   interval arithmetic
 #
 #
-#   Copyright 2013
+#   Copyright 2013 - 2015
 #
 #   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
-#   Institute of Computer Science,
+#   Department of Computer Science,
 #   University of Wuerzburg, Germany
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -30,7 +30,7 @@ set(P1788_HEADER_FILES
 	mpfr_bin_ieee754_flavor_bool_func_impl.hpp
 	mpfr_bin_ieee754_flavor_cancel_func_impl.hpp
 	mpfr_bin_ieee754_flavor_class_impl.hpp
-        mpfr_bin_ieee754_flavor_mul_rev_to_pair_func_impl.hpp
+    mpfr_bin_ieee754_flavor_mul_rev_to_pair_func_impl.hpp
 	mpfr_bin_ieee754_flavor_elem_func_impl.hpp
 	mpfr_bin_ieee754_flavor_io_impl.hpp
 	mpfr_bin_ieee754_flavor_num_func_impl.hpp
