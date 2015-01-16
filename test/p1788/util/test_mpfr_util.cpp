@@ -41,3 +41,4 @@ BOOST_AUTO_TEST_CASE(minimal_two_sum_test)
     BOOST_CHECK_EQUAL( p1788::util::two_sum(std::stod("0X1.1111111111111P+2"), std::stod("0X1.1111111111111P+1")).first, std::stod("0X1.999999999999AP+2") );
     BOOST_CHECK_EQUAL( p1788::util::two_sum(std::stod("0X1.1111111111111P+2"), std::stod("0X1.1111111111111P+1")).second, std::stod("-0X1P-51") );
 }
+
