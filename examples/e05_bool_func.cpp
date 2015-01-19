@@ -23,6 +23,16 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//
+//                        Details about boolean functions
+//
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+
 #include <iostream>
 
 // libieeep1788 main header
@@ -42,7 +52,8 @@ using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased:
 
 int main()
 {
-    std::cout << std::boolalpha;
+    std::cout << std::boolalpha;    // activate textual output of boolean values
+
 
 
     // 1) All boolean functions are implemented as (global) functions in namespace p1788::infsup
@@ -54,7 +65,7 @@ int main()
     // 2) All boolean functions are implemented for bare and decorated intervals
     std::cout << is_entire( DI<double>::entire() ) << std::endl;
 
-    // 2.1) Excepted is_nai, which is only implemented for decorated intervals
+    // 2.1) Excepted is is_nai, which is only implemented for decorated intervals
     std::cout << is_nai(DI<double>::nai())  << std::endl;
 
 
@@ -66,7 +77,7 @@ int main()
     std::cout <<  ( I<double>::entire() == I<double>::empty() )  << std::endl;
 
 
-    // The remaining functions
+    // 5) The remaining functions
     std::cout << subset(I<double>(2.0,3.0), I<double>(1.0,3.0)) << std::endl;
     std::cout << superset(I<double>(-1.0,3.0), I<float>(2.0f,3.0f)) << std::endl;
     std::cout << less(I<double>(2.0,4.5), I<double>(4.0,5.0)) << std::endl;
@@ -82,7 +93,7 @@ int main()
     std::cout << are_disjoint(DI<double>(-1.0,3.0), DI<float>(-5.0f,0.0f)) << std::endl;
 
 
-    // The recommended boolean functions
+    // 6) And the recommended boolean functions
     std::cout << is_common(I<double>(2.0,3.0)) << std::endl;
     std::cout << is_singleton(DI<double>(-1.0,3.0)) << std::endl;
     std::cout << is_member(-3.0, DI<float>(-5.0f,0.0f)) << std::endl;

@@ -27,7 +27,7 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //
-//                      A simple interval "hello world"
+//              Details about cancellative addition and subtraction
 //
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -44,17 +44,26 @@
 template<typename T>
 using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
-int main (void)
+// and the same for decorated intervals
+template<typename T>
+using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
+
+
+int main()
 {
-    // Instantiation of intervals
-    I<double> a(-1.0,5.0);
-    I<double> b(1.0,2.0);
+   // 1) Cancellative addition and subtraction are implemented as (global) functions in namespace p1788::infsup
+    std::cout << cancel_plus( I<double>(0.0,2.0), I<double>(3.0,4.0) ) << std::endl;
 
-    // Assignment and arithmetic operations
-    I<double> c = a + b;
+    // 1.1) And as static functions of the interval type
+    std::cout << I<double>::cancel_minus( I<double>(0.0,2.0), I<double>(3.0,4.0) )  << std::endl;
 
-    // Writing result onto the output stream
-    std::cout << c << std::endl;
+    // 2)  Cancellative addition and subtraction are implemented for bare and decorated intervals
+    std::cout << cancel_plus( DI<double>(0.0,2.0), DI<double>(3.0,4.0) ) << std::endl;
+
+    // 3) Mixed type functions are static only
+    std::cout << I<float>::cancel_minus( I<double>(0.0,2.0), I<float>(3.0f,4.0f) )  << std::endl;
+
 
     return 0;
 }
+

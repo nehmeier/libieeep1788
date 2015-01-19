@@ -39,5 +39,7 @@
 
 #include "p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor.hpp"
 
+#include "p1788/reduction/reduction.hpp"
+
 
 #endif // LIBIEEEP1788_P1788_P1788_HPP

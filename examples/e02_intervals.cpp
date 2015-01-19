@@ -23,6 +23,16 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//
+//               Basic usage of intervals and decorated intervals
+//
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+
 #include <iostream>
 
 // libieeep1788 main header
@@ -38,8 +48,12 @@ using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_i
 template<typename T>
 using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
+
+
 // constant for the value +oo
 const double INF = std::numeric_limits<double>::infinity();
+
+
 
 int main()
 {
@@ -59,7 +73,7 @@ int main()
     std::cout << I<double>(-INF, INF) << std::endl;
     std::cout << DI<double>(-INF, INF) << std::endl << std::endl;
 
-    // 3) The parameter constructor can be used to create all kinds of intervals
+    // 3) The parameter constructor can be used to create all kinds of nonempty intervals
     std::cout << I<double>(-3.0, INF) << std::endl;
     std::cout << DI<double>(5.0, 27.7) << std::endl << std::endl;
 
@@ -68,7 +82,7 @@ int main()
 
     // 3.2) But take care: the parameters are number literals which are computed and rounded by the compiler
     //      Hence the following interval is not an enclosure of 1/10
-    //      This is also a reasopn why a constructor with one floating point parameter is not supported
+    //      Note: This is also a reasopn why a constructor with one floating point parameter is not supported
     std::cout << I<double>(0.1, 0.1) << std::endl << std::endl;
 
     // 4) To ensure enclosure you can use the string constructor
@@ -79,7 +93,10 @@ int main()
     std::cout << I<double>("[1/10]_dac") << std::endl;
     std::cout << DI<double>("0.1000000?") << std::endl << std::endl;
 
+
     // 5) Additionally it is possible to convert interval types
+
+    // Auxiliary intervals
     I<double> i("[0.1, 0.1]");
     DI<double> di("[0.1, 1.1]_dac");
 

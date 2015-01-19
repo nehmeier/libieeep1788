@@ -23,7 +23,18 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//
+//                         Details about numeric functions
+//
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+
 #include <iostream>
+#include <utility>
 
 // libieeep1788 main header
 #include "p1788/p1788.hpp"
@@ -53,15 +64,16 @@ int main()
     // 3) Mixed type functions are static only
     std::cout << I<float>::rad( I<double>(1.1,2.3) )  << std::endl;
 
-    // The remaining functions
+    // 4) The remaining functions
     std::cout << wid( I<double>(1.0,2.0) ) << std::endl;
     std::cout << mag( I<double>(1.0,2.0) ) << std::endl;
     std::cout << mig( I<double>(1.0,2.0) ) << std::endl;
 
 
-    // midpoint and radius are provided as a combined function returning a pair (mid, rad)
-    std::cout << mid_rad(I<double>(2.0,3.0)).first << std::endl;
-    std::cout << mid_rad(I<double>(2.0,3.0)).second << std::endl;
+    // 5) midpoint and radius are provided as a combined function returning a std::pair
+    std::pair<double,double> mr = mid_rad(I<double>(2.0,3.0));
+    std::cout << mr.first << std::endl;     // mid
+    std::cout << mr.second << std::endl;    // rad
 
     return 0;
 }

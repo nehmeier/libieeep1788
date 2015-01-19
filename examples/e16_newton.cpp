@@ -23,6 +23,17 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//
+//   Simple example demonstrating the interval Newton for root finding
+//
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+
 #include <iostream>
 #include <vector>
 #include <iterator>
@@ -35,28 +46,52 @@ template<typename T>
 using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
 
 
-// root finding method using bisection
+// root finding method using Interval Newton
 template<typename T, class OutputIt>
-void ia_bisect(I<T> (*f) (I<T> const&),     // function to be analyzed
+void ia_newton(I<T> (*f) (I<T> const&),     // function to be analyzed
+               I<T> (*df) (I<T> const&),    // derivative of f
                I<T> const& x,               // start interval
                T eps,                       // epsilon
                OutputIt it)                 // output iterator
 {
-    // compute interval y = f(x);
-    I<T> y = f(x);
+    // check if 0 is a member of f(x)
+    if ( !is_member(0.0, f(x)) )
+        return;
 
-    // check if 0 is a member of y
-    if (is_member(0.0, y))
+    // Newton step
+    T m = mid(x);
+    I<T> c = I<T>(m,m);
+    auto z = mul_rev_to_pair(df(x), f(c));      // z = f(c) / df(x)
+
+    // pairwise intersection of z and x
+    I<T> v1 = intersect(x, c - z.first);
+    I<T> v2 = intersect(x, c - z.second);
+
+    // bisection if v1 == x
+    if (v1 == x)
     {
-        // check if y is a tight enough enclosure of 0
-        if (wid(y) < eps)
-            *it++ = x;      // save root
+        v1 = I<T>(inf(x), m);
+        v2 = I<T>(m, sup(x));
+    }
+
+    if (!is_empty(v1))
+    {
+        // check if v1 is a tight enough enclosure of 0
+        if (wid(v1) < eps)
+            *it++ = v1;     // save root
         else
-        {
-            // recursive call with subintervals [inf(x),mid(x)] and [mid(x),sup(x)]
-            ia_bisect(f, I<T>(inf(x), mid(x)), eps, it);
-            ia_bisect(f, I<T>(mid(x), sup(x)), eps, it);
-        }
+            // recursive call with subinterval v1
+            ia_newton(f, df, v1, eps, it);
+    }
+
+    if (!is_empty(v2))
+    {
+        // check if v2 is a tight enough enclosure of 0
+        if (wid(v2) < eps)
+            *it++ = v2;     // save root
+        else
+            // recursive call with subinterval v2
+            ia_newton(f, df, v2, eps, it);
     }
 }
 
@@ -67,13 +102,20 @@ I<T> f (I<T> const& x)
     return x * x - I<T>(2.0,2.0);
 }
 
+// f'(x) = 2x
+template<typename T>
+I<T> df (I<T> const& x)
+{
+    return I<T>(2.0,2.0) * x  ;
+}
+
 
 int main()
 {
     std::vector<I<double>> roots;
 
     // start root finding
-    ia_bisect(f, I<double>(-2.0,2.0), 0.00001, std::back_inserter(roots));
+    ia_newton(f, df, I<double>(-2.0,2.0), 0.00001, std::back_inserter(roots));
 
     std::cout << "roots of f(x) = x^2 - 2 (over the range [-2,2]):" << std::endl;
     for (auto i : roots)

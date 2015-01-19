@@ -115,44 +115,54 @@ inline exception_bits get_throw_exception_cwd()
     return throw_exception_cwd_;
 }
 
+/// \brief Exception class specifying an undefined operation
+///
+class exception : public std::runtime_error
+{
+public:
+    exception(std::string s)
+        : std::runtime_error(s)
+    { }
+};
+
 
 /// \brief Exception class specifying an undefined operation
 ///
-class undefined_operation_exception : public std::runtime_error
+class undefined_operation_exception : public exception
 {
 public:
     undefined_operation_exception()
-        : std::runtime_error("Undefined operation exception!")
+        : exception("Undefined operation exception!")
     { }
 };
 
 /// \brief Exception class specifying a possibly undefined operation
 ///
-class possibly_undefined_operation_exception : public std::runtime_error
+class possibly_undefined_operation_exception : public exception
 {
 public:
     possibly_undefined_operation_exception()
-        : std::runtime_error("possibly undefined operation exception!")
+        : exception("possibly undefined operation exception!")
     { }
 };
 
 /// \brief Exception class specifying an interval part of NaI exception
 ///
-class interval_part_of_nai_exception : public std::runtime_error
+class interval_part_of_nai_exception : public exception
 {
 public:
     interval_part_of_nai_exception()
-        : std::runtime_error("Interval part of NaI exception!")
+        : exception("Interval part of NaI exception!")
     { }
 };
 
 /// \brief Exception class specifying an invalid operand
 ///
-class invalid_operand_exception : public std::runtime_error
+class invalid_operand_exception : public exception
 {
 public:
     invalid_operand_exception()
-        : std::runtime_error("Invalid operand exception!")
+        : exception("Invalid operand exception!")
     { }
 };
 

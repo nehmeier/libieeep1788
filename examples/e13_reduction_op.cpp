@@ -27,7 +27,7 @@
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
 //
-//                      A simple interval "hello world"
+//                     Details about reduction operations
 //
 //-----------------------------------------------------------------------------
 //-----------------------------------------------------------------------------
@@ -39,22 +39,27 @@
 #include "p1788/p1788.hpp"
 
 
-// Template type alias to define a generic bare infsup interval with a setbased
-// infsup flavor based on mpfr supporting IEEE754 bound types.
-template<typename T>
-using I = p1788::infsup::interval<T, p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor>;
-
-int main (void)
+int main()
 {
-    // Instantiation of intervals
-    I<double> a(-1.0,5.0);
-    I<double> b(1.0,2.0);
+    double a[] = {1.2, 3.1, -17.3};
+    double b[] = {1.1, -0.3, 2.1};
 
-    // Assignment and arithmetic operations
-    I<double> c = a + b;
+    // 1) Reduction operations are implemented as (global) functions in namespace p1788::reduction
+    //    using initializer lists for the input
+    //    and a value of enum class  p1788::reduction::rnd_mode for the rounding mode
+    std::cout << p1788::reduction::sum( {1.2, 3.1, -17.3, 12.1}, p1788::reduction::rnd_mode::to_nearest ) << std::endl;
 
-    // Writing result onto the output stream
-    std::cout << c << std::endl;
+    // 2) Reduction operations are implemented for iterators (and of course pointers) as well
+    std::cout << p1788::reduction::sum_abs( std::begin(a), std::end(a), p1788::reduction::rnd_mode::downward ) << std::endl;
+    std::cout << p1788::reduction::sum_sqr( b, b + 3, p1788::reduction::rnd_mode::upward ) << std::endl;
+
+    // 3) The function dot uses two initializer lists
+    std::cout << p1788::reduction::dot( {1.2, 2.5, 4.5}, {0.2, 1.0, 0.5}, p1788::reduction::rnd_mode::to_zero ) << std::endl;
+
+    // 3.1) Or two iterators
+    //      Note that for the second iterator, like in the STL, only the start is specified and the user is responsible for the correct length
+    std::cout << p1788::reduction::dot( std::begin(a), std::end(a), std::begin(b), p1788::reduction::rnd_mode::to_nearest ) << std::endl;
 
     return 0;
 }
+

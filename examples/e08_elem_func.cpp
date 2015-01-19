@@ -23,6 +23,16 @@
 //   See the License for the specific language governing permissions and
 //   limitations under the License.
 
+
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+//
+//                       Details about elementary functions
+//
+//-----------------------------------------------------------------------------
+//-----------------------------------------------------------------------------
+
+
 #include <iostream>
 
 // libieeep1788 main header
@@ -62,7 +72,7 @@ int main()
     // 3) Mixed type functions are static only
     std::cout << I<float>::div( I<double>(1.0,2.0), I<float>(3.0f,4.0f) )  << std::endl;
 
-    // 3) The remaining functions
+    // 4) The remaining functions
     std::cout << pos( I<double>(1.0,2.0) )  << std::endl;
     std::cout << neg( I<double>(1.0,2.0) )  << std::endl;
     std::cout << recip( I<double>(1.0,2.0) )  << std::endl;
