@@ -6,6 +6,14 @@ interval arithmetic.
 
 Its main focus is the correctness and not the performance of the implementation.
 
+For details about the implementation see:
+
+    Marco Nehmeier
+    libieeep1788: A C++ Implementation of the IEEE interval standard P1788.
+    In Norbert Wiener in the 21st Century (21CW),
+    2014 IEEE Conference on, June 2014, pages 1-6.
+    DOI: 10.1109/NORBERT.2014.6893854
+
 
 
 Be aware that libieeep1788 is work in progress and it is assumed that it is not
