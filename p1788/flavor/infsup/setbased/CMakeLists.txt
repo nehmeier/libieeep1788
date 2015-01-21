@@ -30,14 +30,12 @@ set(P1788_HEADER_FILES
 	mpfr_bin_ieee754_flavor_bool_func_impl.hpp
 	mpfr_bin_ieee754_flavor_cancel_func_impl.hpp
 	mpfr_bin_ieee754_flavor_class_impl.hpp
-    mpfr_bin_ieee754_flavor_mul_rev_to_pair_func_impl.hpp
+        mpfr_bin_ieee754_flavor_mul_rev_to_pair_func_impl.hpp
 	mpfr_bin_ieee754_flavor_elem_func_impl.hpp
 	mpfr_bin_ieee754_flavor_io_impl.hpp
 	mpfr_bin_ieee754_flavor_num_func_impl.hpp
 	mpfr_bin_ieee754_flavor_rec_bool_func_impl.hpp
-	mpfr_bin_ieee754_flavor_rec_elem_func_impl.hpp
 	mpfr_bin_ieee754_flavor_rec_overlap_impl.hpp
-	mpfr_bin_ieee754_flavor_rec_slope_func_impl.hpp
 	mpfr_bin_ieee754_flavor_rev_func_impl.hpp
 	mpfr_bin_ieee754_flavor_set_op_impl.hpp
 	mpfr_bin_ieee754_flavor_setup_func_impl.hpp

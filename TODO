@@ -1,0 +1,8 @@
+TODO
+====
+
+* Doxygen inline documentation
+* Missing reverse-mode elementary functions pow_rev1, pow_rev2, atan2_rev1 and atan2_rev2
+* Interchange representations and encodings
+* Recommended forward-mode elementary functions
+* Recommended slope functions
