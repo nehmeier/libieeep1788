@@ -5,10 +5,10 @@
 #   interval arithmetic
 #
 #
-#   Copyright 2013
+#   Copyright 2013 - 2015
 #
 #   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
-#   Institute of Computer Science,
+#   Department of Computer Science,
 #   University of Wuerzburg, Germany
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -23,28 +23,47 @@
 #   See the License for the specific language governing permissions and
 #   limitations under the License.
 
-if(MPFR_FOUND)
+if(GMP_FOUND)
 
-    # relevant example files of this directory
-    set(P1788_EXAMPLE_FILES
-        basic.cpp
-        boolFunc.cpp
-        elementaryFunc.cpp
-       )
+    if(MPFR_FOUND)
 
-    # relative path of this directory
-    string(REGEX REPLACE "${PROJECT_SOURCE_DIR}/" "" P1788_RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
+        # relevant example files of this directory
+        set(P1788_EXAMPLE_FILES
+		e01_helloworld.cpp
+		e02_intervals.cpp
+		e03_io.cpp
+		e04_decorations.cpp
+		e05_bool_func.cpp
+		e06_num_func.cpp
+		e07_set_op.cpp
+		e08_elem_func.cpp
+		e09_cancel_func.cpp
+		e10_mul_rev_to_pair.cpp
+		e11_rev_functions.cpp
+		e12_overlap_func.cpp
+		e13_reduction_op.cpp
+		e14_exceptions.cpp
+		e15_bisection.cpp
+		e16_newton.cpp
+           )
 
-    # prefix for custom target
-    string(REGEX REPLACE "/" "_" P1788_EXAMPLE_TARGET_PREFIX ${P1788_RELATIVE_PATH})
+        # relative path of this directory
+        string(REGEX REPLACE "${PROJECT_SOURCE_DIR}/" "" P1788_RELATIVE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
-    # add executable and link with mpfr
-    foreach(P1788_EXAMPLE ${P1788_EXAMPLE_FILES})
-        string(REGEX REPLACE ".cpp" "" P1788_EXAMPLE_TARGET ${P1788_EXAMPLE})
-        add_executable("${P1788_EXAMPLE_TARGET_PREFIX}_${P1788_EXAMPLE_TARGET}" ${P1788_EXAMPLE})
-        target_link_libraries("${P1788_EXAMPLE_TARGET_PREFIX}_${P1788_EXAMPLE_TARGET}" ${MPFR_LIBRARIES})
-    endforeach()
+        # prefix for custom target
+        string(REGEX REPLACE "/" "_" P1788_EXAMPLE_TARGET_PREFIX ${P1788_RELATIVE_PATH})
 
-else(MPFR_FOUND)
-    message(WARNING "Unable to compile examples, requires MPFR!")
-endif(MPFR_FOUND)
+        # add executable and link with mpfr
+        foreach(P1788_EXAMPLE ${P1788_EXAMPLE_FILES})
+            string(REGEX REPLACE ".cpp" "" P1788_EXAMPLE_TARGET ${P1788_EXAMPLE})
+            add_executable("${P1788_EXAMPLE_TARGET_PREFIX}_${P1788_EXAMPLE_TARGET}" ${P1788_EXAMPLE})
+            target_link_libraries("${P1788_EXAMPLE_TARGET_PREFIX}_${P1788_EXAMPLE_TARGET}" ${MPFR_LIBRARIES} ${GMP_LIBRARIES})
+        endforeach()
+
+    else(MPFR_FOUND)
+        message(WARNING "Unable to compile examples, requires MPFR!")
+    endif(MPFR_FOUND)
+
+else(GMP_FOUND)
+    message(WARNING "Unable to compile tests, requires GMP!")
+endif(GMP_FOUND)

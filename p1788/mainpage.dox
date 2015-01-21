@@ -5,10 +5,10 @@
 //   interval arithmetic
 //
 //
-//   Copyright 2013
+//   Copyright 2013 - 2015
 //
 //   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
-//   Institute of Computer Science,
+//   Department of Computer Science,
 //   University of Wuerzburg, Germany
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -28,3 +28,27 @@
 /// Foo bar baz
 ///
 /// \see p1788::infsup::interval
+
+
+
+/// \page pageAccuracy Accuracy
+///
+/// \li <b>Tightest</b>
+/// \li <b>Accurat</b>
+/// \li <b>Valid</b> 
+///
+///
+/// \li <b>Round toward positive</b> foo
+///
+/// \li <b>Round toward negative</b> bar
+///
+/// \li <b>Round to nearest</b>  baz
+
+
+
+/// \page pageFlavor Flavor requrements
+///
+/// \li <c>typedef representation</c>
+/// \li <c>typedef representation_dec</c>
+
+

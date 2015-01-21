@@ -1,4 +1,120 @@
 libieeep1788
 ============
 
-An implementation of the preliminary IEEE P1788 standard for interval arithmetic
+libieeep1788 is a C++ implementation of the preliminary IEEE P1788 standard for
+interval arithmetic.
+
+Its main focus is the correctness and not the performance of the implementation.
+
+
+
+Be aware that libieeep1788 is work in progress and it is assumed that it is not
+bug free ...
+
+In case of bugs please use the GitHub issue tracker
+
+    https://github.com/nehmeier/libieeep1788/issues
+
+to report bugs.
+
+
+
+Requirements
+===================
+
+At the moment the library is runnable/tested on Linux systems with the following
+requirements:
+
+    GCC C++  >= 4.9.2 (C++11 support)
+    CMake    >= 2.8
+    Boost    >= 1.5.4 (unit_test_framework)
+    MPFR     >= 3.1.2
+    GMP      >= 6.0.0
+
+
+Installation
+============
+
+libieeep1788 is a header only C++ library but it uses the cross-platform build
+system CMake for examples, unit testing and installation.
+
+
+1)  You have to download the sources from 
+
+        https://github.com/nehmeier/libieeep1788
+
+    by using the provided ZIP file or by cloning the git repository.
+
+
+2)  It is recommended to use a separate build directory. Assuming that you are
+    in the root directory of the downloaded source files then perform the 
+    following steps:
+
+        mkdir build
+        cd build
+
+
+3)  Now basically you have to perform
+
+        cmake ..
+
+    to create the preferred UNIX make files. In this case CMake tries to find 
+    the required compiler and libraries by it own.
+
+    But sometimes it could be necessary export the path to the C++ compiler
+
+        export CXX=path_to_cpp_compiler
+
+    and/or to the required libraries
+
+        export CMAKE_PREFIX_PATH=path_to_lib1:path_to_lib2 
+
+    before the call of
+
+        cmake ..
+
+    to fulfill the requirements.
+
+
+4)  Now it is time to build the unit tests and the examples
+
+        make
+
+    and perform the unit tests
+
+        make test
+
+
+5)  After a successful test of the library on your computer you can install the 
+    header by
+
+        make install
+
+    which will install the library to the directory specified by the property 
+    DCMAKE_INSTALL_PREFIX which defaults to /usr/local on UNIX systems.
+
+    If you want to install the library onto an other location you can specify 
+    DCMAKE_INSTALL_PREFIX during step 3) by performing
+
+        cmake .. -DCMAKE_INSTALL_PREFIX=path_to_install_dir
+
+    instead of
+
+        cmake ..
+
+
+
+Using libieeep1788
+==================
+
+There are some examples in folder examples/ demonstrating the usage of the 
+library. 
+
+If you want to compile your own program against libieeep1788 it is necessary 
+that you have C++11 support turned on and you link against mpfr and gmp:
+
+    g++ --std=c++11 prog.cpp -lmpfr -lgmp
+
+And of course if libieeep1788, mpfr or gmp are not on the default search path 
+you have to specify it by using option -I.
+

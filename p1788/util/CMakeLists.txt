@@ -5,10 +5,10 @@
 #   interval arithmetic
 #
 #
-#   Copyright 2013
+#   Copyright 2013 - 2015
 #
 #   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
-#   Institute of Computer Science,
+#   Department of Computer Science,
 #   University of Wuerzburg, Germany
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,9 +26,11 @@
 
 # relevant header files of this directory
 set(P1788_HEADER_FILES
-    assert.hpp
+    io.hpp
     mixed_type_traits.hpp
-    variadic_templates.hpp
+    mpfr_var.hpp
+    mpfr_var_impl.hpp
+    mpfr_util.hpp
    )
 
 # relative path of this directory

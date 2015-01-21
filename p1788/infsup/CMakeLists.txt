@@ -5,10 +5,10 @@
 #   interval arithmetic
 #
 #
-#   Copyright 2013
+#   Copyright 2013 - 2015
 #
 #   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
-#   Institute of Computer Science,
+#   Department of Computer Science,
 #   University of Wuerzburg, Germany
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,33 +26,20 @@
 
 # relevant header files of this directory
 set(P1788_HEADER_FILES
-    interval_bool_func_impl.hpp
-    interval_cancel_func_impl.hpp
-    interval_div_pair_func_impl.hpp
-    interval_elem_func_impl.hpp
+    forward_declaration.hpp
+    base_interval.hpp
+    base_interval_bool_func_impl.hpp
+    base_interval_cancel_func_impl.hpp
+    base_interval_mul_rev_to_pair_func_impl.hpp
+    base_interval_elem_func_impl.hpp
+    base_interval_io_impl.hpp
+    base_interval_num_func_impl.hpp
+    base_interval_rec_bool_func_impl.hpp
+    base_interval_rec_overlap_impl.hpp
+    base_interval_rev_func_impl.hpp
+    base_interval_set_op_impl.hpp
     interval.hpp
-    interval_io_impl.hpp
-    interval_num_func_impl.hpp
-    interval_rec_bool_func_impl.hpp
-    interval_rec_elem_func_impl.hpp
-    interval_rec_overlap_impl.hpp
-    interval_rec_slope_func_impl.hpp
-    interval_rev_elem_func_impl.hpp
-    interval_set_op_impl.hpp
-    compressed_interval.hpp
     decorated_interval.hpp
-    decorated_interval_bool_func_impl.hpp
-    decorated_interval_cancel_func_impl.hpp
-    decorated_interval_div_pair_func_impl.hpp
-    decorated_interval_elem_func_impl.hpp
-    decorated_interval_io_impl.hpp
-    decorated_interval_num_func_impl.hpp
-    decorated_interval_rec_bool_func_impl.hpp
-    decorated_interval_rec_elem_func_impl.hpp
-    decorated_interval_rec_overlap_impl.hpp
-    decorated_interval_rec_slope_func_impl.hpp
-    decorated_interval_rev_elem_func_impl.hpp
-    decorated_interval_set_op_impl.hpp
    )
 
 # relative path of this directory
@@ -66,5 +53,4 @@ add_custom_target("header${P1788_HEADERS_TARGET_SUFFIX}" SOURCES ${P1788_HEADER_
 
 # install header files
 install(FILES ${P1788_HEADER_FILES} DESTINATION "include${P1788_RELATIVE_PATH}")
-
 

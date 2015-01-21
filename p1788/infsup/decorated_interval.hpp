@@ -5,10 +5,10 @@
 //   interval arithmetic
 //
 //
-//   Copyright 2013
+//   Copyright 2013 - 2015
 //
 //   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
-//   Institute of Computer Science,
+//   Department of Computer Science,
 //   University of Wuerzburg, Germany
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -26,23 +26,16 @@
 #ifndef LIBIEEEP1788_P1788_INFSUP_DECORATED_INTERVAL_HPP
 #define LIBIEEEP1788_P1788_INFSUP_DECORATED_INTERVAL_HPP
 
+#include "p1788/infsup/forward_declaration.hpp"
+#include "p1788/infsup/base_interval.hpp"
+#include "p1788/decoration/decoration.hpp"
 
-#include <initializer_list>
-#include <utility>
-#include <string>
-#include <istream>
-#include <ostream>
-#include <vector>
-#include <algorithm>
 
-#include "p1788/overlapping/overlapping.hpp"
-#include "p1788/util/mixed_type_traits.hpp"
-#include "p1788/util/variadic_templates.hpp"
 
 
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
-//                        Forward declaration
+//                       Definition of class decorated_interval
 //------------------------------------------------------------------------------
 //------------------------------------------------------------------------------
 
@@ -54,805 +47,418 @@ namespace infsup
 {
 
 
-//TODO hull, see P1788/D7.0 Sect. 9.3
-
-
-// Forward declaration
-template<typename T, template<typename> class Flavor> class decorated_interval;
-
-
-
-} // namespace infsup
-
-
-} // namespace p1788
-
-
-
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//                        Traits and meta TMP functions
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-
-namespace p1788
-{
-
-namespace util
-{
-
-//------------------------------------------------------------------------------
-// Trait is_infsup_interval
-//------------------------------------------------------------------------------
-
-// Ignore the warning about non-virtual destructors
-// on GCC  push the last diagnostic state and disable -Weffc++
-//TODO support other compiler
-#pragma GCC diagnostic push
-#pragma GCC diagnostic ignored "-Weffc++"
-
-
-/// \brief Trait to check if type T is an p1788::infsup::decorated_interval
+/// \brief Decorated interval class
 ///
-/// \param T type
-/// \return field value contains boolean result of the check
+/// Front end of an inf-sup decorated interval.
+/// All the behavior of the decorated interval type is specified by the
+/// template policy class <c>Flavor</c>.
 ///
-///
-template<typename T>
-class is_infsup_decorated_interval
-    : public std::integral_constant<bool, false>
-{ };
-
-template<typename T, template<typename> class Flavor>
-class is_infsup_decorated_interval<p1788::infsup::decorated_interval<T,Flavor>>
-            : public std::integral_constant<bool, true>
-{ };
-
-// on GCC  enable the diagnostic state -Weffc++ again
-#pragma GCC diagnostic pop
-
-
-////------------------------------------------------------------------------------
-//// Trait infsup_max_precision_type
-////------------------------------------------------------------------------------
-//
-//template<typename... Types> class infsup_max_precision_type
-//{
-//    static_assert(sizeof...(Types) > 0,
-//                  "infsup_max_precision_type for an empty argument list!");
-//};
-//
-//template<typename First, typename Second, typename... Tail>
-//class infsup_max_precision_type<First, Second, Tail...>
-//{
-//public:
-//    static_assert(is_infsup_interval<First>::value, "Type is not supported!");
-//    static_assert(is_infsup_interval<Second>::value, "Type is not supported!");
-//
-//    static_assert(
-//        std::is_same<
-//        typename type_precision_order<typename First::bound_type>::value_type,
-//        typename type_precision_order<typename Second::bound_type>::value_type
-//        >::value,
-//        "Different type groups!");
-//
-//    typedef typename infsup_max_precision_type<
-//    typename std::conditional<
-//    (type_precision_order<typename First::bound_type>::value >
-//     type_precision_order<typename Second::bound_type>::value),
-//                          First,
-//                          Second
-//                          >::type,
-//                          Tail...
-//                          >::type type;
-//};
-//
-//template<typename Type>
-//class infsup_max_precision_type<Type>
-//{
-//public:
-//    typedef Type type;
-//};
-//
-
-
-} // namespace util
-
-} // namespace p1788
-
-
-
-
-
-
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-//                       Definition of class interval
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
-
-
-
-namespace p1788
-{
-
-namespace infsup
-{
-
-
-
-/// \brief Level 2 (bare) infsup interval
-///
-///
-/// Class representing a level 2 (bare) infsup interval, see P1788/D7.0 Sect. 4.1.
-///
-/// This class only serves as a uniform interface/representation of an (bare)
-/// interval. All the behavior will be specified by the template policy class
-/// Flavor<T> which implements the flavors concept of the standard in coherent way,
-/// see P1788/D7.0 Sect. 5.
-///
-/// \param T                  Number system / parent format
-/// \param Flavor<typename>   Generic flavor which will be instantiated with the
-///                           number system T
+/// \tparam T type used for the interval bounds
+/// \tparam Flavor template policy class specifying the behavior
 ///
 template<typename T, template<typename> class Flavor>
-class decorated_interval //TODO final
+class decorated_interval final
+    : public base_interval<T, Flavor, typename Flavor<T>::representation_dec, decorated_interval<T, Flavor>>
 {
+private:
 
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// public
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
+    // base interval type
+    typedef base_interval<T, Flavor, typename Flavor<T>::representation_dec, decorated_interval<T, Flavor>> base_interval_type;
 
 
 public:
 
-    typedef T bound_type;
-
-    // TODO type alias ?
-    //template<typename TT> using flavor_type = Flavor<TT>;
-    typedef Flavor<T> flavor_type;
-
 
 // -----------------------------------------------------------------------------
 // Constructors
 // -----------------------------------------------------------------------------
 
-// TODO Constructor specification
+///@name Constructors
+///
+///
+///@{
 
+    /// \brief Creates an empty decorated interval
+    ///
+    /// \return \f$\emptyset\f$<sub>\link p1788::decoration::decoration trv\endlink</sub>
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec()</c>
+    /// which creates the representation for an empty decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec() \endlink
+    ///
+    inline
     decorated_interval()
-        : rep_(Flavor<T>::constructor_infsup_dec())
+        : base_interval_type(Flavor<T>::constructor_dec())
     { }
 
+
+    /// \brief Creates a decorated interval with a lower and an upper bound
+    ///
+    /// \param lower lower bound
+    /// \param upper upper bound
+    ///
+    /// \return \li \f$[lower,upper]\f$<sub>\link p1788::decoration::decoration com\endlink</sub> if \p \f$ lower \leq upper \wedge lower \not= \pm\infty \wedge upper \not= \pm\infty \f$
+    ///         \li \f$[lower,upper]\f$<sub>\link p1788::decoration::decoration dac\endlink</sub> if \p \f$ lower \leq upper \wedge (lower = -\infty \vee upper = +\infty) \f$
+    ///         \li NaI otherwise
+    ///
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(T lower, T upper)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(T lower , T upper) \endlink
+    ///
+    inline
     decorated_interval(T lower, T upper)
-        : rep_(Flavor<T>::constructor_infsup_dec(lower, upper))
+        : base_interval_type(Flavor<T>::constructor_dec(lower, upper))
     { }
 
-    explicit decorated_interval(T point)
-        : rep_(Flavor<T>::constructor_infsup_dec(point))
-    { }
-
-    explicit decorated_interval(std::initializer_list<T> points)
-        : rep_(Flavor<T>::constructor_infsup_dec(points.begin(), points.end()))
-    { }
-
-    explicit decorated_interval(std::string const& str)
-        : rep_(Flavor<T>::constructor_infsup_dec(str))
-    { }
-
-    decorated_interval(decorated_interval<T, Flavor> const& other)  ///< Copy-constructor
-        : rep_(Flavor<T>::constructor_infsup_dec(other.rep_))
-    { }
-
-    template<typename TT>
-    explicit decorated_interval(decorated_interval<TT, Flavor> const& other)  ///< Copy-constructor
-        : rep_(Flavor<T>::constructor_infsup_dec(other.rep_))
-    { }
-
-
-
-// TODO public representation,
-
-
-
-
-// -----------------------------------------------------------------------------
-// Methods
-// -----------------------------------------------------------------------------
-
-
-    /// \brief Foo Bar baz
-    /// Implementation specific
-    /// \return T
+    /// \brief (Mixed type version) Creates a decorated interval with a lower and an upper bound
+    ///
+    /// \param lower lower bound
+    /// \param upper upper bound
+    ///
+    /// \return \li \f$[lower,upper]\f$<sub>\link p1788::decoration::decoration com\endlink</sub> if \p \f$ lower \leq upper \wedge lower \not= \pm\infty \wedge upper \not= \pm\infty \f$
+    ///         \li \f$[lower,upper]\f$<sub>\link p1788::decoration::decoration dac\endlink</sub> if \p \f$ lower \leq upper \wedge (lower = -\infty \vee upper = +\infty) \f$
+    ///         \li NaI otherwise
     ///
     ///
-    T lower() const {
-        return Flavor<T>::method_lower_dec(rep_);
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(L lower, U upper)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(L_ lower , U_ upper) \endlink
+    ///
+    template<typename L, typename U>
+    inline
+    decorated_interval(L lower, U upper)
+        : base_interval_type(Flavor<T>::constructor_dec(lower, upper))
+    { }
+
+
+    /// \brief Creates a decorated interval with a lower and an upper bound and a specified decoration
+    ///
+    /// \param lower lower bound
+    /// \param upper upper bound
+    /// \param dec Decoration
+    ///
+    /// \return \li Decorated interval combined out of \p other, \p upper and \p dec if the combination is valid
+    ///         \li NaI otherwise
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(T lower, T upper, p1788::decoration::decoration dec)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(T lower, T upper, p1788::decoration::decoration dec) \endlink
+    ///
+    inline
+    decorated_interval(T lower, T upper, p1788::decoration::decoration dec)
+        : base_interval_type(Flavor<T>::constructor_dec(lower, upper, dec))
+    { }
+
+    /// \brief (Mixed type version) Creates a decorated interval with a lower and an upper bound and a specified decoration
+    ///
+    /// \param lower lower bound
+    /// \param upper upper bound
+    /// \param dec Decoration
+    ///
+    /// \return \li Decorated interval combined out of \p other, \p upper and \p dec if the combination is valid
+    ///         \li NaI otherwise
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(L lower, U upper, p1788::decoration::decoration dec)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(L_ lower, U_ upper, p1788::decoration::decoration dec) \endlink
+    ///
+    template<typename L, typename U>
+    inline
+    decorated_interval(L lower, U upper, p1788::decoration::decoration dec)
+        : base_interval_type(Flavor<T>::constructor_dec(lower, upper, dec))
+    { }
+
+
+    /// \brief Creates a decorated interval out of an interval literal
+    ///
+    /// \param str interval literal
+    ///
+    /// \return \li decorated interval enclosing the provided interval literal if it is a valid inf-sup form or uncertain form literal
+    ///         \li NaI otherwise
+    ///
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(std::string const& str)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(std::string const& str) \endlink
+    ///
+    inline explicit
+    decorated_interval(std::string const& str)
+        : base_interval_type(Flavor<T>::constructor_dec(str))
+    { }
+
+    /// \brief Copy constructor
+    ///
+    /// \param other Decorated interval to be copied
+    ///
+    /// \return Copy of \p other
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation_dec const& other)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_dec const& other) \endlink
+    ///
+    inline
+    decorated_interval(decorated_interval<T, Flavor> const& other)
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
+    { }
+
+    /// \brief Convert constructor
+    ///
+    /// \param other Decorated interval to be converted
+    ///
+    /// \return Hull of \p other
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation_dec_type<T_> const& other)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_dec_type<T_> const& other) \endlink
+    ///
+    template<typename T_>
+    inline explicit
+    decorated_interval(decorated_interval<T_, Flavor> const& other)
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
+    { }
+
+    /// \brief Decorated interval out of a bare interval constructor
+    ///
+    /// \param other Bare interval to be converted
+    ///
+    /// \return \li \p other <sub> \link p1788::decoration::decoration com \endlink </sub> if \p other is finite
+    ///         \li \p other <sub> \link p1788::decoration::decoration dac \endlink </sub> if \p other is infinite
+    ///         \li \p other <sub> \link p1788::decoration::decoration trv \endlink </sub> if \p other is empty
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation const& other)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other) \endlink
+    ///
+    inline
+    decorated_interval(interval<T, Flavor> const& other)
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
+    { }
+
+    /// \brief Decorated interval out of a converted bare interval constructor
+    ///
+    /// \param other Bare interval to be converted
+    ///
+    /// \return Hull of
+    ///         \li \p other <sub> \link p1788::decoration::decoration com \endlink </sub> if hull of \p other is finite
+    ///         \li \p other <sub> \link p1788::decoration::decoration dac \endlink </sub> if hull \p other is infinite
+    ///         \li \p other <sub> \link p1788::decoration::decoration trv \endlink </sub> if hull \p other is empty
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation_type<T_> const& other)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_type<T_> const& other) \endlink
+    ///
+    template<typename T_>
+    inline explicit
+    decorated_interval(interval<T_, Flavor> const& other)
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
+    { }
+
+    /// \brief Decorated interval out of a bare interval and a decoration constructor
+    ///
+    /// \param other Bare interval to be converted
+    /// \param dec Decoration
+    ///
+    /// \return \li Decorated interval combined out of \p other and \p dec if the combination is valid
+    ///         \li NaI otherwise
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation const& other, p1788::decoration::decoration dec)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other, p1788::decoration::decoration dec) \endlink
+    ///
+    inline
+    decorated_interval(interval<T, Flavor> const& other, p1788::decoration::decoration dec)
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_, dec))
+    { }
+
+    /// \brief Decorated interval out of a converted bare interval and a decoration constructor
+    ///
+    /// \param other Bare interval to be converted
+    /// \param dec Decoration
+    ///
+    /// \return \li Decorated interval combined out of hull of \p other and \p dec if the combination is valid
+    ///         \li NaI otherwise
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation_type<T_> const& other, p1788::decoration::decoration dec)</c>
+    /// which creates the representation for a decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_type<T_> const& other, p1788::decoration::decoration dec) \endlink
+    ///
+    template<typename T_>
+    inline explicit
+    decorated_interval(interval<T_, Flavor> const& other, p1788::decoration::decoration dec)
+        : base_interval_type(Flavor<T>::constructor_dec(other.rep_, dec))
+    { }
+
+///@}
+
+// -----------------------------------------------------------------------------
+// Interval constants
+// -----------------------------------------------------------------------------
+
+///@name Interval constants
+///
+///
+///@{
+
+    /// \brief Returns an empty decorated interval
+    ///
+    /// \return \f$\emptyset\f$<sub>\link p1788::decoration::decoration trv\endlink</sub>
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::empty_dec()</c>
+    /// which creates the representation for an empty decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::empty_dec() \endlink
+    ///
+    inline
+    static decorated_interval empty()
+    {
+        return decorated_interval(Flavor<T>::empty_dec());
     }
 
-// Implementation specific
-    T upper() const {
-        return Flavor<T>::method_upper_dec(rep_);
+    /// \brief Returns an entire decorated interval
+    ///
+    /// \return \f$[-\infty,+\infty]\f$<sub>\link p1788::decoration::decoration dac\endlink</sub>
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::entire_dec()</c>
+    /// which creates the representation for an entire decorated interval.
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::entire_dec() \endlink
+    ///
+    inline
+    static decorated_interval entire()
+    {
+        return decorated_interval(Flavor<T>::entire_dec());
     }
 
-// Implementation specific
-    T mid() const {
-        return Flavor<T>::method_mid_dec(rep_);
+    /// \brief Returns an ill-formed decorated interval (Not an Interval)
+    ///
+    /// \return  NaI (= \f$\emptyset\f$<sub>\link p1788::decoration::decoration ill\endlink</sub>)
+    ///
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::nai()</c>
+    /// which creates the representation for an ill-formed decorated interval (NaI).
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::nai() \endlink
+    ///
+    inline
+    static decorated_interval nai()
+    {
+        return decorated_interval(Flavor<T>::nai());
     }
 
-// Implementation specific
-    T rad() const {
-        return Flavor<T>::method_rad_dec(rep_);
-    }
+///@}
+
 
 
 // -----------------------------------------------------------------------------
-// Static methods
+// Decorated interval specific methods
 // -----------------------------------------------------------------------------
 
-// Required, Creates an empty interval, see P1788/D8.1 Sect. 10.6.2
+///@name Decorated interval specific functions
+///
+///
+///@{
 
-    static decorated_interval<T, Flavor> empty() {
-        return decorated_interval<T, Flavor>(Flavor<T>::static_method_empty_dec());
+    /// \brief Checks if the interval is NaI
+    ///
+    /// The computation is delegated to the static function
+    /// <c>Flavor<T>::is_nai(representation_dec const& x)</c>
+    /// of the policy class <c>Flavor<T></c> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param x decorated interval
+    ///
+    /// \retval true    \p x is NaI
+    /// \retval false   otherwise
+    ///
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) \endlink</c>
+    ///
+    inline
+    static bool is_nai(decorated_interval<T,Flavor> const& x)
+    {
+        return Flavor<T>::is_nai(x.rep_);
     }
 
-// Required, Creates an entire interval, see P1788/D8.1 Sect. 10.6.2
-    static decorated_interval<T, Flavor> entire() {
-        return decorated_interval<T, Flavor>(Flavor<T>::static_method_entire_dec());
+
+    /// \brief Returns the decoration of an decorated interval
+    ///
+    /// The computation is delegated to the static function
+    /// <c>Flavor<T>::decoration(representation_dec const& x)</c>
+    /// of the policy class <c>Flavor<T></c> by passing only the internal
+    /// representation of the interval.
+    ///
+    /// \param x decorated interval
+    ///
+    /// \return decoration of \p x
+    ///
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) \endlink</c>
+    ///
+    inline
+    static p1788::decoration::decoration decoration(decorated_interval<T,Flavor> const& x)
+    {
+        return Flavor<T>::decoration(x.rep_);
     }
 
-
-
-
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
-// private
-// -----------------------------------------------------------------------------
-// -----------------------------------------------------------------------------
+///@}
 
 private:
 
+    // private constructor which is used by the base_interval to create concrete decorated intervals
+    inline explicit
+    decorated_interval(typename Flavor<T>::representation_dec rep)
+        : base_interval_type(rep)
+    {}
 
-// -----------------------------------------------------------------------------
-// Constructors
-// -----------------------------------------------------------------------------
-
-    decorated_interval(typename Flavor<T>::representation_dec const& rep)
-        : rep_(rep)
-    { }
-
-
-// -----------------------------------------------------------------------------
-// Members
-// -----------------------------------------------------------------------------
-
-    typename Flavor<T>::representation_dec rep_;
-
-
-
-
-
-
-
-
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-// Friends
-//------------------------------------------------------------------------------
-//------------------------------------------------------------------------------
-
+    friend class base_interval<T, Flavor, typename Flavor<T>::representation_dec, decorated_interval<T, Flavor>>;
 
     template<typename, template<typename> class>
-    friend class decorated_interval;
+    friend class interval;
+
+
+}; // class decorated_interval
+
+
+
+
+///@name Decorated interval specific functions
+///
+///
+///@{
+
+
+/// \brief Checks if the interval is NaI
+///
+/// The computation is delegated to the static function
+/// \link decorated_interval<T,Flavor>::is_nai(decorated_interval<T, Flavor> const& x) \endlink.
+///
+/// \param x decorated interval
+///
+/// \retval true    \p x is NaI
+/// \retval false   otherwise
+template<typename T, template<typename> class Flavor>
+inline
+bool is_nai(decorated_interval<T, Flavor> const& x)
+{
+    return decorated_interval<T, Flavor>::is_nai(x);
+}
+
+/// \brief Returns the decoration of an decorated interval
+///
+/// The computation is delegated to the static function
+/// \link decorated_interval<T,Flavor>::decoration(decorated_interval<T, Flavor> const& x) \endlink.
+///
+/// \param x decorated interval
+///
+/// \return decoration of \p x
+template<typename T, template<typename> class Flavor>
+inline
+p1788::decoration::decoration decoration(decorated_interval<T, Flavor> const& x)
+{
+    return decorated_interval<T, Flavor>::decoration(x);
+}
+
+///@}
 
-
-
-// -----------------------------------------------------------------------------
-// IO operators
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_, typename CharT, typename Traits>
-    friend std::basic_ostream<CharT, Traits>& operator<<(std::basic_ostream<CharT, Traits>&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_, typename CharT, typename Traits>
-    friend std::basic_istream<CharT, Traits>& operator>>(std::basic_istream<CharT, Traits>&, decorated_interval<T_, Flavor_>&);
-
-
-// -----------------------------------------------------------------------------
-// Non-arithmetic set operations
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> intersect(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> hull(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-
-// -----------------------------------------------------------------------------
-// Numeric functions on intervals
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    friend T_ inf(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend T_ sup(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend T_ mid(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend T_ rad(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend std::pair<T_, T_> mid_rad(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend T_ wid(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend T_ mag(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend T_ mig(decorated_interval<T_, Flavor_> const&);
-
-
-// -----------------------------------------------------------------------------
-// Boolean functions on intervals
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool is_empty(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool is_entire(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool is_equal(decorated_interval<T_, Flavor_> const&, interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool contained_in(decorated_interval<T_, Flavor_> const&, interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool contains(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool less(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool greater(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool precedes(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool succeeds(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool is_interior(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool contains_interior(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool strictly_less(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool strictly_greater(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool strictly_precedes(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool strictly_succeeds(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend bool are_disjoint(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-
-// -----------------------------------------------------------------------------
-// Forward elementary functions
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> pos(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> neg(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> add (decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> sub(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> mul(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> div(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> recip(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> sqr(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> sqrt(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> fma(decorated_interval<T_, Flavor_> const&,
-                                   decorated_interval<T_, Flavor_> const&,
-                                   decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> interval_case(decorated_interval<T_, Flavor_> const&,
-                                   decorated_interval<T_, Flavor_> const&,
-                                   decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> pown(decorated_interval<T_, Flavor_> const&, int p);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> pow(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> exp(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> exp2(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> exp10(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> log(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> log2(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> log10(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> sin(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> cos(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> tan(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> asin(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> acos(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> atan(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> atan2(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> sinh(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> cosh(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> tanh(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> asinh(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> acosh(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> atanh(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> sign(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> ceil(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> floor(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> trunc(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> round_ties_to_even(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> round_ties_to_away(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> abs(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> min(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    friend decorated_interval<T_, Flavor_> max(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-
-// -----------------------------------------------------------------------------
-//  Recommended div to pair function
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    friend std::pair<decorated_interval<T_, Flavor_>, decorated_interval<T_, Flavor_>>
-    div_to_pair(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-
-
-
-// -----------------------------------------------------------------------------
-// Reverse elementary functions
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> sqr_rev(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> sqr_rev(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> recip_rev(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> recip_rev(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> abs_rev(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> abs_rev(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> pown_rev(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&, int);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> pown_rev(decorated_interval<T_, Flavor_> const&, int);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> sin_rev(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> sin_rev(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> cos_rev(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> cos_rev(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> tan_rev(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> tan_rev(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> cosh_rev(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> cosh_rev(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> mul_rev(decorated_interval<T_, Flavor_> const&,
-                                       decorated_interval<T_, Flavor_> const&,
-                                       decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> mul_rev(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> div_rev1(decorated_interval<T_, Flavor_> const&,
-                                        decorated_interval<T_, Flavor_> const&,
-                                        decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> div_rev1(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> div_rev2(decorated_interval<T_, Flavor_> const&,
-                                        decorated_interval<T_, Flavor_> const&,
-                                        decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> div_rev2(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> pow_rev1(decorated_interval<T_, Flavor_> const&,
-                                        decorated_interval<T_, Flavor_> const&,
-                                        decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> pow_rev1(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> pow_rev2(decorated_interval<T_, Flavor_> const&,
-                                        decorated_interval<T_, Flavor_> const&,
-                                        decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> pow_rev2(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> atan2_rev1(decorated_interval<T_, Flavor_> const&,
-                                          decorated_interval<T_, Flavor_> const&,
-                                          decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> atan2_rev1(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> atan2_rev2(decorated_interval<T_, Flavor_> const&,
-                                          decorated_interval<T_, Flavor_> const&,
-                                          decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> atan2_rev2(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-
-// -----------------------------------------------------------------------------
-// Cancellative addition and subtraction
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> cancel_plus(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> cancel_minus(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-
-// -----------------------------------------------------------------------------
-// Recommended boolean functions on intervals
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    bool is_common(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    bool is_singleton(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    bool is_member(T_ m, decorated_interval<T_, Flavor_> const&);
-
-
-// -----------------------------------------------------------------------------
-// Recommended forward elementary functions on intervals
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> rootn(decorated_interval<T_, Flavor_> const&, int);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> expm1(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> exp2m1(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> exp10m1(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> logp1(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> log2p1(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> log10p1(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> compoundm1(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> hypot(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> r_sqrt(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> sin_pi(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> cos_pi(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> tan_pi(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> asin_pi(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> acos_pi(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> atan_pi(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> atan2_pi(decorated_interval<T_, Flavor_> const&, decorated_interval<T_, Flavor_> const&);
-
-
-// -----------------------------------------------------------------------------
-// Recommended interval overlapping
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    p1788::overlapping::overlapping_state overlap(decorated_interval<T_, Flavor_> const&,
-            decorated_interval<T_, Flavor_> const&);
-
-
-// -----------------------------------------------------------------------------
-// Recommended slope functions
-// -----------------------------------------------------------------------------
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> exp_slope1(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> exp_slope2(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> log_slope1(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> log_slope2(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> cos_slope2(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> sin_slope3(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> asin_slope3(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> atan_slope3(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> cosh_slope2(decorated_interval<T_, Flavor_> const&);
-
-    template<typename T_, template<typename> class Flavor_>
-    decorated_interval<T_, Flavor_> sinh_slope3(decorated_interval<T_, Flavor_> const&);
-
-
-
-};
 
 } // namespace infsup
 
 } // namespace p1788
-
-
-#include "p1788/infsup/decorated_interval_io_impl.hpp"
-#include "p1788/infsup/decorated_interval_set_op_impl.hpp"
-#include "p1788/infsup/decorated_interval_num_func_impl.hpp"
-#include "p1788/infsup/decorated_interval_bool_func_impl.hpp"
-#include "p1788/infsup/decorated_interval_elem_func_impl.hpp"
-#include "p1788/infsup/decorated_interval_div_pair_func_impl.hpp"
-#include "p1788/infsup/decorated_interval_rev_elem_func_impl.hpp"
-#include "p1788/infsup/decorated_interval_cancel_func_impl.hpp"
-#include "p1788/infsup/decorated_interval_rec_elem_func_impl.hpp"
-#include "p1788/infsup/decorated_interval_rec_overlap_impl.hpp"
-#include "p1788/infsup/decorated_interval_rec_bool_func_impl.hpp"
-#include "p1788/infsup/decorated_interval_rec_slope_func_impl.hpp"
 
 
 #endif // LIBIEEEP1788_P1788_INFSUP_DECORATED_INTERVAL_HPP

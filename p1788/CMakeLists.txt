@@ -5,10 +5,10 @@
 #   interval arithmetic
 #
 #
-#   Copyright 2013
+#   Copyright 2013 - 2015
 #
 #   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
-#   Institute of Computer Science,
+#   Department of Computer Science,
 #   University of Wuerzburg, Germany
 #
 #   Licensed under the Apache License, Version 2.0 (the "License");
@@ -44,7 +44,10 @@ install(FILES ${P1788_HEADER_FILES} DESTINATION "include${P1788_RELATIVE_PATH}")
 
 # include headers of subdirectories
 add_subdirectory(decoration)
+add_subdirectory(exception)
 add_subdirectory(flavor)
 add_subdirectory(infsup)
+add_subdirectory(io)
 add_subdirectory(overlapping)
 add_subdirectory(util)
+add_subdirectory(reduction)

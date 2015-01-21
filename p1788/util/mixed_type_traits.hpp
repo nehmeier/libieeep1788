@@ -2,10 +2,10 @@
 //   interval arithmetic
 //
 //
-//   Copyright 2013
+//   Copyright 2013 - 2015
 //
 //   Marco Nehmeier (nehmeier@informatik.uni-wuerzburg.de)
-//   Institute of Computer Science,
+//   Department of Computer Science,
 //   University of Wuerzburg, Germany
 //
 //   Licensed under the Apache License, Version 2.0 (the "License");
@@ -25,7 +25,7 @@
 
 #include <type_traits>
 
-#include "p1788/infsup/interval.hpp"
+#include "p1788/infsup/forward_declaration.hpp"
 
 namespace p1788
 {
@@ -33,22 +33,18 @@ namespace p1788
 namespace util
 {
 
-//------------------------------------------------------------------------------
-//  Traits type_precision_order and max_precision_type
-//------------------------------------------------------------------------------
 
 
-
-/// \brief Trait to determine the precision oder of the type T
-///
-/// The order should be realized by an enum class for each group of coherent
-/// types, e.g. IEEE 754 binary floating point {float, double, long double}.
-/// Hence, only types of the same group are comparable.
-///
-/// \param T type
-/// \return field value contains the order
-///
-///
+// \brief Trait to determine the precision oder of the type T
+//
+// The order should be realized by an enum class for each group of coherent
+// types, e.g. IEEE 754 binary floating point {float, double, long double}.
+// Hence, only types of the same group are comparable.
+//
+// \param T type
+// \return field value contains the order
+//
+//
 template<typename T>
 class type_precision_order
     : public std::integral_constant<int, 0>
@@ -58,10 +54,12 @@ class type_precision_order
 };
 
 
+
+
 template<typename... Types> class max_precision_type
 {
     static_assert(sizeof...(Types) > 0,
-                  "max_precision_type for an empty argument list!");
+                  "max_precision_interval_type for an empty argument list!");
 };
 
 
@@ -89,6 +87,7 @@ class max_precision_type<Type>
 public:
     typedef Type type;
 };
+
 
 
 
