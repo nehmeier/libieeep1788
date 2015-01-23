@@ -49,7 +49,7 @@ enum class rnd_mode
 };
 
 // convert rnd_mode to mpfr rndmode
-mpfr_rnd_t get_mpfr_rnd_mode(rnd_mode rnd)
+inline mpfr_rnd_t get_mpfr_rnd_mode(rnd_mode rnd)
 {
     switch (rnd)
     {
@@ -165,7 +165,7 @@ private:
 // sum
 template<class Iter>
 typename std::iterator_traits<Iter>::value_type
-sum(Iter begin, Iter end, rnd_mode rnd)
+inline sum(Iter begin, Iter end, rnd_mode rnd)
 {
     // Typedef for the corresponding mpfr wrapper class representing the IEEE 754 binary floating point format of the iterator value type
     typedef p1788::util::mpfr_var<
@@ -197,7 +197,7 @@ sum(Iter begin, Iter end, rnd_mode rnd)
 // sum
 template<typename T>
 T
-sum(std::initializer_list<T> l, rnd_mode rnd)
+inline sum(std::initializer_list<T> l, rnd_mode rnd)
 {
     return sum(std::begin(l), std::end(l), rnd);
 }
@@ -206,7 +206,7 @@ sum(std::initializer_list<T> l, rnd_mode rnd)
 // sum_abs
 template<class Iter>
 typename std::iterator_traits<Iter>::value_type
-sum_abs(Iter begin, Iter end, rnd_mode rnd)
+inline sum_abs(Iter begin, Iter end, rnd_mode rnd)
 {
     // Typedef for the corresponding mpfr wrapper class representing the IEEE 754 binary floating point format of the iterator value type
     typedef p1788::util::mpfr_var<
@@ -239,7 +239,7 @@ sum_abs(Iter begin, Iter end, rnd_mode rnd)
 // sum_abs
 template<typename T>
 T
-sum_abs(std::initializer_list<T> l, rnd_mode rnd)
+inline sum_abs(std::initializer_list<T> l, rnd_mode rnd)
 {
     return sum_abs(std::begin(l), std::end(l), rnd);
 }
@@ -248,7 +248,7 @@ sum_abs(std::initializer_list<T> l, rnd_mode rnd)
 // sum_sqr
 template<class Iter>
 typename std::iterator_traits<Iter>::value_type
-sum_sqr(Iter begin, Iter end, rnd_mode rnd)
+inline sum_sqr(Iter begin, Iter end, rnd_mode rnd)
 {
     // Typedef for the corresponding mpfr wrapper class representing the IEEE 754 binary floating point format of the iterator value type with twice the mantissa size
     typedef p1788::util::mpfr_var<
@@ -281,7 +281,7 @@ sum_sqr(Iter begin, Iter end, rnd_mode rnd)
 // sum_sqr
 template<typename T>
 T
-sum_sqr(std::initializer_list<T> l, rnd_mode rnd)
+inline sum_sqr(std::initializer_list<T> l, rnd_mode rnd)
 {
     return sum_sqr(std::begin(l), std::end(l), rnd);
 }
@@ -290,7 +290,7 @@ sum_sqr(std::initializer_list<T> l, rnd_mode rnd)
 // dot
 template<class Iter>
 typename std::iterator_traits<Iter>::value_type
-dot(Iter begin_a, Iter end_a, Iter begin_b, rnd_mode rnd)
+inline dot(Iter begin_a, Iter end_a, Iter begin_b, rnd_mode rnd)
 {
     // Typedef for the corresponding mpfr wrapper class representing the IEEE 754 binary floating point format of the iterator value type with twice the mantissa size
     typedef p1788::util::mpfr_var<
@@ -325,7 +325,7 @@ dot(Iter begin_a, Iter end_a, Iter begin_b, rnd_mode rnd)
 // dot
 template<typename T>
 T
-dot(std::initializer_list<T> a, std::initializer_list<T> b, rnd_mode rnd)
+inline dot(std::initializer_list<T> a, std::initializer_list<T> b, rnd_mode rnd)
 {
     return dot(std::begin(a), std::end(a), std::begin(b), rnd);
 }

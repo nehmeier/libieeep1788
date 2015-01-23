@@ -34,7 +34,7 @@ namespace util
 {
 
 template<typename T>
-std::pair<T,T> two_sum(T const& a, T const& b)
+inline std::pair<T,T> two_sum(T const& a, T const& b)
 {
     static_assert(std::numeric_limits<T>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
