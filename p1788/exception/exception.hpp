@@ -94,25 +94,34 @@ inline exception_bits& operator^= (exception_bits& x, exception_bits y)
 }
 
 
-// CWD specifying which exception type should be thrown
-exception_bits throw_exception_cwd_ = none_bit;
+/// \brief CWD specifying which exception type should be thrown.
+///
+/// \return The current cwd of the active thread.
+inline exception_bits& cwd()
+{
+    // Thread local cwd
+    static exception_bits exception_cwd_ = none_bit;
 
-/// \brief Set the control word specifying which exception type should be thrown.
+    return exception_cwd_;
+}
+
+
+/// \brief Set the control word of the active thread specifying which exception type should be thrown.
 ///
 /// \param new_state New control word
 /// \return New control word
 ///
 inline exception_bits set_throw_exception_cwd(exception_bits new_state)
 {
-    return (throw_exception_cwd_ = new_state);
+    return (cwd() = new_state);
 }
 
-/// \brief Control word specifying which exception type should be thrown.
+/// \brief Control word of the active thread specifying which exception type should be thrown.
 ///
 /// \return exception_bits Current control word
 inline exception_bits get_throw_exception_cwd()
 {
-    return throw_exception_cwd_;
+    return cwd();
 }
 
 /// \brief Exception class specifying an undefined operation
@@ -168,17 +177,14 @@ public:
 
 
 
-// Thread local exception state
-thread_local exception_bits exception_state_ = none_bit;
-
-
 /// \brief The current exception state.
 ///
 /// \return The current exception state of the active thread.
-/// \note Thread local storage is used for the exception state.
-/// See C++11 specification of <c>thread_local</c> for more details.
-inline exception_bits state()
+inline exception_bits& state()
 {
+    // Thread local exception state
+    static exception_bits exception_state_ = none_bit;
+
     return exception_state_;
 }
 
@@ -186,46 +192,41 @@ inline exception_bits state()
 ///
 /// \return The current exception state of the active thread (= <c>none_bit</c>).
 /// \note Thread local storage is used for the exception state.
-/// See C++11 specification of <c>thread_local</c> for more details.
 inline exception_bits clear()
 {
-    return exception_state_ = none_bit;
+    return state() = none_bit;
 }
 
 /// \brief Checks exception state for an undefined operation.
 /// \return true if the <c>undefined_operation_bit</c> is set.
 /// \note Thread local storage is used for the exception state.
-/// See C++11 specification of <c>thread_local</c> for more details.
 inline bool undefined_operation()
 {
-    return exception_state_ & undefined_operation_bit;
+    return state() & undefined_operation_bit;
 }
 
 /// \brief Checks exception state for a possibly undefined operation.
 /// \return true if the <c>possibly_undefined_operation_bit</c> is set.
 /// \note Thread local storage is used for the exception state.
-/// See C++11 specification of <c>thread_local</c> for more details.
 inline bool possibly_undefined_operation()
 {
-    return exception_state_ & possibly_undefined_operation_bit;
+    return state() & possibly_undefined_operation_bit;
 }
 
 /// \brief Checks exception state for an interval part of NaI exception.
 /// \return true if the <c>interval_part_of_nai_bit</c> is set.
 /// \note Thread local storage is used for the exception state.
-/// See C++11 specification of <c>thread_local</c> for more details.
 inline bool interval_part_of_nai()
 {
-    return exception_state_ & interval_part_of_nai_bit;
+    return state() & interval_part_of_nai_bit;
 }
 
 /// \brief Checks exception state for an invalid operation.
 /// \return true if the <c>interval_part_of_nai_bit</c> is set.
 /// \note Thread local storage is used for the exception state.
-/// See C++11 specification of <c>thread_local</c> for more details.
 inline bool invalid_operand()
 {
-    return exception_state_ & invalid_operand_bit;
+    return state() & invalid_operand_bit;
 }
 
 /// \brief Adds the flag for an undefined operation to the exception state.
@@ -233,16 +234,15 @@ inline bool invalid_operand()
 /// \return The current exception state of the active thread (= old exception state <c>| undefined_operation_bit</c>) if no exception is thrown.
 /// \exception undefined_operation_exception  Throws exception if the <c>undefined_operation_bit</c> is set for the <c>throw_exception_cwd</c>.
 /// \note Thread local storage is used for the exception state.
-/// See C++11 specification of <c>thread_local</c> for more details.
 inline exception_bits signal_undefined_operation()
 {
-    exception_state_ |= undefined_operation_bit;
+    state() |= undefined_operation_bit;
 
     // Throw exception if necessary
-    if (throw_exception_cwd_ & undefined_operation_bit)
+    if (cwd() & undefined_operation_bit)
         throw undefined_operation_exception();
 
-    return exception_state_;
+    return state();
 }
 
 /// \brief Adds the flag for a possibly undefined operation to the exception state.
@@ -250,16 +250,15 @@ inline exception_bits signal_undefined_operation()
 /// \return The current exception state of the active thread (= old exception state <c>| possibly_undefined_operation_bit</c>) if no exception is thrown.
 /// \exception possibly_undefined_operation_exception  Throws exception if the <c>possibly_undefined_operation_bit</c> is set for the <c>throw_exception_cwd</c>.
 /// \note Thread local storage is used for the exception state.
-/// See C++11 specification of <c>thread_local</c> for more details.
 inline exception_bits signal_possibly_undefined_operation()
 {
-    exception_state_ |= possibly_undefined_operation_bit;
+    state() |= possibly_undefined_operation_bit;
 
     // Throw exception if necessary
-    if (throw_exception_cwd_ & possibly_undefined_operation_bit)
+    if (cwd() & possibly_undefined_operation_bit)
         throw possibly_undefined_operation_exception();
 
-    return exception_state_;
+    return state();
 }
 
 /// \brief Adds the flag for an interval part of NaI exception to the exception state.
@@ -267,16 +266,15 @@ inline exception_bits signal_possibly_undefined_operation()
 /// \return The current exception state of the active thread (= old exception state <c>| interval_part_of_nai_bit</c>) if no exception is thrown.
 /// \exception interval_part_of_nai_exception  Throws exception if the <c>interval_part_of_nai_bit</c> is set for the <c>throw_exception_cwd</c>.
 /// \note Thread local storage is used for the exception state.
-/// See C++11 specification of <c>thread_local</c> for more details.
 inline exception_bits signal_interval_part_of_nai()
 {
-    exception_state_ |= interval_part_of_nai_bit;
+    state() |= interval_part_of_nai_bit;
 
     // Throw exception if necessary
-    if (throw_exception_cwd_ & interval_part_of_nai_bit)
+    if (cwd() & interval_part_of_nai_bit)
         throw interval_part_of_nai_exception();
 
-    return exception_state_;
+    return state();
 }
 
 /// \brief Adds the flag for an invalid operand to the exception state.
@@ -284,16 +282,15 @@ inline exception_bits signal_interval_part_of_nai()
 /// \return The current exception state of the active thread (= old exception state <c>| invalid_operand_bit</c>) if no exception is thrown.
 /// \exception invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>throw_exception_cwd</c>.
 /// \note Thread local storage is used for the exception state.
-/// See C++11 specification of <c>thread_local</c> for more details.
 inline exception_bits signal_invalid_operand()
 {
-    exception_state_ |= invalid_operand_bit;
+    state() |= invalid_operand_bit;
 
     // Throw exception if necessary
-    if (throw_exception_cwd_ & invalid_operand_bit)
+    if (cwd() & invalid_operand_bit)
         throw invalid_operand_exception();
 
-    return exception_state_;
+    return state();
 }
 
 
