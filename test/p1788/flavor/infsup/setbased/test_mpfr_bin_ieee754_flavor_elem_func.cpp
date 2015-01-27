@@ -6500,7 +6500,7 @@ BOOST_AUTO_TEST_CASE(minimal_sign_dec_test)
     BOOST_CHECK_EQUAL( F<double>::sign(REP_DEC<double>(REP<double>(0.0,2.0),DEC::com)), REP_DEC<double>(REP<double>(0.0,1.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::sign(REP_DEC<double>(REP<double>(-0.0,2.0),DEC::def)), REP_DEC<double>(REP<double>(0.0,1.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::sign(REP_DEC<double>(REP<double>(-5.0,-2.0),DEC::trv)), REP_DEC<double>(REP<double>(-1.0,-1.0),DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::sign(REP_DEC<double>(REP<double>(0.0,0.0),DEC::dac)), REP_DEC<double>(REP<double>(0.0,0.0),DEC::dac) );
+    BOOST_CHECK_EQUAL( F<double>::sign(REP_DEC<double>(REP<double>(0.0,0.0),DEC::dac)), REP_DEC<double>(REP<double>(0.0,0.0),DEC::def) );
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
@@ -6591,7 +6591,7 @@ BOOST_AUTO_TEST_CASE(minimal_ceil_mixedtype_test)
 
 BOOST_AUTO_TEST_CASE(minimal_ceil_dec_test)
 {
-    BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(1.1,2.0),DEC::com)), REP_DEC<double>(REP<double>(2.0,2.0),DEC::com) );
+    BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(1.1,2.0),DEC::com)), REP_DEC<double>(REP<double>(2.0,2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(-1.1,2.0),DEC::com)), REP_DEC<double>(REP<double>(-1.0,2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(-1.1,0.0),DEC::dac)), REP_DEC<double>(REP<double>(-1.0,0.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(-1.1,-0.0),DEC::trv)), REP_DEC<double>(REP<double>(-1.0,0.0),DEC::trv) );
@@ -6602,7 +6602,7 @@ BOOST_AUTO_TEST_CASE(minimal_ceil_dec_test)
     BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(-0.0,2.2),DEC::def)), REP_DEC<double>(REP<double>(0.0,3.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(-1.5,INF_D),DEC::trv)), REP_DEC<double>(REP<double>(-1.0,INF_D),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(MAX_D,INF_D),DEC::dac)), REP_DEC<double>(REP<double>(MAX_D,INF_D),DEC::def) );
-    BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(MAX_D,MAX_D),DEC::com)), REP_DEC<double>(REP<double>(MAX_D,MAX_D),DEC::com) );
+    BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(MAX_D,MAX_D),DEC::com)), REP_DEC<double>(REP<double>(MAX_D,MAX_D),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(-INF_D,2.2),DEC::trv)), REP_DEC<double>(REP<double>(-INF_D,3.0),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<double>(REP<double>(-INF_D,-MAX_D),DEC::dac)), REP_DEC<double>(REP<double>(-INF_D,-MAX_D),DEC::def) );
 
@@ -6624,7 +6624,7 @@ BOOST_AUTO_TEST_CASE(minimal_ceil_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<double>::ceil(REP_DEC<float>(REP<float>(-0.0f,2.2f),DEC::com)), REP_DEC<double>(REP<double>(0.0,3.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<float>::ceil(REP_DEC<double>(REP<double>(-1.5,INF_D),DEC::dac)), REP_DEC<float>(REP<float>(-1.0f,INF_F),DEC::def) );
     BOOST_CHECK_EQUAL( F<float>::ceil(REP_DEC<double>(REP<double>(MAX_D,INF_D),DEC::def)), REP_DEC<float>(REP<float>(MAX_F,INF_F),DEC::def) );
-    BOOST_CHECK_EQUAL( F<float>::ceil(REP_DEC<double>(REP<double>(MAX_D,MAX_D),DEC::com)), REP_DEC<float>(REP<float>(MAX_F,INF_F),DEC::dac) );
+    BOOST_CHECK_EQUAL( F<float>::ceil(REP_DEC<double>(REP<double>(MAX_D,MAX_D),DEC::com)), REP_DEC<float>(REP<float>(MAX_F,INF_F),DEC::def) );
     BOOST_CHECK_EQUAL( F<float>::ceil(REP_DEC<double>(REP<double>(-INF_D,2.2),DEC::trv)), REP_DEC<float>(REP<float>(-INF_F,3.0f),DEC::trv) );
     BOOST_CHECK_EQUAL( F<float>::ceil(REP_DEC<double>(REP<double>(-INF_D,-MAX_D),DEC::dac)), REP_DEC<float>(REP<float>(-INF_F,-MAX_F),DEC::def) );
 
@@ -6700,6 +6700,7 @@ BOOST_AUTO_TEST_CASE(minimal_floor_dec_test)
     BOOST_CHECK_EQUAL( F<double>::floor(REP_DEC<double>(REP<double>(-1.1,2.0),DEC::def)), REP_DEC<double>(REP<double>(-2.0,2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::floor(REP_DEC<double>(REP<double>(-1.1,0.0),DEC::dac)), REP_DEC<double>(REP<double>(-2.0,0.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::floor(REP_DEC<double>(REP<double>(-1.2,-1.1),DEC::com)), REP_DEC<double>(REP<double>(-2.0,-2.0),DEC::com) );
+    BOOST_CHECK_EQUAL( F<double>::floor(REP_DEC<double>(REP<double>(-2.0,-1.1),DEC::com)), REP_DEC<double>(REP<double>(-2.0,-2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::floor(REP_DEC<double>(REP<double>(-1.1,-0.4),DEC::def)), REP_DEC<double>(REP<double>(-2.0,-1.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::floor(REP_DEC<double>(REP<double>(-1.9,2.2),DEC::com)), REP_DEC<double>(REP<double>(-2.0,2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::floor(REP_DEC<double>(REP<double>(-1.0,2.2),DEC::trv)), REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
@@ -6726,7 +6727,7 @@ BOOST_AUTO_TEST_CASE(minimal_floor_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<double>::floor(REP_DEC<float>(REP<float>(-0.0f,2.2f),DEC::com)), REP_DEC<double>(REP<double>(0.0,2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<float>::floor(REP_DEC<double>(REP<double>(-1.5,INF_D),DEC::dac)), REP_DEC<float>(REP<float>(-2.0f,INF_F),DEC::def) );
     BOOST_CHECK_EQUAL( F<float>::floor(REP_DEC<double>(REP<double>(MAX_D,INF_D),DEC::def)), REP_DEC<float>(REP<float>(MAX_F,INF_F),DEC::def) );
-    BOOST_CHECK_EQUAL( F<float>::floor(REP_DEC<double>(REP<double>(MAX_D,MAX_D),DEC::com)), REP_DEC<float>(REP<float>(MAX_F,INF_F),DEC::dac) );
+    BOOST_CHECK_EQUAL( F<float>::floor(REP_DEC<double>(REP<double>(MAX_D,MAX_D),DEC::com)), REP_DEC<float>(REP<float>(MAX_F,INF_F),DEC::def) );
     BOOST_CHECK_EQUAL( F<float>::floor(REP_DEC<double>(REP<double>(-INF_D,2.2),DEC::trv)), REP_DEC<float>(REP<float>(-INF_F,2.0f),DEC::trv) );
     BOOST_CHECK_EQUAL( F<float>::floor(REP_DEC<double>(REP<double>(-INF_D,-MAX_D),DEC::dac)), REP_DEC<float>(REP<float>(-INF_F,-MAX_F),DEC::def) );
 
@@ -6796,6 +6797,11 @@ BOOST_AUTO_TEST_CASE(minimal_trunc_mixedtype_test)
 
 BOOST_AUTO_TEST_CASE(minimal_trunc_dec_test)
 {
+    BOOST_CHECK_EQUAL( F<double>::trunc(REP_DEC<double>(REP<double>(1.0,1.2),DEC::com)), REP_DEC<double>(REP<double>(1.0,1.0),DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::trunc(REP_DEC<double>(REP<double>(1.1,1.2),DEC::com)), REP_DEC<double>(REP<double>(1.0,1.0),DEC::com) );
+    BOOST_CHECK_EQUAL( F<double>::trunc(REP_DEC<double>(REP<double>(0.0,0.9),DEC::com)), REP_DEC<double>(REP<double>(0.0,0.0),DEC::com) );
+    BOOST_CHECK_EQUAL( F<double>::trunc(REP_DEC<double>(REP<double>(-1.2,-1.1),DEC::dac)), REP_DEC<double>(REP<double>(-1.0,-1.0),DEC::dac) );
+    BOOST_CHECK_EQUAL( F<double>::trunc(REP_DEC<double>(REP<double>(-1.2,-1.0),DEC::dac)), REP_DEC<double>(REP<double>(-1.0,-1.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::trunc(REP_DEC<double>(REP<double>(1.1,2.1),DEC::com)), REP_DEC<double>(REP<double>(1.0,2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::trunc(REP_DEC<double>(REP<double>(1.1,1.9),DEC::com)), REP_DEC<double>(REP<double>(1.0,1.0),DEC::com) );
     BOOST_CHECK_EQUAL( F<double>::trunc(REP_DEC<double>(REP<double>(-1.1,2.0),DEC::dac)), REP_DEC<double>(REP<double>(-1.0,2.0),DEC::def) );
@@ -6900,7 +6906,7 @@ BOOST_AUTO_TEST_CASE(minimal_round_ties_to_even_dec_test)
 {
     BOOST_CHECK_EQUAL( F<double>::round_ties_to_even(REP_DEC<double>(REP<double>(1.1,2.1),DEC::com)), REP_DEC<double>(REP<double>(1.0,2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::round_ties_to_even(REP_DEC<double>(REP<double>(-1.1,2.0),DEC::trv)), REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::round_ties_to_even(REP_DEC<double>(REP<double>(-1.6,-1.5),DEC::com)), REP_DEC<double>(REP<double>(-2.0,-2.0),DEC::com) );
+    BOOST_CHECK_EQUAL( F<double>::round_ties_to_even(REP_DEC<double>(REP<double>(-1.6,-1.5),DEC::com)), REP_DEC<double>(REP<double>(-2.0,-2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::round_ties_to_even(REP_DEC<double>(REP<double>(-1.6,-1.4),DEC::com)), REP_DEC<double>(REP<double>(-2.0,-1.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::round_ties_to_even(REP_DEC<double>(REP<double>(-1.5,INF_D),DEC::dac)), REP_DEC<double>(REP<double>(-2.0,INF_D),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::round_ties_to_even(REP_DEC<double>(REP<double>(-INF_D,2.2),DEC::trv)), REP_DEC<double>(REP<double>(-INF_D,2.0),DEC::trv) );
@@ -6998,7 +7004,7 @@ BOOST_AUTO_TEST_CASE(minimal_round_ties_to_away_dec_test)
     BOOST_CHECK_EQUAL( F<double>::round_ties_to_away(REP_DEC<double>(REP<double>(-1.9,2.2),DEC::com)), REP_DEC<double>(REP<double>(-2.0,2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::round_ties_to_away(REP_DEC<double>(REP<double>(1.9,2.2),DEC::com)), REP_DEC<double>(REP<double>(2.0,2.0),DEC::com) );
     BOOST_CHECK_EQUAL( F<double>::round_ties_to_away(REP_DEC<double>(REP<double>(-1.0,2.2),DEC::trv)), REP_DEC<double>(REP<double>(-1.0,2.0),DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::round_ties_to_away(REP_DEC<double>(REP<double>(2.5,2.6),DEC::com)), REP_DEC<double>(REP<double>(3.0,3.0),DEC::com) );
+    BOOST_CHECK_EQUAL( F<double>::round_ties_to_away(REP_DEC<double>(REP<double>(2.5,2.6),DEC::com)), REP_DEC<double>(REP<double>(3.0,3.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::round_ties_to_away(REP_DEC<double>(REP<double>(-1.5,INF_D),DEC::dac)), REP_DEC<double>(REP<double>(-2.0,INF_D),DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::round_ties_to_away(REP_DEC<double>(REP<double>(-INF_D,2.2),DEC::def)), REP_DEC<double>(REP<double>(-INF_D,2.0),DEC::def) );
 
@@ -7017,7 +7023,7 @@ BOOST_AUTO_TEST_CASE(minimal_round_ties_to_away_dec_test)
 
 BOOST_AUTO_TEST_CASE(minimal_round_ties_to_away_dec_mixedtype_test)
 {
-    BOOST_CHECK_EQUAL( F<double>::round_ties_to_away(REP_DEC<float>(REP<float>(1.5f,2.1f),DEC::com)), REP_DEC<double>(REP<double>(2.0,2.0),DEC::com) );
+    BOOST_CHECK_EQUAL( F<double>::round_ties_to_away(REP_DEC<float>(REP<float>(1.5f,2.1f),DEC::com)), REP_DEC<double>(REP<double>(2.0,2.0),DEC::def) );
     BOOST_CHECK_EQUAL( F<float>::round_ties_to_away(REP_DEC<double>(REP<double>(-1.5,2.5),DEC::com)), REP_DEC<float>(REP<float>(-2.0f,3.0f),DEC::def) );
     BOOST_CHECK_EQUAL( F<float>::round_ties_to_away(REP_DEC<double>(REP<double>(-1.5,INF_D),DEC::dac)), REP_DEC<float>(REP<float>(-2.0f,INF_F),DEC::def) );
 

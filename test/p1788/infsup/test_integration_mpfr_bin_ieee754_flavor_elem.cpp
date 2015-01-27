@@ -550,8 +550,8 @@ BOOST_AUTO_TEST_CASE(integration_ceil_test)
     BOOST_CHECK_EQUAL( I<double>::ceil(I<double>(-1.9,2.1)), I<double>(-1.0,3.0) );
     BOOST_CHECK_EQUAL( I<float>::ceil(I<double>(-1.5,2.2)), I<float>(-1.0f,3.0f) );
 
-    BOOST_CHECK_EQUAL( ceil(DI<double>(1.1,2.0,DEC::com)), DI<double>(2.0,2.0,DEC::com) );
-    BOOST_CHECK_EQUAL( decoration( ceil(DI<double>(1.1,2.0,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( ceil(DI<double>(1.1,2.0,DEC::com)), DI<double>(2.0,2.0,DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( ceil(DI<double>(1.1,2.0,DEC::com)) ), DEC::def );
     BOOST_CHECK_EQUAL( DI<double>::ceil(DI<double>(-0.1,2.1,DEC::dac)), DI<double>(0.0,3.0, DEC::def) );
     BOOST_CHECK_EQUAL( decoration( DI<double>::ceil(DI<double>(-0.1,2.1,DEC::dac)) ), DEC::def );
     BOOST_CHECK_EQUAL( DI<float>::ceil(DI<double>(-1.5,0.1)), DI<float>(-1.0f,1.0f, DEC::def) );
@@ -592,8 +592,8 @@ BOOST_AUTO_TEST_CASE(integration_round_ties_to_even_test)
     BOOST_CHECK_EQUAL( I<double>::round_ties_to_even(I<double>(-1.9,2.5)), I<double>(-2.0,2.0) );
     BOOST_CHECK_EQUAL( I<float>::round_ties_to_even(I<double>(-1.5,2.2)), I<float>(-2.0f,2.0f) );
 
-    BOOST_CHECK_EQUAL( round_ties_to_even(DI<double>(1.5,1.9,DEC::com)), DI<double>(2.0,2.0,DEC::com) );
-    BOOST_CHECK_EQUAL( decoration( round_ties_to_even(DI<double>(1.5,1.9,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( round_ties_to_even(DI<double>(1.5,1.9,DEC::com)), DI<double>(2.0,2.0,DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( round_ties_to_even(DI<double>(1.5,1.9,DEC::com)) ), DEC::def );
     BOOST_CHECK_EQUAL( DI<double>::round_ties_to_even(DI<double>(-0.1,2.1,DEC::dac)), DI<double>(0.0,2.0, DEC::def) );
     BOOST_CHECK_EQUAL( decoration( DI<double>::round_ties_to_even(DI<double>(-0.1,2.1,DEC::dac)) ), DEC::def );
     BOOST_CHECK_EQUAL( DI<float>::round_ties_to_even(DI<double>(-1.5,0.1)), DI<float>(-2.0f,0.0f, DEC::def) );
@@ -606,8 +606,8 @@ BOOST_AUTO_TEST_CASE(integration_round_ties_to_away_test)
     BOOST_CHECK_EQUAL( I<double>::round_ties_to_away(I<double>(-1.9,2.5)), I<double>(-2.0,3.0) );
     BOOST_CHECK_EQUAL( I<float>::round_ties_to_away(I<double>(-1.5,2.2)), I<float>(-2.0f,2.0f) );
 
-    BOOST_CHECK_EQUAL( round_ties_to_away(DI<double>(1.5,1.9,DEC::com)), DI<double>(2.0,2.0,DEC::com) );
-    BOOST_CHECK_EQUAL( decoration( round_ties_to_away(DI<double>(1.5,1.9,DEC::com)) ), DEC::com );
+    BOOST_CHECK_EQUAL( round_ties_to_away(DI<double>(1.5,1.9,DEC::com)), DI<double>(2.0,2.0,DEC::def) );
+    BOOST_CHECK_EQUAL( decoration( round_ties_to_away(DI<double>(1.5,1.9,DEC::com)) ), DEC::def );
     BOOST_CHECK_EQUAL( DI<double>::round_ties_to_away(DI<double>(-0.1,2.1,DEC::dac)), DI<double>(0.0,2.0, DEC::def) );
     BOOST_CHECK_EQUAL( decoration( DI<double>::round_ties_to_away(DI<double>(-0.1,2.1,DEC::dac)) ), DEC::def );
     BOOST_CHECK_EQUAL( DI<float>::round_ties_to_away(DI<double>(-2.5,0.1)), DI<float>(-3.0f,0.0f, DEC::def) );
