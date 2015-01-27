@@ -522,12 +522,21 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
 
         if (is.peek() == '[') // check if first char is '[' than remove it and check if stream is ok
         {
-            is.get(); // remove '['
+            //is.get(); // remove '['
 
             if (is)
             {
                 std::string input;
-                std::getline(is, input, ']');
+                //std::getline(is, input, ']');
+
+                // read string
+                for (auto c = is.peek(); is; c = is.peek())
+                {
+                    input += is.get();
+
+                    if (c == ']')
+                        break;
+                }
 
                 if (is)
                 {
@@ -551,15 +560,15 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                     //    [15] :     string if second argument is "+inf" or "+infinity"
                     static std::regex inf_sup_regex(
                         //one argument or empty
-                        "(?:"
+                        "(?:\\["
                         "\\s*((?:[+-]?[0-9]+)"                                                                      //int
                         "|(?:[+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+))(?:e[+-]?[0-9]+)?)"                 // float
                         "|(?:[+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+))(?:p[+-]?[0-9]+)?)"   // hex
                         "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[0-9]+))"                                                   // rational
                         "|(?:(empty)|(entire)|(nai)))?\\s*"                                                         // empty, entire, nai strings
-                        ")"
+                        "\\])"
                         // two arguments separated by a comma
-                        "|(?:"
+                        "|(?:\\["
                         "\\s*((?:[+-]?[0-9]+)"                                                                      //int
                         "|(?:[+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+))(?:e[+-]?[0-9]+)?)"                 // float
                         "|(?:[+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+))(?:p[+-]?[0-9]+)?)"   // hex
@@ -571,7 +580,7 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                         "|(?:[+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+))(?:p[+-]?[0-9]+)?)"   // hex
                         "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[0-9]+))"                                                   // rational
                         "|(?:[+]?(inf|infinity)))?\\s*"                                                             // inf string
-                        ")",
+                        "\\])",
                         std::regex_constants::icase                                                     // ignore case
                     );
 
@@ -756,11 +765,15 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                 // read string from stream
                 std::string input;
 
-                // read number
-                std::getline(is, input, '?');
 
-                if (is)
-                    input += '?';
+                // read number
+                for (auto c = is.peek(); is && (std::isdigit(c) || c == '.' || c == '?'); c = is.peek())
+                {
+                    input += is.get();
+
+                    if (c == '?')
+                        break;
+                }
 
                 try
                 {
@@ -856,10 +869,6 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                             if (match[3].length() > 0)      // ulps are specified
                             {
                                 r_str = match[3].str();
-                            }
-                            else if (match[4].length() > 0 || match[5].length() > 0)    // direction is specified
-                            {
-                                r_str = "1";
                             }
                             else    // nothing is specified
                             {

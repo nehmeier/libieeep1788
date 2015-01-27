@@ -470,12 +470,12 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_test)
     BOOST_CHECK_EQUAL( F<double>::constructor("[ -1/10, 1/10 ]_com"), REP<double>(-0.1,0.1));
 
     BOOST_CHECK_EQUAL( F<double>::constructor("0.0?"), REP<double>(-0.05,0.05));
-    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?u_trv"), REP<double>(0.0,0.1));
-    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?d_dac"), REP<double>(-0.1,0.0));
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?u_trv"), REP<double>(0.0,0.05));
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?d_dac"), REP<double>(-0.05,0.0));
 
     BOOST_CHECK_EQUAL( F<double>::constructor("2.5?"), REP<double>(std::stod("0x1.3999999999999p+1"),std::stod("0x1.4666666666667p+1")));
-    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?u"), REP<double>(2.5,2.6));
-    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?d_trv"), REP<double>(2.4,2.5));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?u"), REP<double>(2.5,std::stod("0x1.4666666666667p+1")));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?d_trv"), REP<double>(std::stod("0x1.3999999999999p+1"),2.5));
 
     BOOST_CHECK_EQUAL( F<double>::constructor("0.000?5"), REP<double>(-0.005,0.005));
     BOOST_CHECK_EQUAL( F<double>::constructor("0.000?5u_def"), REP<double>(0.0,0.005));
@@ -628,12 +628,12 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_dec_test)
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ -1/10, 1/10 ]_com"), REP_DEC<double>(REP<double>(-0.1,0.1),DEC::com));
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?"), REP_DEC<double>(REP<double>(-0.05,0.05),DEC::com));
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?u_trv"), REP_DEC<double>(REP<double>(0.0,0.1),DEC::trv));
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?d_dac"), REP_DEC<double>(REP<double>(-0.1,0.0),DEC::dac));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?u_trv"), REP_DEC<double>(REP<double>(0.0,0.05),DEC::trv));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?d_dac"), REP_DEC<double>(REP<double>(-0.05,0.0),DEC::dac));
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?"), REP_DEC<double>(REP<double>(std::stod("0x1.3999999999999p+1"),std::stod("0x1.4666666666667p+1")),DEC::com));
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?u"), REP_DEC<double>(REP<double>(2.5,2.6),DEC::com));
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?d_trv"), REP_DEC<double>(REP<double>(2.4,2.5),DEC::trv));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?u"), REP_DEC<double>(REP<double>(2.5,std::stod("0x1.4666666666667p+1")),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?d_trv"), REP_DEC<double>(REP<double>(std::stod("0x1.3999999999999p+1"),2.5),DEC::trv));
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.000?5"), REP_DEC<double>(REP<double>(-0.005,0.005),DEC::com));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.000?5u_def"), REP_DEC<double>(REP<double>(0.0,0.005),DEC::def));
