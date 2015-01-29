@@ -507,6 +507,39 @@ std::basic_istream<CharT, Traits>&
 mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is,
         mpfr_bin_ieee754_flavor<T>::representation_dec& x)
 {
+
+    // RAII for mpz_t
+    struct mpz_var
+    {
+        mpz_var() : var_()
+        {
+            mpz_init(var_);
+        }
+
+        ~mpz_var()
+        {
+            mpz_clear(var_);
+        }
+
+        mpz_t var_;
+    };
+
+    // RAII for mpq_t
+    struct mpq_var
+    {
+        mpq_var() : var_()
+        {
+            mpq_init(var_);
+        }
+
+        ~mpq_var()
+        {
+            mpq_clear(var_);
+        }
+
+        mpq_t var_;
+    };
+
     // remove whitespaces if necessary
     if (is.flags() & std::ios_base::skipws)
     {
@@ -564,7 +597,7 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                         "\\s*((?:[+-]?[0-9]+)"                                                                      //int
                         "|(?:[+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+))(?:e[+-]?[0-9]+)?)"                 // float
                         "|(?:[+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+))(?:p[+-]?[0-9]+)?)"   // hex
-                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[0-9]+))"                                                   // rational
+                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[1-9][0-9]*))"                                              // rational
                         "|(?:(empty)|(entire)|(nai)))?\\s*"                                                         // empty, entire, nai strings
                         "\\])"
                         // two arguments separated by a comma
@@ -572,13 +605,13 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                         "\\s*((?:[+-]?[0-9]+)"                                                                      //int
                         "|(?:[+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+))(?:e[+-]?[0-9]+)?)"                 // float
                         "|(?:[+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+))(?:p[+-]?[0-9]+)?)"   // hex
-                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[0-9]+))"                                                   // rational
+                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[1-9][0-9]*))"                                              // rational
                         "|(?:-(inf|infinity)))?\\s*"                                                                // inf string
                         "(,)"
                         "\\s*((?:[+-]?[0-9]+)"                                                                      //int
                         "|(?:[+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+))(?:e[+-]?[0-9]+)?)"                 // float
                         "|(?:[+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+))(?:p[+-]?[0-9]+)?)"   // hex
-                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[0-9]+))"                                                   // rational
+                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[1-9][0-9]*))"                                              // rational
                         "|(?:[+]?(inf|infinity)))?\\s*"                                                             // inf string
                         "\\])",
                         std::regex_constants::icase                                                     // ignore case
@@ -588,10 +621,10 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                     std::smatch match;
                     if (std::regex_match(input, match, inf_sup_regex))
                     {
-                        // temporary storage of lower and
+                        // temporary storage of lower and upper bound
                         representation bare;
 
-                        // upper bound for valid decorations
+                        // for valid decorations
                         p1788::decoration::decoration dec = p1788::decoration::decoration::com;
 
                         mpfr_var::setup();
@@ -616,86 +649,140 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                             }
                             else // number
                             {
-                                mpfr_var l;
-                                mpfr_var u;
-
                                 if (match[2].length() > 0) // rational
                                 {
-                                    mpfr_set_str(l(), match[2].str().c_str(), 0, MPFR_RNDN);
-                                    mpfr_set_str(u(), match[2].str().c_str(), 0, MPFR_RNDN);
+                                    mpq_var q;
 
-                                    mpfr_var d;
-                                    mpfr_set_str(d(), match[3].str().c_str(), 0, MPFR_RNDN);
+                                    int i = mpq_set_str(q.var_, (match[2].str() + "/" + match[3].str()).c_str(), 10);
 
-                                    mpfr_div(l(), l(), d(), MPFR_RNDD);
-                                    mpfr_div(u(), u(), d(), MPFR_RNDU);
+                                    mpfr_var l;
+                                    mpfr_var u;
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+
+                                    if (i == 0 && mpfr_lessequal_p(l(),u()))
+                                    {
+                                        bare.first = l.template get<T>(MPFR_RNDD);
+                                        bare.second = u.template get<T>(MPFR_RNDU);
+                                    }
+                                    else
+                                    {
+                                        bare.first = 1.0;
+                                        bare.second = -1.0;
+                                    }
                                 }
                                 else
                                 {
-                                    mpfr_set_str(l(), match[1].str().c_str(), 0, MPFR_RNDD);
-                                    mpfr_set_str(u(), match[1].str().c_str(), 0, MPFR_RNDU);
+                                    std::string str = match[1].str();
+
+                                    mpfr_var l(std::max(std::numeric_limits<T>::digits, int(str.size() * 4)));
+                                    mpfr_var u(std::max(std::numeric_limits<T>::digits, int(str.size() * 4)));
+
+                                    char* pl = nullptr;
+                                    char* pu = nullptr;
+
+                                    l.subnormalize(mpfr_strtofr(l(), str.c_str(), &pl, 0, MPFR_RNDD), MPFR_RNDD);
+                                    u.subnormalize(mpfr_strtofr(u(), str.c_str(), &pu, 0, MPFR_RNDU), MPFR_RNDU);
+
+
+                                    if (pl == str.c_str() + str.size()
+                                            && pu == str.c_str() + str.size()
+                                            && mpfr_lessequal_p(l(),u()))
+                                    {
+                                        bare.first = l.template get<T>(MPFR_RNDD);
+                                        bare.second = u.template get<T>(MPFR_RNDU);
+                                    }
+                                    else
+                                    {
+                                        bare.first = 1.0;
+                                        bare.second = -1.0;
+                                    }
                                 }
-
-                                bare.first = l.template get<T>(MPFR_RNDD);
-                                bare.second = u.template get<T>(MPFR_RNDU);
                             }
-
                         }
                         else    // two arguments
                         {
+                            mpfr_var l(std::max(std::numeric_limits<T>::digits, int(match[7].length() * 4)));
+                            mpfr_var u(std::max(std::numeric_limits<T>::digits, int(match[12].length() * 4)));
+
+                            mpq_var ql;
+                            mpq_var qu;
+
+
                             // -inf or empty lower bound
                             if (match[10].length() > 0 || match[7].length() == 0)
                             {
-                                bare.first = -std::numeric_limits<T>::infinity();
+                                l.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
                                 dec = p1788::decoration::decoration::dac;
                             }
                             else // number lower bound
                             {
-                                mpfr_var l;
-
                                 if (match[8].length() > 0) // rational
                                 {
-                                    mpfr_set_str(l(), match[8].str().c_str(), 0, MPFR_RNDN);
+                                    int i = mpq_set_str(ql.var_, (match[8].str() + "/" + match[9].str()).c_str(), 10);
 
-                                    mpfr_var d;
-                                    mpfr_set_str(d(), match[9].str().c_str(), 0, MPFR_RNDN);
-
-                                    mpfr_div(l(), l(), d(), MPFR_RNDD);
+                                    if (i == 0)
+                                        l.subnormalize(mpfr_set_q(l(), ql.var_, MPFR_RNDD), MPFR_RNDD);
+                                    else
+                                        l.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
                                 }
                                 else
                                 {
-                                    mpfr_set_str(l(), match[7].str().c_str(), 0, MPFR_RNDD);
-                                }
+                                    char* p = nullptr;
+                                    std::string str = match[7].str();
+                                    l.subnormalize(mpfr_strtofr(l(), str.c_str(), &p, 0, MPFR_RNDD), MPFR_RNDD);
 
-                                bare.first = l.template get<T>(MPFR_RNDD);
+                                    if (p != str.c_str() + str.size())
+                                        l.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
+                                }
                             }
 
                             // +inf or empty upper bound
                             if (match[15].length() > 0 || match[12].length() == 0)
                             {
-                                bare.second = std::numeric_limits<T>::infinity();
+                                u.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
                                 dec = p1788::decoration::decoration::dac;
                             }
                             else    // number upper bound
                             {
-                                mpfr_var u;
-
                                 if (match[13].length() > 0) // rational
                                 {
-                                    mpfr_set_str(u(), match[13].str().c_str(), 0, MPFR_RNDN);
+                                    int i = mpq_set_str(qu.var_, (match[13].str() + "/" + match[14].str()).c_str(), 10);
 
-                                    mpfr_var d;
-                                    mpfr_set_str(d(), match[14].str().c_str(), 0, MPFR_RNDN);
-
-                                    mpfr_div(u(), u(), d(), MPFR_RNDU);
+                                    if (i == 0)
+                                        u.subnormalize(mpfr_set_q(u(), qu.var_, MPFR_RNDU), MPFR_RNDU);
+                                    else
+                                        u.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
                                 }
                                 else
                                 {
-                                    mpfr_set_str(u(), match[12].str().c_str(), 0, MPFR_RNDU);
-                                }
+                                    char* p = nullptr;
+                                    std::string str = match[12].str();
+                                    u.subnormalize(mpfr_strtofr(u(), str.c_str(), &p, 0, MPFR_RNDU), MPFR_RNDU);
 
+                                    if (p != str.c_str() + str.size())
+                                        u.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
+                                }
+                            }
+
+                            if (mpfr_lessequal_p(l(),u())
+                                    && ( ((match[10].length() > 0 || match[7].length() >= 0) && (match[15].length() > 0 || match[12].length() >= 0))
+                                         || (match[8].length() > 0 && match[13].length() > 0 && mpq_cmp(ql.var_, qu.var_) <= 0)
+                                         || (match[7].length() > 0 && match[13].length() > 0 && mpfr_cmp_q(l(), qu.var_) <= 0)
+                                         || (match[8].length() > 0 && match[12].length() > 0 && mpfr_cmp_q(u(), ql.var_) >= 0)
+                                       )
+                               )
+                            {
+                                bare.first = l.template get<T>(MPFR_RNDD);
                                 bare.second = u.template get<T>(MPFR_RNDU);
                             }
+                            else
+                            {
+                                bare.first = 1.0;
+                                bare.second = -1.0;
+                            }
+
                         }
 
                         // Check if bounds are valid
@@ -836,138 +923,209 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                     std::smatch match;
                     if (std::regex_match(input, match, uncertain_regex))
                     {
-                        // temporary storage of lower and
+                        // temporary storage of lower and upper bound
                         representation bare;
 
-                        // upper bound for valid decorations
+                        // for valid decorations
                         p1788::decoration::decoration dec = p1788::decoration::decoration::com;
 
                         mpfr_var::setup();
-                        mpfr_var rad;
+
                         mpfr_var l;
                         mpfr_var u;
 
-                        // read number
-                        std::string n_str = match[1].str();
-                        mpfr_set_str(l(), n_str.c_str(), 0, MPFR_RNDD);
-                        mpfr_set_str(u(), n_str.c_str(), 0, MPFR_RNDU);
+                        // number string
+                        std::string m_str = match[1].str();
 
-                        // compute radius
-                        if (match[2].length() > 0)  // "?" => infinity
+                        // compute precision and remove point
+                        int p = m_str.find('.');
+                        if (p >= 0)
                         {
-                            rad.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
-                            dec = p1788::decoration::decoration::dac;
+                            m_str.erase(p,1);
+                            p = -(m_str.size() - p);
                         }
                         else
                         {
-                            // compute precision
-                            int p = n_str.find('.');
-                            int prec =  p >= 0 ?  -(n_str.size() - 1 - p) : 0;
-
-                            std::string r_str;
-
-                            if (match[3].length() > 0)      // ulps are specified
-                            {
-                                r_str = match[3].str();
-                            }
-                            else    // nothing is specified
-                            {
-                                r_str = "0.5";
-                            }
-
-                            r_str += "E";
-                            r_str += std::to_string(prec);
-
-                            mpfr_set_str(rad(), r_str.c_str(), 0, MPFR_RNDU);
+                            p = 0;
                         }
 
-                        // compute bounds
-                        if (match[4].length() > 0)  // upward
+                        // parse number as integer
+                        mpz_var m;
+                        int im = mpz_set_str(m.var_, m_str.c_str(), 10);
+
+                        mpz_var ulps;
+                        int iu = 0;
+
+                        // computing ulps
+                        if (match[3].length() > 0 )
+                            iu = mpz_set_str(ulps.var_, match[3].str().c_str(), 10);
+                        else
                         {
-                            mpfr_add(u(), u(), rad(), MPFR_RNDU);
-                        }
-                        else if (match[5].length() > 0) // downward
-                        {
-                            mpfr_sub(l(), l(), rad(), MPFR_RNDD);
-                        }
-                        else    // symmetric
-                        {
-                            mpfr_sub(l(), l(), rad(), MPFR_RNDD);
-                            mpfr_add(u(), u(), rad(), MPFR_RNDU);
-                        }
-
-                        bare.first = l.template get<T>(MPFR_RNDD);
-                        bare.second = u.template get<T>(MPFR_RNDU);
-
-                        // exponent
-                        if (match[6].length() > 0)
-                        {
-                            std::string exp_str = "1.0E";
-                            exp_str += match[6].str();
-
-                            mpfr_var el;
-                            mpfr_var eu;
-                            mpfr_set_str(el(), exp_str.c_str(), 0, MPFR_RNDD);
-                            mpfr_set_str(eu(), exp_str.c_str(), 0, MPFR_RNDU);
-
-                            representation exp(el.template get<T>(MPFR_RNDD), eu.template get<T>(MPFR_RNDU));
-
-                            bare = mul(bare, exp);
+                            // 1/2 ulp => m * 10 and ulps=5
+                            mpz_set_si(ulps.var_, 5);
+                            p--;
+                            mpz_mul_si(m.var_, m.var_, 10);
                         }
 
-
-                        // Check if bounds are valid
-                        if ((std::isnan(bare.first) && std::isnan(bare.second))
-                                || (bare.first <= bare.second
-                                    &&  bare.first != std::numeric_limits<T>::infinity()
-                                    && bare.second != -std::numeric_limits<T>::infinity()))
+                        // everything ok
+                        if (im == 0 && iu == 0)
                         {
-
-                            // check if it is necessary to read a decoration
-                            bool read_decoration = false;
-                            try
+                            // exponent (and precision)
+                            if (match[6].length() > 0)
                             {
-                                read_decoration = is && is.peek() == '_';
-                            }
-                            catch (std::ios_base::failure& e)
-                            {
-                                // rethrow exception if it is not an eof failure
-                                if (!is.eof())
-                                    throw;
+                                p += std::stoi(match[6].str());
                             }
 
-                            // default decoration
-                            if (!read_decoration)
+                            mpz_var e;
+                            mpz_ui_pow_ui(e.var_, 10, std::abs(p));
+
+                            mpq_var exp;
+                            mpq_set_z(exp.var_, e.var_);
+
+                            // invert if exponent (and precision) is negative
+                            if (p < 0)
+                                mpq_inv(exp.var_, exp.var_);
+
+
+                            // compute radius
+                            if (match[2].length() > 0)  // "?" => infinity
                             {
-                                // if is.peek() == '_' reached eof than reset state
-                                if (is.eof())
-                                    is.clear(std::ios_base::goodbit);
-
-                                x = dec == p1788::decoration::decoration::ill ? nai() : constructor_dec(bare);
-
-                                // everything was ok
-                                return is;
-                            }
-
-                            // read decoration
-                            if (is && dec != p1788::decoration::decoration::ill)
-                            {
-                                is.get();   // remove underscore
-
-                                p1788::decoration::decoration d;
-                                is >> d;
-
-                                if (is && d <= dec && d != p1788::decoration::decoration::ill)
+                                // compute bounds
+                                if (match[4].length() > 0)  // upward
                                 {
-                                    // create dec interval
-                                    // and adjust decoration in case of an overflow
-                                    x = constructor_dec(bare,
-                                                        std::isinf(bare.first) || std::isinf(bare.second) ?
-                                                        std::min(d, p1788::decoration::decoration::dac)
-                                                        : d);
+                                    mpq_var q;
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+                                    u.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
+                                }
+                                else if (match[5].length() > 0) // downward
+                                {
+                                    mpq_var q;
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    l.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+                                }
+                                else    // symmetric
+                                {
+                                    l.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
+                                    u.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
+                                }
+
+                                dec = p1788::decoration::decoration::dac;
+                            }
+                            else
+                            {
+
+                                // compute bounds
+                                if (match[4].length() > 0)  // upward
+                                {
+                                    mpq_var q;
+
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+
+                                    mpz_add(m.var_, m.var_, ulps.var_);
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+                                }
+                                else if (match[5].length() > 0) // downward
+                                {
+                                    mpq_var q;
+
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+
+                                    mpz_sub(m.var_, m.var_, ulps.var_);
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+                                }
+                                else    // symmetric
+                                {
+                                    mpz_var tmp;
+                                    mpq_var q;
+
+                                    mpz_sub(tmp.var_, m.var_, ulps.var_);
+                                    mpq_set_z(q.var_, tmp.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+
+                                    mpz_add(tmp.var_, m.var_, ulps.var_);
+                                    mpq_set_z(q.var_, tmp.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+                                }
+
+                            }
+
+                            bare.first = l.template get<T>(MPFR_RNDD);
+                            bare.second = u.template get<T>(MPFR_RNDU);
+
+                            // Check if bounds are valid
+                            if (bare.first <= bare.second
+                                    && bare.first != std::numeric_limits<T>::infinity()
+                                    && bare.second != -std::numeric_limits<T>::infinity())
+                            {
+
+                                // check if it is necessary to read a decoration
+                                bool read_decoration = false;
+                                try
+                                {
+                                    read_decoration = is && is.peek() == '_';
+                                }
+                                catch (std::ios_base::failure& e)
+                                {
+                                    // rethrow exception if it is not an eof failure
+                                    if (!is.eof())
+                                        throw;
+                                }
+
+                                // default decoration
+                                if (!read_decoration)
+                                {
+                                    // if is.peek() == '_' reached eof than reset state
+                                    if (is.eof())
+                                        is.clear(std::ios_base::goodbit);
+
+                                    x = dec == p1788::decoration::decoration::ill ? nai() : constructor_dec(bare);
 
                                     // everything was ok
                                     return is;
+                                }
+
+                                // read decoration
+                                if (is && dec != p1788::decoration::decoration::ill)
+                                {
+                                    is.get();   // remove underscore
+
+                                    p1788::decoration::decoration d;
+                                    is >> d;
+
+                                    if (is && d <= dec && d != p1788::decoration::decoration::ill)
+                                    {
+                                        // create dec interval
+                                        // and adjust decoration in case of an overflow
+                                        x = constructor_dec(bare,
+                                                            std::isinf(bare.first) || std::isinf(bare.second) ?
+                                                            std::min(d, p1788::decoration::decoration::dac)
+                                                            : d);
+
+                                        // everything was ok
+                                        return is;
+                                    }
                                 }
                             }
                         }

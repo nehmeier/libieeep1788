@@ -36,6 +36,9 @@
 #include <sstream>
 #include <regex>
 
+#include <gmp.h>
+#include <mpfr.h>
+
 #include "p1788/decoration/decoration.hpp"
 #include "p1788/exception/exception.hpp"
 #include "p1788/overlapping/overlapping.hpp"
