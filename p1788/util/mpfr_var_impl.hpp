@@ -138,14 +138,6 @@ mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var()
     mpfr_init2(var_, PREC_);
 }
 
-// constructor with specific precision - value is NaN
-template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
-mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(mpfr_prec_t PREC)
-{
-    mpfr_init2(var_, PREC);
-}
-
-
 // constructor - value is nearest to op in the corresponding rounding direction rnd
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::mpfr_var(unsigned long int op, mpfr_rnd_t rnd) : mpfr_var()

@@ -67,7 +67,6 @@ public:
 
     // Constructors - initialize mpfr_t var with corresponding value  using the rounding mode rnd
     mpfr_var();
-    mpfr_var(mpfr_prec_t PREC);
 
     mpfr_var(unsigned long int op, mpfr_rnd_t rnd);
     mpfr_var(long int op, mpfr_rnd_t rnd);

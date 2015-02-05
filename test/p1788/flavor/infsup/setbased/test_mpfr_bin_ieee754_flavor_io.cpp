@@ -1440,6 +1440,46 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
 
     {
         REP_DEC<double> di;
+        std::istringstream is("[1.0000000000000002E+6000 ]_com");
+        F<double>::operator_input(is, di);
+        BOOST_CHECK_EQUAL(di, REP_DEC<double>(REP<double>(MAX_D,INF_D),DEC::dac));
+        BOOST_CHECK(is);
+    }
+
+    {
+        REP_DEC<double> di;
+        std::istringstream is("[-1.0000000000000002E+6000 ]_com");
+        F<double>::operator_input(is, di);
+        BOOST_CHECK_EQUAL(di, REP_DEC<double>(REP<double>(-INF_D,-MAX_D),DEC::dac));
+        BOOST_CHECK(is);
+    }
+
+    {
+        REP_DEC<double> di;
+        std::istringstream is("[10000000000000002]_com");
+        F<double>::operator_input(is, di);
+        BOOST_CHECK_EQUAL(di, REP_DEC<double>(REP<double>(10000000000000002,10000000000000002),DEC::com));
+        BOOST_CHECK(is);
+    }
+
+    {
+        REP_DEC<double> di;
+        std::istringstream is("[-10000000000000002]_com");
+        F<double>::operator_input(is, di);
+        BOOST_CHECK_EQUAL(di, REP_DEC<double>(REP<double>(-10000000000000002,-10000000000000002),DEC::com));
+        BOOST_CHECK(is);
+    }
+
+    {
+        REP_DEC<double> di;
+        std::istringstream is("[-1.0000000000000002E+6000, 1.0000000000000001E+6000]_com");
+        F<double>::operator_input(is, di);
+        BOOST_CHECK_EQUAL(di, REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::dac));
+        BOOST_CHECK(is);
+    }
+
+    {
+        REP_DEC<double> di;
         std::istringstream is("[ -4/2, 10/5 ]_com");
         F<double>::operator_input(is, di);
         BOOST_CHECK_EQUAL(di, REP_DEC<double>(REP<double>(-2.0,2.0),DEC::com));
@@ -1546,6 +1586,14 @@ BOOST_AUTO_TEST_CASE(minimal_decorated_interval_input_test)
     {
         REP_DEC<double> di(REP<double>(-1.0,5.0),DEC::trv);
         std::istringstream is("[1.0000000000000002,1.0000000000000001]");
+        F<double>::operator_input(is, di);
+        BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,5.0),DEC::trv) );
+        BOOST_CHECK(!is);
+    }
+
+    {
+        REP_DEC<double> di(REP<double>(-1.0,5.0),DEC::trv);
+        std::istringstream is("[1.0000000000000002E+6000,1.0000000000000001E+6000]");
         F<double>::operator_input(is, di);
         BOOST_CHECK_EQUAL( di, REP_DEC<double>(REP<double>(-1.0,5.0),DEC::trv) );
         BOOST_CHECK(!is);
