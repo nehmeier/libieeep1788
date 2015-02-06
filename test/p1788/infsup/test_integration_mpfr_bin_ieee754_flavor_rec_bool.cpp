@@ -51,13 +51,13 @@ BOOST_AUTO_TEST_CASE(integration_is_common_test)
     BOOST_CHECK(!is_common(DI<double>::nai()));
     BOOST_CHECK(is_common(DI<double>(-5.7,8.3)));
     BOOST_CHECK(is_common(DI<double>(-5.7,8.3, DEC::com)));
-    BOOST_CHECK(!is_common(DI<double>(-5.7,8.3, DEC::dac)));
+    BOOST_CHECK(is_common(DI<double>(-5.7,8.3, DEC::dac)));
     BOOST_CHECK(!is_common(DI<double>::entire()));
     BOOST_CHECK(!DI<double>::is_common(DI<double>::empty()));
     BOOST_CHECK(!DI<double>::is_common(DI<double>::nai()));
     BOOST_CHECK(DI<double>::is_common(DI<double>(-5.7,8.3)));
     BOOST_CHECK(DI<double>::is_common(DI<double>(-5.7,8.3, DEC::com)));
-    BOOST_CHECK(!DI<double>::is_common(DI<double>(-5.7,8.3, DEC::dac)));
+    BOOST_CHECK(DI<double>::is_common(DI<double>(-5.7,8.3, DEC::dac)));
     BOOST_CHECK(!DI<double>::is_common(DI<double>::entire()));
 }
 

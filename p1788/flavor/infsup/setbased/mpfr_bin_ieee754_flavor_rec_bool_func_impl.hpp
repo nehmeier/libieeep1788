@@ -58,7 +58,8 @@ bool mpfr_bin_ieee754_flavor<T>::is_common(mpfr_bin_ieee754_flavor<T>::represent
     if (!is_valid(x))
         return false;
 
-    return x.second == p1788::decoration::decoration::com;
+    // call bare version
+    return is_common(x.first);
 }
 
 // is_singleton ( bare interval )
