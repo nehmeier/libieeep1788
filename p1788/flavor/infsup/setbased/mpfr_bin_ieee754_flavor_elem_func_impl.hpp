@@ -3786,7 +3786,8 @@ mpfr_bin_ieee754_flavor<T>::sign(mpfr_bin_ieee754_flavor<T>::representation_dec 
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_member(0.0, x) ? p1788::decoration::decoration::def :
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            is_member(0.0, x) ? p1788::decoration::decoration::dac :
                                             p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
@@ -3868,8 +3869,9 @@ mpfr_bin_ieee754_flavor<T>::ceil(mpfr_bin_ieee754_flavor<T>::representation_dec 
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare) && x.first.second != bare.second ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            x.first.second == bare.second ? p1788::decoration::decoration::dac :
+                                            p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -3949,8 +3951,9 @@ mpfr_bin_ieee754_flavor<T>::floor(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare)  && x.first.first != bare.first ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            x.first.first == bare.first ? p1788::decoration::decoration::dac :
+                                            p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -4030,10 +4033,10 @@ mpfr_bin_ieee754_flavor<T>::trunc(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare)
-                                                 && (x.first.first == 0.0 || x.first.first != bare.first)
-                                                 && (x.first.second == 0.0 || x.first.second != bare.second) ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            (x.first.first != 0.0 && x.first.first == bare.first)
+                                            || (x.first.second != 0.0 && x.first.second == bare.second) ? p1788::decoration::decoration::dac :
+                                            p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -4128,11 +4131,10 @@ mpfr_bin_ieee754_flavor<T>::round_ties_to_even(mpfr_bin_ieee754_flavor<T>::repre
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare)
-                                                 && std::abs(x.first.first) - std::trunc(std::abs(x.first.first)) != 0.5   // if x == 0.5 => trunc(x) == 0.0 => exact
-                                                 && std::abs(x.first.second) - std::trunc(std::abs(x.first.second)) != 0.5 // if x > 1  => trunc(x) > 1 => tunc(x) <= x <= 2 trunc(x) => exact
-                                                 ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            std::abs(x.first.first) - std::trunc(std::abs(x.first.first)) == 0.5       // if x == 0.5 => trunc(x) == 0.0 => exact
+                                            || std::abs(x.first.second) - std::trunc(std::abs(x.first.second)) == 0.5  // if x > 1  => trunc(x) > 1 => tunc(x) <= x <= 2 trunc(x) => exact
+                                            ? p1788::decoration::decoration::dac : p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -4212,11 +4214,10 @@ mpfr_bin_ieee754_flavor<T>::round_ties_to_away(mpfr_bin_ieee754_flavor<T>::repre
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare)
-                                                 && std::abs(x.first.first) - std::trunc(std::abs(x.first.first)) != 0.5   // if x == 0.5 => trunc(x) == 0.0 => exact
-                                                 && std::abs(x.first.second) - std::trunc(std::abs(x.first.second)) != 0.5 // if x > 1  => trunc(x) > 1 => tunc(x) <= x <= 2 * trunc(x) => exact
-                                                 ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            std::abs(x.first.first) - std::trunc(std::abs(x.first.first)) == 0.5      // if x == 0.5 => trunc(x) == 0.0 => exact
+                                            || std::abs(x.first.second) - std::trunc(std::abs(x.first.second)) == 0.5 // if x > 1  => trunc(x) > 1 => tunc(x) <= x <= 2 * trunc(x) => exact
+                                            ? p1788::decoration::decoration::dac : p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
