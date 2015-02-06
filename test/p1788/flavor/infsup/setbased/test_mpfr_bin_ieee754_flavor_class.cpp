@@ -470,12 +470,12 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_test)
     BOOST_CHECK_EQUAL( F<double>::constructor("[ -1/10, 1/10 ]_com"), REP<double>(-0.1,0.1));
 
     BOOST_CHECK_EQUAL( F<double>::constructor("0.0?"), REP<double>(-0.05,0.05));
-    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?u_trv"), REP<double>(0.0,0.1));
-    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?d_dac"), REP<double>(-0.1,0.0));
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?u_trv"), REP<double>(0.0,0.05));
+    BOOST_CHECK_EQUAL( F<double>::constructor("0.0?d_dac"), REP<double>(-0.05,0.0));
 
     BOOST_CHECK_EQUAL( F<double>::constructor("2.5?"), REP<double>(std::stod("0x1.3999999999999p+1"),std::stod("0x1.4666666666667p+1")));
-    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?u"), REP<double>(2.5,2.6));
-    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?d_trv"), REP<double>(2.4,2.5));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?u"), REP<double>(2.5,std::stod("0x1.4666666666667p+1")));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.5?d_trv"), REP<double>(std::stod("0x1.3999999999999p+1"),2.5));
 
     BOOST_CHECK_EQUAL( F<double>::constructor("0.000?5"), REP<double>(-0.005,0.005));
     BOOST_CHECK_EQUAL( F<double>::constructor("0.000?5u_def"), REP<double>(0.0,0.005));
@@ -493,12 +493,14 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_test)
     BOOST_CHECK_EQUAL( F<double>::constructor("2.5??u_def"), REP<double>(2.5,INF_D));
     BOOST_CHECK_EQUAL( F<double>::constructor("2.5??d_dac"), REP<double>(-INF_D,2.5));
 
-    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5e+27"), REP<double>(std::stod("0x1.01fa19a08fe7ep+91"),std::stod("0x1.0302cc4352684p+91")));
-    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5ue4_def"), REP<double>(std::stod("0x1.86ap+14"),std::stod("0x1.8768000000001p+14")));
-    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5de-5"), REP<double>(std::stod("0x1.a2976f1cee4d3p-16"),std::stod("0x1.a36e2eb1c432ep-16")));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5e+27"), REP<double>(std::stod("0x1.01fa19a08fe7fp+91"),std::stod("0x1.0302cc4352683p+91")));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5ue4_def"), REP<double>(std::stod("0x1.86ap+14"),std::stod("0x1.8768p+14")));
+    BOOST_CHECK_EQUAL( F<double>::constructor("2.500?5de-5"), REP<double>(std::stod("0x1.a2976f1cee4d5p-16"),std::stod("0x1.a36e2eb1c432dp-16")));
 
     BOOST_CHECK_EQUAL( F<double>::constructor("10?3_com"), REP<double>(7.0,13.0));
     BOOST_CHECK_EQUAL( F<double>::constructor("10?3e380_com"), REP<double>(MAX_D,INF_D));
+
+    BOOST_CHECK_EQUAL( F<double>::constructor("1.0000000000000001?1"), REP<double>(1.0,std::stod("0x1.0000000000001p+0")));
 
     std::string rep = "10?18";
     rep += std::string(308, '0');
@@ -593,6 +595,18 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_test)
 
     BOOST_CHECK( F<double>::is_empty( F<double>::constructor("0.0??d_com") ) );
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[1.0000000000000002,1.0000000000000001]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[10000000000000001/10000000000000000,10000000000000002/10000000000000001]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_empty( F<double>::constructor("[0x1.00000000000002p0,0x1.00000000000001p0]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
 }
 
 BOOST_AUTO_TEST_CASE(minimal_string_constructor_dec_test)
@@ -628,12 +642,12 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_dec_test)
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("[ -1/10, 1/10 ]_com"), REP_DEC<double>(REP<double>(-0.1,0.1),DEC::com));
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?"), REP_DEC<double>(REP<double>(-0.05,0.05),DEC::com));
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?u_trv"), REP_DEC<double>(REP<double>(0.0,0.1),DEC::trv));
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?d_dac"), REP_DEC<double>(REP<double>(-0.1,0.0),DEC::dac));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?u_trv"), REP_DEC<double>(REP<double>(0.0,0.05),DEC::trv));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.0?d_dac"), REP_DEC<double>(REP<double>(-0.05,0.0),DEC::dac));
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?"), REP_DEC<double>(REP<double>(std::stod("0x1.3999999999999p+1"),std::stod("0x1.4666666666667p+1")),DEC::com));
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?u"), REP_DEC<double>(REP<double>(2.5,2.6),DEC::com));
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?d_trv"), REP_DEC<double>(REP<double>(2.4,2.5),DEC::trv));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?u"), REP_DEC<double>(REP<double>(2.5,std::stod("0x1.4666666666667p+1")),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5?d_trv"), REP_DEC<double>(REP<double>(std::stod("0x1.3999999999999p+1"),2.5),DEC::trv));
 
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.000?5"), REP_DEC<double>(REP<double>(-0.005,0.005),DEC::com));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("0.000?5u_def"), REP_DEC<double>(REP<double>(0.0,0.005),DEC::def));
@@ -651,9 +665,9 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_dec_test)
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5??u_def"), REP_DEC<double>(REP<double>(2.5,INF_D),DEC::def));
     BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.5??d_dac"), REP_DEC<double>(REP<double>(-INF_D,2.5),DEC::dac));
 
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5e+27"), REP_DEC<double>(REP<double>(std::stod("0x1.01fa19a08fe7ep+91"),std::stod("0x1.0302cc4352684p+91")),DEC::com));
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5ue4_def"), REP_DEC<double>(REP<double>(std::stod("0x1.86ap+14"),std::stod("0x1.8768000000001p+14")),DEC::def));
-    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5de-5"), REP_DEC<double>(REP<double>(std::stod("0x1.a2976f1cee4d3p-16"),std::stod("0x1.a36e2eb1c432ep-16")),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5e+27"), REP_DEC<double>(REP<double>(std::stod("0x1.01fa19a08fe7fp+91"),std::stod("0x1.0302cc4352683p+91")),DEC::com));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5ue4_def"), REP_DEC<double>(REP<double>(std::stod("0x1.86ap+14"),std::stod("0x1.8768p+14")),DEC::def));
+    BOOST_CHECK_EQUAL( F<double>::constructor_dec("2.500?5de-5"), REP_DEC<double>(REP<double>(std::stod("0x1.a2976f1cee4d5p-16"),std::stod("0x1.a36e2eb1c432dp-16")),DEC::com));
 
     BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[ Nai  ]") ) );
 
@@ -751,6 +765,30 @@ BOOST_AUTO_TEST_CASE(minimal_string_constructor_dec_test)
 
     BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??d_com") ) );
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("0.0??_com") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("5.0") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[1.0,2.0") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[1.0000000000000002,1.0000000000000001]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[10000000000000001/10000000000000000,10000000000000002/10000000000000001]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( F<double>::is_nai( F<double>::constructor_dec("[0x1.00000000000002p0,0x1.00000000000001p0]") ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+
 }
 
 BOOST_AUTO_TEST_CASE(minimal_copy_constructor_test)

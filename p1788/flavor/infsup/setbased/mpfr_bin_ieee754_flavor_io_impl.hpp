@@ -507,6 +507,39 @@ std::basic_istream<CharT, Traits>&
 mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is,
         mpfr_bin_ieee754_flavor<T>::representation_dec& x)
 {
+
+    // RAII for mpz_t
+    struct mpz_var
+    {
+        mpz_var() : var_()
+        {
+            mpz_init(var_);
+        }
+
+        ~mpz_var()
+        {
+            mpz_clear(var_);
+        }
+
+        mpz_t var_;
+    };
+
+    // RAII for mpq_t
+    struct mpq_var
+    {
+        mpq_var() : var_()
+        {
+            mpq_init(var_);
+        }
+
+        ~mpq_var()
+        {
+            mpq_clear(var_);
+        }
+
+        mpq_t var_;
+    };
+
     // remove whitespaces if necessary
     if (is.flags() & std::ios_base::skipws)
     {
@@ -522,56 +555,84 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
 
         if (is.peek() == '[') // check if first char is '[' than remove it and check if stream is ok
         {
-            is.get(); // remove '['
+            //is.get(); // remove '['
 
             if (is)
             {
                 std::string input;
-                std::getline(is, input, ']');
+                //std::getline(is, input, ']');
+
+                // read string
+                for (auto c = is.peek(); is; c = is.peek())
+                {
+                    input += is.get();
+
+                    if (c == ']')
+                        break;
+                }
 
                 if (is)
                 {
                     // regex to match valid literal
                     // Subgroups:
                     //    [0] :  whole string
-                    //    [1] :    string of argument if only one argument is specified
-                    //    [2] :      nominator if argument is rational
-                    //    [3] :      denominator if argument is rational
-                    //    [4] :      string if argument is "empty"
-                    //    [5] :      string if argument is "entire"
-                    //    [6] :      string if argument is "nai"
-                    //    [7] :    string of first argument if two arguments are specified
-                    //    [8] :      nominator if first argument is rational
-                    //    [9] :      denominator if first argument is rational
-                    //    [10] :     string if first argument is "-inf" or "-infinity"
-                    //    [11] : separator
-                    //    [12] :   string of second argument if two arguments are specified
-                    //    [13] :     nominator if second argument is rational
-                    //    [14] :     denominator if second argument is rational
-                    //    [15] :     string if second argument is "+inf" or "+infinity"
+                    //
+                    // only one argument is specified:
+                    //    [1] :  whole argument
+                    //    [2] :  int representation
+                    //    [3] :  float representation: number
+                    //    [4] :  float representation: exponent
+                    //    [5] :  hex representation: number
+                    //    [6] :  hex representation: exponent
+                    //    [7] :  rational representation: nominator
+                    //    [8] :  rational representation: denominator
+                    //    [9] :  string if argument is "empty"
+                    //    [10] : string if argument is "entire"
+                    //    [11] : string if argument is "nai"
+                    //
+                    // two arguments are specified:
+                    //    [12] :  whole first argument
+                    //    [13] :  int representation
+                    //    [14] :  float representation: number
+                    //    [15] :  float representation: exponent
+                    //    [16] :  hex representation: number
+                    //    [17] :  hex representation: exponent
+                    //    [18] :  rational representation: nominator
+                    //    [19] :  rational representation: denominator
+                    //    [20] :  string if first argument is "-inf" or "-infinity"
+                    //    [21] : separator
+                    //    [22] :  whole second argument
+                    //    [23] :  int representation
+                    //    [24] :  float representation: number
+                    //    [25] :  float representation: exponent
+                    //    [26] :  hex representation: number
+                    //    [27] :  hex representation: exponent
+                    //    [28] :  rational representation: nominator
+                    //    [29] :  rational representation: denominator
+                    //    [30] :  string if second argument is "+inf" or "+infinity"
                     static std::regex inf_sup_regex(
                         //one argument or empty
-                        "(?:"
-                        "\\s*((?:[+-]?[0-9]+)"                                                                      //int
-                        "|(?:[+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+))(?:e[+-]?[0-9]+)?)"                 // float
-                        "|(?:[+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+))(?:p[+-]?[0-9]+)?)"   // hex
-                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[0-9]+))"                                                   // rational
-                        "|(?:(empty)|(entire)|(nai)))?\\s*"                                                         // empty, entire, nai strings
-                        ")"
+                        "(?:\\[\\s*("
+                        "([+-]?[0-9]+)"                                                                             //int
+                        "|(?:([+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+)))(?:e([+-]?[0-9]+))?)"             // float
+                        "|(?:([+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+)))(?:p([+-]?[0-9]+))?)"   // hex
+                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[1-9][0-9]*))"                                              // rational
+                        "|(?:(empty)|(entire)|(nai))"                                                               // empty, entire, nai strings
+                        ")?\\s*\\])"
                         // two arguments separated by a comma
-                        "|(?:"
-                        "\\s*((?:[+-]?[0-9]+)"                                                                      //int
-                        "|(?:[+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+))(?:e[+-]?[0-9]+)?)"                 // float
-                        "|(?:[+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+))(?:p[+-]?[0-9]+)?)"   // hex
-                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[0-9]+))"                                                   // rational
-                        "|(?:-(inf|infinity)))?\\s*"                                                                // inf string
-                        "(,)"
-                        "\\s*((?:[+-]?[0-9]+)"                                                                      //int
-                        "|(?:[+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+))(?:e[+-]?[0-9]+)?)"                 // float
-                        "|(?:[+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+))(?:p[+-]?[0-9]+)?)"   // hex
-                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[0-9]+))"                                                   // rational
-                        "|(?:[+]?(inf|infinity)))?\\s*"                                                             // inf string
-                        ")",
+                        "|(?:\\[\\s*("
+                        "([+-]?[0-9]+)"                                                                             //int
+                        "|(?:([+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+)))(?:e([+-]?[0-9]+))?)"             // float
+                        "|(?:([+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+)))(?:p([+-]?[0-9]+))?)"   // hex
+                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[1-9][0-9]*))"                                              // rational
+                        "|(?:-(inf|infinity))"                                                                // inf string
+                        ")?\\s*(,)\\s*("
+                        "([+-]?[0-9]+)"                                                                             //int
+                        "|(?:([+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+)))(?:e([+-]?[0-9]+))?)"             // float
+                        "|(?:([+-]?0x(?:(?:[0-9a-f]+[\\.]?[0-9a-f]*)|(?:[0-9a-f]*\\.[0-9a-f]+)))(?:p([+-]?[0-9]+))?)"   // hex
+                        "|(?:([+-]?[0-9]+)\\s*/\\s*([+]?[1-9][0-9]*))"                                              // rational
+                        "|(?:[+]?(inf|infinity))"                                                             // inf string
+                        ")?\\s*\\])",
                         std::regex_constants::icase                                                     // ignore case
                     );
 
@@ -579,112 +640,471 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                     std::smatch match;
                     if (std::regex_match(input, match, inf_sup_regex))
                     {
-                        // temporary storage of lower and
-                        representation bare;
 
-                        // upper bound for valid decorations
+                        // temporary storage of lower and upper bound
+                        representation bare;
+                        bare.first = 1.0;
+                        bare.second = -1.0;
+
+                        // for valid decorations
                         p1788::decoration::decoration dec = p1788::decoration::decoration::com;
 
                         mpfr_var::setup();
 
                         // only one argument or empty string
-                        if (match[11].length() == 0)
+                        if (match[21].length() == 0)
                         {
                             // empty :  string "empty" or only whitespaces
-                            if (match[4].length() > 0 || match[1].length() == 0)
+                            if (match[9].length() > 0 || match[1].length() == 0)
                             {
                                 bare = empty();
                                 dec = p1788::decoration::decoration::trv;
                             }
-                            else if (match[5].length() > 0) // entire
+                            else if (match[10].length() > 0) // entire
                             {
                                 bare = entire();
                                 dec = p1788::decoration::decoration::dac;
                             }
-                            else if (match[6].length() > 0) // nai
+                            else if (match[11].length() > 0) // nai
                             {
+                                bare = empty();
                                 dec = p1788::decoration::decoration::ill;
                             }
-                            else // number
+                            else if (match[2].length() > 0) // int
                             {
+                                mpz_var z;
+
+                                int i = mpz_set_str(z.var_, match[2].str().c_str(), 10);
+
                                 mpfr_var l;
                                 mpfr_var u;
 
-                                if (match[2].length() > 0) // rational
+                                l.subnormalize(mpfr_set_z(l(), z.var_, MPFR_RNDD), MPFR_RNDD);
+                                u.subnormalize(mpfr_set_z(u(), z.var_, MPFR_RNDU), MPFR_RNDU);
+
+                                if (i == 0 && mpfr_lessequal_p(l(),u()))
                                 {
-                                    mpfr_set_str(l(), match[2].str().c_str(), 0, MPFR_RNDN);
-                                    mpfr_set_str(u(), match[2].str().c_str(), 0, MPFR_RNDN);
+                                    bare.first = l.template get<T>(MPFR_RNDD);
+                                    bare.second = u.template get<T>(MPFR_RNDU);
+                                }
+                            }
+                            else if (match[3].length() > 0) // float
+                            {
+                                // number string
+                                std::string n_str = match[3].str();
 
-                                    mpfr_var d;
-                                    mpfr_set_str(d(), match[3].str().c_str(), 0, MPFR_RNDN);
-
-                                    mpfr_div(l(), l(), d(), MPFR_RNDD);
-                                    mpfr_div(u(), u(), d(), MPFR_RNDU);
+                                // compute precision and remove point
+                                int p = n_str.find('.');
+                                if (p >= 0)
+                                {
+                                    n_str.erase(p,1);
+                                    p = -(n_str.size() - p);
                                 }
                                 else
                                 {
-                                    mpfr_set_str(l(), match[1].str().c_str(), 0, MPFR_RNDD);
-                                    mpfr_set_str(u(), match[1].str().c_str(), 0, MPFR_RNDU);
+                                    p = 0;
                                 }
 
-                                bare.first = l.template get<T>(MPFR_RNDD);
-                                bare.second = u.template get<T>(MPFR_RNDU);
-                            }
+                                // parse number as integer
+                                mpz_var n;
+                                int i = mpz_set_str(n.var_, n_str.c_str(), 10);
 
+                                // everything ok
+                                if (i == 0)
+                                {
+                                    // exponent (and precision)
+                                    if (match[4].length() > 0)
+                                    {
+                                        p += std::stoi(match[4].str());
+                                    }
+
+                                    mpz_var e;
+                                    mpz_ui_pow_ui(e.var_, 10, std::abs(p));
+
+                                    mpq_var exp;
+                                    mpq_set_z(exp.var_, e.var_);
+
+                                    // invert if exponent (and precision) is negative
+                                    if (p < 0)
+                                        mpq_inv(exp.var_, exp.var_);
+
+                                    mpq_var q;
+
+                                    mpq_set_z(q.var_, n.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    mpfr_var l;
+                                    mpfr_var u;
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+
+                                    if (mpfr_lessequal_p(l(),u()))
+                                    {
+                                        bare.first = l.template get<T>(MPFR_RNDD);
+                                        bare.second = u.template get<T>(MPFR_RNDU);
+                                    }
+                                }
+                            }
+                            else if (match[5].length() > 0) // hex
+                            {
+                                // number string
+                                std::string n_str = match[5].str();
+
+                                // compute precision and remove point
+                                int p = n_str.find('.');
+                                if (p >= 0)
+                                {
+                                    n_str.erase(p,1);
+                                    p = -(n_str.size() - p);
+                                }
+                                else
+                                {
+                                    p = 0;
+                                }
+
+                                p *= 4;
+
+                                // parse number as integer
+                                mpz_var n;
+                                int i = mpz_set_str(n.var_, n_str.c_str(), 16);
+
+                                // everything ok
+                                if (i == 0)
+                                {
+                                    // exponent (and precision)
+                                    if (match[6].length() > 0)
+                                    {
+                                        p += std::stoi(match[4].str());
+                                    }
+
+                                    mpz_var e;
+                                    mpz_ui_pow_ui(e.var_, 2, std::abs(p));
+
+                                    mpq_var exp;
+                                    mpq_set_z(exp.var_, e.var_);
+
+                                    // invert if exponent (and precision) is negative
+                                    if (p < 0)
+                                        mpq_inv(exp.var_, exp.var_);
+
+                                    mpq_var q;
+
+                                    mpq_set_z(q.var_, n.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    mpfr_var l;
+                                    mpfr_var u;
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+
+                                    if (mpfr_lessequal_p(l(),u()))
+                                    {
+                                        bare.first = l.template get<T>(MPFR_RNDD);
+                                        bare.second = u.template get<T>(MPFR_RNDU);
+                                    }
+                                }
+                            }
+                            else if (match[7].length() > 0) // rational
+                            {
+                                mpq_var q;
+
+                                int i = mpq_set_str(q.var_, (match[7].str() + "/" + match[8].str()).c_str(), 10);
+
+                                mpfr_var l;
+                                mpfr_var u;
+
+                                l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+                                u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+
+                                if (i == 0 && mpfr_lessequal_p(l(),u()))
+                                {
+                                    bare.first = l.template get<T>(MPFR_RNDD);
+                                    bare.second = u.template get<T>(MPFR_RNDU);
+                                }
+                                else
+                                {
+                                    bare.first = 1.0;
+                                    bare.second = -1.0;
+                                }
+                            }
                         }
+
                         else    // two arguments
                         {
-                            // -inf or empty lower bound
-                            if (match[10].length() > 0 || match[7].length() == 0)
+                            mpfr_var l;
+                            mpfr_var u;
+
+                            mpq_var ql;
+                            mpq_var qu;
+
+                            mpz_var zl;
+                            mpz_var zu;
+
+                            // lower bound
+
+                            // -inf or empty
+                            if (match[20].length() > 0 || match[12].length() == 0)
                             {
-                                bare.first = -std::numeric_limits<T>::infinity();
+                                l.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
                                 dec = p1788::decoration::decoration::dac;
                             }
-                            else // number lower bound
+                            else  if (match[13].length() > 0) // int
                             {
-                                mpfr_var l;
+                                int i = mpz_set_str(zl.var_, match[13].str().c_str(), 10);
 
-                                if (match[8].length() > 0) // rational
+                                if (i == 0)
                                 {
-                                    mpfr_set_str(l(), match[8].str().c_str(), 0, MPFR_RNDN);
+                                    mpq_set_z(ql.var_, zl.var_);
+                                    l.subnormalize(mpfr_set_z(l(), zl.var_, MPFR_RNDD), MPFR_RNDD);
+                                }
+                                else
+                                    l.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
+                            }
+                            else if (match[14].length() > 0) // float
+                            {
+                                // number string
+                                std::string n_str = match[14].str();
 
-                                    mpfr_var d;
-                                    mpfr_set_str(d(), match[9].str().c_str(), 0, MPFR_RNDN);
-
-                                    mpfr_div(l(), l(), d(), MPFR_RNDD);
+                                // compute precision and remove point
+                                int p = n_str.find('.');
+                                if (p >= 0)
+                                {
+                                    n_str.erase(p,1);
+                                    p = -(n_str.size() - p);
                                 }
                                 else
                                 {
-                                    mpfr_set_str(l(), match[7].str().c_str(), 0, MPFR_RNDD);
+                                    p = 0;
                                 }
 
+                                // parse number as integer
+                                int i = mpz_set_str(zl.var_, n_str.c_str(), 10);
+
+                                // everything ok
+                                if (i == 0)
+                                {
+                                    // exponent (and precision)
+                                    if (match[15].length() > 0)
+                                    {
+                                        p += std::stoi(match[15].str());
+                                    }
+
+                                    mpz_var e;
+                                    mpz_ui_pow_ui(e.var_, 10, std::abs(p));
+
+                                    mpq_var exp;
+                                    mpq_set_z(exp.var_, e.var_);
+
+                                    // invert if exponent (and precision) is negative
+                                    if (p < 0)
+                                        mpq_inv(exp.var_, exp.var_);
+
+                                    mpq_set_z(ql.var_, zl.var_);
+                                    mpq_mul(ql.var_, ql.var_, exp.var_);
+
+                                    l.subnormalize(mpfr_set_q(l(), ql.var_, MPFR_RNDD), MPFR_RNDD);
+                                }
+                                else
+                                    l.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
+                            }
+                            else if (match[16].length() > 0) // hex
+                            {
+                                // number string
+                                std::string n_str = match[16].str();
+
+                                // compute precision and remove point
+                                int p = n_str.find('.');
+                                if (p >= 0)
+                                {
+                                    n_str.erase(p,1);
+                                    p = -(n_str.size() - p);
+                                }
+                                else
+                                {
+                                    p = 0;
+                                }
+
+                                p *= 4;
+
+                                // parse number as integer
+                                int i = mpz_set_str(zl.var_, n_str.c_str(), 16);
+
+                                // everything ok
+                                if (i == 0)
+                                {
+                                    // exponent (and precision)
+                                    if (match[17].length() > 0)
+                                    {
+                                        p += std::stoi(match[17].str());
+                                    }
+
+                                    mpz_var e;
+                                    mpz_ui_pow_ui(e.var_, 2, std::abs(p));
+
+                                    mpq_var exp;
+                                    mpq_set_z(exp.var_, e.var_);
+
+                                    // invert if exponent (and precision) is negative
+                                    if (p < 0)
+                                        mpq_inv(exp.var_, exp.var_);
+
+                                    mpq_set_z(ql.var_, zl.var_);
+                                    mpq_mul(ql.var_, ql.var_, exp.var_);
+
+                                    l.subnormalize(mpfr_set_q(l(), ql.var_, MPFR_RNDD), MPFR_RNDD);
+                                }
+                                else
+                                    l.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
+                            }
+                            else if (match[18].length() > 0) // rational
+                            {
+                                int i = mpq_set_str(ql.var_, (match[18].str() + "/" + match[19].str()).c_str(), 10);
+
+                                if (i == 0)
+                                    l.subnormalize(mpfr_set_q(l(), ql.var_, MPFR_RNDD), MPFR_RNDD);
+                                else
+                                    l.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
+                            }
+
+
+                            // upper bound
+
+                            // +inf or empty
+                            if (match[30].length() > 0 || match[22].length() == 0)
+                            {
+                                u.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
+                                dec = p1788::decoration::decoration::dac;
+                            }
+                            else  if (match[23].length() > 0) // int
+                            {
+                                int i = mpz_set_str(zu.var_, match[23].str().c_str(), 10);
+
+                                if (i == 0)
+                                {
+                                    mpq_set_z(qu.var_, zu.var_);
+                                    u.subnormalize(mpfr_set_z(u(), zu.var_, MPFR_RNDU), MPFR_RNDU);
+                                }
+                                else
+                                    u.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
+                            }
+                            else if (match[24].length() > 0) // float
+                            {
+                                // number string
+                                std::string n_str = match[24].str();
+
+                                // compute precision and remove point
+                                int p = n_str.find('.');
+                                if (p >= 0)
+                                {
+                                    n_str.erase(p,1);
+                                    p = -(n_str.size() - p);
+                                }
+                                else
+                                {
+                                    p = 0;
+                                }
+
+                                // parse number as integer
+                                int i = mpz_set_str(zu.var_, n_str.c_str(), 10);
+
+                                // everything ok
+                                if (i == 0)
+                                {
+                                    // exponent (and precision)
+                                    if (match[25].length() > 0)
+                                    {
+                                        p += std::stoi(match[25].str());
+                                    }
+
+                                    mpz_var e;
+                                    mpz_ui_pow_ui(e.var_, 10, std::abs(p));
+
+                                    mpq_var exp;
+                                    mpq_set_z(exp.var_, e.var_);
+
+                                    // invert if exponent (and precision) is negative
+                                    if (p < 0)
+                                        mpq_inv(exp.var_, exp.var_);
+
+                                    mpq_set_z(qu.var_, zu.var_);
+                                    mpq_mul(qu.var_, qu.var_, exp.var_);
+
+                                    u.subnormalize(mpfr_set_q(u(), qu.var_, MPFR_RNDU), MPFR_RNDU);
+                                }
+                                else
+                                    u.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
+                            }
+                            else if (match[26].length() > 0) // hex
+                            {
+                                // number string
+                                std::string n_str = match[26].str();
+
+                                // compute precision and remove point
+                                int p = n_str.find('.');
+                                if (p >= 0)
+                                {
+                                    n_str.erase(p,1);
+                                    p = -(n_str.size() - p);
+                                }
+                                else
+                                {
+                                    p = 0;
+                                }
+
+                                p *= 4;
+
+                                // parse number as integer
+                                int i = mpz_set_str(zu.var_, n_str.c_str(), 16);
+
+                                // everything ok
+                                if (i == 0)
+                                {
+                                    // exponent (and precision)
+                                    if (match[27].length() > 0)
+                                    {
+                                        p += std::stoi(match[27].str());
+                                    }
+
+                                    mpz_var e;
+                                    mpz_ui_pow_ui(e.var_, 2, std::abs(p));
+
+                                    mpq_var exp;
+                                    mpq_set_z(exp.var_, e.var_);
+
+                                    // invert if exponent (and precision) is negative
+                                    if (p < 0)
+                                        mpq_inv(exp.var_, exp.var_);
+
+                                    mpq_set_z(qu.var_, zu.var_);
+                                    mpq_mul(qu.var_, qu.var_, exp.var_);
+
+                                    u.subnormalize(mpfr_set_q(u(), qu.var_, MPFR_RNDU), MPFR_RNDU);
+                                }
+                                else
+                                    u.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
+                            }
+                            else if (match[28].length() > 0) // rational
+                            {
+                                int i = mpq_set_str(qu.var_, (match[28].str() + "/" + match[29].str()).c_str(), 10);
+
+                                if (i == 0)
+                                    u.subnormalize(mpfr_set_q(u(), qu.var_, MPFR_RNDU), MPFR_RNDU);
+                                else
+                                    u.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
+                            }
+
+
+                            if (mpfr_lessequal_p(l(),u())
+                                    && (
+                                        (match[20].length() > 0 || match[12].length() == 0)
+                                        || (match[30].length() > 0 || match[22].length() == 0)
+                                        || (mpq_cmp(ql.var_, qu.var_) <= 0)
+                                    )
+                               )
+                            {
                                 bare.first = l.template get<T>(MPFR_RNDD);
-                            }
-
-                            // +inf or empty upper bound
-                            if (match[15].length() > 0 || match[12].length() == 0)
-                            {
-                                bare.second = std::numeric_limits<T>::infinity();
-                                dec = p1788::decoration::decoration::dac;
-                            }
-                            else    // number upper bound
-                            {
-                                mpfr_var u;
-
-                                if (match[13].length() > 0) // rational
-                                {
-                                    mpfr_set_str(u(), match[13].str().c_str(), 0, MPFR_RNDN);
-
-                                    mpfr_var d;
-                                    mpfr_set_str(d(), match[14].str().c_str(), 0, MPFR_RNDN);
-
-                                    mpfr_div(u(), u(), d(), MPFR_RNDU);
-                                }
-                                else
-                                {
-                                    mpfr_set_str(u(), match[12].str().c_str(), 0, MPFR_RNDU);
-                                }
-
                                 bare.second = u.template get<T>(MPFR_RNDU);
                             }
                         }
@@ -743,7 +1163,6 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                                     return is;
                                 }
                             }
-
                         }
                     }
                 }
@@ -756,11 +1175,15 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                 // read string from stream
                 std::string input;
 
-                // read number
-                std::getline(is, input, '?');
 
-                if (is)
-                    input += '?';
+                // read number
+                for (auto c = is.peek(); is && (std::isdigit(c) || c == '.' || c == '?'); c = is.peek())
+                {
+                    input += is.get();
+
+                    if (c == '?')
+                        break;
+                }
 
                 try
                 {
@@ -812,153 +1235,220 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                     // [5]   direction downward
                     // [6]   exponent
                     static std::regex uncertain_regex(
-                        "([+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+)))"                // number
+                        "([+-]?(?:(?:[0-9]+[\\.]?[0-9]*)|(?:[0-9]*\\.[0-9]+)))"             // number
                         "\\?"                                                               // ?
                         "(?:(\\?)|([0-9]+))?"                                               // radius
                         "(?:(u|U)|(d|D))?"                                                  // direction
-                        "(?:[eE]([+-]?[0-9]+))?",                                               // exponent
-                        std::regex_constants::icase                                                     // ignore case
+                        "(?:[eE]([+-]?[0-9]+))?",                                           // exponent
+                        std::regex_constants::icase                                         // ignore case
                     );
 
                     std::smatch match;
                     if (std::regex_match(input, match, uncertain_regex))
                     {
-                        // temporary storage of lower and
+                        // temporary storage of lower and upper bound
                         representation bare;
 
-                        // upper bound for valid decorations
+                        // for valid decorations
                         p1788::decoration::decoration dec = p1788::decoration::decoration::com;
 
                         mpfr_var::setup();
-                        mpfr_var rad;
+
                         mpfr_var l;
                         mpfr_var u;
 
-                        // read number
-                        std::string n_str = match[1].str();
-                        mpfr_set_str(l(), n_str.c_str(), 0, MPFR_RNDD);
-                        mpfr_set_str(u(), n_str.c_str(), 0, MPFR_RNDU);
+                        // number string
+                        std::string m_str = match[1].str();
 
-                        // compute radius
-                        if (match[2].length() > 0)  // "?" => infinity
+                        // compute precision and remove point
+                        int p = m_str.find('.');
+                        if (p >= 0)
                         {
-                            rad.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
-                            dec = p1788::decoration::decoration::dac;
+                            m_str.erase(p,1);
+                            p = -(m_str.size() - p);
                         }
                         else
                         {
-                            // compute precision
-                            int p = n_str.find('.');
-                            int prec =  p >= 0 ?  -(n_str.size() - 1 - p) : 0;
-
-                            std::string r_str;
-
-                            if (match[3].length() > 0)      // ulps are specified
-                            {
-                                r_str = match[3].str();
-                            }
-                            else if (match[4].length() > 0 || match[5].length() > 0)    // direction is specified
-                            {
-                                r_str = "1";
-                            }
-                            else    // nothing is specified
-                            {
-                                r_str = "0.5";
-                            }
-
-                            r_str += "E";
-                            r_str += std::to_string(prec);
-
-                            mpfr_set_str(rad(), r_str.c_str(), 0, MPFR_RNDU);
+                            p = 0;
                         }
 
-                        // compute bounds
-                        if (match[4].length() > 0)  // upward
+                        // parse number as integer
+                        mpz_var m;
+                        int im = mpz_set_str(m.var_, m_str.c_str(), 10);
+
+                        mpz_var ulps;
+                        int iu = 0;
+
+                        // computing ulps
+                        if (match[3].length() > 0 )
+                            iu = mpz_set_str(ulps.var_, match[3].str().c_str(), 10);
+                        else
                         {
-                            mpfr_add(u(), u(), rad(), MPFR_RNDU);
-                        }
-                        else if (match[5].length() > 0) // downward
-                        {
-                            mpfr_sub(l(), l(), rad(), MPFR_RNDD);
-                        }
-                        else    // symmetric
-                        {
-                            mpfr_sub(l(), l(), rad(), MPFR_RNDD);
-                            mpfr_add(u(), u(), rad(), MPFR_RNDU);
-                        }
-
-                        bare.first = l.template get<T>(MPFR_RNDD);
-                        bare.second = u.template get<T>(MPFR_RNDU);
-
-                        // exponent
-                        if (match[6].length() > 0)
-                        {
-                            std::string exp_str = "1.0E";
-                            exp_str += match[6].str();
-
-                            mpfr_var el;
-                            mpfr_var eu;
-                            mpfr_set_str(el(), exp_str.c_str(), 0, MPFR_RNDD);
-                            mpfr_set_str(eu(), exp_str.c_str(), 0, MPFR_RNDU);
-
-                            representation exp(el.template get<T>(MPFR_RNDD), eu.template get<T>(MPFR_RNDU));
-
-                            bare = mul(bare, exp);
+                            // 1/2 ulp => m * 10 and ulps=5
+                            mpz_set_si(ulps.var_, 5);
+                            p--;
+                            mpz_mul_si(m.var_, m.var_, 10);
                         }
 
-
-                        // Check if bounds are valid
-                        if ((std::isnan(bare.first) && std::isnan(bare.second))
-                                || (bare.first <= bare.second
-                                    &&  bare.first != std::numeric_limits<T>::infinity()
-                                    && bare.second != -std::numeric_limits<T>::infinity()))
+                        // everything ok
+                        if (im == 0 && iu == 0)
                         {
-
-                            // check if it is necessary to read a decoration
-                            bool read_decoration = false;
-                            try
+                            // exponent (and precision)
+                            if (match[6].length() > 0)
                             {
-                                read_decoration = is && is.peek() == '_';
-                            }
-                            catch (std::ios_base::failure& e)
-                            {
-                                // rethrow exception if it is not an eof failure
-                                if (!is.eof())
-                                    throw;
+                                p += std::stoi(match[6].str());
                             }
 
-                            // default decoration
-                            if (!read_decoration)
+                            mpz_var e;
+                            mpz_ui_pow_ui(e.var_, 10, std::abs(p));
+
+                            mpq_var exp;
+                            mpq_set_z(exp.var_, e.var_);
+
+                            // invert if exponent (and precision) is negative
+                            if (p < 0)
+                                mpq_inv(exp.var_, exp.var_);
+
+
+                            // compute radius
+                            if (match[2].length() > 0)  // "?" => infinity
                             {
-                                // if is.peek() == '_' reached eof than reset state
-                                if (is.eof())
-                                    is.clear(std::ios_base::goodbit);
-
-                                x = dec == p1788::decoration::decoration::ill ? nai() : constructor_dec(bare);
-
-                                // everything was ok
-                                return is;
-                            }
-
-                            // read decoration
-                            if (is && dec != p1788::decoration::decoration::ill)
-                            {
-                                is.get();   // remove underscore
-
-                                p1788::decoration::decoration d;
-                                is >> d;
-
-                                if (is && d <= dec && d != p1788::decoration::decoration::ill)
+                                // compute bounds
+                                if (match[4].length() > 0)  // upward
                                 {
-                                    // create dec interval
-                                    // and adjust decoration in case of an overflow
-                                    x = constructor_dec(bare,
-                                                        std::isinf(bare.first) || std::isinf(bare.second) ?
-                                                        std::min(d, p1788::decoration::decoration::dac)
-                                                        : d);
+                                    mpq_var q;
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+                                    u.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
+                                }
+                                else if (match[5].length() > 0) // downward
+                                {
+                                    mpq_var q;
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    l.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+                                }
+                                else    // symmetric
+                                {
+                                    l.set(-std::numeric_limits<T>::infinity(), MPFR_RNDD);
+                                    u.set(std::numeric_limits<T>::infinity(), MPFR_RNDU);
+                                }
+
+                                dec = p1788::decoration::decoration::dac;
+                            }
+                            else
+                            {
+
+                                // compute bounds
+                                if (match[4].length() > 0)  // upward
+                                {
+                                    mpq_var q;
+
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+
+                                    mpz_add(m.var_, m.var_, ulps.var_);
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+                                }
+                                else if (match[5].length() > 0) // downward
+                                {
+                                    mpq_var q;
+
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+
+                                    mpz_sub(m.var_, m.var_, ulps.var_);
+                                    mpq_set_z(q.var_, m.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+                                }
+                                else    // symmetric
+                                {
+                                    mpz_var tmp;
+                                    mpq_var q;
+
+                                    mpz_sub(tmp.var_, m.var_, ulps.var_);
+                                    mpq_set_z(q.var_, tmp.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    l.subnormalize(mpfr_set_q(l(), q.var_, MPFR_RNDD), MPFR_RNDD);
+
+                                    mpz_add(tmp.var_, m.var_, ulps.var_);
+                                    mpq_set_z(q.var_, tmp.var_);
+                                    mpq_mul(q.var_, q.var_, exp.var_);
+
+                                    u.subnormalize(mpfr_set_q(u(), q.var_, MPFR_RNDU), MPFR_RNDU);
+                                }
+
+                            }
+
+                            bare.first = l.template get<T>(MPFR_RNDD);
+                            bare.second = u.template get<T>(MPFR_RNDU);
+
+                            // Check if bounds are valid
+                            if (bare.first <= bare.second
+                                    && bare.first != std::numeric_limits<T>::infinity()
+                                    && bare.second != -std::numeric_limits<T>::infinity())
+                            {
+
+                                // check if it is necessary to read a decoration
+                                bool read_decoration = false;
+                                try
+                                {
+                                    read_decoration = is && is.peek() == '_';
+                                }
+                                catch (std::ios_base::failure& e)
+                                {
+                                    // rethrow exception if it is not an eof failure
+                                    if (!is.eof())
+                                        throw;
+                                }
+
+                                // default decoration
+                                if (!read_decoration)
+                                {
+                                    // if is.peek() == '_' reached eof than reset state
+                                    if (is.eof())
+                                        is.clear(std::ios_base::goodbit);
+
+                                    x = dec == p1788::decoration::decoration::ill ? nai() : constructor_dec(bare);
 
                                     // everything was ok
                                     return is;
+                                }
+
+                                // read decoration
+                                if (is && dec != p1788::decoration::decoration::ill)
+                                {
+                                    is.get();   // remove underscore
+
+                                    p1788::decoration::decoration d;
+                                    is >> d;
+
+                                    if (is && d <= dec && d != p1788::decoration::decoration::ill)
+                                    {
+                                        // create dec interval
+                                        // and adjust decoration in case of an overflow
+                                        x = constructor_dec(bare,
+                                                            std::isinf(bare.first) || std::isinf(bare.second) ?
+                                                            std::min(d, p1788::decoration::decoration::dac)
+                                                            : d);
+
+                                        // everything was ok
+                                        return is;
+                                    }
                                 }
                             }
                         }

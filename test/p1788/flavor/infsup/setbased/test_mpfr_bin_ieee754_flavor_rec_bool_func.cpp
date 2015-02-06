@@ -98,14 +98,14 @@ BOOST_AUTO_TEST_CASE(minimal_is_common_dec_test)
     BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(5.0, 12.4), DEC::com)));
     BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-MAX_D, MAX_D), DEC::com)));
 
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(-27.0,-27.0), DEC::trv)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(-27.0, 0.0), DEC::def)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(0.0,0.0), DEC::dac)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(-0.0,0.0), DEC::def)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(0.0,-0.0), DEC::dac)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(5.0, 12.4), DEC::def)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(-MAX_D, MAX_D), DEC::trv)));
+    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-27.0,-27.0), DEC::trv)));
+    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-27.0, 0.0), DEC::def)));
+    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(0.0,0.0), DEC::dac)));
+    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)));
+    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-0.0,0.0), DEC::def)));
+    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(0.0,-0.0), DEC::dac)));
+    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(5.0, 12.4), DEC::def)));
+    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-MAX_D, MAX_D), DEC::trv)));
 
     BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(-INF_D,INF_D), DEC::dac)));
     BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(NaN_D, NaN_D), DEC::ill)));

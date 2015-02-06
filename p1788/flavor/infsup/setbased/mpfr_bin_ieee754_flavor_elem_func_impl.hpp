@@ -125,10 +125,10 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::neg(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
-    return is_nai(x) ? nai() : representation_dec(neg(x.first), x.second);
+    return representation_dec(neg(x.first), x.second);
 }
 
 // neg ( decorated interval ) mixed type
@@ -208,7 +208,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::add(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                 mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    if (!is_valid(x) || !is_valid(y))
+    if (!is_valid(x) || !is_valid(y) || is_nai(x) || is_nai(y))
         return nai();
 
     // compute bare result
@@ -312,7 +312,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::sub(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                 mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    if (!is_valid(x) || !is_valid(y))
+    if (!is_valid(x) || !is_valid(y) || is_nai(x) || is_nai(y))
         return nai();
 
     // compute bare result
@@ -531,7 +531,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::mul(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                 mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    if (!is_valid(x) || !is_valid(y))
+    if (!is_valid(x) || !is_valid(y) || is_nai(x) || is_nai(y))
         return nai();
 
     // compute bare result
@@ -748,7 +748,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::div(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                 mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    if (!is_valid(x) || !is_valid(y))
+    if (!is_valid(x) || !is_valid(y) || is_nai(x) || is_nai(y))
         return nai();
 
     // compute bare result
@@ -832,7 +832,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::recip(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -930,7 +930,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -1030,7 +1030,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::sqrt(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -1282,7 +1282,8 @@ mpfr_bin_ieee754_flavor<T>::fma(mpfr_bin_ieee754_flavor<T>::representation_dec c
                                 mpfr_bin_ieee754_flavor<T>::representation_dec const& y,
                                 mpfr_bin_ieee754_flavor<T>::representation_dec const& z)
 {
-    if (!is_valid(x) || !is_valid(y) || !is_valid(z))
+    if (!is_valid(x) || !is_valid(y) || !is_valid(z)
+            || is_nai(x) || is_nai(y) || is_nai(z))
         return nai();
 
     // compute bare result
@@ -1471,7 +1472,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::pown(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                  int p)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -1664,7 +1665,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::pow(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                 mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    if (!is_valid(x) || !is_valid(y))
+    if (!is_valid(x) || !is_valid(y) || is_nai(x) || is_nai(y))
         return nai();
 
     // compute bare result
@@ -1757,7 +1758,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::exp(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -1845,7 +1846,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::exp2(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -1933,7 +1934,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::exp10(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -2030,7 +2031,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::log(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -2127,7 +2128,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::log2(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -2223,7 +2224,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::log10(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -2383,7 +2384,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::sin(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -2542,7 +2543,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::cos(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -2644,7 +2645,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::tan(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     if (is_empty(x))
@@ -2757,7 +2758,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::asin(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -2852,7 +2853,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::acos(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -2942,7 +2943,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::atan(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3060,7 +3061,7 @@ mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation con
             else
                 l.subnormalize(mpfr_atan2(l(), yu(), xl(), MPFR_RNDD), MPFR_RNDD);
 
-                u.subnormalize(mpfr_atan2(u(), yl(), xu(), MPFR_RNDU), MPFR_RNDU);
+            u.subnormalize(mpfr_atan2(u(), yl(), xu(), MPFR_RNDU), MPFR_RNDU);
         }
         else
         {
@@ -3146,7 +3147,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation_dec const& y,
                                   mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(y) || !is_valid(x))
+    if (!is_valid(y) || !is_valid(x) || is_nai(y) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3240,7 +3241,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::sinh(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3338,7 +3339,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::cosh(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3427,7 +3428,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::tanh(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3515,7 +3516,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::asinh(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3604,7 +3605,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::acosh(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3693,7 +3694,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::atanh(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3775,7 +3776,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::sign(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3785,8 +3786,9 @@ mpfr_bin_ieee754_flavor<T>::sign(mpfr_bin_ieee754_flavor<T>::representation_dec 
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare) ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            is_member(0.0, x) ? p1788::decoration::decoration::dac :
+                                            p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -3857,7 +3859,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::ceil(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3867,8 +3869,9 @@ mpfr_bin_ieee754_flavor<T>::ceil(mpfr_bin_ieee754_flavor<T>::representation_dec 
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare) ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            x.first.second == bare.second ? p1788::decoration::decoration::dac :
+                                            p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -3938,7 +3941,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::floor(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -3948,8 +3951,9 @@ mpfr_bin_ieee754_flavor<T>::floor(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare) ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            x.first.first == bare.first ? p1788::decoration::decoration::dac :
+                                            p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -4019,7 +4023,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::trunc(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -4029,8 +4033,10 @@ mpfr_bin_ieee754_flavor<T>::trunc(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare) ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            (x.first.first != 0.0 && x.first.first == bare.first)
+                                            || (x.first.second != 0.0 && x.first.second == bare.second) ? p1788::decoration::decoration::dac :
+                                            p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -4068,7 +4074,6 @@ mpfr_bin_ieee754_flavor<T>::round_ties_to_even(mpfr_bin_ieee754_flavor<T>::repre
     if (!is_valid(x) || is_empty(x))
         return empty();
 
-    // TODO wirklich ueber fesetround
     class rnd_controll
     {
         int rnd_;
@@ -4116,7 +4121,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::round_ties_to_even(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -4126,8 +4131,10 @@ mpfr_bin_ieee754_flavor<T>::round_ties_to_even(mpfr_bin_ieee754_flavor<T>::repre
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare) ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            std::abs(x.first.first) - std::trunc(std::abs(x.first.first)) == 0.5       // if x == 0.5 => trunc(x) == 0.0 => exact
+                                            || std::abs(x.first.second) - std::trunc(std::abs(x.first.second)) == 0.5  // if x > 1  => trunc(x) > 1 => tunc(x) <= x <= 2 trunc(x) => exact
+                                            ? p1788::decoration::decoration::dac : p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -4197,7 +4204,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::round_ties_to_away(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -4207,8 +4214,10 @@ mpfr_bin_ieee754_flavor<T>::round_ties_to_away(mpfr_bin_ieee754_flavor<T>::repre
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_singleton(bare) ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::def);
+                                            !is_singleton(bare) ? p1788::decoration::decoration::def :
+                                            std::abs(x.first.first) - std::trunc(std::abs(x.first.first)) == 0.5      // if x == 0.5 => trunc(x) == 0.0 => exact
+                                            || std::abs(x.first.second) - std::trunc(std::abs(x.first.second)) == 0.5 // if x > 1  => trunc(x) > 1 => tunc(x) <= x <= 2 * trunc(x) => exact
+                                            ? p1788::decoration::decoration::dac : p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -4284,7 +4293,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::abs(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     // compute bare result
@@ -4370,7 +4379,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::min(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                 mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    if (!is_valid(x) || !is_valid(y))
+    if (!is_valid(x) || !is_valid(y) || is_nai(x) || is_nai(y))
         return nai();
 
     // compute bare result
@@ -4460,7 +4469,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::max(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                 mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    if (!is_valid(x) || !is_valid(y))
+    if (!is_valid(x) || !is_valid(y) || is_nai(x) || is_nai(y))
         return nai();
 
     // compute bare result

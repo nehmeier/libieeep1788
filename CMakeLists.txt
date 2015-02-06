@@ -39,7 +39,7 @@ project(libieeep1788)
 
 set (P1788_VERSION_MAJOR 0)
 set (P1788_VERSION_MINOR 1)
-set (P1788_VERSION_PATCH 1)
+set (P1788_VERSION_PATCH 2)
 
 configure_file (
   "${PROJECT_SOURCE_DIR}/p1788/version.hpp.in"

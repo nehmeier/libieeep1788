@@ -1,6 +1,11 @@
 == CHANGES ==
 
 
+0.1.2
+  - fixes issues #6, #8, #9: problems with text to interval
+  - fixes issue #7: decoration of sign- and rounding-functions
+  - fixes issue #10: is_common on decorated intervals must ignore decoration
+
 0.1.1
   - ODR problems fixed
   - inlined two_sum
