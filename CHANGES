@@ -1,5 +1,6 @@
 == CHANGES ==
 
+  - fixes issue #15: decorations of cancel_plus and cancel_minus
 
 0.1.2
   - fixes issues #6, #8, #9: problems with text to interval
