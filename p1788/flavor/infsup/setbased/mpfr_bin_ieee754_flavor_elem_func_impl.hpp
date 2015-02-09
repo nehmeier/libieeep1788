@@ -3054,13 +3054,14 @@ mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation con
         {
             if (y.second == 0.0)
             {
-                l.subnormalize(mpfr_const_pi(l(), MPFR_RNDU), MPFR_RNDU);   // pi
-                l.subnormalize(mpfr_neg(l(), l(), MPFR_RNDD), MPFR_RNDD);   // -pi
+                u.subnormalize(mpfr_const_pi(u(), MPFR_RNDU), MPFR_RNDU);   // pi
+                l.subnormalize(mpfr_neg(l(), u(), MPFR_RNDD), MPFR_RNDD);   // -pi
             }
             else
+            {
                 l.subnormalize(mpfr_atan2(l(), yu(), xl(), MPFR_RNDD), MPFR_RNDD);
-
-            u.subnormalize(mpfr_atan2(u(), yl(), xu(), MPFR_RNDU), MPFR_RNDU);
+                u.subnormalize(mpfr_atan2(u(), yl(), xu(), MPFR_RNDU), MPFR_RNDU);
+            }
         }
         else
         {
