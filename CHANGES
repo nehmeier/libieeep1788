@@ -1,6 +1,7 @@
 == CHANGES ==
 
   - fixes issue #15: decorations of cancel_plus and cancel_minus
+  - fixes issue #13: decorations of pow
   - fixes reopened issue #8: exponent field required for hex literals
   - fixes reopened issue #9: problem with signed uncertain form
 
