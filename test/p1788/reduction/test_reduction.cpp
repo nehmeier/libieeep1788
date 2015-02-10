@@ -92,6 +92,8 @@ BOOST_AUTO_TEST_CASE(minimal_dot_test)
     BOOST_CHECK_EQUAL( p1788::reduction::dot(a, a + 3, b, p1788::reduction::rnd_mode::to_nearest), 14.0 );
     BOOST_CHECK_EQUAL( p1788::reduction::dot({1.0,2.0,3.0}, {1.0,2.0,3.0}, p1788::reduction::rnd_mode::to_nearest), 14.0 );
 
+    BOOST_CHECK_EQUAL( p1788::reduction::dot({std::stod("0x10000000000001p0"), std::stod("0x1p104")}, {std::stod("0x0fffffffffffffp0"), -1.0}, p1788::reduction::rnd_mode::to_nearest), -1.0 );
+
     BOOST_CHECK( std::isnan( p1788::reduction::dot({1.0,2.0,NaN_D,3.0}, {1.0,2.0,3.0,4.0}, p1788::reduction::rnd_mode::to_nearest) ) );
     BOOST_CHECK( std::isnan( p1788::reduction::dot({1.0,2.0,3.0,4.0}, {1.0,2.0,NaN_D,3.0}, p1788::reduction::rnd_mode::to_nearest) ) );
 
