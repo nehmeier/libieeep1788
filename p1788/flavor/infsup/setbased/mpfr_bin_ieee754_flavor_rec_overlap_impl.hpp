@@ -167,24 +167,9 @@ p1788::overlapping::overlapping_state
 mpfr_bin_ieee754_flavor<T>::overlap(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                     mpfr_bin_ieee754_flavor<T>::representation_dec_type<T_> const& y)
 {
-    if (!is_valid(x) || !mpfr_bin_ieee754_flavor<T_>::is_valid(y))
+    if (!is_valid(x) || !mpfr_bin_ieee754_flavor<T_>::is_valid(y) || is_nai(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(y))
         return p1788::overlapping::overlapping_state::undefined;
 
-    if (is_nai(x))
-    {
-        if (mpfr_bin_ieee754_flavor<T_>::is_nai(y))
-        {
-            return p1788::overlapping::overlapping_state::both_nai;
-        }
-        else
-        {
-            return p1788::overlapping::overlapping_state::first_nai;
-        }
-    }
-    if (mpfr_bin_ieee754_flavor<T_>::is_nai(y))
-    {
-        return p1788::overlapping::overlapping_state::second_nai;
-    }
 
     // call bare mixed type version
     return overlap(x.first, y.first);

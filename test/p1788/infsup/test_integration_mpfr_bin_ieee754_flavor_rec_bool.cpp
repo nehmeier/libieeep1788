@@ -38,27 +38,27 @@ using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased:
 
 typedef p1788::decoration::decoration DEC;
 
-BOOST_AUTO_TEST_CASE(integration_is_common_test)
+BOOST_AUTO_TEST_CASE(integration_is_common_interval_test)
 {
-    BOOST_CHECK(!is_common(I<double>::empty()));
-    BOOST_CHECK(is_common(I<double>(1.0,2.0)));
-    BOOST_CHECK(!is_common(I<double>::entire()));
-    BOOST_CHECK(!I<double>::is_common(I<double>::empty()));
-    BOOST_CHECK(I<double>::is_common(I<double>(1.0,2.0)));
-    BOOST_CHECK(!I<double>::is_common(I<double>::entire()));
+    BOOST_CHECK(!is_common_interval(I<double>::empty()));
+    BOOST_CHECK(is_common_interval(I<double>(1.0,2.0)));
+    BOOST_CHECK(!is_common_interval(I<double>::entire()));
+    BOOST_CHECK(!I<double>::is_common_interval(I<double>::empty()));
+    BOOST_CHECK(I<double>::is_common_interval(I<double>(1.0,2.0)));
+    BOOST_CHECK(!I<double>::is_common_interval(I<double>::entire()));
 
-    BOOST_CHECK(!is_common(DI<double>::empty()));
-    BOOST_CHECK(!is_common(DI<double>::nai()));
-    BOOST_CHECK(is_common(DI<double>(-5.7,8.3)));
-    BOOST_CHECK(is_common(DI<double>(-5.7,8.3, DEC::com)));
-    BOOST_CHECK(is_common(DI<double>(-5.7,8.3, DEC::dac)));
-    BOOST_CHECK(!is_common(DI<double>::entire()));
-    BOOST_CHECK(!DI<double>::is_common(DI<double>::empty()));
-    BOOST_CHECK(!DI<double>::is_common(DI<double>::nai()));
-    BOOST_CHECK(DI<double>::is_common(DI<double>(-5.7,8.3)));
-    BOOST_CHECK(DI<double>::is_common(DI<double>(-5.7,8.3, DEC::com)));
-    BOOST_CHECK(DI<double>::is_common(DI<double>(-5.7,8.3, DEC::dac)));
-    BOOST_CHECK(!DI<double>::is_common(DI<double>::entire()));
+    BOOST_CHECK(!is_common_interval(DI<double>::empty()));
+    BOOST_CHECK(!is_common_interval(DI<double>::nai()));
+    BOOST_CHECK(is_common_interval(DI<double>(-5.7,8.3)));
+    BOOST_CHECK(is_common_interval(DI<double>(-5.7,8.3, DEC::com)));
+    BOOST_CHECK(is_common_interval(DI<double>(-5.7,8.3, DEC::dac)));
+    BOOST_CHECK(!is_common_interval(DI<double>::entire()));
+    BOOST_CHECK(!DI<double>::is_common_interval(DI<double>::empty()));
+    BOOST_CHECK(!DI<double>::is_common_interval(DI<double>::nai()));
+    BOOST_CHECK(DI<double>::is_common_interval(DI<double>(-5.7,8.3)));
+    BOOST_CHECK(DI<double>::is_common_interval(DI<double>(-5.7,8.3, DEC::com)));
+    BOOST_CHECK(DI<double>::is_common_interval(DI<double>(-5.7,8.3, DEC::dac)));
+    BOOST_CHECK(!DI<double>::is_common_interval(DI<double>::entire()));
 }
 
 BOOST_AUTO_TEST_CASE(integration_is_singleton_test)

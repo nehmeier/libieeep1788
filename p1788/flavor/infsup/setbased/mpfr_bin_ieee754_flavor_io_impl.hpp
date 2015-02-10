@@ -45,7 +45,7 @@ namespace setbased
 template<typename T>
 template< typename CharT, typename Traits >
 std::basic_ostream<CharT, Traits>&
-mpfr_bin_ieee754_flavor<T>::operator_output(std::basic_ostream<CharT, Traits>& os,
+mpfr_bin_ieee754_flavor<T>::operator_interval_to_text(std::basic_ostream<CharT, Traits>& os,
         mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
     if (!is_valid(x))
@@ -409,7 +409,7 @@ mpfr_bin_ieee754_flavor<T>::operator_output(std::basic_ostream<CharT, Traits>& o
 template<typename T>
 template< typename CharT, typename Traits >
 std::basic_ostream<CharT, Traits>&
-mpfr_bin_ieee754_flavor<T>::operator_output(std::basic_ostream<CharT, Traits>& os,
+mpfr_bin_ieee754_flavor<T>::operator_interval_to_text(std::basic_ostream<CharT, Traits>& os,
         mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
     if (!is_valid(x))
@@ -447,7 +447,7 @@ mpfr_bin_ieee754_flavor<T>::operator_output(std::basic_ostream<CharT, Traits>& o
     if (is_empty(x))
     {
         // bare interval
-        operator_output(os, x.first);
+        operator_interval_to_text(os, x.first);
         return os;
     }
 
@@ -478,7 +478,7 @@ mpfr_bin_ieee754_flavor<T>::operator_output(std::basic_ostream<CharT, Traits>& o
     } swh(os, buf.str().size());
 
     // generate bare output
-    operator_output(os, x.first);
+    operator_interval_to_text(os, x.first);
 
     // append decoration
     return os << buf.str();
@@ -488,15 +488,15 @@ mpfr_bin_ieee754_flavor<T>::operator_output(std::basic_ostream<CharT, Traits>& o
 template<typename T>
 template< typename CharT, typename Traits >
 std::basic_istream<CharT, Traits>&
-mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is,
+mpfr_bin_ieee754_flavor<T>::operator_text_to_interval(std::basic_istream<CharT, Traits>& is,
         mpfr_bin_ieee754_flavor<T>::representation& x)
 {
     representation_dec x_dec;
 
-    operator_input(is, x_dec);
+    operator_text_to_interval(is, x_dec);
 
     if (is)
-        x = constructor(x_dec);
+        x = interval_part(x_dec);
 
     return is;
 }
@@ -504,7 +504,7 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
 template<typename T>
 template< typename CharT, typename Traits >
 std::basic_istream<CharT, Traits>&
-mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is,
+mpfr_bin_ieee754_flavor<T>::operator_text_to_interval(std::basic_istream<CharT, Traits>& is,
         mpfr_bin_ieee754_flavor<T>::representation_dec& x)
 {
 
@@ -1080,7 +1080,7 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                                 if (is.eof())
                                     is.clear(std::ios_base::goodbit);
 
-                                x = dec == p1788::decoration::decoration::ill ? nai() : constructor_dec(bare);
+                                x = dec == p1788::decoration::decoration::ill ? nai() : new_dec(bare);
 
                                 // everything was ok
                                 return is;
@@ -1098,7 +1098,7 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                                 {
                                     // create dec interval
                                     // and adjust decoration in case of an overflow
-                                    x = constructor_dec(bare,
+                                    x = set_dec(bare,
                                                         std::isinf(bare.first) || std::isinf(bare.second) ?
                                                         std::min(d, p1788::decoration::decoration::dac)
                                                         : d);
@@ -1367,7 +1367,7 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                                     if (is.eof())
                                         is.clear(std::ios_base::goodbit);
 
-                                    x = dec == p1788::decoration::decoration::ill ? nai() : constructor_dec(bare);
+                                    x = dec == p1788::decoration::decoration::ill ? nai() : new_dec(bare);
 
                                     // everything was ok
                                     return is;
@@ -1385,7 +1385,7 @@ mpfr_bin_ieee754_flavor<T>::operator_input(std::basic_istream<CharT, Traits>& is
                                     {
                                         // create dec interval
                                         // and adjust decoration in case of an overflow
-                                        x = constructor_dec(bare,
+                                        x = set_dec(bare,
                                                             std::isinf(bare.first) || std::isinf(bare.second) ?
                                                             std::min(d, p1788::decoration::decoration::dac)
                                                             : d);

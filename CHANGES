@@ -1,5 +1,7 @@
 == CHANGES ==
 
+  - refactoring backend / flavor
+  - implemented recommendation #17: members of overlapping_state
   - fixes issue #15: decorations of cancel_plus and cancel_minus
   - fixes issue #14: atan([-y,0],[-x,0])
   - fixes issue #13: decorations of pow

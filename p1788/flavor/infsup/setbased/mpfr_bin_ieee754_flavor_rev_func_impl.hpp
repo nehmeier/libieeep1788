@@ -52,7 +52,7 @@ mpfr_bin_ieee754_flavor<T>::sqr_rev(mpfr_bin_ieee754_flavor<T>::representation c
     representation p = sqrt(c);
     representation n = neg(p);
 
-    return hull(intersect(p, x), intersect(n, x));
+    return convex_hull(intersection(p, x), intersection(n, x));
 }
 
 // bare mixed type version
@@ -90,7 +90,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::sqr_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& c,
                                     mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(c) || !is_valid(x))
+    if (!is_valid(c) || !is_valid(x) || is_nai(c) || is_nai(x))
         return nai();
 
     // call bare version and set decoration to trv
@@ -107,7 +107,8 @@ mpfr_bin_ieee754_flavor<T>::sqr_rev(mpfr_bin_ieee754_flavor<T>::representation_d
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+        || mpfr_bin_ieee754_flavor<T1>::is_nai(c) || mpfr_bin_ieee754_flavor<T2>::is_nai(x))
         return nai();
 
     // call bare mixedtype version and set decoration to trv
@@ -174,7 +175,7 @@ mpfr_bin_ieee754_flavor<T>::abs_rev(mpfr_bin_ieee754_flavor<T>::representation c
     representation p(std::max(0.0, c.first), c.second);
     representation n = neg(p);
 
-    return hull(intersect(p, x), intersect(n, x));
+    return convex_hull(intersection(p, x), intersection(n, x));
 }
 
 // bare mixed type version
@@ -212,7 +213,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::abs_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& c,
                                     mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(c) || !is_valid(x))
+    if (!is_valid(c) || !is_valid(x) || is_nai(c) || is_nai(x))
         return nai();
 
     // call bare version and set decoration to trv
@@ -229,7 +230,8 @@ mpfr_bin_ieee754_flavor<T>::abs_rev(mpfr_bin_ieee754_flavor<T>::representation_d
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+        || mpfr_bin_ieee754_flavor<T1>::is_nai(c) || mpfr_bin_ieee754_flavor<T2>::is_nai(x))
         return nai();
 
     // call bare mixedtype version and set decoration to trv
@@ -300,7 +302,7 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
     }
 
     if (p == 1)
-        return intersect(x, c);
+        return intersection(x, c);
 
 
     // even
@@ -322,8 +324,8 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
             cu.subnormalize(mpfr_root(cu(), cu(), -p, MPFR_RNDU), MPFR_RNDU);
             cu.subnormalize(mpfr_si_div(cu(), 1, cu(), MPFR_RNDD), MPFR_RNDD);  // 1 / root(upper, abs(p))
 
-            return hull(intersect(x, representation(-cl.template get<T>(MPFR_RNDU), -cu.template get<T>(MPFR_RNDD))),
-                        intersect(x, representation(cu.template get<T>(MPFR_RNDD), cl.template get<T>(MPFR_RNDU))));
+            return convex_hull(intersection(x, representation(-cl.template get<T>(MPFR_RNDU), -cu.template get<T>(MPFR_RNDD))),
+                        intersection(x, representation(cu.template get<T>(MPFR_RNDD), cl.template get<T>(MPFR_RNDU))));
         }
         else    // positive even
         {
@@ -338,7 +340,7 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
 
                 cu.subnormalize(mpfr_root(cu(), cu(), p, MPFR_RNDU), MPFR_RNDU);
 
-                return intersect(x, representation(-cu.template get<T>(MPFR_RNDU), cu.template get<T>(MPFR_RNDU)));
+                return intersection(x, representation(-cu.template get<T>(MPFR_RNDU), cu.template get<T>(MPFR_RNDU)));
             }
 
             mpfr_var cl(c.first, MPFR_RNDD);
@@ -347,8 +349,8 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
             cl.subnormalize(mpfr_root(cl(), cl(), p, MPFR_RNDD), MPFR_RNDD);
             cu.subnormalize(mpfr_root(cu(), cu(), p, MPFR_RNDU), MPFR_RNDU);
 
-            return hull(intersect(x, representation(-cu.template get<T>(MPFR_RNDU), -cl.template get<T>(MPFR_RNDD))),
-                        intersect(x, representation(cl.template get<T>(MPFR_RNDD), cu.template get<T>(MPFR_RNDU))));
+            return convex_hull(intersection(x, representation(-cu.template get<T>(MPFR_RNDU), -cl.template get<T>(MPFR_RNDD))),
+                        intersection(x, representation(cl.template get<T>(MPFR_RNDD), cu.template get<T>(MPFR_RNDU))));
         }
     }
     else    // odd
@@ -378,7 +380,7 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
                     cu.subnormalize(mpfr_si_div(cu(), 1, cu(), MPFR_RNDD), MPFR_RNDD);  // 1 / root(upper, abs(p))
                 }
 
-                return intersect(x, representation(c.second != 0.0 ? cu.template get<T>(MPFR_RNDD) : -std::numeric_limits<T>::infinity(),
+                return intersection(x, representation(c.second != 0.0 ? cu.template get<T>(MPFR_RNDD) : -std::numeric_limits<T>::infinity(),
                                                    c.first != 0.0 ? cl.template get<T>(MPFR_RNDU) : std::numeric_limits<T>::infinity()));
             }
             else
@@ -394,8 +396,8 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
                 cu.subnormalize(mpfr_root(cu(), cu(), -p, MPFR_RNDU), MPFR_RNDU);
                 cu.subnormalize(mpfr_si_div(cu(), 1, cu(), MPFR_RNDD), MPFR_RNDD);  // 1 / root(upper, abs(p))
 
-                return hull(intersect(x, representation(-std::numeric_limits<T>::infinity(), cl.template get<T>(MPFR_RNDU))),
-                            intersect(x, representation(cu.template get<T>(MPFR_RNDD), std::numeric_limits<T>::infinity())));
+                return convex_hull(intersection(x, representation(-std::numeric_limits<T>::infinity(), cl.template get<T>(MPFR_RNDU))),
+                            intersection(x, representation(cu.template get<T>(MPFR_RNDD), std::numeric_limits<T>::infinity())));
             }
         }
         else     // positive odd
@@ -408,7 +410,7 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
             cl.subnormalize(mpfr_root(cl(), cl(), p, MPFR_RNDD), MPFR_RNDD);
             cu.subnormalize(mpfr_root(cu(), cu(), p, MPFR_RNDU), MPFR_RNDU);
 
-            return intersect(x, representation(cl.template get<T>(MPFR_RNDD), cu.template get<T>(MPFR_RNDU)));
+            return intersection(x, representation(cl.template get<T>(MPFR_RNDD), cu.template get<T>(MPFR_RNDU)));
         }
     }
 }
@@ -451,7 +453,7 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation_
                                      mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                      int p)
 {
-    if (!is_valid(c) || !is_valid(x))
+    if (!is_valid(c) || !is_valid(x) || is_nai(c) || is_nai(x))
         return nai();
 
     // call bare version and set decoration to trv
@@ -469,7 +471,8 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation_
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+        || mpfr_bin_ieee754_flavor<T1>::is_nai(c) || mpfr_bin_ieee754_flavor<T2>::is_nai(x))
         return nai();
 
     // call bare mixedtype version and set decoration to trv
@@ -531,14 +534,14 @@ mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation c
     if (!is_valid(c) || !is_valid(x) || is_empty(x))
         return empty();
 
-    representation cc = intersect(c, representation(-1.0, 1.0));
+    representation cc = intersection(c, representation(-1.0, 1.0));
 
     // c is disjoint with [-1,1]
     if (is_empty(cc))
         return cc;
 
     // c contains the whole range [-1,1]
-    if (is_equal(cc, representation(-1.0, 1.0)))
+    if (equal(cc, representation(-1.0, 1.0)))
         return x;
 
     mpfr_var::setup();
@@ -607,7 +610,7 @@ mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation c
                 lbox.second = -ru.template get<T>(MPFR_RNDU);
             }
 
-            lbox = intersect(lbox, x);
+            lbox = intersection(lbox, x);
         }
     }
 
@@ -655,11 +658,11 @@ mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation c
                 rbox.second = -ru.template get<T>(MPFR_RNDU);
             }
 
-            rbox = intersect(rbox, x);
+            rbox = intersection(rbox, x);
         }
     }
 
-    return hull(lbox, rbox);
+    return convex_hull(lbox, rbox);
 }
 
 // bare mixed type version
@@ -697,7 +700,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& c,
                                     mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(c) || !is_valid(x))
+    if (!is_valid(c) || !is_valid(x) || is_nai(c) || is_nai(x))
         return nai();
 
     // call bare version and set decoration to trv
@@ -714,7 +717,8 @@ mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation_d
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+        || mpfr_bin_ieee754_flavor<T1>::is_nai(c) || mpfr_bin_ieee754_flavor<T2>::is_nai(x))
         return nai();
 
     // call bare mixedtype version and set decoration to trv
@@ -777,14 +781,14 @@ mpfr_bin_ieee754_flavor<T>::cos_rev(mpfr_bin_ieee754_flavor<T>::representation c
     if (!is_valid(c) || !is_valid(x) || is_empty(x))
         return empty();
 
-    representation cc = intersect(c, representation(-1.0, 1.0));
+    representation cc = intersection(c, representation(-1.0, 1.0));
 
     // c is disjoint with [-1,1]
     if (is_empty(cc))
         return cc;
 
     // c contains the whole range [-1,1]
-    if (is_equal(cc, representation(-1.0, 1.0)))
+    if (equal(cc, representation(-1.0, 1.0)))
         return x;
 
     mpfr_var::setup();
@@ -853,7 +857,7 @@ mpfr_bin_ieee754_flavor<T>::cos_rev(mpfr_bin_ieee754_flavor<T>::representation c
                 lbox.second = -ru.template get<T>(MPFR_RNDU);
             }
 
-            lbox = intersect(lbox, x);
+            lbox = intersection(lbox, x);
         }
     }
 
@@ -901,11 +905,11 @@ mpfr_bin_ieee754_flavor<T>::cos_rev(mpfr_bin_ieee754_flavor<T>::representation c
                 rbox.second = -ru.template get<T>(MPFR_RNDU);
             }
 
-            rbox = intersect(rbox, x);
+            rbox = intersection(rbox, x);
         }
     }
 
-    return hull(lbox, rbox);
+    return convex_hull(lbox, rbox);
 }
 
 // bare mixed type version
@@ -943,7 +947,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::cos_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& c,
                                     mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(c) || !is_valid(x))
+    if (!is_valid(c) || !is_valid(x) || is_nai(c) || is_nai(x))
         return nai();
 
     // call bare version and set decoration to trv
@@ -960,7 +964,8 @@ mpfr_bin_ieee754_flavor<T>::cos_rev(mpfr_bin_ieee754_flavor<T>::representation_d
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+        || mpfr_bin_ieee754_flavor<T1>::is_nai(c) || mpfr_bin_ieee754_flavor<T2>::is_nai(x))
         return nai();
 
     // call bare mixedtype version and set decoration to trv
@@ -1075,7 +1080,7 @@ mpfr_bin_ieee754_flavor<T>::tan_rev(mpfr_bin_ieee754_flavor<T>::representation c
             lbox.first = rl.template get<T>(MPFR_RNDD);
             lbox.second = ru.template get<T>(MPFR_RNDU);
 
-            lbox = intersect(lbox, x);
+            lbox = intersection(lbox, x);
         }
     }
 
@@ -1111,11 +1116,11 @@ mpfr_bin_ieee754_flavor<T>::tan_rev(mpfr_bin_ieee754_flavor<T>::representation c
             rbox.first = rl.template get<T>(MPFR_RNDD);
             rbox.second = ru.template get<T>(MPFR_RNDU);
 
-            rbox = intersect(rbox, x);
+            rbox = intersection(rbox, x);
         }
     }
 
-    return hull(lbox, rbox);
+    return convex_hull(lbox, rbox);
 }
 
 // bare mixed type version
@@ -1153,7 +1158,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::tan_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& c,
                                     mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(c) || !is_valid(x))
+    if (!is_valid(c) || !is_valid(x) || is_nai(c) || is_nai(x))
         return nai();
 
     // call bare version and set decoration to trv
@@ -1170,7 +1175,8 @@ mpfr_bin_ieee754_flavor<T>::tan_rev(mpfr_bin_ieee754_flavor<T>::representation_d
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+        || mpfr_bin_ieee754_flavor<T1>::is_nai(c) || mpfr_bin_ieee754_flavor<T2>::is_nai(x))
         return nai();
 
     // call bare mixedtype version and set decoration to trv
@@ -1233,7 +1239,7 @@ mpfr_bin_ieee754_flavor<T>::cosh_rev(mpfr_bin_ieee754_flavor<T>::representation 
     representation p = acosh(c);
     representation n = neg(p);
 
-    return hull(intersect(p, x), intersect(n, x));
+    return convex_hull(intersection(p, x), intersection(n, x));
 }
 
 // bare mixed type version
@@ -1271,7 +1277,7 @@ typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::cosh_rev(mpfr_bin_ieee754_flavor<T>::representation_dec const& c,
                                      mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(c) || !is_valid(x))
+    if (!is_valid(c) || !is_valid(x) || is_nai(c) || is_nai(x))
         return nai();
 
     // call bare version and set decoration to trv
@@ -1288,7 +1294,8 @@ mpfr_bin_ieee754_flavor<T>::cosh_rev(mpfr_bin_ieee754_flavor<T>::representation_
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(c) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+        || mpfr_bin_ieee754_flavor<T1>::is_nai(c) || mpfr_bin_ieee754_flavor<T2>::is_nai(x))
         return nai();
 
     // call bare mixedtype version and set decoration to trv
@@ -1353,7 +1360,7 @@ mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation c
 
     auto tmp = mul_rev_to_pair(b, c);
 
-    return hull(intersect(tmp.first, x), intersect(tmp.second, x));
+    return convex_hull(intersection(tmp.first, x), intersection(tmp.second, x));
 }
 
 // bare mixed type version

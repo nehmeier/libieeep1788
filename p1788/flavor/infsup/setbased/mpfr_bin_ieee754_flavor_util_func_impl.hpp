@@ -106,6 +106,9 @@ mpfr_bin_ieee754_flavor<T>::convert_hull(representation_dec_type<T_> const& x)
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
+    if (mpfr_bin_ieee754_flavor<T_>::is_nai(x))
+        return nai();
+
     representation bare(convert_rndd(x.first.first), convert_rndu(x.first.second));
 
     if (x.second == p1788::decoration::decoration::com

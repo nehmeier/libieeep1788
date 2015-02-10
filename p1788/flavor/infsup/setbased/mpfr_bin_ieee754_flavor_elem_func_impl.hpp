@@ -71,7 +71,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::pos(mpfr_bin_ieee754_flavor<T>::representation_dec const& x)
 {
-    if (!is_valid(x))
+    if (!is_valid(x) || is_nai(x))
         return nai();
 
     return x;
@@ -85,7 +85,7 @@ mpfr_bin_ieee754_flavor<T>::pos(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     return convert_hull(x);
@@ -139,7 +139,7 @@ mpfr_bin_ieee754_flavor<T>::neg(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     return convert_hull(mpfr_bin_ieee754_flavor<T_>::neg(x));
@@ -217,7 +217,7 @@ mpfr_bin_ieee754_flavor<T>::add(mpfr_bin_ieee754_flavor<T>::representation_dec c
     // compute decoration
     p1788::decoration::decoration dec = std::min(
                                             std::min(x.second, y.second),
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             is_empty(bare) ? p1788::decoration::decoration::trv :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
@@ -233,7 +233,8 @@ mpfr_bin_ieee754_flavor<T>::add(mpfr_bin_ieee754_flavor<T>::representation_dec_t
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
         return nai();
 
     // determine max. precision
@@ -321,7 +322,7 @@ mpfr_bin_ieee754_flavor<T>::sub(mpfr_bin_ieee754_flavor<T>::representation_dec c
     // compute decoration
     p1788::decoration::decoration dec = std::min(
                                             std::min(x.second, y.second),
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             is_empty(bare) ? p1788::decoration::decoration::trv :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
@@ -337,7 +338,8 @@ mpfr_bin_ieee754_flavor<T>::sub(mpfr_bin_ieee754_flavor<T>::representation_dec_t
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
         return nai();
 
     // determine max. precision
@@ -540,7 +542,7 @@ mpfr_bin_ieee754_flavor<T>::mul(mpfr_bin_ieee754_flavor<T>::representation_dec c
     // compute decoration
     p1788::decoration::decoration dec = std::min(
                                             std::min(x.second, y.second),
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             is_empty(bare) ? p1788::decoration::decoration::trv :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
@@ -556,7 +558,8 @@ mpfr_bin_ieee754_flavor<T>::mul(mpfr_bin_ieee754_flavor<T>::representation_dec_t
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
         return nai();
 
     // determine max. precision
@@ -758,7 +761,7 @@ mpfr_bin_ieee754_flavor<T>::div(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             std::min(x.second, y.second),
                                             is_member(0.0, y) || is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -773,7 +776,8 @@ mpfr_bin_ieee754_flavor<T>::div(mpfr_bin_ieee754_flavor<T>::representation_dec_t
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
         return nai();
 
     // determine max. precision
@@ -842,7 +846,7 @@ mpfr_bin_ieee754_flavor<T>::recip(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_member(0.0, x) || is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -855,7 +859,7 @@ mpfr_bin_ieee754_flavor<T>::recip(mpfr_bin_ieee754_flavor<T>::representation_dec
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -940,7 +944,7 @@ mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -953,7 +957,7 @@ mpfr_bin_ieee754_flavor<T>::sqr(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -1040,7 +1044,7 @@ mpfr_bin_ieee754_flavor<T>::sqrt(mpfr_bin_ieee754_flavor<T>::representation_dec 
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             x.first.first < 0.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -1053,7 +1057,7 @@ mpfr_bin_ieee754_flavor<T>::sqrt(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -1293,7 +1297,7 @@ mpfr_bin_ieee754_flavor<T>::fma(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             std::min(std::min(x.second, y.second), z.second),
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -1312,7 +1316,10 @@ mpfr_bin_ieee754_flavor<T>::fma(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 
     if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x)
             || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
-            || !mpfr_bin_ieee754_flavor<T3>::is_valid(z))
+            || !mpfr_bin_ieee754_flavor<T3>::is_valid(z)
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(x)
+            || mpfr_bin_ieee754_flavor<T2>::is_nai(y)
+            || mpfr_bin_ieee754_flavor<T3>::is_nai(z))
         return nai();
 
     // determine max. precision
@@ -1482,7 +1489,7 @@ mpfr_bin_ieee754_flavor<T>::pown(mpfr_bin_ieee754_flavor<T>::representation_dec 
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             (p < 0 && is_member(0.0,x)) || is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -1496,7 +1503,7 @@ mpfr_bin_ieee754_flavor<T>::pown(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -1524,7 +1531,7 @@ mpfr_bin_ieee754_flavor<T>::pow(mpfr_bin_ieee754_flavor<T>::representation const
     if (!is_valid(x) || !is_valid(y) || is_empty(y))
         return empty();
 
-    representation xx = intersect(x, representation(0.0, std::numeric_limits<T>::infinity()));
+    representation xx = intersection(x, representation(0.0, std::numeric_limits<T>::infinity()));
 
     if (is_empty(xx))
         return xx;
@@ -1675,7 +1682,7 @@ mpfr_bin_ieee754_flavor<T>::pow(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             std::min(x.second, y.second),
                                             x.first.first < 0.0 || (is_member(0.0, x) && y.first.first <= 0.0) || is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -1690,7 +1697,8 @@ mpfr_bin_ieee754_flavor<T>::pow(mpfr_bin_ieee754_flavor<T>::representation_dec_t
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
         return nai();
 
     // determine max. precision
@@ -1767,7 +1775,7 @@ mpfr_bin_ieee754_flavor<T>::exp(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -1780,7 +1788,7 @@ mpfr_bin_ieee754_flavor<T>::exp(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -1855,7 +1863,7 @@ mpfr_bin_ieee754_flavor<T>::exp2(mpfr_bin_ieee754_flavor<T>::representation_dec 
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -1868,7 +1876,7 @@ mpfr_bin_ieee754_flavor<T>::exp2(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -1943,7 +1951,7 @@ mpfr_bin_ieee754_flavor<T>::exp10(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -1956,7 +1964,7 @@ mpfr_bin_ieee754_flavor<T>::exp10(mpfr_bin_ieee754_flavor<T>::representation_dec
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -1983,7 +1991,7 @@ mpfr_bin_ieee754_flavor<T>::log(mpfr_bin_ieee754_flavor<T>::representation const
     if (!is_valid(x))
         return empty();
 
-    representation xx = intersect(x, representation(0.0, std::numeric_limits<T>::infinity()));
+    representation xx = intersection(x, representation(0.0, std::numeric_limits<T>::infinity()));
 
     if (is_empty(xx))
         return xx;
@@ -2040,7 +2048,7 @@ mpfr_bin_ieee754_flavor<T>::log(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             x.first.first <= 0.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -2053,7 +2061,7 @@ mpfr_bin_ieee754_flavor<T>::log(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -2080,7 +2088,7 @@ mpfr_bin_ieee754_flavor<T>::log2(mpfr_bin_ieee754_flavor<T>::representation cons
     if (!is_valid(x))
         return empty();
 
-    representation xx = intersect(x, representation(0.0, std::numeric_limits<T>::infinity()));
+    representation xx = intersection(x, representation(0.0, std::numeric_limits<T>::infinity()));
 
     if (is_empty(xx))
         return xx;
@@ -2137,7 +2145,7 @@ mpfr_bin_ieee754_flavor<T>::log2(mpfr_bin_ieee754_flavor<T>::representation_dec 
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             x.first.first <= 0.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -2150,7 +2158,7 @@ mpfr_bin_ieee754_flavor<T>::log2(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -2176,7 +2184,7 @@ mpfr_bin_ieee754_flavor<T>::log10(mpfr_bin_ieee754_flavor<T>::representation con
     if (!is_valid(x))
         return empty();
 
-    representation xx = intersect(x, representation(0.0, std::numeric_limits<T>::infinity()));
+    representation xx = intersection(x, representation(0.0, std::numeric_limits<T>::infinity()));
 
     if (is_empty(xx))
         return xx;
@@ -2233,7 +2241,7 @@ mpfr_bin_ieee754_flavor<T>::log10(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             x.first.first <= 0.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -2246,7 +2254,7 @@ mpfr_bin_ieee754_flavor<T>::log10(mpfr_bin_ieee754_flavor<T>::representation_dec
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -2393,7 +2401,7 @@ mpfr_bin_ieee754_flavor<T>::sin(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -2406,7 +2414,7 @@ mpfr_bin_ieee754_flavor<T>::sin(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -2552,7 +2560,7 @@ mpfr_bin_ieee754_flavor<T>::cos(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -2565,7 +2573,7 @@ mpfr_bin_ieee754_flavor<T>::cos(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -2672,7 +2680,7 @@ mpfr_bin_ieee754_flavor<T>::tan(mpfr_bin_ieee754_flavor<T>::representation_dec c
 
     representation bare(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
     p1788::decoration::decoration dec  = std::min(x.second,
-                                         is_common(bare) ? p1788::decoration::decoration::com :
+                                         is_common_interval(bare) ? p1788::decoration::decoration::com :
                                          p1788::decoration::decoration::dac);
 
     return representation_dec(bare, dec);
@@ -2686,7 +2694,7 @@ mpfr_bin_ieee754_flavor<T>::tan(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -2712,7 +2720,7 @@ mpfr_bin_ieee754_flavor<T>::asin(mpfr_bin_ieee754_flavor<T>::representation cons
     if (!is_valid(x))
         return empty();
 
-    representation xx = intersect(x, representation(-1.0, 1.0));
+    representation xx = intersection(x, representation(-1.0, 1.0));
 
     if (is_empty(xx))
         return xx;
@@ -2780,7 +2788,7 @@ mpfr_bin_ieee754_flavor<T>::asin(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -2806,7 +2814,7 @@ mpfr_bin_ieee754_flavor<T>::acos(mpfr_bin_ieee754_flavor<T>::representation cons
     if (!is_valid(x))
         return empty();
 
-    representation xx = intersect(x, representation(-1.0, 1.0));
+    representation xx = intersection(x, representation(-1.0, 1.0));
 
     if (is_empty(xx))
         return xx;
@@ -2875,7 +2883,7 @@ mpfr_bin_ieee754_flavor<T>::acos(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -2964,7 +2972,7 @@ mpfr_bin_ieee754_flavor<T>::atan(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -3157,9 +3165,8 @@ mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             std::min(y.second, x.second),
                                             (is_member(0.0, y) && is_member(0.0, x)) || is_empty(bare) ? p1788::decoration::decoration::trv :
-                                            is_member(0.0, y) && x.first.first < 0.0 ? p1788::decoration::decoration::def :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::dac);
+                                            is_member(0.0, y) && x.first.first < 0.0 ? p1788::decoration::decoration::dac :
+                                            p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
@@ -3173,7 +3180,8 @@ mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation_dec
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(y) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(y) || !mpfr_bin_ieee754_flavor<T2>::is_valid(x)
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(y) || mpfr_bin_ieee754_flavor<T2>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -3251,7 +3259,7 @@ mpfr_bin_ieee754_flavor<T>::sinh(mpfr_bin_ieee754_flavor<T>::representation_dec 
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -3264,7 +3272,7 @@ mpfr_bin_ieee754_flavor<T>::sinh(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -3349,7 +3357,7 @@ mpfr_bin_ieee754_flavor<T>::cosh(mpfr_bin_ieee754_flavor<T>::representation_dec 
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -3362,7 +3370,7 @@ mpfr_bin_ieee754_flavor<T>::cosh(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -3450,7 +3458,7 @@ mpfr_bin_ieee754_flavor<T>::tanh(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -3526,7 +3534,7 @@ mpfr_bin_ieee754_flavor<T>::asinh(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -3539,7 +3547,7 @@ mpfr_bin_ieee754_flavor<T>::asinh(mpfr_bin_ieee754_flavor<T>::representation_dec
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -3615,7 +3623,7 @@ mpfr_bin_ieee754_flavor<T>::acosh(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             x.first.first < 1.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -3628,7 +3636,7 @@ mpfr_bin_ieee754_flavor<T>::acosh(mpfr_bin_ieee754_flavor<T>::representation_dec
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -3704,7 +3712,7 @@ mpfr_bin_ieee754_flavor<T>::atanh(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             x.first.first <= -1.0 || x.first.second >= 1.0 || is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -3717,7 +3725,7 @@ mpfr_bin_ieee754_flavor<T>::atanh(mpfr_bin_ieee754_flavor<T>::representation_dec
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -3800,7 +3808,7 @@ mpfr_bin_ieee754_flavor<T>::sign(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -3883,7 +3891,7 @@ mpfr_bin_ieee754_flavor<T>::ceil(mpfr_bin_ieee754_flavor<T>::representation_dec_
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -3965,7 +3973,7 @@ mpfr_bin_ieee754_flavor<T>::floor(mpfr_bin_ieee754_flavor<T>::representation_dec
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -4048,7 +4056,7 @@ mpfr_bin_ieee754_flavor<T>::trunc(mpfr_bin_ieee754_flavor<T>::representation_dec
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -4146,7 +4154,7 @@ mpfr_bin_ieee754_flavor<T>::round_ties_to_even(mpfr_bin_ieee754_flavor<T>::repre
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -4229,7 +4237,7 @@ mpfr_bin_ieee754_flavor<T>::round_ties_to_away(mpfr_bin_ieee754_flavor<T>::repre
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -4303,7 +4311,7 @@ mpfr_bin_ieee754_flavor<T>::abs(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             x.second,
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -4316,7 +4324,7 @@ mpfr_bin_ieee754_flavor<T>::abs(mpfr_bin_ieee754_flavor<T>::representation_dec_t
 {
     static_assert(std::numeric_limits<T_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x))
+    if (!mpfr_bin_ieee754_flavor<T_>::is_valid(x) || mpfr_bin_ieee754_flavor<T_>::is_nai(x))
         return nai();
 
     // determine max. precision
@@ -4389,7 +4397,7 @@ mpfr_bin_ieee754_flavor<T>::min(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             std::min(x.second, y.second),
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -4404,7 +4412,8 @@ mpfr_bin_ieee754_flavor<T>::min(mpfr_bin_ieee754_flavor<T>::representation_dec_t
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
         return nai();
 
     // determine max. precision
@@ -4479,7 +4488,7 @@ mpfr_bin_ieee754_flavor<T>::max(mpfr_bin_ieee754_flavor<T>::representation_dec c
     p1788::decoration::decoration dec = std::min(
                                             std::min(x.second, y.second),
                                             is_empty(bare) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
@@ -4494,7 +4503,8 @@ mpfr_bin_ieee754_flavor<T>::max(mpfr_bin_ieee754_flavor<T>::representation_dec_t
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
         return nai();
 
     // determine max. precision

@@ -33,20 +33,20 @@ namespace infsup
 {
 
 
-// intersect
+// intersection
 
 // static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::intersect(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::intersection(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
 {
-    return concrete_interval(Flavor<T>::intersect(x.rep_, y.rep_));
+    return concrete_interval(Flavor<T>::intersection(x.rep_, y.rep_));
 }
 
 // static mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
-ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::intersect(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::intersection(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
         base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
 {
     // assert that only bare intervals or decorated intervals are used
@@ -61,35 +61,35 @@ ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::intersect(bas
                  );
 
     // call of mixed-type version
-    return concrete_interval(Flavor<T>::intersect(x.rep_, y.rep_));
+    return concrete_interval(Flavor<T>::intersection(x.rep_, y.rep_));
 }
 
 
 // function
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval intersect(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+ConcreteInterval intersection(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
                            base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
 {
-    return base_interval<T,Flavor,RepType,ConcreteInterval>::intersect(x, y);
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::intersection(x, y);
 }
 
 
 
 
-// hull
+// convex_hull
 
 // static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::hull(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::convex_hull(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
 {
-    return concrete_interval(Flavor<T>::hull(x.rep_, y.rep_));
+    return concrete_interval(Flavor<T>::convex_hull(x.rep_, y.rep_));
 }
 
 // static mixed type
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
-ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::hull(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::convex_hull(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
         base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
 {
     // assert that only bare intervals or decorated intervals are used
@@ -104,16 +104,16 @@ ConcreteInterval base_interval<T,Flavor,RepType,ConcreteInterval>::hull(base_int
                  );
 
     // call of mixed-type version
-    return concrete_interval(Flavor<T>::hull(x.rep_, y.rep_));
+    return concrete_interval(Flavor<T>::convex_hull(x.rep_, y.rep_));
 }
 
 
 // function
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-ConcreteInterval hull(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+ConcreteInterval convex_hull(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
                       base_interval<T, Flavor, RepType, ConcreteInterval> const& y)
 {
-    return base_interval<T,Flavor,RepType,ConcreteInterval>::hull(x, y);
+    return base_interval<T,Flavor,RepType,ConcreteInterval>::convex_hull(x, y);
 }
 
 

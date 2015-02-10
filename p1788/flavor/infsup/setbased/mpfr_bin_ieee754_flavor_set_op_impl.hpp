@@ -39,33 +39,33 @@ namespace infsup
 namespace setbased
 {
 
-// intersect ( bare interval )
+// intersection ( bare interval )
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation const& x,
+mpfr_bin_ieee754_flavor<T>::intersection(mpfr_bin_ieee754_flavor<T>::representation const& x,
                                       mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
     if (!is_valid(x) || !is_valid(y))
         return empty();
 
-    if (are_disjoint(x, y))
+    if (disjoint(x, y))
         return empty();
     else
         return representation(std::max(x.first, y.first),
                               std::min(x.second, y.second));
 }
 
-// intersect ( bare interval ) mixed type
+// intersection ( bare interval ) mixed type
 template<typename T>
 template<typename T1, typename T2>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const& x,
+mpfr_bin_ieee754_flavor<T>::intersection(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const& x,
                                       mpfr_bin_ieee754_flavor<T>::representation_type<T2> const& y)
 {
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!is_valid(x) || !is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y))
         return empty();
 
     // determine max. precision
@@ -74,37 +74,37 @@ mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation
     // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
     // Error free for floating point inf-sup intervals due to  outward rounding
     return convert_hull(
-               mpfr_bin_ieee754_flavor<T_MAX>::intersect(
+               mpfr_bin_ieee754_flavor<T_MAX>::intersection(
                    mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x),
                    mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(y)
                )
            );
 }
 
-// intersect ( decorated interval )
+// intersection ( decorated interval )
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+mpfr_bin_ieee754_flavor<T>::intersection(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                       mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    if (!is_valid(x) || !is_valid(y))
+    if (!is_valid(x) || !is_valid(y) || is_nai(x) || is_nai(y))
         return nai();
 
-    return is_nai(x) || is_nai(y) ? nai() : representation_dec(intersect(x.first, y.first),
-            p1788::decoration::decoration::trv);
+    return representation_dec(intersection(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
-// intersect ( decorated interval ) mixed type
+// intersection ( decorated interval ) mixed type
 template<typename T>
 template<typename T1, typename T2>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const& x,
+mpfr_bin_ieee754_flavor<T>::intersection(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const& x,
                                       mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const& y)
 {
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!is_valid(x) || !is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
+        || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
         return nai();
 
     // determine max. precision
@@ -113,17 +113,17 @@ mpfr_bin_ieee754_flavor<T>::intersect(mpfr_bin_ieee754_flavor<T>::representation
     // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
     // Error free for floating point inf-sup intervals due to  outward rounding
     return convert_hull(
-               mpfr_bin_ieee754_flavor<T_MAX>::intersect(
+               mpfr_bin_ieee754_flavor<T_MAX>::intersection(
                    mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x),
                    mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(y)
                )
            );
 }
 
-// hull ( bare interval )
+// convex_hull ( bare interval )
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation const& x,
+mpfr_bin_ieee754_flavor<T>::convex_hull(mpfr_bin_ieee754_flavor<T>::representation const& x,
                                  mpfr_bin_ieee754_flavor<T>::representation const& y)
 {
     if (!is_valid(x) || !is_valid(y))
@@ -138,17 +138,17 @@ mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation cons
                               std::max(x.second, y.second));
 }
 
-// hull ( bare interval ) mixed type
+// convex_hull ( bare interval ) mixed type
 template<typename T>
 template<typename T1, typename T2>
 typename mpfr_bin_ieee754_flavor<T>::representation
-mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const& x,
+mpfr_bin_ieee754_flavor<T>::convex_hull(mpfr_bin_ieee754_flavor<T>::representation_type<T1> const& x,
                                  mpfr_bin_ieee754_flavor<T>::representation_type<T2> const& y)
 {
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!is_valid(x) || !is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y))
         return empty();
 
     // determine max. precision
@@ -157,37 +157,37 @@ mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_type
     // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
     // Error free for floating point inf-sup intervals due to  outward rounding
     return convert_hull(
-               mpfr_bin_ieee754_flavor<T_MAX>::hull(
+               mpfr_bin_ieee754_flavor<T_MAX>::convex_hull(
                    mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x),
                    mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(y)
                )
            );
 }
 
-// hull ( decorated interval )
+// convex_hull ( decorated interval )
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
+mpfr_bin_ieee754_flavor<T>::convex_hull(mpfr_bin_ieee754_flavor<T>::representation_dec const& x,
                                  mpfr_bin_ieee754_flavor<T>::representation_dec const& y)
 {
-    if (!is_valid(x) || !is_valid(y))
+    if (!is_valid(x) || !is_valid(y) || is_nai(x) || is_nai(y))
         return nai();
 
-    return is_nai(x) || is_nai(y) ? nai() : representation_dec(hull(x.first, y.first),
-            p1788::decoration::decoration::trv);
+    return representation_dec(convex_hull(x.first, y.first), p1788::decoration::decoration::trv);
 }
 
-// hull ( decorated interval ) mixed type
+// convex_hull ( decorated interval ) mixed type
 template<typename T>
 template<typename T1, typename T2>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
-mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const& x,
+mpfr_bin_ieee754_flavor<T>::convex_hull(mpfr_bin_ieee754_flavor<T>::representation_dec_type<T1> const& x,
                                  mpfr_bin_ieee754_flavor<T>::representation_dec_type<T2> const& y)
 {
     static_assert(std::numeric_limits<T1>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    if (!is_valid(x) || !is_valid(y))
+    if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
+        || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
         return nai();
 
     // determine max. precision
@@ -196,7 +196,7 @@ mpfr_bin_ieee754_flavor<T>::hull(mpfr_bin_ieee754_flavor<T>::representation_dec_
     // 1.) convert inputs to max precision; 2.) compute result in max precision; 3.) convert result to desired precision
     // Error free for floating point inf-sup intervals due to  outward rounding
     return convert_hull(
-               mpfr_bin_ieee754_flavor<T_MAX>::hull(
+               mpfr_bin_ieee754_flavor<T_MAX>::convex_hull(
                    mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(x),
                    mpfr_bin_ieee754_flavor<T_MAX>::convert_hull(y)
                )

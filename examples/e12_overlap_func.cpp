@@ -82,10 +82,8 @@ int main()
     // 3) The overlap function is implemented for bare and decorated intervals
     std::cout << overlap( DI<double>(1.0,21.0), DI<double>(3.0,4.0) ) << std::endl << std::endl;
 
-    // 3.1) For this case the three additional states are implemented
-    std::cout << OLS::both_nai << std::endl;
-    std::cout << OLS::first_nai << std::endl;
-    std::cout << OLS::second_nai << std::endl;
+    // 3.1) For this case three is an additional state implemented to identify NaIs
+    std::cout << OLS::undefined << std::endl;
 
     std::cout << DI<double>::overlap( DI<double>(0.0,2.0), DI<double>::nai() ) << std::endl << std::endl;
 

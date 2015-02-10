@@ -54,73 +54,73 @@ const double NaN_F = std::numeric_limits<float>::quiet_NaN();
 const double MAX_F = std::numeric_limits<float>::max();
 const double MIN_F = std::numeric_limits<float>::min();
 
-BOOST_AUTO_TEST_CASE(minimal_is_common_test)
+BOOST_AUTO_TEST_CASE(minimal_is_common_interval_test)
 {
     p1788::exception::clear();
 
-    BOOST_CHECK(F<double>::is_common(REP<double>(-27.0,-27.0)));
-    BOOST_CHECK(F<double>::is_common(REP<double>(-27.0, 0.0)));
-    BOOST_CHECK(F<double>::is_common(REP<double>(0.0,0.0)));
-    BOOST_CHECK(F<double>::is_common(REP<double>(-0.0,-0.0)));
-    BOOST_CHECK(F<double>::is_common(REP<double>(-0.0,0.0)));
-    BOOST_CHECK(F<double>::is_common(REP<double>(0.0,-0.0)));
-    BOOST_CHECK(F<double>::is_common(REP<double>(5.0, 12.4)));
-    BOOST_CHECK(F<double>::is_common(REP<double>(-MAX_D, MAX_D)));
+    BOOST_CHECK(F<double>::is_common_interval(REP<double>(-27.0,-27.0)));
+    BOOST_CHECK(F<double>::is_common_interval(REP<double>(-27.0, 0.0)));
+    BOOST_CHECK(F<double>::is_common_interval(REP<double>(0.0,0.0)));
+    BOOST_CHECK(F<double>::is_common_interval(REP<double>(-0.0,-0.0)));
+    BOOST_CHECK(F<double>::is_common_interval(REP<double>(-0.0,0.0)));
+    BOOST_CHECK(F<double>::is_common_interval(REP<double>(0.0,-0.0)));
+    BOOST_CHECK(F<double>::is_common_interval(REP<double>(5.0, 12.4)));
+    BOOST_CHECK(F<double>::is_common_interval(REP<double>(-MAX_D, MAX_D)));
 
-    BOOST_CHECK(!F<double>::is_common(REP<double>(-INF_D,INF_D)));
-    BOOST_CHECK(!F<double>::is_common(REP<double>(NaN_D, NaN_D)));
-    BOOST_CHECK(!F<double>::is_common(REP<double>(-INF_D, 0.0)));
-    BOOST_CHECK(!F<double>::is_common(REP<double>(0.0, INF_D)));
+    BOOST_CHECK(!F<double>::is_common_interval(REP<double>(-INF_D,INF_D)));
+    BOOST_CHECK(!F<double>::is_common_interval(REP<double>(NaN_D, NaN_D)));
+    BOOST_CHECK(!F<double>::is_common_interval(REP<double>(-INF_D, 0.0)));
+    BOOST_CHECK(!F<double>::is_common_interval(REP<double>(0.0, INF_D)));
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
-    BOOST_CHECK(!F<double>::is_common(REP<double>(0.0, -INF_D)));
+    BOOST_CHECK(!F<double>::is_common_interval(REP<double>(0.0, -INF_D)));
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
-    BOOST_CHECK_THROW( F<double>::is_common(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK_THROW( F<double>::is_common_interval(REP<double>(1.0,-2.0)), p1788::exception::invalid_operand_exception);
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
 
-BOOST_AUTO_TEST_CASE(minimal_is_common_dec_test)
+BOOST_AUTO_TEST_CASE(minimal_is_common_interval_dec_test)
 {
     p1788::exception::clear();
 
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-27.0,-27.0), DEC::com)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-27.0, 0.0), DEC::com)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(0.0,0.0), DEC::com)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::com)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-0.0,0.0), DEC::com)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(0.0,-0.0), DEC::com)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(5.0, 12.4), DEC::com)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-MAX_D, MAX_D), DEC::com)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(-27.0,-27.0), DEC::com)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(-27.0, 0.0), DEC::com)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(0.0,0.0), DEC::com)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::com)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(-0.0,0.0), DEC::com)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(0.0,-0.0), DEC::com)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(5.0, 12.4), DEC::com)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(-MAX_D, MAX_D), DEC::com)));
 
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-27.0,-27.0), DEC::trv)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-27.0, 0.0), DEC::def)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(0.0,0.0), DEC::dac)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-0.0,0.0), DEC::def)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(0.0,-0.0), DEC::dac)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(5.0, 12.4), DEC::def)));
-    BOOST_CHECK(F<double>::is_common( REP_DEC<double>(REP<double>(-MAX_D, MAX_D), DEC::trv)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(-27.0,-27.0), DEC::trv)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(-27.0, 0.0), DEC::def)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(0.0,0.0), DEC::dac)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(-0.0,-0.0), DEC::trv)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(-0.0,0.0), DEC::def)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(0.0,-0.0), DEC::dac)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(5.0, 12.4), DEC::def)));
+    BOOST_CHECK(F<double>::is_common_interval( REP_DEC<double>(REP<double>(-MAX_D, MAX_D), DEC::trv)));
 
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(-INF_D,INF_D), DEC::dac)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(NaN_D, NaN_D), DEC::ill)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(NaN_D, NaN_D), DEC::trv)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(-INF_D, 0.0), DEC::trv)));
-    BOOST_CHECK(!F<double>::is_common( REP_DEC<double>(REP<double>(0.0, INF_D), DEC::def)));
+    BOOST_CHECK(!F<double>::is_common_interval( REP_DEC<double>(REP<double>(-INF_D,INF_D), DEC::dac)));
+    BOOST_CHECK(!F<double>::is_common_interval( REP_DEC<double>(REP<double>(NaN_D, NaN_D), DEC::ill)));
+    BOOST_CHECK(!F<double>::is_common_interval( REP_DEC<double>(REP<double>(NaN_D, NaN_D), DEC::trv)));
+    BOOST_CHECK(!F<double>::is_common_interval( REP_DEC<double>(REP<double>(-INF_D, 0.0), DEC::trv)));
+    BOOST_CHECK(!F<double>::is_common_interval( REP_DEC<double>(REP<double>(0.0, INF_D), DEC::def)));
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     p1788::exception::clear();
-    BOOST_CHECK(!F<double>::is_common(REP_DEC<double>(REP<double>(27.0,-27.0), DEC::com)));
+    BOOST_CHECK(!F<double>::is_common_interval(REP_DEC<double>(REP<double>(27.0,-27.0), DEC::com)));
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
-    BOOST_CHECK_THROW( F<double>::is_common(REP_DEC<double>(REP<double>(27.0,-27.0), DEC::com)), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK_THROW( F<double>::is_common_interval(REP_DEC<double>(REP<double>(27.0,-27.0), DEC::com)), p1788::exception::invalid_operand_exception);
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);

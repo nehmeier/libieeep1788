@@ -200,7 +200,7 @@ mpfr_bin_ieee754_flavor<T>::cancel_minus(mpfr_bin_ieee754_flavor<T>::representat
     static_assert(std::numeric_limits<T2>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
     if (!mpfr_bin_ieee754_flavor<T1>::is_valid(x) || !mpfr_bin_ieee754_flavor<T2>::is_valid(y)
-        || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
+            || mpfr_bin_ieee754_flavor<T1>::is_nai(x) || mpfr_bin_ieee754_flavor<T2>::is_nai(y))
         return nai();
 
     // determine max. precision

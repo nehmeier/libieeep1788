@@ -38,7 +38,7 @@ std::basic_ostream<CharT, Traits>& operator<<(
     std::basic_ostream<CharT, Traits>& os,
     base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
 {
-    return Flavor<T>::operator_output(os, x.rep_);
+    return Flavor<T>::operator_interval_to_text(os, x.rep_);
 }
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval, typename CharT, typename Traits>
@@ -46,7 +46,7 @@ std::basic_istream<CharT, Traits>& operator>>(
     std::basic_istream<CharT, Traits>& is,
     base_interval<T, Flavor, RepType, ConcreteInterval>& x)
 {
-    return Flavor<T>::operator_input(is, x.rep_);
+    return Flavor<T>::operator_text_to_interval(is, x.rep_);
 }
 
 
