@@ -39,6 +39,9 @@ BOOST_AUTO_TEST_CASE(minimal_overlapping_output_test)
 {
     boost::test_tools::output_test_stream output;
 
+    output << OS::undefined;
+    BOOST_CHECK( output.is_equal( "undefined" ) );
+
     output << OS::both_empty;
     BOOST_CHECK( output.is_equal( "both_empty" ) );
 
@@ -87,83 +90,68 @@ BOOST_AUTO_TEST_CASE(minimal_overlapping_output_test)
     output << OS::after;
     BOOST_CHECK( output.is_equal( "after" ) );
 
-    output << OS::both_nai;
-    BOOST_CHECK( output.is_equal( "both_nai" ) );
-
-    output << OS::first_nai;
-    BOOST_CHECK( output.is_equal( "first_nai" ) );
-
-    output << OS::second_nai;
-    BOOST_CHECK( output.is_equal( "second_nai" ) );
-
-    output << OS::undefined;
-    BOOST_CHECK( output.is_equal( "undefined" ) );
 
 
     output << p1788::io::overlapping_numeric;
-    output << OS::both_empty;
-    BOOST_CHECK( output.is_equal( "0" ) );
 
-    output << OS::first_empty;
-    BOOST_CHECK( output.is_equal( "1" ) );
-
-    output << OS::second_empty;
-    BOOST_CHECK( output.is_equal( "2" ) );
-
-    output << OS::before;
-    BOOST_CHECK( output.is_equal( "4" ) );
-
-    output << OS::meets;
-    BOOST_CHECK( output.is_equal( "8" ) );
-
-    output << OS::overlaps;
-    BOOST_CHECK( output.is_equal( "16" ) );
-
-    output << OS::starts;
-    BOOST_CHECK( output.is_equal( "32" ) );
-
-    output << OS::contained_by;
-    BOOST_CHECK( output.is_equal( "64" ) );
-
-    output << OS::finishes;
-    BOOST_CHECK( output.is_equal( "128" ) );
-
-    output << OS::equal;
-    BOOST_CHECK( output.is_equal( "256" ) );
-
-    output << OS::finished_by;
-    BOOST_CHECK( output.is_equal( "512" ) );
-
-    output << OS::contains;
-    BOOST_CHECK( output.is_equal( "1024" ) );
-
-    output << OS::started_by;
-    BOOST_CHECK( output.is_equal( "2048" ) );
-
-    output << OS::overlapped_by;
-    BOOST_CHECK( output.is_equal( "4096" ) );
-
-    output << OS::met_by;
-    BOOST_CHECK( output.is_equal( "8192" ) );
-
-    output << OS::after;
-    BOOST_CHECK( output.is_equal( "16384" ) );
-
-    output << OS::both_nai;
-    BOOST_CHECK( output.is_equal( "32768" ) );
-
-    output << OS::first_nai;
-    BOOST_CHECK( output.is_equal( "65536" ) );
-
-    output << OS::second_nai;
-    BOOST_CHECK( output.is_equal( "131072" ) );
 
     output << OS::undefined;
-    BOOST_CHECK( output.is_equal( "262144" ) );
+    BOOST_CHECK( output.is_equal( "0" ) );
+
+    output << OS::both_empty;
+    BOOST_CHECK( output.is_equal( "1" ) );
+
+    output << OS::first_empty;
+    BOOST_CHECK( output.is_equal( "2" ) );
+
+    output << OS::second_empty;
+    BOOST_CHECK( output.is_equal( "4" ) );
+
+    output << OS::before;
+    BOOST_CHECK( output.is_equal( "8" ) );
+
+    output << OS::meets;
+    BOOST_CHECK( output.is_equal( "16" ) );
+
+    output << OS::overlaps;
+    BOOST_CHECK( output.is_equal( "32" ) );
+
+    output << OS::starts;
+    BOOST_CHECK( output.is_equal( "64" ) );
+
+    output << OS::contained_by;
+    BOOST_CHECK( output.is_equal( "128" ) );
+
+    output << OS::finishes;
+    BOOST_CHECK( output.is_equal( "256" ) );
+
+    output << OS::equal;
+    BOOST_CHECK( output.is_equal( "512" ) );
+
+    output << OS::finished_by;
+    BOOST_CHECK( output.is_equal( "1024" ) );
+
+    output << OS::contains;
+    BOOST_CHECK( output.is_equal( "2048" ) );
+
+    output << OS::started_by;
+    BOOST_CHECK( output.is_equal( "4096" ) );
+
+    output << OS::overlapped_by;
+    BOOST_CHECK( output.is_equal( "8192" ) );
+
+    output << OS::met_by;
+    BOOST_CHECK( output.is_equal( "16384" ) );
+
+    output << OS::after;
+    BOOST_CHECK( output.is_equal( "32768" ) );
 
 
     output << p1788::io::overlapping_alpha;
     output << p1788::io::upper_case;
+    output << OS::undefined;
+    BOOST_CHECK( output.is_equal( "UNDEFINED" ) );
+
     output << OS::both_empty;
     BOOST_CHECK( output.is_equal( "BOTH_EMPTY" ) );
 
@@ -211,16 +199,4 @@ BOOST_AUTO_TEST_CASE(minimal_overlapping_output_test)
 
     output << OS::after;
     BOOST_CHECK( output.is_equal( "AFTER" ) );
-
-    output << OS::both_nai;
-    BOOST_CHECK( output.is_equal( "BOTH_NAI" ) );
-
-    output << OS::first_nai;
-    BOOST_CHECK( output.is_equal( "FIRST_NAI" ) );
-
-    output << OS::second_nai;
-    BOOST_CHECK( output.is_equal( "SECOND_NAI" ) );
-
-    output << OS::undefined;
-    BOOST_CHECK( output.is_equal( "UNDEFINED" ) );
 }

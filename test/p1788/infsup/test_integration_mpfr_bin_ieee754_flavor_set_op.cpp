@@ -38,24 +38,24 @@ using DI = p1788::infsup::decorated_interval<T, p1788::flavor::infsup::setbased:
 
 typedef p1788::decoration::decoration DEC;
 
-BOOST_AUTO_TEST_CASE(integration_intersect_test)
+BOOST_AUTO_TEST_CASE(integration_intersection_test)
 {
-    BOOST_CHECK_EQUAL( intersect(I<double>(1.0,3.0), I<double>(2.1,4.0)), I<double>(2.1,3.0) );
-    BOOST_CHECK_EQUAL( I<double>::intersect(I<double>(1.0,3.0), I<double>(3.0,4.0)), I<double>(3.0,3.0) );
-    BOOST_CHECK_EQUAL( I<double>::intersect(I<float>(1.0f,3.0f), I<long double>::empty()), I<double>::empty()  );
+    BOOST_CHECK_EQUAL( intersection(I<double>(1.0,3.0), I<double>(2.1,4.0)), I<double>(2.1,3.0) );
+    BOOST_CHECK_EQUAL( I<double>::intersection(I<double>(1.0,3.0), I<double>(3.0,4.0)), I<double>(3.0,3.0) );
+    BOOST_CHECK_EQUAL( I<double>::intersection(I<float>(1.0f,3.0f), I<long double>::empty()), I<double>::empty()  );
 
-    BOOST_CHECK_EQUAL( intersect(DI<double>(1.0,3.0), DI<double>(2.1,4.0)), DI<double>(2.1,3.0,DEC::trv) );
-    BOOST_CHECK_EQUAL( DI<double>::intersect(DI<double>(1.0,3.0), DI<double>(3.0,4.0)), DI<double>(3.0,3.0,DEC::trv) );
-    BOOST_CHECK_EQUAL( DI<double>::intersect(DI<float>(1.0f,3.0f), DI<long double>::empty()), DI<double>::empty()  );
+    BOOST_CHECK_EQUAL( intersection(DI<double>(1.0,3.0), DI<double>(2.1,4.0)), DI<double>(2.1,3.0,DEC::trv) );
+    BOOST_CHECK_EQUAL( DI<double>::intersection(DI<double>(1.0,3.0), DI<double>(3.0,4.0)), DI<double>(3.0,3.0,DEC::trv) );
+    BOOST_CHECK_EQUAL( DI<double>::intersection(DI<float>(1.0f,3.0f), DI<long double>::empty()), DI<double>::empty()  );
 }
 
-BOOST_AUTO_TEST_CASE(integration_hull_test)
+BOOST_AUTO_TEST_CASE(integration_convex_hull_test)
 {
-    BOOST_CHECK_EQUAL( hull(I<double>(1.0,3.0), I<double>(2.1,4.0)), I<double>(1.0,4.0) );
-    BOOST_CHECK_EQUAL( I<double>::hull(I<double>(1.0,3.0), I<double>(3.0,4.0)), I<double>(1.0,4.0) );
-    BOOST_CHECK_EQUAL( I<double>::hull(I<float>(1.0f,3.0f), I<long double>::empty()), I<double>(1.0,3.0)  );
+    BOOST_CHECK_EQUAL( convex_hull(I<double>(1.0,3.0), I<double>(2.1,4.0)), I<double>(1.0,4.0) );
+    BOOST_CHECK_EQUAL( I<double>::convex_hull(I<double>(1.0,3.0), I<double>(3.0,4.0)), I<double>(1.0,4.0) );
+    BOOST_CHECK_EQUAL( I<double>::convex_hull(I<float>(1.0f,3.0f), I<long double>::empty()), I<double>(1.0,3.0)  );
 
-    BOOST_CHECK_EQUAL( hull(DI<double>(1.0,3.0), DI<double>(2.1,4.0)), DI<double>(1.0,4.0,DEC::trv) );
-    BOOST_CHECK_EQUAL( DI<double>::hull(DI<double>(1.0,3.0), DI<double>(3.0,4.0)), DI<double>(1.0,4.0,DEC::trv) );
-    BOOST_CHECK_EQUAL( DI<double>::hull(DI<float>(1.0f,3.0f), DI<long double>::empty()), DI<double>(1.0,3.0,DEC::trv)  );
+    BOOST_CHECK_EQUAL( convex_hull(DI<double>(1.0,3.0), DI<double>(2.1,4.0)), DI<double>(1.0,4.0,DEC::trv) );
+    BOOST_CHECK_EQUAL( DI<double>::convex_hull(DI<double>(1.0,3.0), DI<double>(3.0,4.0)), DI<double>(1.0,4.0,DEC::trv) );
+    BOOST_CHECK_EQUAL( DI<double>::convex_hull(DI<float>(1.0f,3.0f), DI<long double>::empty()), DI<double>(1.0,3.0,DEC::trv)  );
 }

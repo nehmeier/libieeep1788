@@ -195,9 +195,9 @@ BOOST_AUTO_TEST_CASE(minimal_overlap_dec_test)
 {
     p1788::exception::clear();
 
-    BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::nai(), F<double>::nai()), OS::both_nai );
-    BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::nai(), REP_DEC<double>(REP<double>(1.0,2.0),DEC::def)), OS::first_nai );
-    BOOST_CHECK_EQUAL( F<double>::overlap(REP_DEC<double>(REP<double>(1.0,2.0),DEC::dac), F<double>::nai()), OS::second_nai );
+    BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::nai(), F<double>::nai()), OS::undefined );
+    BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::nai(), REP_DEC<double>(REP<double>(1.0,2.0),DEC::def)), OS::undefined );
+    BOOST_CHECK_EQUAL( F<double>::overlap(REP_DEC<double>(REP<double>(1.0,2.0),DEC::dac), F<double>::nai()), OS::undefined );
 
     BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::empty_dec(), F<double>::empty_dec()), OS::both_empty );
     BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::empty_dec(), REP_DEC<double>(REP<double>(1.0,2.0),DEC::com)), OS::first_empty );
@@ -259,9 +259,9 @@ BOOST_AUTO_TEST_CASE(minimal_overlap_dec_mixedtype_test)
 {
     p1788::exception::clear();
 
-    BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::nai(), F<float>::nai()), OS::both_nai );
-    BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::nai(), REP_DEC<float>(REP<float>(1.0f,2.0f),DEC::trv)), OS::first_nai );
-    BOOST_CHECK_EQUAL( F<double>::overlap(REP_DEC<double>(REP<double>(1.0,2.0),DEC::def), F<float>::nai()), OS::second_nai );
+    BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::nai(), F<float>::nai()), OS::undefined );
+    BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::nai(), REP_DEC<float>(REP<float>(1.0f,2.0f),DEC::trv)), OS::undefined );
+    BOOST_CHECK_EQUAL( F<double>::overlap(REP_DEC<double>(REP<double>(1.0,2.0),DEC::def), F<float>::nai()), OS::undefined );
 
     BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::empty_dec(), F<float>::empty_dec()), OS::both_empty );
     BOOST_CHECK_EQUAL( F<double>::overlap(F<double>::empty_dec(), REP_DEC<float>(REP<float>(1.0f,2.0f),DEC::def)), OS::first_empty );

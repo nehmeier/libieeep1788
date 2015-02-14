@@ -80,13 +80,13 @@ public:
     ///
     /// \return \f$\emptyset\f$
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor()</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::empty()</c>
     /// which creates the representation for an empty interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor() \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::empty() \endlink
     ///
     inline
     interval()
-        : base_interval_type(Flavor<T>::constructor())
+        : base_interval_type(Flavor<T>::empty())
     { }
 
     /// \brief Creates an interval with a lower and an upper bound
@@ -98,13 +98,13 @@ public:
     ///         \li \f$\emptyset\f$ otherwise
     ///
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor(T lower, T upper)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::nums_to_interval(T lower, T upper)</c>
     /// which creates the representation for an interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor(T lower , T upper) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::nums_to_interval(T lower , T upper) \endlink
     ///
     inline
     interval(T lower, T upper)
-        : base_interval_type(Flavor<T>::constructor(lower, upper))
+        : base_interval_type(Flavor<T>::nums_to_interval(lower, upper))
     { }
 
     /// \brief (Mixed type version) Creates an interval with a lower and an upper bound
@@ -116,14 +116,14 @@ public:
     ///         \li \f$\emptyset\f$ otherwise
     ///
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor(L lower, U upper)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::nums_to_interval(L lower, U upper)</c>
     /// which creates the representation for an interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor(L_ lower , U_ upper) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::nums_to_interval(L_ lower , U_ upper) \endlink
     ///
     template<typename L, typename U>
     inline
     interval(L lower, U upper)
-        : base_interval_type(Flavor<T>::constructor(lower, upper))
+        : base_interval_type(Flavor<T>::nums_to_interval(lower, upper))
     { }
 
     /// \brief Creates an interval out of an interval literal
@@ -134,13 +134,13 @@ public:
     ///         \li \f$\emptyset\f$ otherwise
     ///
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor(std::string const& str)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::text_to_interval(std::string const& str)</c>
     /// which creates the representation for an interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor(std::string const& str) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::text_to_interval(std::string const& str) \endlink
     ///
     inline explicit
     interval(std::string const& str)
-        : base_interval_type(Flavor<T>::constructor(str))
+        : base_interval_type(Flavor<T>::text_to_interval(str))
     { }
 
 
@@ -150,13 +150,13 @@ public:
     ///
     /// \return Copy of \p other
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor(representation const& other)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::copy(representation const& other)</c>
     /// which creates the representation for an interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor(representation const& other) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::copy(representation const& other) \endlink
     ///
     inline
     interval(interval<T, Flavor> const& other)
-        : base_interval_type(Flavor<T>::constructor(other.rep_))
+        : base_interval_type(Flavor<T>::copy(other.rep_))
     { }
 
     /// \brief Convert constructor
@@ -165,14 +165,14 @@ public:
     ///
     /// \return Hull of \p other
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor(representation_type<T_> const& other)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::convert_type(representation_type<T_> const& other)</c>
     /// which creates the representation for an interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor(representation_type<T_> const& other) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::convert_type(representation_type<T_> const& other) \endlink
     ///
     template<typename T_>
     inline explicit
     interval(interval<T_, Flavor> const& other)
-        : base_interval_type(Flavor<T>::constructor(other.rep_))
+        : base_interval_type(Flavor<T>::convert_type(other.rep_))
     { }
 
     /// \brief Interval part constructor
@@ -181,13 +181,13 @@ public:
     ///
     /// \return Bare interval of \p other
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor(representation_dec const& other)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::interval_part(representation_dec const& other)</c>
     /// which creates the representation for an interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor(representation_dec const& other) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::interval_part(representation_dec const& other) \endlink
     ///
     inline
     interval(decorated_interval<T, Flavor> const& other)
-        : base_interval_type(Flavor<T>::constructor(other.rep_))
+        : base_interval_type(Flavor<T>::interval_part(other.rep_))
     { }
 
     /// \brief Interval part and convert constructor
@@ -196,14 +196,14 @@ public:
     ///
     /// \return Hull of bare interval of \p other
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor(representation_dec_type<T_> const& other)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::interval_part(representation_dec_type<T_> const& other)</c>
     /// which creates the representation for an interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor(representation_dec_type<T_> const& other) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::interval_part(representation_dec_type<T_> const& other) \endlink
     ///
     template<typename T_>
     inline explicit
     interval(decorated_interval<T_, Flavor> const& other)
-        : base_interval_type(Flavor<T>::constructor(other.rep_))
+        : base_interval_type(Flavor<T>::interval_part(other.rep_))
     { }
 
 ///@}

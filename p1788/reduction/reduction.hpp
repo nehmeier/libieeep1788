@@ -265,7 +265,7 @@ inline sum_sqr(Iter begin, Iter end, rnd_mode rnd)
     {
         *p = new mpfr_t;
 
-        mpfr_init2(*p, std::numeric_limits<typename std::iterator_traits<Iter>::value_type>::digits);
+        mpfr_init2(*p, std::numeric_limits<typename std::iterator_traits<Iter>::value_type>::digits * 2);
 
         mpfr_var tmp(*i, MPFR_RNDN);
         mpfr_sqr(tmp(), tmp(), MPFR_RNDN);
@@ -307,7 +307,7 @@ inline dot(Iter begin_a, Iter end_a, Iter begin_b, rnd_mode rnd)
     {
         *p = new mpfr_t;
 
-        mpfr_init2(*p, std::numeric_limits<typename std::iterator_traits<Iter>::value_type>::digits);
+        mpfr_init2(*p, std::numeric_limits<typename std::iterator_traits<Iter>::value_type>::digits * 2);
 
         mpfr_var tmp_a(*a, MPFR_RNDN);
         mpfr_var tmp_b(*b, MPFR_RNDN);

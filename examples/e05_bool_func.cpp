@@ -70,7 +70,7 @@ int main()
 
 
     // 3) All (binary) comparisons are mixed type functions
-    std::cout << is_equal(I<double>::entire(), I<float>::entire())  << std::endl;
+    std::cout << equal(I<double>::entire(), I<float>::entire())  << std::endl;
 
     // 4) is_equal is also implemented as an operator
     std::cout <<  ( I<double>::entire() != I<double>::empty() )  << std::endl;
@@ -84,17 +84,17 @@ int main()
     std::cout << greater(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)) << std::endl;
     std::cout << precedes(I<double>(2.0,4.0), I<float>(4.0f,5.0f)) << std::endl;
     std::cout << succeeds(I<double>(-1.0,3.0), I<double>(-5.0,-1.0)) << std::endl;
-    std::cout << is_interior(I<double>(2.0,3.0), I<float>(0.0f,5.0f)) << std::endl;
+    std::cout << interior(I<double>(2.0,3.0), I<float>(0.0f,5.0f)) << std::endl;
     std::cout << contains_interior(I<double>(-2.0,13.0), I<double>(0.0,5.0)) << std::endl;
     std::cout << strictly_less(I<double>(2.0,3.0), I<float>(4.0f,5.0f)) << std::endl;
     std::cout << strictly_greater(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)) << std::endl;
     std::cout << strictly_precedes(I<double>(2.0,3.0), I<float>(4.0f,5.0f)) << std::endl;
     std::cout << strictly_succeeds(I<double>(-1.0,3.0), I<double>(-5.0,-3.0)) << std::endl;
-    std::cout << are_disjoint(DI<double>(-1.0,3.0), DI<float>(-5.0f,0.0f)) << std::endl;
+    std::cout << disjoint(DI<double>(-1.0,3.0), DI<float>(-5.0f,0.0f)) << std::endl;
 
 
     // 6) And the recommended boolean functions
-    std::cout << is_common(I<double>(2.0,3.0)) << std::endl;
+    std::cout << is_common_interval(I<double>(2.0,3.0)) << std::endl;
     std::cout << is_singleton(DI<double>(-1.0,3.0)) << std::endl;
     std::cout << is_member(-3.0, DI<float>(-5.0f,0.0f)) << std::endl;
 

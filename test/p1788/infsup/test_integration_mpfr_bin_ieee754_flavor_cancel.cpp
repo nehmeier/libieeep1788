@@ -44,12 +44,12 @@ BOOST_AUTO_TEST_CASE(integration_cancel_plus_test)
     BOOST_CHECK_EQUAL( I<double>::cancel_plus(I<double>(std::stod("-0X1P+0"),std::stod("0X1.FFFFFFFFFFFFFP-53")), I<double>(std::stod("-0X1P+0"),std::stod("0X1.FFFFFFFFFFFFEP-53"))), I<double>(std::stod("-0X1.FFFFFFFFFFFFFP-1"),std::stod("-0X1.FFFFFFFFFFFFEP-1")) );
     BOOST_CHECK_EQUAL( I<float>::cancel_plus(I<double>(-5.0,-0.9), I<double>(1.0,5.0)), I<float>(0.0f, std::stof("0X1.99999AP-4")) );
 
-    BOOST_CHECK_EQUAL( cancel_plus(DI<double>(-5.1,0.0,DEC::com), DI<double>(0.0,5.0,DEC::com)), DI<double>(std::stod("-0X1.999999999998P-4"),0.0,DEC::com) );
-    BOOST_CHECK_EQUAL( decoration( cancel_plus(DI<double>(-5.1,0.0,DEC::com), DI<double>(0.0,5.0,DEC::com)) ), DEC::com );
-    BOOST_CHECK_EQUAL( DI<double>::cancel_plus(DI<double>(0.9, 5.1,DEC::dac), DI<double>(-5.0,-1.0,DEC::com)), DI<double>(std::stod("-0X1.9999999999998P-4"),std::stod("0X1.999999999998P-4"), DEC::dac) );
-    BOOST_CHECK_EQUAL( decoration( DI<double>::cancel_plus(DI<double>(0.9, 5.1,DEC::dac), DI<double>(-5.0,-1.0,DEC::com)) ), DEC::dac );
-    BOOST_CHECK_EQUAL( DI<float>::cancel_plus(DI<double>(-5.0,-0.9), DI<double>(1.0,5.0)), DI<float>(0.0f, std::stof("0X1.99999AP-4")) );
-    BOOST_CHECK_EQUAL( decoration( DI<float>::cancel_plus(DI<double>(-5.0,-0.9), DI<double>(1.0,5.0)) ), DEC::com );
+    BOOST_CHECK_EQUAL( cancel_plus(DI<double>(-5.1,0.0,DEC::com), DI<double>(0.0,5.0,DEC::com)), DI<double>(std::stod("-0X1.999999999998P-4"),0.0,DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( cancel_plus(DI<double>(-5.1,0.0,DEC::com), DI<double>(0.0,5.0,DEC::com)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<double>::cancel_plus(DI<double>(0.9, 5.1,DEC::dac), DI<double>(-5.0,-1.0,DEC::com)), DI<double>(std::stod("-0X1.9999999999998P-4"),std::stod("0X1.999999999998P-4"), DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::cancel_plus(DI<double>(0.9, 5.1,DEC::dac), DI<double>(-5.0,-1.0,DEC::com)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<float>::cancel_plus(DI<double>(-5.0,-0.9), DI<double>(1.0,5.0)), DI<float>(0.0f, std::stof("0X1.99999AP-4"),DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::cancel_plus(DI<double>(-5.0,-0.9), DI<double>(1.0,5.0)) ), DEC::trv );
 }
 
 BOOST_AUTO_TEST_CASE(integration_cancel_minus_test)
@@ -58,10 +58,10 @@ BOOST_AUTO_TEST_CASE(integration_cancel_minus_test)
     BOOST_CHECK_EQUAL( I<double>::cancel_minus(I<double>(std::stod("-0X1P+0"),std::stod("0X1.FFFFFFFFFFFFFP-53")), I<double>(std::stod("-0X1.FFFFFFFFFFFFEP-53"),std::stod("0X1P+0"))), I<double>(std::stod("-0X1.FFFFFFFFFFFFFP-1"),std::stod("-0X1.FFFFFFFFFFFFEP-1")) );
     BOOST_CHECK_EQUAL( I<float>::cancel_minus(I<double>(-5.0,-0.9), I<double>(-5.0,-1.0)), I<float>(0.0f, std::stof("0X1.99999AP-4")) );
 
-    BOOST_CHECK_EQUAL( cancel_minus(DI<double>(-5.1,0.0,DEC::com), DI<double>(-5.0,0.0,DEC::com)), DI<double>(std::stod("-0X1.999999999998P-4"),0.0,DEC::com) );
-    BOOST_CHECK_EQUAL( decoration( cancel_minus(DI<double>(-5.1,0.0,DEC::com), DI<double>(-5.0,0.0,DEC::com)) ), DEC::com );
-    BOOST_CHECK_EQUAL( DI<double>::cancel_minus(DI<double>(0.9, 5.1,DEC::dac), DI<double>(1.0,5.0,DEC::com)), DI<double>(std::stod("-0X1.9999999999998P-4"),std::stod("0X1.999999999998P-4"), DEC::dac) );
-    BOOST_CHECK_EQUAL( decoration( DI<double>::cancel_minus(DI<double>(0.9, 5.1,DEC::dac), DI<double>(1.0,5.0,DEC::com)) ), DEC::dac );
-    BOOST_CHECK_EQUAL( DI<float>::cancel_minus(DI<double>(-5.0,-0.9), DI<double>(-5.0,-1.0)), DI<float>(0.0f, std::stof("0X1.99999AP-4")) );
-    BOOST_CHECK_EQUAL( decoration( DI<float>::cancel_minus(DI<double>(-5.0,-0.9), DI<double>(-5.0,-1.0)) ), DEC::com );
+    BOOST_CHECK_EQUAL( cancel_minus(DI<double>(-5.1,0.0,DEC::com), DI<double>(-5.0,0.0,DEC::com)), DI<double>(std::stod("-0X1.999999999998P-4"),0.0,DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( cancel_minus(DI<double>(-5.1,0.0,DEC::com), DI<double>(-5.0,0.0,DEC::com)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<double>::cancel_minus(DI<double>(0.9, 5.1,DEC::dac), DI<double>(1.0,5.0,DEC::com)), DI<double>(std::stod("-0X1.9999999999998P-4"),std::stod("0X1.999999999998P-4"), DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( DI<double>::cancel_minus(DI<double>(0.9, 5.1,DEC::dac), DI<double>(1.0,5.0,DEC::com)) ), DEC::trv );
+    BOOST_CHECK_EQUAL( DI<float>::cancel_minus(DI<double>(-5.0,-0.9), DI<double>(-5.0,-1.0)), DI<float>(0.0f, std::stof("0X1.99999AP-4"), DEC::trv) );
+    BOOST_CHECK_EQUAL( decoration( DI<float>::cancel_minus(DI<double>(-5.0,-0.9), DI<double>(-5.0,-1.0)) ), DEC::trv );
 }

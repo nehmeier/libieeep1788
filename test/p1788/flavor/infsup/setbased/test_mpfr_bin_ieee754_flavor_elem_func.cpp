@@ -3910,13 +3910,13 @@ BOOST_AUTO_TEST_CASE(minimal_pow_dec_test)
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(1.1,INF_D), DEC::def), REP_DEC<double>(REP<double>(-2.5,INF_D), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X0P+0"),INF_D), DEC::def) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(1.1,INF_D), DEC::trv), REP_DEC<double>(REP<double>(-INF_D,-1.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("0X0P+0"),std::stod("0X1.D1745D1745D17P-1")), DEC::trv) );
 
-    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,0.5), DEC::com), REP_DEC<double>(REP<double>(0.1,0.1), DEC::com)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.DDB680117AB13P-1")), DEC::def) );
-    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,0.5), DEC::com), REP_DEC<double>(REP<double>(2.5,INF_D), DEC::dac)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.6A09E667F3BCDP-3")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,0.5), DEC::com), REP_DEC<double>(REP<double>(0.1,0.1), DEC::com)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.DDB680117AB13P-1")), DEC::com) );
+    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,0.5), DEC::com), REP_DEC<double>(REP<double>(2.5,INF_D), DEC::dac)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.6A09E667F3BCDP-3")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,0.5), DEC::com), REP_DEC<double>(REP<double>(-INF_D,-2.5), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.6A09E667F3BCCP+2"),INF_D), DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,1.0), DEC::com), REP_DEC<double>(REP<double>(0.0,0.0), DEC::com)), REP_DEC<double>(REP<double>(1.0,1.0), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,1.0), DEC::def), REP_DEC<double>(REP<double>(0.0,2.5), DEC::dac)), REP_DEC<double>(REP<double>(0.0,1.0), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,1.0), DEC::dac), REP_DEC<double>(REP<double>(1.0,2.5), DEC::com)), REP_DEC<double>(REP<double>(0.0,1.0), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,1.0), DEC::dac), REP_DEC<double>(REP<double>(1.0,2.5), DEC::com)), REP_DEC<double>(REP<double>(0.0,1.0), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,1.0), DEC::com), REP_DEC<double>(REP<double>(-2.5,0.1), DEC::dac)), REP_DEC<double>(REP<double>(0.0,INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,1.0), DEC::def), F<double>::entire_dec()), REP_DEC<double>(REP<double>(0.0,INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,1.0), DEC::dac), REP_DEC<double>(REP<double>(-0.1,0.0), DEC::com)), REP_DEC<double>(REP<double>(1.0,INF_D), DEC::trv) );
@@ -3928,25 +3928,25 @@ BOOST_AUTO_TEST_CASE(minimal_pow_dec_test)
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,1.5), DEC::dac), REP_DEC<double>(REP<double>(-1.0,0.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0X1.5555555555555P-1"),INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,1.5), DEC::com), REP_DEC<double>(REP<double>(-2.5,-2.5), DEC::def)), REP_DEC<double>(REP<double>(std::stod("0X1.7398BF1D1EE6FP-2"),INF_D), DEC::trv) );
 
-    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,INF_D), DEC::dac), REP_DEC<double>(REP<double>(0.1,0.1), DEC::com)), REP_DEC<double>(REP<double>(0.0,INF_D), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,INF_D), DEC::dac), REP_DEC<double>(REP<double>(0.1,0.1), DEC::com)), REP_DEC<double>(REP<double>(0.0,INF_D), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,INF_D), DEC::def), REP_DEC<double>(REP<double>(-1.0,1.0), DEC::dac)), REP_DEC<double>(REP<double>(0.0,INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,INF_D), DEC::trv), REP_DEC<double>(REP<double>(-INF_D,-1.0), DEC::def)), REP_DEC<double>(REP<double>(0.0,INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(0.0,INF_D), DEC::dac), REP_DEC<double>(REP<double>(-2.5,-2.5), DEC::dac)), REP_DEC<double>(REP<double>(0.0,INF_D), DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,0.5), DEC::com), REP_DEC<double>(REP<double>(0.0,INF_D), DEC::dac)), REP_DEC<double>(REP<double>(0.0,1.0), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,0.5), DEC::def), REP_DEC<double>(REP<double>(0.1,INF_D), DEC::def)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.DDB680117AB13P-1")), DEC::def) );
-    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,0.5), DEC::dac), REP_DEC<double>(REP<double>(2.5,2.5), DEC::com)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.6A09E667F3BCDP-3")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,0.5), DEC::dac), REP_DEC<double>(REP<double>(2.5,2.5), DEC::com)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.6A09E667F3BCDP-3")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,0.5), DEC::trv), REP_DEC<double>(REP<double>(-2.5,-0.0), DEC::dac)), REP_DEC<double>(REP<double>(1.0,INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,0.5), DEC::com), REP_DEC<double>(REP<double>(-INF_D,-0.1), DEC::def)), REP_DEC<double>(REP<double>(std::stod("0X1.125FBEE250664P+0"),INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,0.5), DEC::def), REP_DEC<double>(REP<double>(-INF_D,-2.5), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.6A09E667F3BCCP+2"),INF_D), DEC::trv) );
 
-    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.0), DEC::com), REP_DEC<double>(REP<double>(2.5,2.5), DEC::dac)), REP_DEC<double>(REP<double>(0.0,1.0), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.0), DEC::com), REP_DEC<double>(REP<double>(2.5,2.5), DEC::dac)), REP_DEC<double>(REP<double>(0.0,1.0), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.0), DEC::dac), REP_DEC<double>(REP<double>(-1.0,INF_D), DEC::def)), REP_DEC<double>(REP<double>(0.0,INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.0), DEC::com), F<double>::entire_dec()), REP_DEC<double>(REP<double>(0.0,INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.0), DEC::def), REP_DEC<double>(REP<double>(-2.5,-2.5), DEC::com)), REP_DEC<double>(REP<double>(1.0,INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.0), DEC::dac), REP_DEC<double>(REP<double>(-INF_D,-2.5), DEC::def)), REP_DEC<double>(REP<double>(1.0,INF_D), DEC::trv) );
 
-    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.5), DEC::com), REP_DEC<double>(REP<double>(0.1,2.5), DEC::dac)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.60B9FD68A4555P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.5), DEC::com), REP_DEC<double>(REP<double>(0.1,2.5), DEC::dac)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.60B9FD68A4555P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.5), DEC::def), REP_DEC<double>(REP<double>(-1.0,0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("0X1.5555555555555P-1"),INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.5), DEC::dac), REP_DEC<double>(REP<double>(-2.5,-0.1), DEC::def)), REP_DEC<double>(REP<double>(std::stod("0X1.7398BF1D1EE6FP-2"),INF_D), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,1.5), DEC::com), REP_DEC<double>(REP<double>(-2.5,-2.5), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0X1.7398BF1D1EE6FP-2"),INF_D), DEC::trv) );
@@ -4026,7 +4026,7 @@ BOOST_AUTO_TEST_CASE(minimal_pow_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::pow(REP_DEC<double>(REP<double>(1.1,INF_D),DEC::dac), REP_DEC<double>(REP<double>(1.0,INF_D),DEC::dac)), REP_DEC<float>(REP<float>(std::stof("0X1.199998P+0"),INF_F),DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<float>(REP<float>(1.1f,INF_F),DEC::def), REP_DEC<double>(REP<double>(-INF_D,-2.5),DEC::trv)), REP_DEC<double>(REP<double>(std::stod("0X0P+0"),std::stod("0x1.9372d82ab2cd8p-1")),DEC::trv) );
 
-    BOOST_CHECK_EQUAL( F<float>::pow(REP_DEC<double>(REP<double>(0.0,0.5),DEC::com), REP_DEC<double>(REP<double>(2.5,2.5),DEC::com)), REP_DEC<float>(REP<float>(0.0f,std::stof("0X1.6A09E8P-3")),DEC::def) );
+    BOOST_CHECK_EQUAL( F<float>::pow(REP_DEC<double>(REP<double>(0.0,0.5),DEC::com), REP_DEC<double>(REP<double>(2.5,2.5),DEC::com)), REP_DEC<float>(REP<float>(0.0f,std::stof("0X1.6A09E8P-3")),DEC::com) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<float>(REP<float>(0.0f,0.5f),DEC::com), REP_DEC<double>(REP<double>(-INF_D,-2.5),DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.6A09E667F3BCCP+2"),INF_D),DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<float>::pow(REP_DEC<double>(REP<double>(0.0,1.0),DEC::com), REP_DEC<double>(REP<double>(-2.5,INF_D),DEC::dac)), REP_DEC<float>(REP<float>(0.0,INF_D),DEC::trv) );
@@ -4038,7 +4038,7 @@ BOOST_AUTO_TEST_CASE(minimal_pow_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::pow(REP_DEC<double>(REP<double>(0.0,INF_D),DEC::dac), REP_DEC<double>(REP<double>(-0.1,INF_D),DEC::dac)), REP_DEC<float>(REP<float>(0.0f,INF_F),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<float>(REP<float>(0.0f,INF_F),DEC::def), REP_DEC<float>(REP<float>(-2.5f,-2.5f),DEC::def)), REP_DEC<double>(REP<double>(0.0,INF_D),DEC::trv) );
 
-    BOOST_CHECK_EQUAL( F<float>::pow(REP_DEC<double>(REP<double>(-0.0,0.5),DEC::com), REP_DEC<double>(REP<double>(0.1,0.1),DEC::dac)), REP_DEC<float>(REP<float>(0.0f,std::stof("0X1.DDB682P-1")),DEC::def) );
+    BOOST_CHECK_EQUAL( F<float>::pow(REP_DEC<double>(REP<double>(-0.0,0.5),DEC::com), REP_DEC<double>(REP<double>(0.1,0.1),DEC::dac)), REP_DEC<float>(REP<float>(0.0f,std::stof("0X1.DDB682P-1")),DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::pow(REP_DEC<double>(REP<double>(-0.0,0.5),DEC::dac), REP_DEC<float>(REP<float>(-INF_F,-0.1f),DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0x1.125fbee7118fbp+0"),INF_D),DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<float>::pow(REP_DEC<double>(REP<double>(-0.0,1.0),DEC::def), REP_DEC<double>(REP<double>(0.1,2.5),DEC::com)), REP_DEC<float>(REP<float>(0.0f,1.0f),DEC::def) );
@@ -5486,9 +5486,9 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_test)
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(-0.0, 0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(0.0, -0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(-0.0, -0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, -0.1)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.9EE9C8100C211P+0")) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, 0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0")) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, -0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0")) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, -0.1)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, 0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, -0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, 1.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), 0.0) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(0.0, 1.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), 0.0) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, 0.0), REP<double>(-0.0, 1.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), 0.0) );
@@ -5500,9 +5500,9 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_test)
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(-0.0, 0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(0.0, -0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(-0.0, -0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(-2.0, -0.1)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.9EE9C8100C211P+0")) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(-2.0, 0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0") ) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(-2.0, -0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0") ) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(-2.0, -0.1)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(-2.0, 0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1") ) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(-2.0, -0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1") ) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(-2.0, 1.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), 0.0) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(0.0, 1.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), 0.0) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<double>(-0.0, 1.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), 0.0) );
@@ -5602,12 +5602,12 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::atan2(REP<double>(-2.0, -0.1), REP<double>(-2.0, -0.0)), REP<float>(std::stof("-0X1.8BBAACP+1"), std::stof("-0X1.921FB4P+0")) );
 
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<float>(-2.0f, 0.0f), REP<double>(-0.0, -0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")) );
-    BOOST_CHECK_EQUAL( F<float>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, -0.1)), REP<float>(std::stof("-0x1.921fb6p+1"), std::stof("-0x1.9ee9c8p+0")) );
-    BOOST_CHECK_EQUAL( F<float>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, 0.0)), REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("-0X1.921FB4P+0")) );
+    BOOST_CHECK_EQUAL( F<float>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, -0.1)), REP<float>(std::stof("-0x1.921fb6p+1"), std::stof("0x1.921fb6p+1")) );
+    BOOST_CHECK_EQUAL( F<float>::atan2(REP<double>(-2.0, 0.0), REP<double>(-2.0, 0.0)), REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("0x1.921fb6p+1")) );
 
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<float>(-2.0f, -0.1f)), REP<double>(std::stod("-0x1.921fb54442d19p+1"), std::stod("-0x1.9ee9c8133d494p+0")) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP<float>(-2.0f, -0.0f), REP<double>(-2.0, 0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0")) );
-    BOOST_CHECK_EQUAL( F<float>::atan2(REP<double>(-2.0, -0.0), REP<double>(-2.0, -0.0)), REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("-0X1.921FB4P+0")) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP<double>(-2.0, -0.0), REP<float>(-2.0f, -0.1f)), REP<double>(std::stod("-0x1.921fb54442d19p+1"), std::stod("0x1.921fb54442d19p+1")) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP<float>(-2.0f, -0.0f), REP<double>(-2.0, 0.0)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0x1.921fb54442d19p+1")) );
+    BOOST_CHECK_EQUAL( F<float>::atan2(REP<double>(-2.0, -0.0), REP<double>(-2.0, -0.0)), REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("0X1.921FB6P+1")) );
     BOOST_CHECK_EQUAL( F<float>::atan2(REP<double>(-2.0, -0.0), REP<double>(-2.0, 1.0)), REP<float>(std::stof("-0X1.921FB6P+1"), 0.0f) );
 
     BOOST_CHECK_EQUAL( F<double>::atan2(REP<float>(-2.0f, 1.0f), REP<float>(-2.0f, 0.0f)), REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")) );
@@ -5665,7 +5665,7 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_test)
     BOOST_CHECK_EQUAL( F<double>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(0.0, -0.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
@@ -5679,7 +5679,7 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_test)
     BOOST_CHECK( F<double>::is_empty(  F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 0.0), DEC::trv), REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::dac)) ) );
     BOOST_CHECK( F<double>::is_empty(  F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(0.0, -0.0), DEC::def)) ) );
     BOOST_CHECK( F<double>::is_empty(  F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 0.0), DEC::dac), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::com)) ) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 0.0), DEC::trv), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::def)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
@@ -5693,7 +5693,7 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_test)
     BOOST_CHECK( F<double>::is_empty(  F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::trv), REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::trv)) ) );
     BOOST_CHECK( F<double>::is_empty(  F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(0.0, -0.0), DEC::def)) ) );
     BOOST_CHECK( F<double>::is_empty(  F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::dac), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::com)) ) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::trv), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::def)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
@@ -5707,7 +5707,7 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_test)
     BOOST_CHECK( F<double>::is_empty(  F<double>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::trv), REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::com)) ) );
     BOOST_CHECK( F<double>::is_empty(  F<double>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::dac), REP_DEC<double>(REP<double>(0.0, -0.0), DEC::def)) ) );
     BOOST_CHECK( F<double>::is_empty(  F<double>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::com), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::trv)) ) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::com)), REP_DEC<double>(REP<double>(0.0,std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
@@ -5749,9 +5749,9 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_test)
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::trv), REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(0.0, -0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::def), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.9EE9C8100C211P+0")), DEC::def) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::dac) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::trv), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), 0.0), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::def), REP_DEC<double>(REP<double>(0.0, 1.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), 0.0), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), 0.0), DEC::trv) );
@@ -5763,9 +5763,9 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_test)
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def), REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac), REP_DEC<double>(REP<double>(0.0, -0.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::com), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.9EE9C8100C211P+0")), DEC::def) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), 0.0), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::trv), REP_DEC<double>(REP<double>(0.0, 1.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), 0.0), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::com), REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), 0.0), DEC::trv) );
@@ -5777,7 +5777,7 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_test)
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::com), REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::trv), REP_DEC<double>(REP<double>(0.0, -0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::com), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::trv), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
@@ -5791,7 +5791,7 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_test)
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::trv), REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(0.0, -0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::com), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0X1.ABA397C7259DDP+0"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0X1.ABA397C7259DDP+0"), std::stod("0X1.921FB54442D19P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::dac)), REP_DEC<double>(REP<double>(0.0, std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
@@ -5805,7 +5805,7 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_test)
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::trv), REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::trv), REP_DEC<double>(REP<double>(0.0, -0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::def), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.ABA397C7259DDP+0"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.ABA397C7259DDP+0"), std::stod("0X1.921FB54442D19P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::def)), REP_DEC<double>(REP<double>(0.0, std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
@@ -5844,17 +5844,17 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_test)
 BOOST_AUTO_TEST_CASE(minimal_atan2_dec_mixedtype_test)
 {
     BOOST_CHECK_EQUAL( F<double>::atan2(F<float>::entire_dec(), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::trv)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<float>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::com)), REP_DEC<float>(REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("0X1.921FB6P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<float>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::com)), REP_DEC<float>(REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("0X1.921FB6P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<float>::atan2(F<double>::entire_dec(), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::dac)), REP_DEC<float>(REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("0X1.921FB56P+1")), DEC::trv) );
 
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(0.0f, 0.0f), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(0.0f, 0.0f), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(0.0, 0.0), DEC::trv), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<float>(REP<float>(std::stof("0X1.921FB4P+1"), std::stof("0X1.921FB6P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(0.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::trv)), REP_DEC<float>(REP<float>(std::stof("0X1.921FB4P+1"), std::stof("0X1.921FB6P+1")), DEC::trv) );
 
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::dac), REP_DEC<float>(REP<float>(-2.0f, -0.1f), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0x1.921fb54442d18p+1"), std::stod("0x1.921fb54442d19p+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::dac), REP_DEC<float>(REP<float>(-2.0f, -0.1f), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0x1.921fb54442d18p+1"), std::stod("0x1.921fb54442d19p+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-0.0, 0.0), DEC::trv), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<float>(REP<float>(std::stof("0X1.921FB4P+1"), std::stof("0X1.921FB6P+1")), DEC::trv) );
 
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::com), REP_DEC<float>(REP<float>(-2.0f, -0.1f), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::com), REP_DEC<float>(REP<float>(-2.0f, -0.1f), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(0.0, -0.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<float>(REP<float>(std::stof("0X1.921FB4P+1"), std::stof("0X1.921FB6P+1")), DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(-0.0f, -0.0f), DEC::def), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::def) );
@@ -5865,12 +5865,12 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::trv), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac)), REP_DEC<float>(REP<float>(std::stof("-0X1.8BBAACP+1"), std::stof("-0X1.921FB4P+0")), DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(-2.0f, 0.0f), DEC::def), REP_DEC<double>(REP<double>(-0.0, -0.0), DEC::def)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+0"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<float>(REP<float>(std::stof("-0x1.921fb6p+1"), std::stof("-0x1.9ee9c8p+0")), DEC::def) );
-    BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<float>(REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("-0X1.921FB4P+0")), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<float>(REP<float>(std::stof("-0x1.921fb6p+1"), std::stof("0x1.921fb6p+1")), DEC::dac) );
+    BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<float>(REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("0x1.921fb6p+1")), DEC::trv) );
 
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def), REP_DEC<float>(REP<float>(-2.0f, -0.1f), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0x1.921fb54442d19p+1"), std::stod("-0x1.9ee9c8133d494p+0")), DEC::def) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(-2.0f, -0.0f), DEC::com), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("-0X1.921FB54442D18P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def)), REP_DEC<float>(REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("-0X1.921FB4P+0")), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def), REP_DEC<float>(REP<float>(-2.0f, -0.1f), DEC::com)), REP_DEC<double>(REP<double>(std::stod("-0x1.921fb54442d19p+1"), std::stod("0x1.921fb54442d19p+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(-2.0f, -0.0f), DEC::com), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0x1.921fb54442d19p+1")), DEC::trv) );
+    BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def)), REP_DEC<float>(REP<float>(std::stof("-0X1.921FB6P+1"), std::stof("0X1.921FB6P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::trv)), REP_DEC<float>(REP<float>(std::stof("-0X1.921FB6P+1"), 0.0f), DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(-2.0f, 1.0f), DEC::def), REP_DEC<float>(REP<float>(-2.0f, 0.0f), DEC::def)), REP_DEC<double>(REP<double>(std::stod("-0X1.921FB54442D19P+1"), std::stod("0X1.921FB54442D19P+1")), DEC::trv) );
@@ -5878,12 +5878,12 @@ BOOST_AUTO_TEST_CASE(minimal_atan2_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, 1.0), DEC::com)), REP_DEC<float>(REP<float>(std::stof("-0x1.921fb6p+1"), std::stof("0x1.921fb6p+1")), DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(-0.0f, 1.0f), DEC::com), REP_DEC<float>(REP<float>(-0.0f, -0.0f), DEC::def)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(-0.0f, 1.0f), DEC::com), REP_DEC<float>(REP<float>(-2.0f, -0.1f), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0x1.aba397cd7bcb7p+0"), std::stod("0x1.921fb54442d19p+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(-0.0f, 1.0f), DEC::com), REP_DEC<float>(REP<float>(-2.0f, -0.1f), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0x1.aba397cd7bcb7p+0"), std::stod("0x1.921fb54442d19p+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::com)), REP_DEC<float>(REP<float>(std::stof("0X1.921FB4P+0"), std::stof("0X1.921FB6P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(-0.0, 1.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::def)), REP_DEC<float>(REP<float>(std::stof("0X1.921FB4P+0"), std::stof("0X1.921FB6P+1")), DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::def), REP_DEC<float>(REP<float>(-0.0f, -0.0f), DEC::com)), REP_DEC<double>(REP<double>(std::stod("0X1.921FB54442D18P+0"), std::stod("0X1.921FB54442D19P+0")), DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(0.0f, 1.0f), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0x1.aba397c7259ddp+0"), std::stod("0x1.921fb54442d19p+1")), DEC::def) );
+    BOOST_CHECK_EQUAL( F<double>::atan2(REP_DEC<float>(REP<float>(0.0f, 1.0f), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.1), DEC::dac)), REP_DEC<double>(REP<double>(std::stod("0x1.aba397c7259ddp+0"), std::stod("0x1.921fb54442d19p+1")), DEC::dac) );
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::def), REP_DEC<double>(REP<double>(-2.0, 0.0), DEC::trv)), REP_DEC<float>(REP<float>(std::stof("0X1.921FB4P+0"), std::stof("0X1.921FB6P+1")), DEC::trv) );
     BOOST_CHECK_EQUAL( F<float>::atan2(REP_DEC<double>(REP<double>(0.0, 1.0), DEC::dac), REP_DEC<double>(REP<double>(-2.0, -0.0), DEC::dac)), REP_DEC<float>(REP<float>(std::stof("0X1.921FB4P+0"), std::stof("0X1.921FB6P+1")), DEC::trv) );
 

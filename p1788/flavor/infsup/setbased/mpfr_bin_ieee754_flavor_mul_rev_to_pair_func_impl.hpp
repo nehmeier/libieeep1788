@@ -288,7 +288,7 @@ mpfr_bin_ieee754_flavor<T>::mul_rev_to_pair(mpfr_bin_ieee754_flavor<T>::represen
     p1788::decoration::decoration dec = std::min(
                                             std::min(b.second, c.second),
                                             is_member(0.0, b) || is_empty(bare.first) ?  p1788::decoration::decoration::trv :
-                                            is_common(bare.first) ? p1788::decoration::decoration::com :
+                                            is_common_interval(bare.first) ? p1788::decoration::decoration::com :
                                             p1788::decoration::decoration::dac);
 
     return std::pair<representation_dec, representation_dec>(representation_dec(bare.first, dec), representation_dec(bare.second, p1788::decoration::decoration::trv));

@@ -306,198 +306,6 @@ public:
 // p1788/flavor/infsup/setbased/mpfr_bin_ieee754_flavor_class_impl.hpp
 // -----------------------------------------------------------------------------
 
-///@name Interval constructors
-///
-///
-///@{
-
-    /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation representation\endlink for an empty bare interval
-    ///
-    /// \return representation(NaN, NaN)
-    static representation constructor();
-
-    /// \brief Returns a \link mpfr_bin_ieee754_flavor::representation_dec representation_dec\endlink for an empty decorated interval
-    ///
-    /// \return representation_dec(representation(NaN, NaN), \link p1788::decoration::decoration trv\endlink)
-    static representation_dec constructor_dec();
-
-
-
-    /// \brief
-    ///
-    /// \param lower T
-    /// \param upper T
-    /// \return representation
-    ///
-    ///
-    static representation constructor(T lower, T upper);
-
-    /// \brief
-    ///
-    /// \param lower T
-    /// \param upper T
-    /// \return representation_dec
-    ///
-    ///
-    static representation_dec constructor_dec(T lower, T upper);
-
-    // Mixed type
-    /// \brief
-    ///
-    /// \param
-    /// \param
-    /// \return
-    ///
-    ///
-    template<typename L_, typename U_>
-    static representation constructor(L_ lower, U_ upper);
-
-    /// \brief
-    ///
-    /// \param
-    /// \param
-    /// \return
-    ///
-    ///
-    template<typename L_, typename U_>
-    static representation_dec constructor_dec(L_ lower, U_ upper);
-
-    // Kind of SetDec
-    /// \brief
-    ///
-    /// \param lower T
-    /// \param upper T
-    /// \param dec p1788::decoration::decoration
-    /// \return representation_dec
-    ///
-    ///
-    static representation_dec constructor_dec(T lower, T upper, p1788::decoration::decoration dec);
-
-    /// \brief
-    ///
-    /// \param
-    /// \param
-    /// \return
-    ///
-    ///
-    template<typename L_, typename U_>
-    static representation_dec constructor_dec(L_ lower, U_ upper, p1788::decoration::decoration dec);
-
-    // Literal
-    /// \brief
-    ///
-    /// \param str std::string const&
-    /// \return representation
-    ///
-    ///
-    static representation constructor(std::string const& str);
-
-    /// \brief
-    ///
-    /// \param str std::string const&
-    /// \return representation_dec
-    ///
-    ///
-    static representation_dec constructor_dec(std::string const& str);
-
-    // Copy
-    /// \brief
-    ///
-    /// \param other representation const&
-    /// \return representation
-    ///
-    ///
-    static representation constructor(representation const& other);
-
-    /// \brief
-    ///
-    /// \param other representation_dec const&
-    /// \return representation_dec
-    ///
-    ///
-    static representation_dec constructor_dec(representation_dec const& other);
-
-    /// \brief
-    ///
-    /// \param
-    /// \param
-    /// \return
-    ///
-    ///
-    template<typename T_>
-    static representation constructor(representation_type<T_> const& other);
-
-    /// \brief
-    ///
-    /// \param
-    /// \param
-    /// \return
-    ///
-    ///
-    template<typename T_>
-    static representation_dec constructor_dec(representation_dec_type<T_> const& other);
-
-    // Convert: see intervalPart
-    /// \brief
-    ///
-    /// \param other representation_dec const&
-    /// \return representation
-    ///
-    ///
-    static representation constructor(representation_dec const& other);
-
-    /// \brief
-    ///
-    /// \param
-    /// \param
-    /// \return
-    ///
-    ///
-    template<typename T_>
-    static representation constructor(representation_dec_type<T_> const& other);
-
-    // Convert: newDec
-    /// \brief
-    ///
-    /// \param other representation const&
-    /// \return representation_dec
-    ///
-    ///
-    static representation_dec constructor_dec(representation const& other);
-
-    /// \brief
-    ///
-    /// \param
-    /// \param
-    /// \return
-    ///
-    ///
-    template<typename T_>
-    static representation_dec constructor_dec(representation_type<T_> const& other);
-
-    // setDec
-    /// \brief
-    ///
-    /// \param other representation const&
-    /// \param dec p1788::decoration::decoration
-    /// \return representation_dec
-    ///
-    ///
-    static representation_dec constructor_dec(representation const& other, p1788::decoration::decoration dec);
-
-    /// \brief
-    ///
-    /// \param
-    /// \param
-    /// \return
-    ///
-    ///
-    template<typename T_>
-    static representation_dec constructor_dec(representation_type<T_> const& other, p1788::decoration::decoration dec);
-
-///@}
-
-    static p1788::decoration::decoration decoration(representation_dec const& x);
 
 ///@name Interval constants
 ///
@@ -535,6 +343,191 @@ public:
 ///@}
 
 
+///@name Interval constructors
+///
+///
+///@{
+
+
+    /// \brief
+    ///
+    /// \param lower T
+    /// \param upper T
+    /// \return representation
+    ///
+    ///
+    static representation nums_to_interval(T lower, T upper);
+
+    /// \brief
+    ///
+    /// \param lower T
+    /// \param upper T
+    /// \return representation_dec
+    ///
+    ///
+    static representation_dec nums_to_decorated_interval(T lower, T upper);
+
+    // Mixed type
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
+    template<typename L_, typename U_>
+    static representation nums_to_interval(L_ lower, U_ upper);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
+    template<typename L_, typename U_>
+    static representation_dec nums_to_decorated_interval(L_ lower, U_ upper);
+
+    // Kind of SetDec
+    /// \brief
+    ///
+    /// \param lower T
+    /// \param upper T
+    /// \param dec p1788::decoration::decoration
+    /// \return representation_dec
+    ///
+    ///
+    static representation_dec nums_dec_to_decorated_interval(T lower, T upper, p1788::decoration::decoration dec);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
+    template<typename L_, typename U_>
+    static representation_dec nums_dec_to_decorated_interval(L_ lower, U_ upper, p1788::decoration::decoration dec);
+
+    // Literal
+    /// \brief
+    ///
+    /// \param str std::string const&
+    /// \return representation
+    ///
+    ///
+    static representation text_to_interval(std::string const& str);
+
+    /// \brief
+    ///
+    /// \param str std::string const&
+    /// \return representation_dec
+    ///
+    ///
+    static representation_dec text_to_decorated_interval(std::string const& str);
+
+    // Copy
+    /// \brief
+    ///
+    /// \param other representation const&
+    /// \return representation
+    ///
+    ///
+    static representation copy(representation const& other);
+
+    /// \brief
+    ///
+    /// \param other representation_dec const&
+    /// \return representation_dec
+    ///
+    ///
+    static representation_dec copy(representation_dec const& other);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
+    template<typename T_>
+    static representation convert_type(representation_type<T_> const& other);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
+    template<typename T_>
+    static representation_dec convert_type(representation_dec_type<T_> const& other);
+
+    // intervalPart
+    /// \brief
+    ///
+    /// \param other representation_dec const&
+    /// \return representation
+    ///
+    ///
+    static representation interval_part(representation_dec const& other);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
+    template<typename T_>
+    static representation interval_part(representation_dec_type<T_> const& other);
+
+    // newDec
+    /// \brief
+    ///
+    /// \param other representation const&
+    /// \return representation_dec
+    ///
+    ///
+    static representation_dec new_dec(representation const& other);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
+    template<typename T_>
+    static representation_dec new_dec(representation_type<T_> const& other);
+
+    // setDec
+    /// \brief
+    ///
+    /// \param other representation const&
+    /// \param dec p1788::decoration::decoration
+    /// \return representation_dec
+    ///
+    ///
+    static representation_dec set_dec(representation const& other, p1788::decoration::decoration dec);
+
+    /// \brief
+    ///
+    /// \param
+    /// \param
+    /// \return
+    ///
+    ///
+    template<typename T_>
+    static representation_dec set_dec(representation_type<T_> const& other, p1788::decoration::decoration dec);
+
+///@}
+
+    static p1788::decoration::decoration decoration_part(representation_dec const& x);
+
+
+
+
 // -----------------------------------------------------------------------------
 // Input and output
 // -----------------------------------------------------------------------------
@@ -552,7 +545,7 @@ public:
     ///
     ///
     template< typename CharT, typename Traits >
-    static std::basic_ostream<CharT, Traits>& operator_output(
+    static std::basic_ostream<CharT, Traits>& operator_interval_to_text(
         std::basic_ostream<CharT, Traits>& os,
         representation const& x);
 
@@ -560,7 +553,7 @@ public:
     ///
     ///
     template< typename CharT, typename Traits >
-    static std::basic_ostream<CharT, Traits>& operator_output(
+    static std::basic_ostream<CharT, Traits>& operator_interval_to_text(
         std::basic_ostream<CharT, Traits>& os,
         representation_dec const& x);
 
@@ -568,7 +561,7 @@ public:
     ///
     ///
     template< typename CharT, typename Traits >
-    static std::basic_istream<CharT, Traits>& operator_input(
+    static std::basic_istream<CharT, Traits>& operator_text_to_interval(
         std::basic_istream<CharT, Traits>& is,
         representation& x);
 
@@ -576,7 +569,7 @@ public:
     ///
     ///
     template< typename CharT, typename Traits >
-    static std::basic_istream<CharT, Traits>& operator_input(
+    static std::basic_istream<CharT, Traits>& operator_text_to_interval(
         std::basic_istream<CharT, Traits>& is,
         representation_dec& x);
 
@@ -596,55 +589,55 @@ public:
     /// \todo Docu, Test
     ///
     ///
-    static representation intersect(representation const& x,
-                                    representation const& y);
+    static representation intersection(representation const& x,
+                                       representation const& y);
 
 
     /// \todo Docu, Test
     ///
     ///
     template<typename T1, typename T2>
-    static representation intersect(representation_type<T1> const& x,
-                                    representation_type<T2> const& y);
+    static representation intersection(representation_type<T1> const& x,
+                                       representation_type<T2> const& y);
 
     /// \todo Docu, Test
     ///
     ///
-    static representation_dec intersect(representation_dec const& x,
-                                        representation_dec const& y);
-
-    /// \todo Docu, Test
-    ///
-    ///
-    template<typename T1, typename T2>
-    static representation_dec intersect(representation_dec_type<T1> const& x,
-                                        representation_dec_type<T2> const& y);
-
-    /// \todo Docu, Test
-    ///
-    ///
-    static representation hull(representation const& x,
-                               representation const& y);
+    static representation_dec intersection(representation_dec const& x,
+                                           representation_dec const& y);
 
     /// \todo Docu, Test
     ///
     ///
     template<typename T1, typename T2>
-    static representation hull(representation_type<T1> const& x,
-                               representation_type<T2> const& y);
+    static representation_dec intersection(representation_dec_type<T1> const& x,
+                                           representation_dec_type<T2> const& y);
 
     /// \todo Docu, Test
     ///
     ///
-    static representation_dec hull(representation_dec const& x,
-                                   representation_dec const& y);
+    static representation convex_hull(representation const& x,
+                                      representation const& y);
 
     /// \todo Docu, Test
     ///
     ///
     template<typename T1, typename T2>
-    static representation_dec hull(representation_dec_type<T1> const& x,
-                                   representation_dec_type<T2> const& y);
+    static representation convex_hull(representation_type<T1> const& x,
+                                      representation_type<T2> const& y);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    static representation_dec convex_hull(representation_dec const& x,
+                                          representation_dec const& y);
+
+    /// \todo Docu, Test
+    ///
+    ///
+    template<typename T1, typename T2>
+    static representation_dec convex_hull(representation_dec_type<T1> const& x,
+                                          representation_dec_type<T2> const& y);
 
 ///@}
 
@@ -1141,11 +1134,11 @@ public:
     /// \param y Interval representation
     ///
     /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
-    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c> otherwise.
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::equal(representation const& x, representation_type<T_> const& y) equal\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
-    static bool is_equal(representation const& x, representation const& y);
+    static bool equal(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x equals \p y.
     ///
@@ -1154,12 +1147,12 @@ public:
     ///
     /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
     ///         \li <c>false</c> if \p x  or \p y is NaI
-    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c>
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::equal(representation const& x, representation_type<T_> const& y) equal\endlink</c>
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
-    static bool is_equal(representation_dec const& x, representation_dec const& y);
+    static bool equal(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x equals \p y.
     ///
@@ -1176,7 +1169,7 @@ public:
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
-    static bool is_equal(representation const& x, representation_type<T_> const& y);
+    static bool equal(representation const& x, representation_type<T_> const& y);
 
     /// \brief Decorated mixed-type version. Checks if \p x equals \p y.
     ///
@@ -1187,13 +1180,13 @@ public:
     ///
     /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
     ///         \li <c>false</c> if \p x  or \p y is NaI
-    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_equal(representation const& x, representation_type<T_> const& y) is_equal\endlink</c>
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::equal(representation const& x, representation_type<T_> const& y) equal\endlink</c>
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
-    static bool is_equal(representation_dec const& x, representation_dec_type<T_> const& y);
+    static bool equal(representation_dec const& x, representation_dec_type<T_> const& y);
 
 
     /// \brief Checks if \p x is a subset of \p y.
@@ -1384,11 +1377,11 @@ public:
     /// \param y Interval representation
     ///
     /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
-    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c> otherwise.
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::interior(representation const& x, representation_type<T_> const& y) interior\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
-    static bool is_interior(representation const& x, representation const& y);
+    static bool interior(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x is interior to \p y.
     ///
@@ -1397,12 +1390,12 @@ public:
     ///
     /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
     ///         \li <c>false</c> if \p x  or \p y is NaI
-    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c>
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::interior(representation const& x, representation_type<T_> const& y) interior\endlink</c>
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
-    static bool is_interior(representation_dec const& x, representation_dec const& y);
+    static bool interior(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x is interior to \p y.
     ///
@@ -1419,7 +1412,7 @@ public:
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
-    static bool is_interior(representation const& x, representation_type<T_> const& y);
+    static bool interior(representation const& x, representation_type<T_> const& y);
 
     /// \brief Decorated mixed-type version. Checks if \p x is interior to \p y.
     ///
@@ -1430,13 +1423,13 @@ public:
     ///
     /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
     ///         \li <c>false</c> if \p x  or \p y is NaI
-    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::is_interior(representation const& x, representation_type<T_> const& y) is_interior\endlink</c>
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::interior(representation const& x, representation_type<T_> const& y) interior\endlink</c>
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
-    static bool is_interior(representation_dec const& x, representation_dec_type<T_> const& y);
+    static bool interior(representation_dec const& x, representation_dec_type<T_> const& y);
 
 
     /// \brief Checks if \p x is strictly less than \p y.
@@ -1566,11 +1559,11 @@ public:
     /// \param y Interval representation
     ///
     /// \return \li <c>false</c> if \p x is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
-    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c> otherwise.
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::disjoint(representation const& x, representation_type<T_> const& y) disjoint\endlink</c> otherwise.
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
-    static bool are_disjoint(representation const& x, representation const& y);
+    static bool disjoint(representation const& x, representation const& y);
 
     /// \brief Decorated version. Checks if \p x and \p y are disjoint.
     ///
@@ -1579,12 +1572,12 @@ public:
     ///
     /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
     ///         \li <c>false</c> if \p x  or \p y is NaI
-    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c>
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::disjoint(representation const& x, representation_type<T_> const& y) disjoint\endlink</c>
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
-    static bool are_disjoint(representation_dec const& x, representation_dec const& y);
+    static bool disjoint(representation_dec const& x, representation_dec const& y);
 
     /// \brief Mixed-type version. Checks if \p x and \p y are disjoint.
     ///
@@ -1601,7 +1594,7 @@ public:
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
-    static bool are_disjoint(representation const& x, representation_type<T_> const& y);
+    static bool disjoint(representation const& x, representation_type<T_> const& y);
 
     /// \brief Decorated mixed-type version. Checks if \p x and \p y are disjoint.
     ///
@@ -1612,13 +1605,13 @@ public:
     ///
     /// \return \li <c>false</c> if \p x or \p y is an invalid representation (and if no \link p1788::exception::invalid_operand_exception p1788::exception::invalid_operand_exception \endlink is thrown)
     ///         \li <c>false</c> if \p x  or \p y is NaI
-    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::are_disjoint(representation const& x, representation_type<T_> const& y) are_disjoint\endlink</c>
+    ///         \li Result of bare mixed-type <c>\link mpfr_bin_ieee754_flavor::disjoint(representation const& x, representation_type<T_> const& y) disjoint\endlink</c>
     ///             called with the bare interval part otherwise
     /// \exception p1788::exception::invalid_operand_exception  Throws exception if the <c>invalid_operand_bit</c> is set for the <c>p1788::exception::throw_exception_cwd</c> using
     /// \link p1788::exception::set_p1788::exception::throw_exception_cwd(exception_bits)\endlink.
     /// \note In case of an invalid representation of \p x or \p y the exception state for an invalid operation is set, see \link p1788::exception::invalid_operand() \endlink.
     template<typename T_>
-    static bool are_disjoint(representation_dec const& x, representation_dec_type<T_> const& y);
+    static bool disjoint(representation_dec const& x, representation_dec_type<T_> const& y);
 
 
 ///@}
@@ -3322,12 +3315,12 @@ public:
     /// \todo TODO
     ///
     ///
-    static bool is_common(representation const& x);
+    static bool is_common_interval(representation const& x);
 
     /// \todo TODO
     ///
     ///
-    static bool is_common(representation_dec const& x);
+    static bool is_common_interval(representation_dec const& x);
 
     /// \todo TODO
     ///

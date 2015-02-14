@@ -82,13 +82,13 @@ public:
     ///
     /// \return \f$\emptyset\f$<sub>\link p1788::decoration::decoration trv\endlink</sub>
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec()</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::empty_dec()</c>
     /// which creates the representation for an empty decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec() \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::empty_dec() \endlink
     ///
     inline
     decorated_interval()
-        : base_interval_type(Flavor<T>::constructor_dec())
+        : base_interval_type(Flavor<T>::empty_dec())
     { }
 
 
@@ -102,13 +102,13 @@ public:
     ///         \li NaI otherwise
     ///
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(T lower, T upper)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::nums_to_decorated_interval(T lower, T upper)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(T lower , T upper) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::nums_to_decorated_interval(T lower , T upper) \endlink
     ///
     inline
     decorated_interval(T lower, T upper)
-        : base_interval_type(Flavor<T>::constructor_dec(lower, upper))
+        : base_interval_type(Flavor<T>::nums_to_decorated_interval(lower, upper))
     { }
 
     /// \brief (Mixed type version) Creates a decorated interval with a lower and an upper bound
@@ -121,14 +121,14 @@ public:
     ///         \li NaI otherwise
     ///
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(L lower, U upper)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::nums_to_decorated_interval(L lower, U upper)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(L_ lower , U_ upper) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::nums_to_decorated_interval(L_ lower , U_ upper) \endlink
     ///
     template<typename L, typename U>
     inline
     decorated_interval(L lower, U upper)
-        : base_interval_type(Flavor<T>::constructor_dec(lower, upper))
+        : base_interval_type(Flavor<T>::nums_to_decorated_interval(lower, upper))
     { }
 
 
@@ -141,13 +141,13 @@ public:
     /// \return \li Decorated interval combined out of \p other, \p upper and \p dec if the combination is valid
     ///         \li NaI otherwise
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(T lower, T upper, p1788::decoration::decoration dec)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::nums_dec_to_decorated_interval(T lower, T upper, p1788::decoration::decoration dec)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(T lower, T upper, p1788::decoration::decoration dec) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::nums_dec_to_decorated_interval(T lower, T upper, p1788::decoration::decoration dec) \endlink
     ///
     inline
     decorated_interval(T lower, T upper, p1788::decoration::decoration dec)
-        : base_interval_type(Flavor<T>::constructor_dec(lower, upper, dec))
+        : base_interval_type(Flavor<T>::nums_dec_to_decorated_interval(lower, upper, dec))
     { }
 
     /// \brief (Mixed type version) Creates a decorated interval with a lower and an upper bound and a specified decoration
@@ -159,14 +159,14 @@ public:
     /// \return \li Decorated interval combined out of \p other, \p upper and \p dec if the combination is valid
     ///         \li NaI otherwise
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(L lower, U upper, p1788::decoration::decoration dec)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::nums_dec_to_decorated_interval(L lower, U upper, p1788::decoration::decoration dec)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(L_ lower, U_ upper, p1788::decoration::decoration dec) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::nums_dec_to_decorated_interval(L_ lower, U_ upper, p1788::decoration::decoration dec) \endlink
     ///
     template<typename L, typename U>
     inline
     decorated_interval(L lower, U upper, p1788::decoration::decoration dec)
-        : base_interval_type(Flavor<T>::constructor_dec(lower, upper, dec))
+        : base_interval_type(Flavor<T>::nums_dec_to_decorated_interval(lower, upper, dec))
     { }
 
 
@@ -178,13 +178,13 @@ public:
     ///         \li NaI otherwise
     ///
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(std::string const& str)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::text_to_decorated_interval(std::string const& str)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(std::string const& str) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::text_to_decorated_interval(std::string const& str) \endlink
     ///
     inline explicit
     decorated_interval(std::string const& str)
-        : base_interval_type(Flavor<T>::constructor_dec(str))
+        : base_interval_type(Flavor<T>::text_to_decorated_interval(str))
     { }
 
     /// \brief Copy constructor
@@ -193,13 +193,13 @@ public:
     ///
     /// \return Copy of \p other
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation_dec const& other)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::copy(representation_dec const& other)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_dec const& other) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::copy(representation_dec const& other) \endlink
     ///
     inline
     decorated_interval(decorated_interval<T, Flavor> const& other)
-        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
+        : base_interval_type(Flavor<T>::copy(other.rep_))
     { }
 
     /// \brief Convert constructor
@@ -208,14 +208,14 @@ public:
     ///
     /// \return Hull of \p other
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation_dec_type<T_> const& other)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::convert_type(representation_dec_type<T_> const& other)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_dec_type<T_> const& other) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::convert_type(representation_dec_type<T_> const& other) \endlink
     ///
     template<typename T_>
     inline explicit
     decorated_interval(decorated_interval<T_, Flavor> const& other)
-        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
+        : base_interval_type(Flavor<T>::convert_type(other.rep_))
     { }
 
     /// \brief Decorated interval out of a bare interval constructor
@@ -226,13 +226,13 @@ public:
     ///         \li \p other <sub> \link p1788::decoration::decoration dac \endlink </sub> if \p other is infinite
     ///         \li \p other <sub> \link p1788::decoration::decoration trv \endlink </sub> if \p other is empty
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation const& other)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::new_dec(representation const& other)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::new_dec(representation const& other) \endlink
     ///
     inline
     decorated_interval(interval<T, Flavor> const& other)
-        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
+        : base_interval_type(Flavor<T>::new_dec(other.rep_))
     { }
 
     /// \brief Decorated interval out of a converted bare interval constructor
@@ -244,14 +244,14 @@ public:
     ///         \li \p other <sub> \link p1788::decoration::decoration dac \endlink </sub> if hull \p other is infinite
     ///         \li \p other <sub> \link p1788::decoration::decoration trv \endlink </sub> if hull \p other is empty
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation_type<T_> const& other)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::new_dec(representation_type<T_> const& other)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_type<T_> const& other) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::new_dec(representation_type<T_> const& other) \endlink
     ///
     template<typename T_>
     inline explicit
     decorated_interval(interval<T_, Flavor> const& other)
-        : base_interval_type(Flavor<T>::constructor_dec(other.rep_))
+        : base_interval_type(Flavor<T>::new_dec(other.rep_))
     { }
 
     /// \brief Decorated interval out of a bare interval and a decoration constructor
@@ -262,13 +262,13 @@ public:
     /// \return \li Decorated interval combined out of \p other and \p dec if the combination is valid
     ///         \li NaI otherwise
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation const& other, p1788::decoration::decoration dec)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::set_dec(representation const& other, p1788::decoration::decoration dec)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation const& other, p1788::decoration::decoration dec) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::set_dec(representation const& other, p1788::decoration::decoration dec) \endlink
     ///
     inline
     decorated_interval(interval<T, Flavor> const& other, p1788::decoration::decoration dec)
-        : base_interval_type(Flavor<T>::constructor_dec(other.rep_, dec))
+        : base_interval_type(Flavor<T>::set_dec(other.rep_, dec))
     { }
 
     /// \brief Decorated interval out of a converted bare interval and a decoration constructor
@@ -279,14 +279,14 @@ public:
     /// \return \li Decorated interval combined out of hull of \p other and \p dec if the combination is valid
     ///         \li NaI otherwise
     ///
-    /// \note The function is forwarded to the function <c>Flavor\<T\>::constructor_dec(representation_type<T_> const& other, p1788::decoration::decoration dec)</c>
+    /// \note The function is forwarded to the function <c>Flavor\<T\>::set_dec(representation_type<T_> const& other, p1788::decoration::decoration dec)</c>
     /// which creates the representation for a decorated interval.
-    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::constructor_dec(representation_type<T_> const& other, p1788::decoration::decoration dec) \endlink
+    /// \see \link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor<T>::set_dec(representation_type<T_> const& other, p1788::decoration::decoration dec) \endlink
     ///
     template<typename T_>
     inline explicit
     decorated_interval(interval<T_, Flavor> const& other, p1788::decoration::decoration dec)
-        : base_interval_type(Flavor<T>::constructor_dec(other.rep_, dec))
+        : base_interval_type(Flavor<T>::set_dec(other.rep_, dec))
     { }
 
 ///@}
@@ -387,12 +387,12 @@ public:
     ///
     /// \return decoration of \p x
     ///
-    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) mpfr_bin_ieee754_flavor::is_nai(representation_dec const& x) \endlink</c>
+    /// \see <c>\link p1788::flavor::infsup::setbased::mpfr_bin_ieee754_flavor::decoration_part(representation_dec const& x) mpfr_bin_ieee754_flavor::decoration_part(representation_dec const& x) \endlink</c>
     ///
     inline
     static p1788::decoration::decoration decoration(decorated_interval<T,Flavor> const& x)
     {
-        return Flavor<T>::decoration(x.rep_);
+        return Flavor<T>::decoration_part(x.rep_);
     }
 
 ///@}

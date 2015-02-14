@@ -71,7 +71,7 @@ bool is_entire(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
 // static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_equal(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+bool base_interval<T, Flavor, RepType, ConcreteInterval>::equal(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
     // assert that only bare intervals or decorated intervals are used
@@ -83,28 +83,28 @@ bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_equal(base_interval
                    "interval and decorated_interval types together!"
                  );
 
-    return Flavor<T>::is_equal(x.rep_, y.rep_);
+    return Flavor<T>::equal(x.rep_, y.rep_);
 }
 
 // function
 template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
-bool is_equal(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
+bool equal(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
 {
-    return base_interval<T1, Flavor, RepType1, ConcreteInterval1>::is_equal(x, y);
+    return base_interval<T1, Flavor, RepType1, ConcreteInterval1>::equal(x, y);
 }
 
 // operator
 template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
 bool operator==(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
 {
-    return base_interval<T1, Flavor, RepType1, ConcreteInterval1>::is_equal(x, y);
+    return base_interval<T1, Flavor, RepType1, ConcreteInterval1>::equal(x, y);
 }
 
 // operator
 template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
 bool operator!=(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
 {
-    return !base_interval<T1, Flavor, RepType1, ConcreteInterval1>::is_equal(x, y);
+    return !base_interval<T1, Flavor, RepType1, ConcreteInterval1>::equal(x, y);
 }
 
 
@@ -276,12 +276,12 @@ bool succeeds(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, b
 }
 
 
-// is_interior
+// interior
 
 // static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_interior(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+bool base_interval<T, Flavor, RepType, ConcreteInterval>::interior(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
     // assert that only bare intervals or decorated intervals are used
@@ -293,14 +293,14 @@ bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_interior(base_inter
                    "interval and decorated_interval types together!"
                  );
 
-    return Flavor<T>::is_interior(x.rep_, y.rep_);
+    return Flavor<T>::interior(x.rep_, y.rep_);
 }
 
 // function
 template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
-bool is_interior(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
+bool interior(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
 {
-    return base_interval<T1, Flavor, RepType1, ConcreteInterval1>::is_interior(x, y);
+    return base_interval<T1, Flavor, RepType1, ConcreteInterval1>::interior(x, y);
 }
 
 
@@ -321,7 +321,7 @@ bool base_interval<T, Flavor, RepType, ConcreteInterval>::contains_interior(base
                    "interval and decorated_interval types together!"
                  );
 
-    return Flavor<T>::is_interior(y.rep_, x.rep_);
+    return Flavor<T>::interior(y.rep_, x.rep_);
 }
 
 // function
@@ -444,12 +444,12 @@ bool strictly_succeeds(base_interval<T1, Flavor, RepType1, ConcreteInterval1> co
 }
 
 
-// are_disjoint
+// disjoint
 
 // static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 template<typename T_, typename RepType_, class ConcreteInterval_>
-bool base_interval<T, Flavor, RepType, ConcreteInterval>::are_disjoint(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+bool base_interval<T, Flavor, RepType, ConcreteInterval>::disjoint(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
         base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y)
 {
     // assert that only bare intervals or decorated intervals are used
@@ -461,14 +461,14 @@ bool base_interval<T, Flavor, RepType, ConcreteInterval>::are_disjoint(base_inte
                    "interval and decorated_interval types together!"
                  );
 
-    return Flavor<T>::are_disjoint(x.rep_, y.rep_);
+    return Flavor<T>::disjoint(x.rep_, y.rep_);
 }
 
 // function
 template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
-bool are_disjoint(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
+bool disjoint(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y)
 {
-    return base_interval<T1, Flavor, RepType1, ConcreteInterval1>::are_disjoint(x, y);
+    return base_interval<T1, Flavor, RepType1, ConcreteInterval1>::disjoint(x, y);
 }
 
 

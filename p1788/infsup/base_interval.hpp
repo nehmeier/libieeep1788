@@ -154,7 +154,7 @@ public:
 
     template<typename T_, typename RepType_, class ConcreteInterval_>
     inline
-    static bool is_equal(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y);
+    static bool equal(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y);
 
 
     template<typename T_, typename RepType_, class ConcreteInterval_>
@@ -186,7 +186,7 @@ public:
 
     template<typename T_, typename RepType_, class ConcreteInterval_>
     inline
-    static bool is_interior(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y);
+    static bool interior(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y);
 
     template<typename T_, typename RepType_, class ConcreteInterval_>
     inline
@@ -213,7 +213,7 @@ public:
 
     template<typename T_, typename RepType_, class ConcreteInterval_>
     inline
-    static bool are_disjoint(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y);
+    static bool disjoint(base_interval<T, Flavor, RepType, ConcreteInterval> const& x, base_interval<T_, Flavor, RepType_, ConcreteInterval_> const& y);
 
 
 ///@}
@@ -229,7 +229,7 @@ public:
 ///@{
 
     inline
-    static bool is_common(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+    static bool is_common_interval(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
 
     inline
     static bool is_singleton(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
@@ -329,21 +329,21 @@ public:
 
 
     inline
-    static ConcreteInterval intersect(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+    static ConcreteInterval intersection(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
                                       base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
 
     template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
     inline
-    static ConcreteInterval intersect(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+    static ConcreteInterval intersection(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
                                       base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
 
     inline
-    static ConcreteInterval hull(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+    static ConcreteInterval convex_hull(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
                                  base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
 
     template<typename T1, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
     inline
-    static ConcreteInterval hull(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
+    static ConcreteInterval convex_hull(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x,
                                  base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
 
 ///@}
@@ -963,7 +963,7 @@ bool is_entire(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
 
 template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
 inline
-bool is_equal(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
+bool equal(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
 
 template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
 inline
@@ -1004,7 +1004,7 @@ bool succeeds(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, b
 
 template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
 inline
-bool is_interior(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
+bool interior(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
 
 template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
 inline
@@ -1031,7 +1031,7 @@ bool strictly_succeeds(base_interval<T1, Flavor, RepType1, ConcreteInterval1> co
 
 template<typename T1, template<typename> class Flavor, typename RepType1, class ConcreteInterval1, typename T2, typename RepType2, class ConcreteInterval2>
 inline
-bool are_disjoint(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
+bool disjoint(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& x, base_interval<T2, Flavor, RepType2, ConcreteInterval2> const& y);
 
 
 ///@}
@@ -1044,7 +1044,7 @@ bool are_disjoint(base_interval<T1, Flavor, RepType1, ConcreteInterval1> const& 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 inline
-bool is_common(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
+bool is_common_interval(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 inline
@@ -1107,13 +1107,13 @@ T mig(base_interval<T, Flavor, RepType, ConcreteInterval> const& x);
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 inline
-ConcreteInterval intersect(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+ConcreteInterval intersection(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
                            base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
 
 
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
 inline
-ConcreteInterval hull(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
+ConcreteInterval convex_hull(base_interval<T, Flavor, RepType, ConcreteInterval> const& x,
                       base_interval<T, Flavor, RepType, ConcreteInterval> const& y);
 
 ///@}

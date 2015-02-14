@@ -44,26 +44,23 @@ namespace overlapping
 //
 enum class overlapping_state : uint32_t
 {
-    both_empty      = 0,
-    first_empty     = 1,
-    second_empty    = 1 << 1,
-    before          = 1 << 2,
-    meets           = 1 << 3,
-    overlaps        = 1 << 4,
-    starts          = 1 << 5,
-    contained_by    = 1 << 6,
-    finishes        = 1 << 7,
-    equal           = 1 << 8,
-    finished_by     = 1 << 9,
-    contains        = 1 << 10,
-    started_by      = 1 << 11,
-    overlapped_by   = 1 << 12,
-    met_by          = 1 << 13,
-    after           = 1 << 14,
-    both_nai        = 1 << 15,
-    first_nai       = 1 << 16,
-    second_nai      = 1 << 17,
-    undefined       = 1 << 18
+    undefined       = 0,
+    both_empty      = 1 << 0,
+    first_empty     = 1 << 1,
+    second_empty    = 1 << 2,
+    before          = 1 << 3,
+    meets           = 1 << 4,
+    overlaps        = 1 << 5,
+    starts          = 1 << 6,
+    contained_by    = 1 << 7,
+    finishes        = 1 << 8,
+    equal           = 1 << 9,
+    finished_by     = 1 << 10,
+    contains        = 1 << 11,
+    started_by      = 1 << 12,
+    overlapped_by   = 1 << 13,
+    met_by          = 1 << 14,
+    after           = 1 << 15
 };
 
 
@@ -220,31 +217,7 @@ std::basic_ostream<CharT, Traits>& operator<<(
         default:
             return os << "after";
         }
-    case overlapping_state::both_nai:
-        switch (os.iword(p1788::io::text_representation_manip_id))
-        {
-        case p1788::io::upper_case_text_representation:
-            return os << "BOTH_NAI";
-        default:
-            return os << "both_nai";
-        }
-    case overlapping_state::first_nai:
-        switch (os.iword(p1788::io::text_representation_manip_id))
-        {
-        case p1788::io::upper_case_text_representation:
-            return os << "FIRST_NAI";
-        default:
-            return os << "first_nai";
-        }
-    case overlapping_state::second_nai:
-        switch (os.iword(p1788::io::text_representation_manip_id))
-        {
-        case p1788::io::upper_case_text_representation:
-            return os << "SECOND_NAI";
-        default:
-            return os << "second_nai";
-        }
-        case overlapping_state::undefined:
+    default:    // undefined
         switch (os.iword(p1788::io::text_representation_manip_id))
         {
         case p1788::io::upper_case_text_representation:

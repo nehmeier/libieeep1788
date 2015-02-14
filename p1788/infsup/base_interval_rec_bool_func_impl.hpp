@@ -32,20 +32,20 @@ namespace p1788
 namespace infsup
 {
 
-// is_common
+// is_common_interval
 
 // static
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_common(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+bool base_interval<T, Flavor, RepType, ConcreteInterval>::is_common_interval(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
 {
-    return Flavor<T>::is_common(x.rep_);
+    return Flavor<T>::is_common_interval(x.rep_);
 }
 
 // function
 template<typename T, template<typename> class Flavor, typename RepType, class ConcreteInterval>
-bool is_common(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
+bool is_common_interval(base_interval<T, Flavor, RepType, ConcreteInterval> const& x)
 {
-    return base_interval<T, Flavor, RepType, ConcreteInterval>::is_common(x);
+    return base_interval<T, Flavor, RepType, ConcreteInterval>::is_common_interval(x);
 }
 
 

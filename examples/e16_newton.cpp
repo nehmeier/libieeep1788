@@ -64,8 +64,8 @@ void ia_newton(I<T> (*f) (I<T> const&),     // function to be analyzed
     auto z = mul_rev_to_pair(df(x), f(c));      // z = f(c) / df(x)
 
     // pairwise intersection of z and x
-    I<T> v1 = intersect(x, c - z.first);
-    I<T> v2 = intersect(x, c - z.second);
+    I<T> v1 = intersection(x, c - z.first);
+    I<T> v2 = intersection(x, c - z.second);
 
     // bisection if v1 == x
     if (v1 == x)
