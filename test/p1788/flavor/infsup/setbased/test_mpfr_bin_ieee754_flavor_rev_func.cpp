@@ -103,6 +103,8 @@ BOOST_AUTO_TEST_CASE(minimal_sqr_rev_bin_test)
     BOOST_CHECK_EQUAL( F<double>::sqr_rev(REP<double>(std::stod("0x1.0000000000001p0"), INF_D), REP<double>(-1.0,std::stod("0x1.0000000000001p0"))), REP<double>(1.0,std::stod("0x1.0000000000001p0")) );
     BOOST_CHECK_EQUAL( F<double>::sqr_rev(REP<double>(std::stod("0x1.0000000000001p0"), INF_D), REP<double>(std::stod("-0x1.0000000000001p0"), 1.0)), REP<double>(std::stod("-0x1.0000000000001p0"), -1.0) );
     BOOST_CHECK( F<double>::is_empty(F<double>::sqr_rev(REP<double>(std::stod("0x1.0000000000001p0"), INF_D), REP<double>(-1.0, 1.0))) );
+    BOOST_CHECK( F<double>::is_empty(F<double>::sqr_rev(REP<double>(std::stod("0x1.0000000000001p0"), INF_D), REP<double>(1.0, 1.0))) );
+    BOOST_CHECK( F<double>::is_empty(F<double>::sqr_rev(REP<double>(std::stod("0x1.0000000000001p0"), INF_D), REP<double>(-1.0, -1.0))) );
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 

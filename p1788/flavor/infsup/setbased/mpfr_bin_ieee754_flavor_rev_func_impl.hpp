@@ -78,16 +78,13 @@ mpfr_bin_ieee754_flavor<T>::sqr_rev(mpfr_bin_ieee754_flavor<T>::representation c
     representation p = representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
     representation n = neg(p);
 
-    auto os_p = overlap(p, x);
-
-    if ((os_p == p1788::overlapping::overlapping_state::meets && t_u != 0)
-        || (os_p == p1788::overlapping::overlapping_state::met_by && t_l != 0))
+    if ((p.second == x.first && t_u != 0)
+        || (x.second == p.first && t_l != 0))
             p = empty();
 
-    auto os_n = overlap(n, x);
 
-    if ((os_n == p1788::overlapping::overlapping_state::meets && t_l != 0)
-        || (os_n == p1788::overlapping::overlapping_state::met_by && t_u != 0))
+    if ((n.second == x.first && t_l != 0)
+        || (x.second == n.first && t_u != 0))
             n = empty();
 
     return convex_hull(intersection(p, x), intersection(n, x));
