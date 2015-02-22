@@ -1,6 +1,6 @@
 == CHANGES ==
 
-  - fixes issue #20: accuracy of sqrRev 
+  - fixes issue #20: accuracy of sqrRev, coshRev
 
 0.1.3
   - refactoring backend / flavor
