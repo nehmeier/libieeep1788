@@ -1268,11 +1268,46 @@ typename mpfr_bin_ieee754_flavor<T>::representation
 mpfr_bin_ieee754_flavor<T>::cosh_rev(mpfr_bin_ieee754_flavor<T>::representation const& c,
                                      mpfr_bin_ieee754_flavor<T>::representation const& x)
 {
-    if (!is_valid(c) || !is_valid(x) || is_empty(c) || is_empty(x))
+    if (!is_valid(c) || !is_valid(x) || is_empty(c) || is_empty(x) || c.second < 1.0)
         return empty();
 
-    representation p = acosh(c);
+
+    mpfr_var::setup();
+
+    mpfr_var l;
+    mpfr_var u;
+
+    int t_l = 0;
+    int t_u = 0;
+
+
+    if (c.first < 1.0)
+    {
+        l.set(0.0, MPFR_RNDD);
+
+        u.set(c.second, MPFR_RNDU);
+        t_u = u.subnormalize(mpfr_acosh(u(), u(), MPFR_RNDU), MPFR_RNDU);
+    }
+    else
+    {
+        l.set(c.first, MPFR_RNDD);
+        u.set(c.second, MPFR_RNDU);
+
+        t_l = l.subnormalize(mpfr_acosh(l(), l(), MPFR_RNDD), MPFR_RNDD);
+        t_u = u.subnormalize(mpfr_acosh(u(), u(), MPFR_RNDU), MPFR_RNDU);
+    }
+
+    representation p = representation(l.template get<T>(MPFR_RNDD), u.template get<T>(MPFR_RNDU));
     representation n = neg(p);
+
+    if ((p.second == x.first && t_u != 0)
+        || (x.second == p.first && t_l != 0))
+            p = empty();
+
+
+    if ((n.second == x.first && t_l != 0)
+        || (x.second == n.first && t_u != 0))
+            n = empty();
 
     return convex_hull(intersection(p, x), intersection(n, x));
 }
