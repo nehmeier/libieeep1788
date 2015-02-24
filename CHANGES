@@ -1,7 +1,7 @@
 == CHANGES ==
 
   - fixes issue #20: accuracy of sqrRev, coshRev
-  - fices problem with atan2
+  - fixes problems with atan2
 
 0.1.3
   - refactoring backend / flavor
