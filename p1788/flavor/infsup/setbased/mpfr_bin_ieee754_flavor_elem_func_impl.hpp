@@ -3075,9 +3075,8 @@ mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation con
         {
             if (y.second == 0.0)
             {
-                l.subnormalize(mpfr_const_pi(l(), MPFR_RNDU), MPFR_RNDU);   // pi
-                l.subnormalize(mpfr_neg(l(), l(), MPFR_RNDD), MPFR_RNDD);   // -pi
-                u.set(0.0, MPFR_RNDU);
+                u.subnormalize(mpfr_const_pi(u(), MPFR_RNDU), MPFR_RNDU);   // pi
+                l.subnormalize(mpfr_neg(l(), u(), MPFR_RNDD), MPFR_RNDD);   // -pi
             }
             else
             {
@@ -3165,8 +3164,9 @@ mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation_dec
     p1788::decoration::decoration dec = std::min(
                                             std::min(y.second, x.second),
                                             (is_member(0.0, y) && is_member(0.0, x)) || is_empty(bare) ? p1788::decoration::decoration::trv :
-                                            is_member(0.0, y) && x.first.first < 0.0 ? p1788::decoration::decoration::dac :
-                                            p1788::decoration::decoration::com);
+                                            y.first.first < 0.0 && y.first.second >= 0.0 && x.first.first < 0.0 ? p1788::decoration::decoration::def :
+                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
+                                            p1788::decoration::decoration::dac);
     return representation_dec(bare, dec);
 }
 
