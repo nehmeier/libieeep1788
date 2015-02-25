@@ -3165,8 +3165,8 @@ mpfr_bin_ieee754_flavor<T>::atan2(mpfr_bin_ieee754_flavor<T>::representation_dec
                                             std::min(y.second, x.second),
                                             (is_member(0.0, y) && is_member(0.0, x)) || is_empty(bare) ? p1788::decoration::decoration::trv :
                                             y.first.first < 0.0 && y.first.second >= 0.0 && x.first.first < 0.0 ? p1788::decoration::decoration::def :
-                                            is_common_interval(bare) ? p1788::decoration::decoration::com :
-                                            p1788::decoration::decoration::dac);
+                                            (y.first.first == 0.0 && x.first.first < 0.0) || !is_common_interval(bare) ? p1788::decoration::decoration::dac :
+                                            p1788::decoration::decoration::com);
     return representation_dec(bare, dec);
 }
 
