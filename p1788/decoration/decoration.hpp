@@ -32,7 +32,7 @@
 
 #include "p1788/io/io_manip.hpp"
 #include "p1788/util/io.hpp"
-
+#include "p1788/exception/exception.hpp"
 
 namespace p1788
 {
@@ -63,6 +63,23 @@ enum class decoration : uint8_t
 };
 
 
+
+bool is_valid(decoration dec)
+{
+    switch(dec)
+    {
+    case decoration::ill:
+    case decoration::trv:
+    case decoration::def:
+    case decoration::dac:
+    case decoration::com:
+        return true;
+    }
+
+
+    // invalid: signal invalid operand
+    return !p1788::exception::signal_invalid_operand();
+}
 
 
 

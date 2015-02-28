@@ -100,6 +100,11 @@ BOOST_AUTO_TEST_CASE(minimal_sqr_rev_bin_test)
 
     BOOST_CHECK_EQUAL( F<double>::sqr_rev(REP<double>(std::stod("0X1.47AE147AE147BP-7"),std::stod("0X1.47AE147AE147CP-7")), REP<double>(-0.1,INF_D)), REP<double>(-0.1,std::stod("0X1.999999999999BP-4")) );
     BOOST_CHECK_EQUAL( F<double>::sqr_rev(REP<double>(0.0,std::stod("0X1.FFFFFFFFFFFE1P+1")), REP<double>(-0.1,INF_D)), REP<double>(-0.1,std::stod("0x1.ffffffffffff1p+0")) );
+    BOOST_CHECK_EQUAL( F<double>::sqr_rev(REP<double>(std::stod("0x1.0000000000001p0"), INF_D), REP<double>(-1.0,std::stod("0x1.0000000000001p0"))), REP<double>(1.0,std::stod("0x1.0000000000001p0")) );
+    BOOST_CHECK_EQUAL( F<double>::sqr_rev(REP<double>(std::stod("0x1.0000000000001p0"), INF_D), REP<double>(std::stod("-0x1.0000000000001p0"), 1.0)), REP<double>(std::stod("-0x1.0000000000001p0"), -1.0) );
+    BOOST_CHECK( F<double>::is_empty(F<double>::sqr_rev(REP<double>(std::stod("0x1.0000000000001p0"), INF_D), REP<double>(-1.0, 1.0))) );
+    BOOST_CHECK( F<double>::is_empty(F<double>::sqr_rev(REP<double>(std::stod("0x1.0000000000001p0"), INF_D), REP<double>(1.0, 1.0))) );
+    BOOST_CHECK( F<double>::is_empty(F<double>::sqr_rev(REP<double>(std::stod("0x1.0000000000001p0"), INF_D), REP<double>(-1.0, -1.0))) );
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
@@ -1745,6 +1750,10 @@ BOOST_AUTO_TEST_CASE(minimal_cosh_rev_bin_test)
     BOOST_CHECK( F<double>::is_empty( F<double>::cosh_rev(REP<double>(1.0,1.0), REP<double>(1.0,INF_D)) ) );
 
     BOOST_CHECK_EQUAL( F<double>::cosh_rev(REP<double>(std::stod("0X1.8B07551D9F55P+0"),std::stod("0X1.89BCA168970C6P+432")), REP<double>(-INF_D,0.0) ), REP<double>(std::stod("-0X1.2C903022DD7ABP+8"),std::stod("-0x1.fffffffffffffp-1")) );
+
+    BOOST_CHECK_EQUAL( F<double>::cosh_rev(REP<double>(std::stod("0X1.0000000000001P+0"),INF_D), REP<double>(std::stod("-0x1.6a09e667f3bcdp-26"),std::stod("0x1.6a09e667f3bccp-26")) ), REP<double>(std::stod("-0x1.6a09e667f3bcdp-26"),std::stod("-0x1.6a09e667f3bccp-26")) );
+    BOOST_CHECK_EQUAL( F<double>::cosh_rev(REP<double>(std::stod("0X1.0000000000001P+0"),INF_D), REP<double>(std::stod("-0x1.6a09e667f3bccp-26"),std::stod("0x1.6a09e667f3bcdp-26")) ), REP<double>(std::stod("0x1.6a09e667f3bccp-26"),std::stod("0x1.6a09e667f3bcdp-26")) );
+    BOOST_CHECK( F<double>::is_empty( F<double>::cosh_rev(REP<double>(std::stod("0X1.0000000000001P+0"),INF_D), REP<double>(std::stod("-0x1.6a09e667f3bccp-26"),std::stod("0x1.6a09e667f3bccp-26"))) ) );
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 

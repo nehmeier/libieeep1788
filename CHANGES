@@ -1,11 +1,16 @@
 == CHANGES ==
 
+  - fixes issue #23: no signal of undefined_operation in set_dec
+  - fixes issue #22: signal invalid_operand on invalid decoration
+  - fixes issue #20: accuracy of sqrRev, coshRev
+  - fixes problems with atan2
+
 0.1.3
   - refactoring backend / flavor
   - implemented recommendation #17: members of overlapping_state
   - fixes issue #16: accuracy of dot product
   - fixes issue #15: decorations of cancel_plus and cancel_minus
-  - fixes issue #14: atan([-y,0],[-x,0])
+  - fixes issue #14: atan2([-y,0],[-x,0])
   - fixes issue #13: decorations of pow
   - fixes reopened issue #8: exponent field required for hex literals
   - fixes reopened issue #9: problem with signed uncertain form

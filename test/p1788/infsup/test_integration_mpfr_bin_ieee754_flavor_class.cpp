@@ -133,6 +133,11 @@ BOOST_AUTO_TEST_CASE(integration_infsupdec_constructor_dec_test)
     BOOST_CHECK( is_nai( DI<double>(-INF_D, 2.0, DEC::com) )  );
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( is_nai( DI<double>(-INF_D, 2.0, static_cast<p1788::decoration::decoration>(13)) )  );
+
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
 }
 
 BOOST_AUTO_TEST_CASE(integration_infsupdec_mixedtype_constructor_dec_test)
@@ -148,6 +153,11 @@ BOOST_AUTO_TEST_CASE(integration_infsupdec_mixedtype_constructor_dec_test)
     BOOST_CHECK( is_nai( DI<float>(-INF_D, 2.0, DEC::com) )  );
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK( is_nai( DI<float>(-INF_D, 2.0, static_cast<p1788::decoration::decoration>(13)) )  );
+
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
 }
 
 BOOST_AUTO_TEST_CASE(integration_text_constructor_test)
@@ -295,6 +305,10 @@ BOOST_AUTO_TEST_CASE(integration_set_dec_test)
 
     BOOST_CHECK_EQUAL( DI<double>(x, DEC::def), DI<double>(0.1, 2.1, DEC::def) );
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
+
+    BOOST_CHECK( is_nai( DI<double>(x, static_cast<p1788::decoration::decoration>(13)) )  );
+
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
 }
 
 BOOST_AUTO_TEST_CASE(integration_mixedtype_set_dec_test)
@@ -304,6 +318,10 @@ BOOST_AUTO_TEST_CASE(integration_mixedtype_set_dec_test)
 
     BOOST_CHECK_EQUAL( DI<float>(x, DEC::def), DI<float>(std::stof("0X1.999998P-4"), std::stof("0X1.0CCCCEP+1"), DEC::def) );
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
+
+    BOOST_CHECK( is_nai( DI<float>(x, static_cast<p1788::decoration::decoration>(13)) )  );
+
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
 }
 
 BOOST_AUTO_TEST_CASE(integration_empty_test)
