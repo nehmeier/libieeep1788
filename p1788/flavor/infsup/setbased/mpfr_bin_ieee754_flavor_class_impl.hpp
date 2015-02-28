@@ -469,27 +469,19 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::set_dec(representation const& other, p1788::decoration::decoration dec)
 {
-    if (!p1788::decoration::is_valid(dec) || !is_valid(other))
+    if (!p1788::decoration::is_valid(dec) || !is_valid(other) || dec == p1788::decoration::decoration::ill)
     {
         return nai();
     }
 
-    if (dec == p1788::decoration::decoration::ill)
+    if (is_empty(other))
     {
-        p1788::exception::signal_undefined_operation();
-        return nai();
-    }
-
-    if (is_empty(other) && dec != p1788::decoration::decoration::trv)
-    {
-        p1788::exception::signal_undefined_operation();
         return empty_dec();
     }
 
     if (dec == p1788::decoration::decoration::com
             && (other.first == -std::numeric_limits<T>::infinity() || other.second == +std::numeric_limits<T>::infinity()))
     {
-        p1788::exception::signal_undefined_operation();
         return representation_dec(other, p1788::decoration::decoration::dac);
     }
 

@@ -1267,49 +1267,17 @@ BOOST_AUTO_TEST_CASE(minimal_set_dec_test)
     BOOST_CHECK( F<double>::is_empty(F<double>::set_dec(REP<double>(NAN_D, NAN_D), DEC::trv )));
     BOOST_CHECK_EQUAL(F<double>::set_dec( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC::com ), REP_DEC<double>( REP<double>(std::stod("-0X1.99999C0000000p+4"), std::stod("0X1.9999999999999P-4")), DEC::com));
 
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
-
     BOOST_CHECK( F<double>::is_empty(F<double>::set_dec(REP<double>(NAN_D, NAN_D), DEC::def )));
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK( F<double>::is_empty(F<double>::set_dec(REP<double>(NAN_D, NAN_D), DEC::dac )));
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK( F<double>::is_empty(F<double>::set_dec(REP<double>(NAN_D, NAN_D), DEC::com )));
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
-
     BOOST_CHECK_EQUAL( F<double>::set_dec(REP<double>(1.0, INF_D), DEC::com ), REP_DEC<double>( REP<double>(1.0, INF_D), DEC::dac) );
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK_EQUAL( F<double>::set_dec(REP<double>(-INF_D,3.0), DEC::com ), REP_DEC<double>( REP<double>(-INF_D,3.0), DEC::dac) );
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK_EQUAL( F<double>::set_dec(REP<double>(-INF_D, INF_D), DEC::com ), REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC::dac) );
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
-
     BOOST_CHECK( F<double>::is_nai(F<double>::set_dec(REP<double>(NAN_D, NAN_D), DEC::ill )));
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK( F<double>::is_nai(F<double>::set_dec(REP<double>(-INF_D,3.0), DEC::ill )) );
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK( F<double>::is_nai(F<double>::set_dec(REP<double>(-1.0,3.0), DEC::ill )) );
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
 
-    p1788::exception::set_throw_exception_cwd(p1788::exception::undefined_operation_bit);
-    BOOST_CHECK_THROW( F<double>::set_dec( REP<double>(NAN_D, NAN_D), DEC::dac), p1788::exception::undefined_operation_exception);
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
-    BOOST_CHECK_THROW( F<double>::set_dec( REP<double>(-INF_D,3.0), DEC::com), p1788::exception::undefined_operation_exception);
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
-    BOOST_CHECK_THROW( F<double>::set_dec( REP<double>(-1.0,3.0), DEC::ill), p1788::exception::undefined_operation_exception);
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
-    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     BOOST_CHECK( F<double>::is_nai(F<double>::set_dec( REP<double>(7.0, NAN_D), DEC::trv )));
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
@@ -1374,49 +1342,18 @@ BOOST_AUTO_TEST_CASE(minimal_set_dec_mixedtype_test)
     BOOST_CHECK( F<float>::is_empty(F<float>::set_dec( REP<double>(NAN_D, NAN_D), DEC::trv )));
     BOOST_CHECK( F<double>::is_empty(F<double>::set_dec( REP<float>(NAN_D, NAN_D), DEC::trv )));
 
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     BOOST_CHECK( F<float>::is_empty(F<float>::set_dec(REP<double>(NAN_D, NAN_D), DEC::def )));
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK( F<float>::is_empty(F<float>::set_dec(REP<double>(NAN_D, NAN_D), DEC::dac )));
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK( F<float>::is_empty(F<float>::set_dec(REP<double>(NAN_D, NAN_D), DEC::com )));
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
-
     BOOST_CHECK_EQUAL( F<double>::set_dec(REP<float>(1.0f, INF_F), DEC::com ), REP_DEC<double>( REP<double>(1.0, INF_D), DEC::dac) );
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK_EQUAL( F<double>::set_dec(REP<float>(-INF_F,3.0f), DEC::com ), REP_DEC<double>( REP<double>(-INF_D,3.0), DEC::dac) );
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK_EQUAL( F<double>::set_dec(REP<float>(-INF_F, INF_F), DEC::com ), REP_DEC<double>( REP<double>(-INF_D, INF_D), DEC::dac) );
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
-
     BOOST_CHECK( F<double>::is_nai(F<double>::set_dec(REP<float>(NAN_F, NAN_F), DEC::ill )));
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK( F<double>::is_nai(F<double>::set_dec(REP<float>(-INF_F,3.0f), DEC::ill )) );
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
     BOOST_CHECK( F<double>::is_nai(F<double>::set_dec(REP<float>(-1.0f,3.0f), DEC::ill )) );
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
 
-    p1788::exception::set_throw_exception_cwd(p1788::exception::undefined_operation_bit);
-    BOOST_CHECK_THROW( F<float>::set_dec( REP<double>(NAN_D, NAN_D), DEC::dac), p1788::exception::undefined_operation_exception);
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
-    BOOST_CHECK_THROW( F<float>::set_dec( REP<double>(-INF_D,3.0), DEC::com), p1788::exception::undefined_operation_exception);
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
-    BOOST_CHECK_THROW( F<float>::set_dec( REP<double>(-1.0,3.0), DEC::ill), p1788::exception::undefined_operation_exception);
-    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
-    p1788::exception::clear();
-    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
     BOOST_CHECK( F<float>::is_nai(F<float>::set_dec( REP<double>(7.0, NAN_D), DEC::trv )));
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
