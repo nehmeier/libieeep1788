@@ -1,5 +1,6 @@
 == CHANGES ==
 
+0.1.4
   - fixes issue #23: no signal of undefined_operation in set_dec
   - fixes issue #22: signal invalid_operand on invalid decoration
   - fixes issue #20: accuracy of sqrRev, coshRev
