@@ -1,5 +1,6 @@
 == CHANGES ==
 
+  - fixes issue #22: signal invalid_operand on invalid decoration
   - fixes issue #20: accuracy of sqrRev, coshRev
   - fixes problems with atan2
 

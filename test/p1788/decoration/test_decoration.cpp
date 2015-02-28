@@ -235,6 +235,32 @@ BOOST_AUTO_TEST_CASE(minimal_decoration_greater_equal_test)
     BOOST_CHECK( (DEC::ill >= DEC::ill) );
 }
 
+BOOST_AUTO_TEST_CASE(minimal_decoration_is_valid_test)
+{
+    p1788::exception::clear();
+
+    BOOST_CHECK( p1788::decoration::is_valid(DEC::ill) );
+    BOOST_CHECK( p1788::decoration::is_valid(DEC::trv) );
+    BOOST_CHECK( p1788::decoration::is_valid(DEC::def) );
+    BOOST_CHECK( p1788::decoration::is_valid(DEC::dac) );
+    BOOST_CHECK( p1788::decoration::is_valid(DEC::com) );
+
+    BOOST_CHECK(!p1788::exception::invalid_operand());
+
+    DEC bad_dec = static_cast<p1788::decoration::decoration>(13);
+
+    BOOST_CHECK( !p1788::decoration::is_valid(bad_dec) );
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW(p1788::decoration::is_valid(bad_dec), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK(p1788::exception::invalid_operand());
+    p1788::exception::clear();
+    p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
+}
+
+
 BOOST_AUTO_TEST_CASE(minimal_decoration_output_test)
 {
     boost::test_tools::output_test_stream output;

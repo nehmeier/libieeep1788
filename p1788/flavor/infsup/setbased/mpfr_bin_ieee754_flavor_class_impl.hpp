@@ -190,24 +190,28 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::nums_dec_to_decorated_interval(T lower, T upper, p1788::decoration::decoration dec)
 {
-    // Comparison with NaN is always false!
-    if (dec != p1788::decoration::decoration::ill
-            && (lower <= upper
-                &&  lower != std::numeric_limits<T>::infinity()
-                && upper != -std::numeric_limits<T>::infinity()
-                && (dec != p1788::decoration::decoration::com
-                    || (lower != -std::numeric_limits<T>::infinity()
-                        && upper != std::numeric_limits<T>::infinity()))
-               )
-       )
+    if (p1788::decoration::is_valid(dec))
     {
-        return representation_dec(representation(lower,upper), dec);
+        // Comparison with NaN is always false!
+        if (dec != p1788::decoration::decoration::ill
+                && (lower <= upper
+                    &&  lower != std::numeric_limits<T>::infinity()
+                    && upper != -std::numeric_limits<T>::infinity()
+                    && (dec != p1788::decoration::decoration::com
+                        || (lower != -std::numeric_limits<T>::infinity()
+                            && upper != std::numeric_limits<T>::infinity()))
+                   )
+           )
+        {
+            return representation_dec(representation(lower,upper), dec);
+        }
+        else
+        {
+            p1788::exception::signal_undefined_operation();
+        }
     }
-    else
-    {
-        p1788::exception::signal_undefined_operation();
-        return nai();
-    }
+
+    return nai();
 }
 
 
@@ -220,29 +224,33 @@ mpfr_bin_ieee754_flavor<T>::nums_dec_to_decorated_interval(L_ lower, U_ upper, p
     static_assert(std::numeric_limits<L_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
     static_assert(std::numeric_limits<U_>::is_iec559, "Only IEEE 754 binary compliant types are supported!");
 
-    // Comparison with NaN is always false!
-    if (dec != p1788::decoration::decoration::ill
-            && (lower <= upper
-                &&  lower != std::numeric_limits<L_>::infinity()
-                && upper != -std::numeric_limits<U_>::infinity()
-                && (dec != p1788::decoration::decoration::com
-                    || (lower != -std::numeric_limits<L_>::infinity()
-                        && upper != std::numeric_limits<U_>::infinity()))
-               )
-       )
+    if (p1788::decoration::is_valid(dec))
     {
-        representation tmp(convert_rndd(lower), convert_rndu(upper));
-        return representation_dec(tmp,
-                                  std::min(dec,
-                                           std::isinf(tmp.first) || std::isinf(tmp.second)
-                                           ? p1788::decoration::decoration::dac
-                                           : p1788::decoration::decoration::com ));
+        // Comparison with NaN is always false!
+        if (dec != p1788::decoration::decoration::ill
+                && (lower <= upper
+                    &&  lower != std::numeric_limits<L_>::infinity()
+                    && upper != -std::numeric_limits<U_>::infinity()
+                    && (dec != p1788::decoration::decoration::com
+                        || (lower != -std::numeric_limits<L_>::infinity()
+                            && upper != std::numeric_limits<U_>::infinity()))
+                   )
+           )
+        {
+            representation tmp(convert_rndd(lower), convert_rndu(upper));
+            return representation_dec(tmp,
+                                      std::min(dec,
+                                               std::isinf(tmp.first) || std::isinf(tmp.second)
+                                               ? p1788::decoration::decoration::dac
+                                               : p1788::decoration::decoration::com ));
+        }
+        else
+        {
+            p1788::exception::signal_undefined_operation();
+        }
     }
-    else
-    {
-        p1788::exception::signal_undefined_operation();
-        return nai();
-    }
+
+    return nai();
 }
 
 
@@ -461,7 +469,7 @@ template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation_dec
 mpfr_bin_ieee754_flavor<T>::set_dec(representation const& other, p1788::decoration::decoration dec)
 {
-    if (!is_valid(other))
+    if (!p1788::decoration::is_valid(dec) || !is_valid(other))
     {
         return nai();
     }

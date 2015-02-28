@@ -387,9 +387,26 @@ BOOST_AUTO_TEST_CASE(minimal_nums_dec_to_decorated_interval_test)
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
     p1788::exception::clear();
 
+    DEC bad_dec = static_cast<p1788::decoration::decoration>(13);
+
+    BOOST_CHECK( std::isnan( F<double>::nums_dec_to_decorated_interval(1.0,2.0,bad_dec).first.first ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::nums_dec_to_decorated_interval(1.0,2.0,bad_dec).first.second ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
+    p1788::exception::clear();
+    BOOST_CHECK_EQUAL( F<double>::nums_dec_to_decorated_interval(1.0,2.0,bad_dec).second, DEC::ill );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
+    p1788::exception::clear();
+
     p1788::exception::set_throw_exception_cwd(p1788::exception::undefined_operation_bit);
     BOOST_CHECK_THROW( F<double>::nums_dec_to_decorated_interval(INF_D,INF_D,DEC::trv), p1788::exception::undefined_operation_exception);
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::nums_dec_to_decorated_interval(1.0,2.0,bad_dec), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -440,12 +457,29 @@ BOOST_AUTO_TEST_CASE(minimal_nums_dec_to_decorated_interval_mixedtype_test)
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
     p1788::exception::clear();
 
+    DEC bad_dec = static_cast<p1788::decoration::decoration>(47);
+
+    BOOST_CHECK( std::isnan( F<double>::nums_dec_to_decorated_interval(1.0f,2.0f,bad_dec).first.first ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
+    p1788::exception::clear();
+    BOOST_CHECK( std::isnan( F<double>::nums_dec_to_decorated_interval(1.0f,2.0f,bad_dec).first.second ) );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
+    p1788::exception::clear();
+    BOOST_CHECK_EQUAL( F<double>::nums_dec_to_decorated_interval(1.0f,2.0f,bad_dec).second, DEC::ill );
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
+    p1788::exception::clear();
+
     p1788::exception::set_throw_exception_cwd(p1788::exception::undefined_operation_bit);
     BOOST_CHECK_THROW( F<float>::nums_dec_to_decorated_interval(-INF_D,-INF_D,DEC::trv), p1788::exception::undefined_operation_exception);
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
     p1788::exception::clear();
     BOOST_CHECK_THROW( F<double>::nums_dec_to_decorated_interval(INF_F,INF_F,DEC::def), p1788::exception::undefined_operation_exception);
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::undefined_operation_bit);
+    p1788::exception::clear();
+
+    p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
+    BOOST_CHECK_THROW( F<double>::nums_dec_to_decorated_interval(1.0f,2.0f,bad_dec), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
 }
@@ -1290,8 +1324,18 @@ BOOST_AUTO_TEST_CASE(minimal_set_dec_test)
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
 
+    DEC bad_dec = static_cast<p1788::decoration::decoration>(111);
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::set_dec( REP<double>(1.0, 2.0), bad_dec )));
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
+    p1788::exception::clear();
+
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<double>::set_dec( REP<double>(7.0, -3.0), DEC::ill), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK_THROW( F<double>::set_dec(REP<double>(1.0,2.0),bad_dec), p1788::exception::invalid_operand_exception);
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
@@ -1387,8 +1431,18 @@ BOOST_AUTO_TEST_CASE(minimal_set_dec_mixedtype_test)
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
 
+    DEC bad_dec = static_cast<p1788::decoration::decoration>(111);
+
+    BOOST_CHECK( F<double>::is_nai(F<double>::set_dec( REP<double>(1.0f, 2.0f), bad_dec )));
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
+    p1788::exception::clear();
+
     p1788::exception::set_throw_exception_cwd(p1788::exception::invalid_operand_bit);
     BOOST_CHECK_THROW( F<float>::set_dec( REP<double>(7.0, -3.0), DEC::ill), p1788::exception::invalid_operand_exception);
+    BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
+    p1788::exception::clear();
+
+    BOOST_CHECK_THROW( F<float>::set_dec(REP<double>(1.0,2.0f),bad_dec), p1788::exception::invalid_operand_exception);
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::invalid_operand_bit);
     p1788::exception::clear();
     p1788::exception::set_throw_exception_cwd(p1788::exception::none_bit);
