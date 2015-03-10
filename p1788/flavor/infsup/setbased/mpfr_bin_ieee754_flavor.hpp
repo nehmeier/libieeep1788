@@ -2605,6 +2605,13 @@ public:
 ///
 ///@{
 
+private:
+
+    static std::pair<representation,representation> mul_rev_to_pair(int& t_fl, int& t_fu, int& t_sl, int& t_su, 
+            representation const& b, representation const& c);
+
+public:
+
     /// \todo TODO
     ///
     ///

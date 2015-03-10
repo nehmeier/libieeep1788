@@ -2100,6 +2100,7 @@ BOOST_AUTO_TEST_CASE(minimal_mul_rev_test)
     BOOST_CHECK_EQUAL( F<double>::mul_rev(REP<double>(0.01, INF_D), REP<double>(-INF_D, INF_D)) ,  REP<double>(-INF_D, INF_D) );
     BOOST_CHECK_EQUAL( F<double>::mul_rev(REP<double>(-INF_D, INF_D), REP<double>(-INF_D, INF_D)) ,  REP<double>(-INF_D, INF_D) );
 
+    BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev(REP<double>(std::stod("-0x1.fffffffffffffp-1"), std::stod("0x1.fffffffffffffp-1")), REP<double>(1, 1), REP<double>(0,1))  ) );
 
     BOOST_CHECK_EQUAL(p1788::exception::state(), p1788::exception::none_bit);
 
