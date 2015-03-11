@@ -1428,7 +1428,17 @@ mpfr_bin_ieee754_flavor<T>::mul_rev(mpfr_bin_ieee754_flavor<T>::representation c
     if (!is_valid(b) || !is_valid(c) || !is_valid(x))
         return empty();
 
-    auto tmp = mul_rev_to_pair(b, c);
+    int t_fl, t_fu, t_sl, t_su;
+    auto tmp = mul_rev_to_pair(t_fl, t_fu, t_sl, t_su, b, c);
+
+    if ((tmp.first.second == x.first && t_fu != 0)
+        || (x.second == tmp.first.first && t_fl != 0))
+            tmp.first = empty();
+
+    if ((tmp.second.second == x.first && t_su != 0)
+        || (x.second == tmp.second.first && t_sl != 0))
+            tmp.second = empty();
+
 
     return convex_hull(intersection(tmp.first, x), intersection(tmp.second, x));
 }
