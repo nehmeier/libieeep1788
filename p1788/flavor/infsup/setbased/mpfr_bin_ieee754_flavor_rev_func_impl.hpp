@@ -318,6 +318,78 @@ mpfr_bin_ieee754_flavor<T>::abs_rev(mpfr_bin_ieee754_flavor<T>::representation_d
 
 // pown_rev
 
+template<typename T>
+int mpfr_bin_ieee754_flavor<T>::pow_rev_inf(mpfr_var& xl,
+                                            mpfr_var const& cu,
+                                            int p)
+{
+    int t1;
+    if (p != -p)
+    {
+        t1 = -mpfr_root(xl(), const_cast<mpfr_var&>(cu)(), -p, MPFR_RNDU);
+    }
+    else
+    {
+        int t2 = -mpfr_sqrt(xl(), const_cast<mpfr_var&>(cu)(), MPFR_RNDU);
+	t1 = -mpfr_root(xl(), xl(), -(p >> 1), MPFR_RNDU);
+	if (t1 == 0) t1 = t2;
+    }
+    int t = mpfr_ui_div(xl(), 1, xl(), MPFR_RNDD);
+    if (t == 0) t = t1;
+    if (p == -1 || t == 0) return t;
+    mpfr_var cm;
+    for (;;)
+    {
+        mpfr_nextabove(xl());
+        xl.subnormalize(0, MPFR_RNDU);
+        if (!mpfr_regular_p(xl())) break;
+        t1 = mpfr_pow_si(cm(), xl(), p, MPFR_RNDU);
+        t = mpfr_cmp(const_cast<mpfr_var&>(cu)(), cm());
+        if (t == 0) t = t1;
+        if (t == 0) return 0;
+        if (t > 0) break;
+    }
+    mpfr_nextbelow(xl());
+    xl.subnormalize(0, MPFR_RNDD);
+    return -1;
+}
+
+template<typename T>
+int mpfr_bin_ieee754_flavor<T>::pow_rev_sup(mpfr_var& xu,
+                                            mpfr_var const& cl,
+                                            int p)
+{
+    int t1;
+    if (p != -p)
+    {
+        t1 = -mpfr_root(xu(), const_cast<mpfr_var&>(cl)(), -p, MPFR_RNDD);
+    }
+    else
+    {
+        int t2 = -mpfr_sqrt(xu(), const_cast<mpfr_var&>(cl)(), MPFR_RNDD);
+	t1 = -mpfr_root(xu(), xu(), -(p >> 1), MPFR_RNDD);
+	if (t1 == 0) t1 = t2;
+    }
+    int t = mpfr_ui_div(xu(), 1, xu(), MPFR_RNDU);
+    if (t == 0) t = t1;
+    if (p == -1 || t == 0) return t;
+    mpfr_var cm;
+    for (;;)
+    {
+        mpfr_nextbelow(xu());
+        xu.subnormalize(0, MPFR_RNDD);
+        if (!mpfr_regular_p(xu())) break;
+        t1 = mpfr_pow_si(cm(), xu(), p, MPFR_RNDD);
+        t = mpfr_cmp(const_cast<mpfr_var&>(cl)(), cm());
+        if (t == 0) t = t1;
+        if (t == 0) return 0;
+        if (t < 0) break;
+    }
+    mpfr_nextabove(xu());
+    xu.subnormalize(0, MPFR_RNDU);
+    return 1;
+}
+
 // bare version
 template<typename T>
 typename mpfr_bin_ieee754_flavor<T>::representation
@@ -353,14 +425,24 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
             mpfr_var cl(c.first <= 0.0 ? 0.0 : c.first, MPFR_RNDD);
             mpfr_var cu(c.second, MPFR_RNDU);
 
-            cl.subnormalize(mpfr_root(cl(), cl(), -p, MPFR_RNDD), MPFR_RNDD);
-            cl.subnormalize(mpfr_si_div(cl(), 1, cl(), MPFR_RNDU), MPFR_RNDU);  // 1 / root(lower, abs(p))
+            mpfr_var xu;
+            int t_u = pow_rev_sup(xu, cl, p);
 
-            cu.subnormalize(mpfr_root(cu(), cu(), -p, MPFR_RNDU), MPFR_RNDU);
-            cu.subnormalize(mpfr_si_div(cu(), 1, cu(), MPFR_RNDD), MPFR_RNDD);  // 1 / root(upper, abs(p))
+            mpfr_var xl;
+            int t_l = pow_rev_inf(xl, cu, p);
 
-            return convex_hull(intersection(x, representation(-cl.template get<T>(MPFR_RNDU), -cu.template get<T>(MPFR_RNDD))),
-                               intersection(x, representation(cu.template get<T>(MPFR_RNDD), cl.template get<T>(MPFR_RNDU))));
+            representation rp = representation(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
+            representation rn = neg(rp);
+
+            if ((rp.second == x.first && t_u != 0)
+                || (x.second == rp.first && t_l != 0))
+                    rp = empty();
+
+            if ((rn.second == x.first && t_l != 0)
+                || (x.second == rn.first && t_u != 0))
+                    rn = empty();
+
+            return convex_hull(intersection(rp, x), intersection(rn, x));
         }
         else    // positive even
         {
@@ -403,20 +485,37 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
                 mpfr_var cl(c.first, MPFR_RNDD);
                 mpfr_var cu(c.second, MPFR_RNDU);
 
+                mpfr_var xu;
+                int t_u;
                 if (c.first != 0.0)
                 {
-                    cl.subnormalize(mpfr_root(cl(), cl(), -p, MPFR_RNDD), MPFR_RNDD);
-                    cl.subnormalize(mpfr_si_div(cl(), 1, cl(), MPFR_RNDU), MPFR_RNDU);  // 1 / root(lower, abs(p))
+                    t_u = pow_rev_sup(xu, cl, p);
+                }
+                else
+                {
+                    mpfr_set_inf(xu(), 1);
+                    t_u = 0;
                 }
 
+                mpfr_var xl;
+                int t_l;
                 if (c.second != 0.0)
                 {
-                    cu.subnormalize(mpfr_root(cu(), cu(), -p, MPFR_RNDU), MPFR_RNDU);
-                    cu.subnormalize(mpfr_si_div(cu(), 1, cu(), MPFR_RNDD), MPFR_RNDD);  // 1 / root(upper, abs(p))
+                    t_l = pow_rev_inf(xl, cu, p);
+                }
+                else
+                {
+                    mpfr_set_inf(xl(), -1);
+                    t_l = 0;
                 }
 
-                return intersection(x, representation(c.second != 0.0 ? cu.template get<T>(MPFR_RNDD) : -std::numeric_limits<T>::infinity(),
-                                                      c.first != 0.0 ? cl.template get<T>(MPFR_RNDU) : std::numeric_limits<T>::infinity()));
+                representation r = representation(xl.template get<T>(MPFR_RNDD), xu.template get<T>(MPFR_RNDU));
+
+                if ((r.second == x.first && t_u != 0)
+                    || (x.second == r.first && t_l != 0))
+                        r = empty();
+
+                return intersection(x, r);
             }
             else
             {
@@ -425,14 +524,19 @@ mpfr_bin_ieee754_flavor<T>::pown_rev(mpfr_bin_ieee754_flavor<T>::representation 
                 mpfr_var cl(c.first, MPFR_RNDD);
                 mpfr_var cu(c.second, MPFR_RNDU);
 
-                cl.subnormalize(mpfr_root(cl(), cl(), -p, MPFR_RNDD), MPFR_RNDD);
-                cl.subnormalize(mpfr_si_div(cl(), 1, cl(), MPFR_RNDU), MPFR_RNDU);  // 1 / root(lower, abs(p))
+                mpfr_var xu;
+                int t_u = pow_rev_sup(xu, cl, p);
+                representation rn = representation(-std::numeric_limits<T>::infinity(), xu.template get<T>(MPFR_RNDU));
+                if (rn.second == x.first && t_u != 0)
+                    rn = empty();
 
-                cu.subnormalize(mpfr_root(cu(), cu(), -p, MPFR_RNDU), MPFR_RNDU);
-                cu.subnormalize(mpfr_si_div(cu(), 1, cu(), MPFR_RNDD), MPFR_RNDD);  // 1 / root(upper, abs(p))
+                mpfr_var xl;
+                int t_l = pow_rev_inf(xl, cu, p);
+                representation rp = representation(xl.template get<T>(MPFR_RNDD), std::numeric_limits<T>::infinity());
+                if (x.second == rp.first && t_l != 0)
+                    rp = empty();
 
-                return convex_hull(intersection(x, representation(-std::numeric_limits<T>::infinity(), cl.template get<T>(MPFR_RNDU))),
-                                   intersection(x, representation(cu.template get<T>(MPFR_RNDD), std::numeric_limits<T>::infinity())));
+                return convex_hull(intersection(x, rn), intersection(x, rp));
             }
         }
         else     // positive odd

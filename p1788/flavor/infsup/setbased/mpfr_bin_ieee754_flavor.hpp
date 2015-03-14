@@ -2748,7 +2748,15 @@ public:
     static representation_dec abs_rev(representation_dec_type<T_> const& c);
 
 
+private:
+    static int pow_rev_inf(mpfr_var& xl,
+                           mpfr_var const& cu,
+                           int p);
+    static int pow_rev_sup(mpfr_var& xu,
+                           mpfr_var const& cl,
+                           int p);
 
+public:
 
     /// \todo TODO
     ///
