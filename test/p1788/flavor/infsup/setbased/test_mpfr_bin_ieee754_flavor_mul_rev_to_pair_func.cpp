@@ -86,8 +86,8 @@ BOOST_AUTO_TEST_CASE(minimal_mul_rev_to_pair_test)
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(0.0, INF_D), REP<double>(-2.1, -0.4)).second ) );
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(0.01, INF_D), REP<double>(-2.1, -0.4)).first,  REP<double>(std::stod("-0X1.A400000000001P+7"), 0.0) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(0.01, INF_D), REP<double>(-2.1, -0.4)).second ) );
-    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(-2.1, -0.4)).first,  REP<double>(-INF_D, INF_D) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(-2.1, -0.4)).second ) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(-2.1, -0.4)).first,  REP<double>(-INF_D, 0) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(-2.1, -0.4)).second,  REP<double>(0, INF_D) );
 
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-2.0, -0.1), REP<double>(-2.1, 0.0)).first,  REP<double>(0.0, std::stod("0X1.5P+4")) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(-2.0, -0.1), REP<double>(-2.1, 0.0)).second ) );
@@ -194,8 +194,8 @@ BOOST_AUTO_TEST_CASE(minimal_mul_rev_to_pair_test)
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(0.0, INF_D), REP<double>(0.01, 0.12)).second ) );
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(0.01, INF_D), REP<double>(0.01, 0.12)).first,  REP<double>(0.0, std::stod("0X1.8P+3")) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(0.01, INF_D), REP<double>(0.01, 0.12)).second ) );
-    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(0.01, 0.12)).first,  REP<double>(-INF_D, INF_D) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(0.01, 0.12)).second ) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(0.01, 0.12)).first,  REP<double>(-INF_D, 0) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(0.01, 0.12)).second,  REP<double>(0, INF_D) );
 
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-2.0, -0.1), REP<double>(0.0, 0.0)).first,  REP<double>(0.0, 0.0) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(-2.0, -0.1), REP<double>(0.0, 0.0)).second ) );
@@ -249,8 +249,8 @@ BOOST_AUTO_TEST_CASE(minimal_mul_rev_to_pair_test)
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(0.0, INF_D), REP<double>(-INF_D, -0.1)).second ) );
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(0.01, INF_D), REP<double>(-INF_D, -0.1)).first,  REP<double>(-INF_D, 0.0) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(0.01, INF_D), REP<double>(-INF_D, -0.1)).second ) );
-    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(-INF_D, -0.1)).first,  REP<double>(-INF_D, INF_D) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(-INF_D, -0.1)).second ) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(-INF_D, -0.1)).first,  REP<double>(-INF_D, 0) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(-INF_D, -0.1)).second,  REP<double>(0, INF_D) );
 
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-2.0, -0.1), REP<double>(-INF_D, 0.0)).first,  REP<double>(0.0, INF_D) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(-2.0, -0.1), REP<double>(-INF_D, 0.0)).second ) );
@@ -384,8 +384,8 @@ BOOST_AUTO_TEST_CASE(minimal_mul_rev_to_pair_test)
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(0.0, INF_D), REP<double>(0.04, INF_D)).second ) );
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(0.01, INF_D), REP<double>(0.04, INF_D)).first,  REP<double>(0.0, INF_D) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(0.01, INF_D), REP<double>(0.04, INF_D)).second ) );
-    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(0.04, INF_D)).first,  REP<double>(-INF_D, INF_D) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(0.04, INF_D)).second ) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(0.04, INF_D)).first,  REP<double>(-INF_D, 0) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-INF_D, INF_D), REP<double>(0.04, INF_D)).second,  REP<double>(0, INF_D) );
 
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP<double>(-2.0, -0.1), REP<double>(-INF_D, INF_D)).first,  REP<double>(-INF_D, INF_D) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP<double>(-2.0, -0.1), REP<double>(-INF_D, INF_D)).second ) );
@@ -522,8 +522,8 @@ BOOST_AUTO_TEST_CASE(minimal_mul_rev_to_pair_dec_test)
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.0, INF_D),DEC::def), REP_DEC<double>(REP<double>(-2.1, -0.4),DEC::com)).second ) );
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.01, INF_D),DEC::def), REP_DEC<double>(REP<double>(-2.1, -0.4),DEC::def)).first,  REP_DEC<double>(REP<double>(std::stod("-0X1.A400000000001P+7"), 0.0),DEC::def) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.01, INF_D),DEC::def), REP_DEC<double>(REP<double>(-2.1, -0.4),DEC::def)).second ) );
-    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-2.1, -0.4),DEC::dac)).first,  REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::trv) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-2.1, -0.4),DEC::dac)).second ) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-2.1, -0.4),DEC::dac)).first,  REP_DEC<double>(REP<double>(-INF_D, 0),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-2.1, -0.4),DEC::dac)).second,  REP_DEC<double>(REP<double>(0, INF_D),DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-2.0, -0.1),DEC::dac), REP_DEC<double>(REP<double>(-2.1, 0.0),DEC::com)).first,  REP_DEC<double>(REP<double>(0.0, std::stod("0X1.5P+4")),DEC::dac) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-2.0, -0.1),DEC::dac), REP_DEC<double>(REP<double>(-2.1, 0.0),DEC::com)).second ) );
@@ -630,8 +630,8 @@ BOOST_AUTO_TEST_CASE(minimal_mul_rev_to_pair_dec_test)
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.0, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.01, 0.12),DEC::dac)).second ) );
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.01, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.01, 0.12),DEC::dac)).first,  REP_DEC<double>(REP<double>(0.0, std::stod("0X1.8P+3")),DEC::dac) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.01, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.01, 0.12),DEC::dac)).second ) );
-    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.01, 0.12),DEC::dac)).first,  REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::trv) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.01, 0.12),DEC::dac)).second ) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.01, 0.12),DEC::dac)).first,  REP_DEC<double>(REP<double>(-INF_D, 0),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.01, 0.12),DEC::dac)).second,  REP_DEC<double>(REP<double>(0, INF_D),DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-2.0, -0.1),DEC::com), REP_DEC<double>(REP<double>(0.0, 0.0),DEC::com)).first,  REP_DEC<double>(REP<double>(0.0, 0.0),DEC::com) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-2.0, -0.1),DEC::com), REP_DEC<double>(REP<double>(0.0, 0.0),DEC::com)).second ) );
@@ -686,8 +686,8 @@ BOOST_AUTO_TEST_CASE(minimal_mul_rev_to_pair_dec_test)
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.0, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, -0.1),DEC::dac)).second ) );
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.01, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, -0.1),DEC::dac)).first,  REP_DEC<double>(REP<double>(-INF_D, 0.0),DEC::dac) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.01, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, -0.1),DEC::dac)).second ) );
-    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, -0.1),DEC::dac)).first,  REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::trv) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, -0.1),DEC::dac)).second ) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, -0.1),DEC::dac)).first,  REP_DEC<double>(REP<double>(-INF_D, 0),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, -0.1),DEC::dac)).second,  REP_DEC<double>(REP<double>(0, INF_D),DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-2.0, -0.1),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, 0.0),DEC::dac)).first,  REP_DEC<double>(REP<double>(0.0, INF_D),DEC::dac) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-2.0, -0.1),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, 0.0),DEC::dac)).second ) );
@@ -821,8 +821,8 @@ BOOST_AUTO_TEST_CASE(minimal_mul_rev_to_pair_dec_test)
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.0, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.04, INF_D),DEC::dac)).second ) );
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.01, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.04, INF_D),DEC::dac)).first,  REP_DEC<double>(REP<double>(0.0, INF_D),DEC::dac) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(0.01, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.04, INF_D),DEC::dac)).second ) );
-    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.04, INF_D),DEC::dac)).first,  REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::trv) );
-    BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.04, INF_D),DEC::dac)).second ) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.04, INF_D),DEC::dac)).first,  REP_DEC<double>(REP<double>(-INF_D, 0),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac), REP_DEC<double>(REP<double>(0.04, INF_D),DEC::dac)).second,  REP_DEC<double>(REP<double>(0, INF_D),DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-2.0, -0.1),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac)).first,  REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac) );
     BOOST_CHECK( F<double>::is_empty(F<double>::mul_rev_to_pair(REP_DEC<double>(REP<double>(-2.0, -0.1),DEC::dac), REP_DEC<double>(REP<double>(-INF_D, INF_D),DEC::dac)).second ) );

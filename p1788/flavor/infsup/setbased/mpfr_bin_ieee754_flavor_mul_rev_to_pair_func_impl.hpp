@@ -51,7 +51,7 @@ mpfr_bin_ieee754_flavor<T>::mul_rev_to_pair(int& t_fl, int& t_fu, int& t_sl, int
         return std::pair<representation, representation>(empty(), empty());
 
     // c = [-oo,+oo]
-    if (is_entire(c) || is_entire(b))
+    if (is_entire(c))
         return std::pair<representation, representation>(entire(), empty());    // ([-oo,+oo], empty)
 
 
