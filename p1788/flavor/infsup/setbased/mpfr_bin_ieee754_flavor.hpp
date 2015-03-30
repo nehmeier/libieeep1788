@@ -2607,7 +2607,7 @@ public:
 
 private:
 
-    static std::pair<representation,representation> mul_rev_to_pair(int& t_fl, int& t_fu, int& t_sl, int& t_su, 
+    static std::pair<representation,representation> mul_rev_to_pair(int& t_fl, int& t_fu, int& t_sl, int& t_su,
             representation const& b, representation const& c);
 
 public:
@@ -2749,12 +2749,12 @@ public:
 
 
 private:
-    static int pow_rev_inf(mpfr_var& xl,
-                           mpfr_var const& cu,
-                           int p);
-    static int pow_rev_sup(mpfr_var& xu,
-                           mpfr_var const& cl,
-                           int p);
+    static int pown_rev_inf(mpfr_var const& c,
+                            mpfr_var& x,
+                            int p);
+    static int pown_rev_sup(mpfr_var const& c,
+                            mpfr_var& x,
+                            int p);
 
 public:
 
