@@ -1,6 +1,9 @@
 == CHANGES ==
 
-  - improved accuracy of mulRev 
+0.1.5
+  - improved accuracy of mul_rev
+  - fixes issue #27: mul_rev_to_pair
+  - fixes issue #18: pown_rev is tightest 
 
 0.1.4
   - fixes issue #23: no signal of undefined_operation in set_dec
