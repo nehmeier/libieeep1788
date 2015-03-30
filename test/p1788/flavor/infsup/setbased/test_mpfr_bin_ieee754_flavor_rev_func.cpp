@@ -568,8 +568,8 @@ BOOST_AUTO_TEST_CASE(minimal_pown_rev_test)
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP<double>(-0.0,-0.0), -2) ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP<double>(-10.0,0.0), -2) ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP<double>(-10.0,-0.0), -2) ) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.7DE3A077D1568P-8"),std::stod("0X1.7DE3A077D1569P-8")), -2), REP<double>(std::stod("-0x1.a333333333335p+3"),std::stod("0x1.a333333333335p+3")) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.3570290CD6E14P-26"),std::stod("0X1.3570290CD6E15P-26")), -2), REP<double>(std::stod("-0x1.d1b251eb851eep+12"),std::stod("0x1.d1b251eb851eep+12")) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.7DE3A077D1568P-8"),std::stod("0X1.7DE3A077D1569P-8")), -2), REP<double>(std::stod("-0x1.a333333333334p+3"),std::stod("0x1.a333333333334p+3")) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.3570290CD6E14P-26"),std::stod("0X1.3570290CD6E15P-26")), -2), REP<double>(std::stod("-0x1.d1b251eb851edp+12"),std::stod("0x1.d1b251eb851edp+12")) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X0P+0"),std::stod("0X0.0000000000001P-1022")), -2), REP<double>(-INF_D,INF_D) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.3F0C482C977C9P-17"),INF_D), -2), REP<double>(std::stod("-0x1.444cccccccccep+8"),std::stod("0x1.444cccccccccep+8")) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.793D85EF38E47P-3"),std::stod("0X1.388P+13")), -2), REP<double>(std::stod("-0x1.2a3d70a3d70a5p+1"),std::stod("0x1.2a3d70a3d70a5p+1")) );
@@ -580,8 +580,8 @@ BOOST_AUTO_TEST_CASE(minimal_pown_rev_test)
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(-0.0,INF_D), -8), F<double>::entire() );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP<double>(0.0,0.0), -8) ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP<double>(-0.0,-0.0), -8) ) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.3CEF39247CA6DP-30"),std::stod("0X1.3CEF39247CA6EP-30")), -8), REP<double>(std::stod("-0x1.a333333333335p+3"),std::stod("0x1.a333333333335p+3")) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.113D9EF0A99ACP-103"),std::stod("0X1.113D9EF0A99ADP-103")), -8), REP<double>(std::stod("-0x1.d1b251eb851eep+12"),std::stod("0x1.d1b251eb851eep+12")) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.3CEF39247CA6DP-30"),std::stod("0X1.3CEF39247CA6EP-30")), -8), REP<double>(std::stod("-0x1.a333333333334p+3"),std::stod("0x1.a333333333334p+3")) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.113D9EF0A99ACP-103"),std::stod("0X1.113D9EF0A99ADP-103")), -8), REP<double>(std::stod("-0x1.d1b251eb851edp+12"),std::stod("0x1.d1b251eb851edp+12")) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X0P+0"),std::stod("0X0.0000000000001P-1022")), -8), REP<double>(-INF_D,INF_D) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.34CC3764D1E0CP-67"),INF_D), -8), REP<double>(std::stod("-0x1.444cccccccccep+8"),std::stod("0x1.444cccccccccep+8")) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.2DC80DB11AB7CP-10"),std::stod("0X1.1C37937E08P+53")), -8), REP<double>(std::stod("-0x1.2a3d70a3d70a5p+1"),std::stod("0x1.2a3d70a3d70a5p+1")) );
@@ -606,8 +606,8 @@ BOOST_AUTO_TEST_CASE(minimal_pown_rev_test)
     BOOST_CHECK_EQUAL( F<double>::pown_rev(F<double>::entire(), -3), F<double>::entire() );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP<double>(0.0,0.0), -3) ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP<double>(-0.0,-0.0), -3) ) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.D26DF4D8B1831P-12"),std::stod("0X1.D26DF4D8B1832P-12")), -3), REP<double>(std::stod("0x1.a333333333331p+3"),std::stod("0x1.a333333333335p+3")) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("-0X1.54347DED91B19P-39"),std::stod("-0X1.54347DED91B18P-39")), -3), REP<double>(std::stod("-0x1.d1b251eb851eep+12"),std::stod("-0x1.d1b251eb851eap+12")) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.D26DF4D8B1831P-12"),std::stod("0X1.D26DF4D8B1832P-12")), -3), REP<double>(std::stod("0x1.a333333333332p+3"),std::stod("0x1.a333333333334p+3")) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("-0X1.54347DED91B19P-39"),std::stod("-0X1.54347DED91B18P-39")), -3), REP<double>(std::stod("-0x1.d1b251eb851edp+12"),std::stod("-0x1.d1b251eb851ebp+12")) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X0P+0"),std::stod("0X0.0000000000001P-1022")), -3), REP<double>(std::stod("0x1p+358"),INF_D) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("-0X0.0000000000001P-1022"),std::stod("-0X0P+0")), -3), REP<double>(-INF_D,std::stod("-0x1p+358")) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(0.0,INF_D), -3), REP<double>(0.0,INF_D) );
@@ -621,10 +621,10 @@ BOOST_AUTO_TEST_CASE(minimal_pown_rev_test)
     BOOST_CHECK_EQUAL( F<double>::pown_rev(F<double>::entire(), -7), F<double>::entire() );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP<double>(0.0,0.0), -7) ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP<double>(-0.0,-0.0), -7) ) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.037D76C912DBCP-26"),std::stod("0X1.037D76C912DBDP-26")), -7), REP<double>(std::stod("0x1.a333333333332p+3"),std::stod("0x1.a333333333335p+3")) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("-0X1.F10F41FB8858FP-91"),std::stod("-0X1.F10F41FB8858EP-91")), -7), REP<double>(std::stod("-0x1.d1b251eb851eep+12"),std::stod("-0x1.d1b251eb851ebp+12")) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X0P+0"),std::stod("0X0.0000000000001P-1022")), -7), REP<double>(std::stod("0x1.588cea3f093bcp+153"),INF_D) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("-0X0.0000000000001P-1022"),std::stod("-0X0P+0")), -7), REP<double>(-INF_D,std::stod("-0x1.588cea3f093bcp+153")) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X1.037D76C912DBCP-26"),std::stod("0X1.037D76C912DBDP-26")), -7), REP<double>(std::stod("0x1.a333333333332p+3"),std::stod("0x1.a333333333334p+3")) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("-0X1.F10F41FB8858FP-91"),std::stod("-0X1.F10F41FB8858EP-91")), -7), REP<double>(std::stod("-0x1.d1b251eb851edp+12"),std::stod("-0x1.d1b251eb851ebp+12")) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("0X0P+0"),std::stod("0X0.0000000000001P-1022")), -7), REP<double>(std::stod("0x1.588cea3f093bdp+153"),INF_D) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(std::stod("-0X0.0000000000001P-1022"),std::stod("-0X0P+0")), -7), REP<double>(-INF_D,std::stod("-0x1.588cea3f093bdp+153")) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(0.0,INF_D), -7), REP<double>(0.0,INF_D) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(-0.0,INF_D), -7), REP<double>(0.0,INF_D) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<double>(-INF_D,0.0), -7), REP<double>(-INF_D,0.0) );
@@ -718,7 +718,7 @@ BOOST_AUTO_TEST_CASE(minimal_pown_rev_mixedtype_test)
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<float>(std::stof("-0X1.B6F9DCP+2"),std::stof("-0X1.266558P-5")), 3), REP<double>(std::stod("-0x1.e66666b817d3cp+0"),std::stod("-0x1.51eb845e4b647p-2")) );
 
     BOOST_CHECK_EQUAL( F<float>::pown_rev(REP<double>(std::stod("0X1.2DC80DB11AB7CP-10"),std::stod("0X1.1C37937E08P+53")), -8), REP<float>(std::stof("-0x1.2a3d72p+1"),std::stof("0x1.2a3d72p+1")) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<float>(std::stof("0X1.81E104P-8"),std::stof("0X1.BC64F4P+12")), -8), REP<double>(std::stod("-0x1.e666668aa72b1p+0"),std::stod("0x1.e666668aa72b1p+0")) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<float>(std::stof("0X1.81E104P-8"),std::stof("0X1.BC64F4P+12")), -8), REP<double>(std::stod("-0x1.e666668aa72bp+0"),std::stod("0x1.e666668aa72bp+0")) );
 
     BOOST_CHECK_EQUAL( F<float>::pown_rev(REP<double>(std::stod("0X1.B77C278DBBE13P-2"),std::stod("0X1.9P+6")), -1), REP<float>(std::stof("0x1.47ae14p-7"),std::stof("0x1.2a3d72p+1")) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP<float>(std::stof("-0X1.83E0FAP+1"),std::stof("-0X1.0D7942P-1")), -1), REP<double>(std::stod("-0x1.e66668deb8553p+0"),std::stod("-0x1.51eb8396bb9a8p-2")) );
@@ -862,8 +862,8 @@ BOOST_AUTO_TEST_CASE(minimal_pown_rev_dec_test)
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP_DEC<double>(REP<double>(-0.0,-0.0),DEC::com), -2) ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP_DEC<double>(REP<double>(-10.0,0.0),DEC::dac), -2) ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP_DEC<double>(REP<double>(-10.0,-0.0),DEC::def), -2) ) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.7DE3A077D1568P-8"),std::stod("0X1.7DE3A077D1569P-8")),DEC::dac), -2), REP_DEC<double>(REP<double>(std::stod("-0x1.a333333333335p+3"),std::stod("0x1.a333333333335p+3")),DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.3570290CD6E14P-26"),std::stod("0X1.3570290CD6E15P-26")),DEC::def), -2), REP_DEC<double>(REP<double>(std::stod("-0x1.d1b251eb851eep+12"),std::stod("0x1.d1b251eb851eep+12")),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.7DE3A077D1568P-8"),std::stod("0X1.7DE3A077D1569P-8")),DEC::dac), -2), REP_DEC<double>(REP<double>(std::stod("-0x1.a333333333334p+3"),std::stod("0x1.a333333333334p+3")),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.3570290CD6E14P-26"),std::stod("0X1.3570290CD6E15P-26")),DEC::def), -2), REP_DEC<double>(REP<double>(std::stod("-0x1.d1b251eb851edp+12"),std::stod("0x1.d1b251eb851edp+12")),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X0P+0"),std::stod("0X0.0000000000001P-1022")),DEC::com), -2), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.3F0C482C977C9P-17"),INF_D),DEC::dac), -2), REP_DEC<double>(REP<double>(std::stod("-0x1.444cccccccccep+8"),std::stod("0x1.444cccccccccep+8")),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.793D85EF38E47P-3"),std::stod("0X1.388P+13")),DEC::def), -2), REP_DEC<double>(REP<double>(std::stod("-0x1.2a3d70a3d70a5p+1"),std::stod("0x1.2a3d70a3d70a5p+1")),DEC::trv) );
@@ -874,8 +874,8 @@ BOOST_AUTO_TEST_CASE(minimal_pown_rev_dec_test)
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(-0.0,INF_D),DEC::dac), -8), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::trv) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP_DEC<double>(REP<double>(0.0,0.0),DEC::def), -8) ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP_DEC<double>(REP<double>(-0.0,-0.0),DEC::dac), -8) ) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.3CEF39247CA6DP-30"),std::stod("0X1.3CEF39247CA6EP-30")),DEC::com), -8), REP_DEC<double>(REP<double>(std::stod("-0x1.a333333333335p+3"),std::stod("0x1.a333333333335p+3")),DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.113D9EF0A99ACP-103"),std::stod("0X1.113D9EF0A99ADP-103")),DEC::def), -8), REP_DEC<double>(REP<double>(std::stod("-0x1.d1b251eb851eep+12"),std::stod("0x1.d1b251eb851eep+12")),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.3CEF39247CA6DP-30"),std::stod("0X1.3CEF39247CA6EP-30")),DEC::com), -8), REP_DEC<double>(REP<double>(std::stod("-0x1.a333333333334p+3"),std::stod("0x1.a333333333334p+3")),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.113D9EF0A99ACP-103"),std::stod("0X1.113D9EF0A99ADP-103")),DEC::def), -8), REP_DEC<double>(REP<double>(std::stod("-0x1.d1b251eb851edp+12"),std::stod("0x1.d1b251eb851edp+12")),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X0P+0"),std::stod("0X0.0000000000001P-1022")),DEC::dac), -8), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.34CC3764D1E0CP-67"),INF_D),DEC::def), -8), REP_DEC<double>(REP<double>(std::stod("-0x1.444cccccccccep+8"),std::stod("0x1.444cccccccccep+8")),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.2DC80DB11AB7CP-10"),std::stod("0X1.1C37937E08P+53")),DEC::com), -8), REP_DEC<double>(REP<double>(std::stod("-0x1.2a3d70a3d70a5p+1"),std::stod("0x1.2a3d70a3d70a5p+1")),DEC::trv) );
@@ -900,8 +900,8 @@ BOOST_AUTO_TEST_CASE(minimal_pown_rev_dec_test)
     BOOST_CHECK_EQUAL( F<double>::pown_rev(F<double>::entire_dec(), -3), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::trv) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP_DEC<double>(REP<double>(0.0,0.0),DEC::def), -3) ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP_DEC<double>(REP<double>(-0.0,-0.0),DEC::dac), -3) ) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.D26DF4D8B1831P-12"),std::stod("0X1.D26DF4D8B1832P-12")),DEC::com), -3), REP_DEC<double>(REP<double>(std::stod("0x1.a333333333331p+3"),std::stod("0x1.a333333333335p+3")),DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("-0X1.54347DED91B19P-39"),std::stod("-0X1.54347DED91B18P-39")),DEC::def), -3), REP_DEC<double>(REP<double>(std::stod("-0x1.d1b251eb851eep+12"),std::stod("-0x1.d1b251eb851eap+12")),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.D26DF4D8B1831P-12"),std::stod("0X1.D26DF4D8B1832P-12")),DEC::com), -3), REP_DEC<double>(REP<double>(std::stod("0x1.a333333333332p+3"),std::stod("0x1.a333333333334p+3")),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("-0X1.54347DED91B19P-39"),std::stod("-0X1.54347DED91B18P-39")),DEC::def), -3), REP_DEC<double>(REP<double>(std::stod("-0x1.d1b251eb851edp+12"),std::stod("-0x1.d1b251eb851ebp+12")),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X0P+0"),std::stod("0X0.0000000000001P-1022")),DEC::dac), -3), REP_DEC<double>(REP<double>(std::stod("0x1p+358"),INF_D),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("-0X0.0000000000001P-1022"),std::stod("-0X0P+0")),DEC::def), -3), REP_DEC<double>(REP<double>(-INF_D,std::stod("-0x1p+358")),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(0.0,INF_D),DEC::dac), -3), REP_DEC<double>(REP<double>(0.0,INF_D),DEC::trv) );
@@ -915,10 +915,10 @@ BOOST_AUTO_TEST_CASE(minimal_pown_rev_dec_test)
     BOOST_CHECK_EQUAL( F<double>::pown_rev(F<double>::entire_dec(), -7), REP_DEC<double>(REP<double>(-INF_D,INF_D),DEC::trv) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP_DEC<double>(REP<double>(0.0,0.0),DEC::com), -7) ) );
     BOOST_CHECK( F<double>::is_empty( F<double>::pown_rev(REP_DEC<double>(REP<double>(-0.0,-0.0),DEC::def), -7) ) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.037D76C912DBCP-26"),std::stod("0X1.037D76C912DBDP-26")),DEC::dac), -7), REP_DEC<double>(REP<double>(std::stod("0x1.a333333333332p+3"),std::stod("0x1.a333333333335p+3")),DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("-0X1.F10F41FB8858FP-91"),std::stod("-0X1.F10F41FB8858EP-91")),DEC::dac), -7), REP_DEC<double>(REP<double>(std::stod("-0x1.d1b251eb851eep+12"),std::stod("-0x1.d1b251eb851ebp+12")),DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X0P+0"),std::stod("0X0.0000000000001P-1022")),DEC::def), -7), REP_DEC<double>(REP<double>(std::stod("0x1.588cea3f093bcp+153"),INF_D),DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("-0X0.0000000000001P-1022"),std::stod("-0X0P+0")),DEC::def), -7), REP_DEC<double>(REP<double>(-INF_D,std::stod("-0x1.588cea3f093bcp+153")),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.037D76C912DBCP-26"),std::stod("0X1.037D76C912DBDP-26")),DEC::dac), -7), REP_DEC<double>(REP<double>(std::stod("0x1.a333333333332p+3"),std::stod("0x1.a333333333334p+3")),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("-0X1.F10F41FB8858FP-91"),std::stod("-0X1.F10F41FB8858EP-91")),DEC::dac), -7), REP_DEC<double>(REP<double>(std::stod("-0x1.d1b251eb851edp+12"),std::stod("-0x1.d1b251eb851ebp+12")),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X0P+0"),std::stod("0X0.0000000000001P-1022")),DEC::def), -7), REP_DEC<double>(REP<double>(std::stod("0x1.588cea3f093bdp+153"),INF_D),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(std::stod("-0X0.0000000000001P-1022"),std::stod("-0X0P+0")),DEC::def), -7), REP_DEC<double>(REP<double>(-INF_D,std::stod("-0x1.588cea3f093bdp+153")),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(0.0,INF_D),DEC::dac), -7), REP_DEC<double>(REP<double>(0.0,INF_D),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(-0.0,INF_D),DEC::def), -7), REP_DEC<double>(REP<double>(0.0,INF_D),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<double>(REP<double>(-INF_D,0.0),DEC::dac), -7), REP_DEC<double>(REP<double>(-INF_D,0.0),DEC::trv) );
@@ -1011,7 +1011,7 @@ BOOST_AUTO_TEST_CASE(minimal_pown_rev_dec_mixedtype_test)
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<float>(REP<float>(std::stof("-0X1.B6F9DCP+2"),std::stof("-0X1.266558P-5")),DEC::com), 3), REP_DEC<double>(REP<double>(std::stod("-0x1.e66666b817d3cp+0"),std::stod("-0x1.51eb845e4b647p-2")),DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<float>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.2DC80DB11AB7CP-10"),std::stod("0X1.1C37937E08P+53")),DEC::def), -8), REP_DEC<float>(REP<float>(std::stof("-0x1.2a3d72p+1"),std::stof("0x1.2a3d72p+1")),DEC::trv) );
-    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<float>(REP<float>(std::stof("0X1.81E104P-8"),std::stof("0X1.BC64F4P+12")),DEC::dac), -8), REP_DEC<double>(REP<double>(std::stod("-0x1.e666668aa72b1p+0"),std::stod("0x1.e666668aa72b1p+0")),DEC::trv) );
+    BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<float>(REP<float>(std::stof("0X1.81E104P-8"),std::stof("0X1.BC64F4P+12")),DEC::dac), -8), REP_DEC<double>(REP<double>(std::stod("-0x1.e666668aa72bp+0"),std::stod("0x1.e666668aa72bp+0")),DEC::trv) );
 
     BOOST_CHECK_EQUAL( F<float>::pown_rev(REP_DEC<double>(REP<double>(std::stod("0X1.B77C278DBBE13P-2"),std::stod("0X1.9P+6")),DEC::def), -1), REP_DEC<float>(REP<float>(std::stof("0x1.47ae14p-7"),std::stof("0x1.2a3d72p+1")),DEC::trv) );
     BOOST_CHECK_EQUAL( F<double>::pown_rev(REP_DEC<float>(REP<float>(std::stof("-0X1.83E0FAP+1"),std::stof("-0X1.0D7942P-1")),DEC::com), -1), REP_DEC<double>(REP<double>(std::stod("-0x1.e66668deb8553p+0"),std::stod("-0x1.51eb8396bb9a8p-2")),DEC::trv) );

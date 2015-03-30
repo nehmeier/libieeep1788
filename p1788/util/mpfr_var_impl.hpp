@@ -356,6 +356,13 @@ mpfr_t& mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::operator() ()
     return var_;
 }
 
+template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
+mpfr_t const& mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::operator() () const
+{
+    return var_;
+}
+
+
 // subnormalization of the value
 template<mpfr_prec_t PREC_, mpfr_exp_t EMIN_, mpfr_exp_t EMAX_, bool SUBNORMALIZE_>
 int mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::subnormalize(int t, mpfr_rnd_t rnd)

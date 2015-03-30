@@ -98,6 +98,7 @@ public:
 
     // Reference to the underlying mpfr_t
     mpfr_t& operator() ();
+    mpfr_t const& operator() () const;
 
     // subnormalization
     int subnormalize(int t, mpfr_rnd_t rnd);
