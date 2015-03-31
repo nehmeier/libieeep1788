@@ -439,6 +439,157 @@ int mpfr_root_si(mpfr_ptr rop, mpfr_srcptr op, long int k, mpfr_rnd_t rnd)
 }
 
 
+// Set k to the integer part of the division of x by Pi/2
+// the result is exact
+void mpfr_quadrant (mpz_ptr k, mpfr_srcptr op)
+{
+    mpfr_prec_t prec = mpfr_get_prec(op);
+    if (mpfr_sgn(op) == 0)
+    {
+        mpz_set_ui(k, 0);
+        return;
+    }
+
+    mpfr_exp_t saved_emin = mpfr_get_emin();
+    mpfr_exp_t saved_emax = mpfr_get_emax();
+    mpfr_set_emin(mpfr_get_emin_min());
+    mpfr_set_emax(mpfr_get_emax_max());
+    for (;;) 
+    {
+        mpfr_t k_inf, k_sup;
+
+        mpfr_init2(k_inf, prec);
+        mpfr_const_pi(k_inf, MPFR_RNDU);
+        mpfr_div(k_inf, op, k_inf, MPFR_RNDD);
+        mpfr_mul_2ui(k_inf, k_inf, 1, MPFR_RNDD);
+        mpfr_floor(k_inf, k_inf);
+
+        mpfr_init2(k_sup, prec);
+        mpfr_const_pi(k_sup, MPFR_RNDD);
+        mpfr_div(k_sup, op, k_sup, MPFR_RNDU);
+        mpfr_mul_2ui(k_sup, k_sup, 1, MPFR_RNDU);
+        mpfr_floor(k_sup, k_sup);
+
+        if (mpfr_cmp(k_inf, k_sup) == 0)
+        {
+            mpfr_get_z(k, k_inf, MPFR_RNDN);
+            mpfr_clear(k_inf);
+            mpfr_clear(k_sup);
+            mpfr_set_emin(saved_emin);
+            mpfr_set_emax(saved_emax);
+            return;
+        }
+        mpfr_clear(k_inf);
+        mpfr_clear(k_sup);
+        prec += mpfr_get_prec(op);
+    }
+}
+
+static int mpfr_atrig(mpfr_ptr rop, mpfr_srcptr op, int (*fun)(mpfr_ptr rop, mpfr_srcptr op, mpfr_rnd_t rnd), int sub, mpz_t npi, mpfr_rnd_t rnd)
+{
+    assert(rnd == MPFR_RNDU || rnd == MPFR_RNDD);
+    int t;
+    if (mpz_sgn(npi) == 0)
+    {
+        if (sub)
+        {
+            mpfr_rnd_t rnd1 = rnd == MPFR_RNDU ? MPFR_RNDD : (assert(rnd == MPFR_RNDD), MPFR_RNDU);
+            t = -(*fun)(rop, op, rnd1);
+            mpfr_neg(rop, rop, rnd);
+        }
+        else
+        {
+            t = (*fun)(rop, op, rnd);
+        }
+        return t;
+    }
+    mpfr_exp_t emin_rop = mpfr_get_emin();
+    mpfr_exp_t emax_rop = mpfr_get_emax();
+    mpfr_set_emin(mpfr_get_emin_min());
+    mpfr_set_emax(mpfr_get_emax_max());
+    mpfr_prec_t prec = mpfr_get_prec(rop) * 2;
+    for (;;)
+    {
+        mpfr_t pi, inf, sup;
+        mpfr_init2(pi, prec);
+        mpfr_init2(inf, prec);
+        mpfr_init2(sup, prec);
+
+        mpfr_const_pi(pi, MPFR_RNDD);
+        mpfr_mul_z(pi, pi, npi, MPFR_RNDD);
+        if (sub) 
+        {
+            (*fun)(sup, op, MPFR_RNDU);
+            mpfr_sub(sup, pi, sup, MPFR_RNDD);
+        }
+        else
+        {
+            (*fun)(inf, op, MPFR_RNDD);
+            mpfr_add(inf, pi, inf, MPFR_RNDD);
+        }
+
+        mpfr_const_pi(pi, MPFR_RNDU);
+        mpfr_mul_z(pi, pi, npi, MPFR_RNDU);
+        if (sub) 
+        {
+            (*fun)(inf, op, MPFR_RNDD);
+            mpfr_sub(inf, pi, inf, MPFR_RNDU);
+        }
+        else
+        {
+            (*fun)(sup, op, MPFR_RNDU);
+            mpfr_add(sup, pi, sup, MPFR_RNDU);
+        }
+
+        mpfr_clear(pi);
+        mpfr_prec_round(inf, mpfr_get_prec(rop), rnd);
+        mpfr_prec_round(sup, mpfr_get_prec(rop), rnd);
+        if (mpfr_cmp(inf, sup) == 0)
+        {
+            mpfr_set(rop, inf, rnd);
+            mpfr_clear(inf);
+            mpfr_clear(sup);
+            mpfr_set_emin(emin_rop);
+            mpfr_set_emax(emax_rop);
+            return mpfr_check_range(rop, rnd == MPFR_RNDU ? 1 : -1, rnd);
+        }
+        mpfr_clear(inf);
+        mpfr_clear(sup);
+        prec += mpfr_get_prec(rop);
+    }
+}
+
+// rop = (-1)^npi * asin(op) + npi*pi
+int mpfr_asin_npi(mpfr_ptr rop, mpfr_srcptr op, mpz_t npi, mpfr_rnd_t rnd)
+{
+    return mpfr_atrig(rop, op, mpfr_asin, mpz_tstbit(npi, 0), npi, rnd);
+}
+
+// rop = (-1)^npi * acos(op) + (npi + (1 - (-1)^npi)/2)*pi
+int mpfr_acos_npi(mpfr_ptr rop, mpfr_srcptr op, mpz_t npi, mpfr_rnd_t rnd)
+{
+    int sub = mpz_tstbit(npi, 0);
+    int t;
+    if (sub) {
+        mpz_t npi1;
+        mpz_init(npi1);
+        mpz_add_ui(npi1, npi, 1);
+        t = mpfr_atrig(rop, op, mpfr_acos, sub, npi1, rnd);
+        mpz_clear(npi1);
+    }
+    else
+    {
+        t = mpfr_atrig(rop, op, mpfr_acos, sub, npi, rnd);
+    }
+    return t;
+}
+
+// rop = atan(op) + npi*pi
+int mpfr_atan_npi(mpfr_ptr rop, mpfr_srcptr op, mpz_t npi, mpfr_rnd_t rnd)
+{
+    return mpfr_atrig(rop, op, mpfr_atan, 0, npi, rnd);
+}
+
 } // namespace util
 
 } // namespace p1788

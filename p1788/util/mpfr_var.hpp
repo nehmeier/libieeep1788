@@ -116,6 +116,18 @@ private:
 // and −0 for k nonnegative, whatever the parity of k.
 int mpfr_root_si(mpfr_ptr rop, mpfr_srcptr op, long int k, mpfr_rnd_t rnd);
 
+// Set k to the integer part of the division of x by Pi/2
+// the result is exact
+void mpfr_quadrant (mpz_ptr k, mpfr_srcptr op);
+
+// Set rop to (-1)^npi * asin(op) + npi*pi
+int mpfr_asin_npi(mpfr_ptr rop, mpfr_srcptr op, mpz_t npi, mpfr_rnd_t rnd);
+
+// Set rop to (-1)^npi * acos(op) + (npi + (1 - (-1)^npi)/2)*pi
+int mpfr_acos_npi(mpfr_ptr rop, mpfr_srcptr op, mpz_t npi, mpfr_rnd_t rnd);
+
+// Set rop to atan(op) + npi*pi
+int mpfr_atan_npi(mpfr_ptr rop, mpfr_srcptr op, mpz_t npi, mpfr_rnd_t rnd);
 
 } // namespace util
 

@@ -439,3 +439,127 @@ BOOST_AUTO_TEST_CASE(minimal_subnormalize_test)
     BOOST_CHECK(mpfr_equal_p(a(), x()));
     BOOST_CHECK(t1 == t2);
 }
+
+BOOST_AUTO_TEST_CASE(minimal_mpfr_root_si_test)
+{
+    mpfr_var<double>::setup();
+    mpfr_var<double> r;
+    mpfr_var<double> a;
+    mpfr_var<double> x;
+
+    a.set(0x1.7DE3A077D1568p-8, MPFR_RNDN);
+    x.set(0x1.a333333333334p+3, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_root_si(r(), a(), -2, MPFR_RNDU), 1);
+    BOOST_CHECK(mpfr_equal_p(r(), x()));
+    x.set(0x1.a333333333333p+3, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_root_si(r(), a(), -2, MPFR_RNDD), -1);
+    BOOST_CHECK(mpfr_equal_p(r(), x()));
+
+    a.set(0x1.D26DF4D8B1831p-12, MPFR_RNDN);
+    x.set(0x1.a333333333334p+3, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_root_si(r(), a(), -3, MPFR_RNDU), 1);
+    BOOST_CHECK(mpfr_equal_p(r(), x()));
+    x.set(0x1.a333333333333p+3, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_root_si(r(), a(), -3, MPFR_RNDD), -1);
+    BOOST_CHECK(mpfr_equal_p(r(), x()));
+
+    a.set(-0x1.D26DF4D8B1831p-12, MPFR_RNDN);
+    x.set(-0x1.a333333333333p+3, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_root_si(r(), a(), -3, MPFR_RNDU), 1);
+    BOOST_CHECK(mpfr_equal_p(r(), x()));
+    x.set(-0x1.a333333333334p+3, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_root_si(r(), a(), -3, MPFR_RNDD), -1);
+    BOOST_CHECK(mpfr_equal_p(r(), x()));
+}
+
+BOOST_AUTO_TEST_CASE(minimal_mpfr_quadrant)
+{
+    mpfr_var<double>::setup();
+    mpfr_var<double> a;
+    mpz_t k;
+    mpz_init(k);
+
+    a.set(214112296674652L, MPFR_RNDN);
+    p1788::util::mpfr_quadrant(k, a());
+    BOOST_CHECK(mpz_cmp_ui(k, 136308121570116L) == 0);
+
+    a.set(214112296674653L, MPFR_RNDN);
+    p1788::util::mpfr_quadrant(k, a());
+    BOOST_CHECK(mpz_cmp_ui(k, 136308121570117L) == 0);
+
+    mpz_clear(k);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_mpfr_asin_npi)
+{
+    mpfr_var<double>::setup();
+    mpfr_var<double> a;
+    mpfr_var<double> x;
+    mpz_t npi;
+    mpz_init(npi);
+
+    mpz_set_ui(npi, 1); 
+    a.set(0x1.fffffffffffffp-1, MPFR_RNDN);
+    x.set(0x1.921fb58442d19p0, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_asin_npi(a(), a(), npi, MPFR_RNDU), 1);
+    BOOST_CHECK(mpfr_equal_p(a(), x()));
+    a.set(0x1.fffffffffffffp-1, MPFR_RNDN);
+    x.set(0x1.921fb58442d18p0, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_asin_npi(a(), a(), npi, MPFR_RNDD), -1);
+    BOOST_CHECK(mpfr_equal_p(a(), x()));
+
+    mpz_clear(npi);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_mpfr_acos_npi)
+{
+    mpfr_var<double>::setup();
+    mpfr_var<double> a;
+    mpfr_var<double> x;
+    mpz_t npi;
+    mpz_init(npi);
+
+    mpz_set_ui(npi, 0); 
+    a.set(-1.0, MPFR_RNDN);
+    x.set(0x1.921fb54442d19p1, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_acos_npi(a(), a(), npi, MPFR_RNDU), 1);
+    BOOST_CHECK(mpfr_equal_p(a(), x()));
+    a.set(-1.0, MPFR_RNDN);
+    x.set(0x1.921fb54442d18p1, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_acos_npi(a(), a(), npi, MPFR_RNDD), -1);
+    BOOST_CHECK(mpfr_equal_p(a(), x()));
+
+    mpz_set_ui(npi, 1); 
+    a.set(-1.0, MPFR_RNDN);
+    x.set(0x1.921fb54442d19p1, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_acos_npi(a(), a(), npi, MPFR_RNDU), 1);
+    BOOST_CHECK(mpfr_equal_p(a(), x()));
+    a.set(-1.0, MPFR_RNDN);
+    x.set(0x1.921fb54442d18p1, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_acos_npi(a(), a(), npi, MPFR_RNDD), -1);
+    BOOST_CHECK(mpfr_equal_p(a(), x()));
+
+    mpz_clear(npi);
+}
+
+BOOST_AUTO_TEST_CASE(minimal_mpfr_atan_npi)
+{
+    mpfr_var<double>::setup();
+    mpfr_var<double> a;
+    mpfr_var<double> x;
+    mpz_t npi;
+    mpz_init(npi);
+
+    mpz_set_si(npi, -1); 
+    a.set(16331239353195368L, MPFR_RNDN);
+    x.set(-0x1.921fb54442d18p0, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_atan_npi(a(), a(), npi, MPFR_RNDU), 1);
+    BOOST_CHECK(mpfr_equal_p(a(), x()));
+    a.set(16331239353195368, MPFR_RNDN);
+    x.set(-0x1.921fb54442d19p0, MPFR_RNDN);
+    BOOST_CHECK_EQUAL(p1788::util::mpfr_atan_npi(a(), a(), npi, MPFR_RNDD), -1);
+    BOOST_CHECK(mpfr_equal_p(a(), x()));
+
+    mpz_clear(npi);
+}
+
