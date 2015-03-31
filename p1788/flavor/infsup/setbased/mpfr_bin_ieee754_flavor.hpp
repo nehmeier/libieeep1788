@@ -2747,17 +2747,6 @@ public:
     template<typename T_>
     static representation_dec abs_rev(representation_dec_type<T_> const& c);
 
-
-private:
-    static int pown_rev_inf(mpfr_var const& c,
-                            mpfr_var& x,
-                            int p);
-    static int pown_rev_sup(mpfr_var const& c,
-                            mpfr_var& x,
-                            int p);
-
-public:
-
     /// \todo TODO
     ///
     ///

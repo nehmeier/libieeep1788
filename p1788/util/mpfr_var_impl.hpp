@@ -26,6 +26,7 @@
 #ifndef LIBIEEEP1788_P1788_UTIL_MPFR_VAR_IMPL_HPP
 #define LIBIEEEP1788_P1788_UTIL_MPFR_VAR_IMPL_HPP
 
+#include <assert.h>
 
 namespace p1788
 {
@@ -372,6 +373,70 @@ int mpfr_var<PREC_,EMIN_,EMAX_,SUBNORMALIZE_>::subnormalize(int t, mpfr_rnd_t rn
 }
 
 
+// Possible MPFR extensions
+
+// Set rop to the kth root of op rounded in the direction rnd.
+// For k odd (resp. even) and op negative (including −Inf), set rop to a negative number (resp. NaN).
+// The kth root of −0 is defined to be -inf for negative odd k, NaN for negative even k
+// and −0 for k nonnegative, whatever the parity of k.
+int mpfr_root_si(mpfr_ptr rop, mpfr_srcptr op, long int k, mpfr_rnd_t rnd)
+{
+    if (k >= 0)
+        return mpfr_root(rop, op, (unsigned long int) k, rnd);
+    if (k == -1)
+        return mpfr_ui_div(rop, 1, op, rnd);
+    if (k == -2)
+        return mpfr_rec_sqrt(rop, op, rnd);
+    if (mpfr_nan_p(op) || ((k & 1) == 0 && mpfr_signbit(op)))
+        return mpfr_set_nan(rop), 0;
+    if (mpfr_inf_p(op))
+        return mpfr_set_zero(rop, mpfr_signbit(op) ? -1 : 1), 0;
+    if (mpfr_zero_p(op))
+        return mpfr_set_inf(rop, mpfr_signbit(op) ? -1 : 1), 0;
+
+    mpfr_rnd_t rnd_opp = rnd == MPFR_RNDU ? MPFR_RNDD : (assert(rnd == MPFR_RNDD), MPFR_RNDU);
+    int t1;
+    if (k != -k)
+    {
+        t1 = mpfr_root(rop, op, -k, rnd_opp);
+    }
+    else
+    {
+        int t2 = mpfr_sqrt(rop, op, rnd_opp);
+        t1 = mpfr_root(rop, rop, -(k >> 1), rnd_opp);
+        if (t1 == 0) t1 = t2;
+    }
+    int t = mpfr_ui_div(rop, 1, rop, rnd);
+    if (t == 0) t = -t1;
+    if (t == 0) return 0;
+
+    mpfr_t opm;
+    mpfr_init2(opm, mpfr_get_prec(op));
+    for (;;)
+    {
+        if (rnd == MPFR_RNDU)
+            mpfr_nextbelow(rop);
+        else
+            mpfr_nextabove(rop);
+        if (!mpfr_regular_p(rop)) break;
+        t1 = mpfr_pow_si(opm, rop, k, rnd_opp);
+        t = mpfr_cmp(op, opm);
+        if (t == 0) t = t1;
+        if (t == 0) return mpfr_clear(opm), 0;
+        if (rnd == MPFR_RNDU ? t < 0 : t > 0) break;
+    }
+    mpfr_clear(opm);
+    if (rnd == MPFR_RNDU)
+    {
+        mpfr_nextabove(rop);
+        return 1;
+    }
+    else
+    {
+        mpfr_nextbelow(rop);
+        return -1;
+    }
+}
 
 
 } // namespace util
