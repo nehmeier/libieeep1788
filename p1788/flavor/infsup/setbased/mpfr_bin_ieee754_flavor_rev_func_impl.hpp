@@ -569,6 +569,7 @@ mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation c
         return empty();
 
     representation cc = intersection(c, representation(-1.0, 1.0));
+    representation box = empty();
 
     // c is disjoint with [-1,1]
     if (is_empty(cc))
@@ -586,117 +587,88 @@ mpfr_bin_ieee754_flavor<T>::sin_rev(mpfr_bin_ieee754_flavor<T>::representation c
     mpfr_var cl(cc.first, MPFR_RNDD);
     mpfr_var cu(cc.second, MPFR_RNDU);
 
-    // lower and the upper bound of asin(c), result is contained in [-1/2pi, 1/2pi]
-    mpfr_asin(cl(), cl(), MPFR_RNDD);
-    mpfr_asin(cu(), cu(), MPFR_RNDU);
-
-    // lower and upper bound of pi
-    mpfr_var pid;
-    mpfr_var piu;
-    mpfr_const_pi(pid(), MPFR_RNDD);
-    mpfr_const_pi(piu(), MPFR_RNDU);
-
-    mpfr_var rl;
-    mpfr_var ru;
-    mpfr_var tmp;
-    long n;
-
+    mpfr_var rl, ru;
+    int t_l, t_u;
+    mpz_t npi;
+    mpz_init(npi);
 
     // move result of asin(c) to the left bound of x (pi-stepwise)
     // to compute the left box of the result
 
-
-    representation lbox = empty();  // left box
-
     // if left bound of x is -oo then the left box is [-oo,-max]
     if (x.first == -std::numeric_limits<T>::infinity())
     {
-        lbox.first = -std::numeric_limits<T>::infinity();
-        lbox.second = -std::numeric_limits<T>::max();
+        box = convex_hull(box, representation(-std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::max()));
     }
     else
     {
-        // Compute max integer n with: n * pi <= lower bound of x
-        mpfr_remquo(tmp(), &n, xl(), x.first < 0.0 ? pid() : piu(), MPFR_RNDD);
-        if (mpfr_cmp_si(tmp(),0) < 0)
-            --n;
-
-        for (int i = 0; is_empty(lbox) && i <= 1; i++)
+        util::mpfr_quadrant (npi, xl());
+        mpz_add_ui (npi, npi, 1);
+        mpz_fdiv_q_2exp (npi, npi, 1);
+        for (int i = 0; i < 2; i++)
         {
-            if ((n + i) % 2 == 0)     // n is even => move asin(c)
+            if (mpz_tstbit (npi, 0))
             {
-                tmp.set(n + i, MPFR_RNDN);
-
-                mpfr_fma(rl(), tmp(), x.first < 0.0 ? piu() : pid(), cl(), MPFR_RNDD);
-                mpfr_fma(ru(), tmp(), x.first < 0.0 ? pid() : piu(), cu(), MPFR_RNDU);
-
-                lbox.first = rl.template get<T>(MPFR_RNDD);
-                lbox.second = ru.template get<T>(MPFR_RNDU);
+                t_l = util::mpfr_asin_npi (rl(), cu(), npi, MPFR_RNDD);
+                t_u = util::mpfr_asin_npi (ru(), cl(), npi, MPFR_RNDU);
             }
-            else    // n is even => move mirrored asin(c)
+            else
             {
-                tmp.set(-n - i, MPFR_RNDN);
-
-                mpfr_fma(rl(), tmp(), x.first < 0.0 ? piu() : pid(), cu(), MPFR_RNDU);
-                mpfr_fma(ru(), tmp(), x.first < 0.0 ? pid() : piu(), cl(), MPFR_RNDD);
-
-                lbox.first = -rl.template get<T>(MPFR_RNDD);
-                lbox.second = -ru.template get<T>(MPFR_RNDU);
+                t_l = util::mpfr_asin_npi (rl(), cl(), npi, MPFR_RNDD);
+                t_u = util::mpfr_asin_npi (ru(), cu(), npi, MPFR_RNDU);
             }
+            representation r = representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
 
-            lbox = intersection(lbox, x);
+            if ((r.second == x.first && t_u != 0)
+                    || (x.second == r.first && t_l != 0))
+                r = empty();
+
+            box = convex_hull(box, intersection(x, r));
+
+            mpz_add_ui (npi, npi, 1);
         }
     }
-
-
 
     // move result of asin(c) to the right bound of x (pi-stepwise)
     // to compute the right box of the result
 
-
-    representation rbox = empty();  // right box
-
     // if right bound of x is +oo then the right box is [max,+oo]
     if (x.second == std::numeric_limits<T>::infinity())
     {
-        rbox.first = std::numeric_limits<T>::max();
-        rbox.second = std::numeric_limits<T>::infinity();
+        box = convex_hull(box, representation(std::numeric_limits<T>::max(), std::numeric_limits<T>::infinity()));
     }
     else
     {
-        // Compute min integer n with: n * pi >= upper bound of x
-        mpfr_remquo(tmp(), &n, xu(), x.second > 0.0 ? pid() : piu(), MPFR_RNDU);
-        if (mpfr_cmp_si(tmp(),0) > 0)
-            ++n;
-
-        for (int i = 0; is_empty(rbox) && i <= 1; i++)
+        util::mpfr_quadrant (npi, xu());
+        mpz_add_ui (npi, npi, 1);
+        mpz_fdiv_q_2exp (npi, npi, 1);
+        for (int i = 0; i < 2; i++)
         {
-            if ((n - i) % 2 == 0)     // n is even => move asin(c)
+            if (mpz_tstbit (npi, 0))
             {
-                tmp.set(n - i, MPFR_RNDN);
-
-                mpfr_fma(rl(), tmp(), x.second > 0.0 ? pid() : piu(), cl(), MPFR_RNDD);
-                mpfr_fma(ru(), tmp(), x.second > 0.0 ? piu() : pid(), cu(), MPFR_RNDU);
-
-                rbox.first = rl.template get<T>(MPFR_RNDD);
-                rbox.second = ru.template get<T>(MPFR_RNDU);
+                t_l = util::mpfr_asin_npi (rl(), cu(), npi, MPFR_RNDD);
+                t_u = util::mpfr_asin_npi (ru(), cl(), npi, MPFR_RNDU);
             }
-            else    // n is even => move mirrored asin(c)
+            else
             {
-                tmp.set(-n + i, MPFR_RNDN);
-
-                mpfr_fma(rl(), tmp(), x.second > 0.0 ? pid() : piu(), cu(), MPFR_RNDU);
-                mpfr_fma(ru(), tmp(), x.second > 0.0 ? piu() : pid(), cl(), MPFR_RNDD);
-
-                rbox.first = -rl.template get<T>(MPFR_RNDD);
-                rbox.second = -ru.template get<T>(MPFR_RNDU);
+                t_l = util::mpfr_asin_npi (rl(), cl(), npi, MPFR_RNDD);
+                t_u = util::mpfr_asin_npi (ru(), cu(), npi, MPFR_RNDU);
             }
+            representation r = representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
 
-            rbox = intersection(rbox, x);
+            if ((r.second == x.first && t_u != 0)
+                    || (x.second == r.first && t_l != 0))
+                r = empty();
+
+            box = convex_hull(box, intersection(x, r));
+
+            mpz_sub_ui (npi, npi, 1);
         }
     }
 
-    return convex_hull(lbox, rbox);
+    mpz_clear(npi);
+
+    return box;
 }
 
 // bare mixed type version
@@ -816,6 +788,7 @@ mpfr_bin_ieee754_flavor<T>::cos_rev(mpfr_bin_ieee754_flavor<T>::representation c
         return empty();
 
     representation cc = intersection(c, representation(-1.0, 1.0));
+    representation box = empty();
 
     // c is disjoint with [-1,1]
     if (is_empty(cc))
@@ -830,120 +803,89 @@ mpfr_bin_ieee754_flavor<T>::cos_rev(mpfr_bin_ieee754_flavor<T>::representation c
     mpfr_var xl(x.first, MPFR_RNDD);
     mpfr_var xu(x.second, MPFR_RNDU);
 
-    mpfr_var cl(cc.second, MPFR_RNDU);
-    mpfr_var cu(cc.first, MPFR_RNDD);
+    mpfr_var cl(cc.first, MPFR_RNDD);
+    mpfr_var cu(cc.second, MPFR_RNDU);
 
-    // lower and the upper bound of acos(c), result is contained in [0, pi]
-    mpfr_acos(cl(), cl(), MPFR_RNDD);
-    mpfr_acos(cu(), cu(), MPFR_RNDU);
-
-    // lower and upper bound of pi
-    mpfr_var pid;
-    mpfr_var piu;
-    mpfr_const_pi(pid(), MPFR_RNDD);
-    mpfr_const_pi(piu(), MPFR_RNDU);
-
-    mpfr_var rl;
-    mpfr_var ru;
-    mpfr_var tmp;
-    long n;
-
+    mpfr_var rl, ru;
+    int t_l, t_u;
+    mpz_t npi;
+    mpz_init(npi);
 
     // move result of acos(c) to the left bound of x (pi-stepwise)
     // to compute the left box of the result
 
-
-    representation lbox = empty();  // left box
-
     // if left bound of x is -oo then the left box is [-oo,-max]
     if (x.first == -std::numeric_limits<T>::infinity())
     {
-        lbox.first = -std::numeric_limits<T>::infinity();
-        lbox.second = -std::numeric_limits<T>::max();
+        box = convex_hull(box, representation(-std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::max()));
     }
     else
     {
-        // Compute max integer n with: n * pi <= lower bound of x
-        mpfr_remquo(tmp(), &n, xl(), x.first < 0.0 ? pid() : piu(), MPFR_RNDD);
-        if (mpfr_cmp_si(tmp(),0) < 0)
-            --n;
-
-        for (int i = 0; is_empty(lbox) && i <= 1; i++)
+        util::mpfr_quadrant (npi, xl());
+        mpz_fdiv_q_2exp (npi, npi, 1);
+        for (int i = 0; i < 2; i++)
         {
-            if ((n + i) % 2 == 0)     // n is even => move acos(c)
+            if (mpz_tstbit (npi, 0))
             {
-                tmp.set(n + i, MPFR_RNDN);
-
-                mpfr_fma(rl(), tmp(), x.first < 0.0 ? piu() : pid(), cl(), MPFR_RNDD);
-                mpfr_fma(ru(), tmp(), x.first < 0.0 ? pid() : piu(), cu(), MPFR_RNDU);
-
-                lbox.first = rl.template get<T>(MPFR_RNDD);
-                lbox.second = ru.template get<T>(MPFR_RNDU);
+                t_l = util::mpfr_acos_npi (rl(), cl(), npi, MPFR_RNDD);
+                t_u = util::mpfr_acos_npi (ru(), cu(), npi, MPFR_RNDU);
             }
-            else    // n is even => move mirrored acos(c)
+            else
             {
-                tmp.set(-n - i - 1, MPFR_RNDN);
-
-                mpfr_fma(rl(), tmp(), x.first < 0.0 ? piu() : pid(), cu(), MPFR_RNDU);
-                mpfr_fma(ru(), tmp(), x.first < 0.0 ? pid() : piu(), cl(), MPFR_RNDD);
-
-                lbox.first = -rl.template get<T>(MPFR_RNDD);
-                lbox.second = -ru.template get<T>(MPFR_RNDU);
+                t_l = util::mpfr_acos_npi (rl(), cu(), npi, MPFR_RNDD);
+                t_u = util::mpfr_acos_npi (ru(), cl(), npi, MPFR_RNDU);
             }
+            representation r = representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
 
-            lbox = intersection(lbox, x);
+            if ((r.second == x.first && t_u != 0)
+                    || (x.second == r.first && t_l != 0))
+                r = empty();
+
+            box = convex_hull(box, intersection(x, r));
+
+            mpz_add_ui (npi, npi, 1);
         }
     }
-
-
 
     // move result of acos(c) to the right bound of x (pi-stepwise)
     // to compute the right box of the result
 
-
-    representation rbox = empty();  // right box
-
     // if right bound of x is +oo then the right box is [max,+oo]
     if (x.second == std::numeric_limits<T>::infinity())
     {
-        rbox.first = std::numeric_limits<T>::max();
-        rbox.second = std::numeric_limits<T>::infinity();
+        box = convex_hull(box, representation(std::numeric_limits<T>::max(), std::numeric_limits<T>::infinity()));
     }
     else
     {
-        // Compute max integer n with: n * pi <= upper bound of x
-        mpfr_remquo(tmp(), &n, xu(), x.second > 0.0 ? pid() : piu(), MPFR_RNDU);
-        if (mpfr_cmp_si(tmp(),0) < 0)
-            --n;
-
-        for (int i = 0; is_empty(rbox) && i <= 1; i++)
+        util::mpfr_quadrant (npi, xu());
+        mpz_fdiv_q_2exp (npi, npi, 1);
+        for (int i = 0; i < 2; i++)
         {
-            if ((n - i) % 2 == 0)     // n is even => move acos(c)
+            if (mpz_tstbit (npi, 0))
             {
-                tmp.set(n - i, MPFR_RNDN);
-
-                mpfr_fma(rl(), tmp(), x.second > 0.0 ? pid() : piu(), cl(), MPFR_RNDD);
-                mpfr_fma(ru(), tmp(), x.second > 0.0 ? piu() : pid(), cu(), MPFR_RNDU);
-
-                rbox.first = rl.template get<T>(MPFR_RNDD);
-                rbox.second = ru.template get<T>(MPFR_RNDU);
+                t_l = util::mpfr_acos_npi (rl(), cl(), npi, MPFR_RNDD);
+                t_u = util::mpfr_acos_npi (ru(), cu(), npi, MPFR_RNDU);
             }
-            else    // n is even => move mirrored acos(c)
+            else
             {
-                tmp.set(-n + i - 1, MPFR_RNDN);
-
-                mpfr_fma(rl(), tmp(), x.second > 0.0 ? pid() : piu(), cu(), MPFR_RNDU);
-                mpfr_fma(ru(), tmp(), x.second > 0.0 ? piu() : pid(), cl(), MPFR_RNDD);
-
-                rbox.first = -rl.template get<T>(MPFR_RNDD);
-                rbox.second = -ru.template get<T>(MPFR_RNDU);
+                t_l = util::mpfr_acos_npi (rl(), cu(), npi, MPFR_RNDD);
+                t_u = util::mpfr_acos_npi (ru(), cl(), npi, MPFR_RNDU);
             }
+            representation r = representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
 
-            rbox = intersection(rbox, x);
+            if ((r.second == x.first && t_u != 0)
+                    || (x.second == r.first && t_l != 0))
+                r = empty();
+
+            box = convex_hull(box, intersection(x, r));
+
+            mpz_sub_ui (npi, npi, 1);
         }
     }
 
-    return convex_hull(lbox, rbox);
+    mpz_clear(npi);
+
+    return box;
 }
 
 // bare mixed type version
@@ -1059,6 +1001,7 @@ mpfr_bin_ieee754_flavor<T>::tan_rev(mpfr_bin_ieee754_flavor<T>::representation c
     if (!is_valid(c) || !is_valid(x) || is_empty(c) || is_empty(x))
         return empty();
 
+    representation box = empty();
 
     mpfr_var::setup();
 
@@ -1068,93 +1011,72 @@ mpfr_bin_ieee754_flavor<T>::tan_rev(mpfr_bin_ieee754_flavor<T>::representation c
     mpfr_var cl(c.first, MPFR_RNDD);
     mpfr_var cu(c.second, MPFR_RNDU);
 
-    // lower and the upper bound of atan(c), result is contained in [-1/2pi, 1/2pi]
-    mpfr_atan(cl(), cl(), MPFR_RNDD);
-    mpfr_atan(cu(), cu(), MPFR_RNDU);
-
-    // lower and upper bound of pi
-    mpfr_var pid;
-    mpfr_var piu;
-    mpfr_const_pi(pid(), MPFR_RNDD);
-    mpfr_const_pi(piu(), MPFR_RNDU);
-
-    mpfr_var rl;
-    mpfr_var ru;
-    mpfr_var tmp;
-    long n;
-
+    mpfr_var rl, ru;
+    int t_l, t_u;
+    mpz_t npi;
+    mpz_init(npi);
 
     // move result of atan(c) to the left bound of x (pi-stepwise)
     // to compute the left box of the result
 
-
-    representation lbox = empty();  // left box
-
     // if left bound of x is -oo then the left box is [-oo,-max]
     if (x.first == -std::numeric_limits<T>::infinity())
     {
-        lbox.first = -std::numeric_limits<T>::infinity();
-        lbox.second = -std::numeric_limits<T>::max();
+        box = convex_hull(box, representation(-std::numeric_limits<T>::infinity(), -std::numeric_limits<T>::max()));
     }
     else
     {
-        // Compute max integer n with: n * pi <= lower bound of x
-        mpfr_remquo(tmp(), &n, xl(), x.first < 0.0 ? pid() : piu(), MPFR_RNDD);
-        if (mpfr_cmp_si(tmp(),0) < 0)
-            --n;
-
-        // move atan(c)
-        for (int i = 0; is_empty(lbox) && i <= 1; i++)
+        util::mpfr_quadrant (npi, xl());
+        mpz_add_ui (npi, npi, 1);
+        mpz_fdiv_q_2exp (npi, npi, 1);
+        for (int i = 0; i < 2; i++)
         {
-            tmp.set(n + i, MPFR_RNDN);
+            t_l = util::mpfr_atan_npi (rl(), cl(), npi, MPFR_RNDD);
+            t_u = util::mpfr_atan_npi (ru(), cu(), npi, MPFR_RNDU);
+            representation r = representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
 
-            mpfr_fma(rl(), tmp(), x.first < 0.0 ? piu() : pid(), cl(), MPFR_RNDD);
-            mpfr_fma(ru(), tmp(), x.first < 0.0 ? pid() : piu(), cu(), MPFR_RNDU);
+            if ((r.second == x.first && t_u != 0)
+                    || (x.second == r.first && t_l != 0))
+                r = empty();
 
-            lbox.first = rl.template get<T>(MPFR_RNDD);
-            lbox.second = ru.template get<T>(MPFR_RNDU);
+            box = convex_hull(box, intersection(x, r));
 
-            lbox = intersection(lbox, x);
+            mpz_add_ui (npi, npi, 1);
         }
     }
-
-
 
     // move result of atan(c) to the right bound of x (pi-stepwise)
     // to compute the right box of the result
 
-
-    representation rbox = empty();  // right box
-
     // if right bound of x is +oo then the right box is [max,+oo]
     if (x.second == std::numeric_limits<T>::infinity())
     {
-        rbox.first = std::numeric_limits<T>::max();
-        rbox.second = std::numeric_limits<T>::infinity();
+        box = convex_hull(box, representation(std::numeric_limits<T>::max(), std::numeric_limits<T>::infinity()));
     }
     else
     {
-        // Compute min integer n with: n * pi >= upper bound of x
-        mpfr_remquo(tmp(), &n, xu(), x.second > 0.0 ? pid() : piu(), MPFR_RNDU);
-        if (mpfr_cmp_si(tmp(),0) > 0)
-            ++n;
-
-        // move atan(c)
-        for (int i = 0; is_empty(rbox) && i <= 1; i++)
+        util::mpfr_quadrant (npi, xu());
+        mpz_add_ui (npi, npi, 1);
+        mpz_fdiv_q_2exp (npi, npi, 1);
+        for (int i = 0; i < 2; i++)
         {
-            tmp.set(n - i, MPFR_RNDN);
+            t_l = util::mpfr_atan_npi (rl(), cl(), npi, MPFR_RNDD);
+            t_u = util::mpfr_atan_npi (ru(), cu(), npi, MPFR_RNDU);
+            representation r = representation(rl.template get<T>(MPFR_RNDD), ru.template get<T>(MPFR_RNDU));
 
-            mpfr_fma(rl(), tmp(), x.second > 0.0 ? pid() : piu(), cl(), MPFR_RNDD);
-            mpfr_fma(ru(), tmp(), x.second > 0.0 ? piu() : pid(), cu(), MPFR_RNDU);
+            if ((r.second == x.first && t_u != 0)
+                    || (x.second == r.first && t_l != 0))
+                r = empty();
 
-            rbox.first = rl.template get<T>(MPFR_RNDD);
-            rbox.second = ru.template get<T>(MPFR_RNDU);
+            box = convex_hull(box, intersection(x, r));
 
-            rbox = intersection(rbox, x);
+            mpz_sub_ui (npi, npi, 1);
         }
     }
 
-    return convex_hull(lbox, rbox);
+    mpz_clear(npi);
+
+    return box;
 }
 
 // bare mixed type version

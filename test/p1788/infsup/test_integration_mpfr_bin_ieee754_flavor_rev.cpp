@@ -153,7 +153,7 @@ BOOST_AUTO_TEST_CASE(integration_cos_rev_test)
     BOOST_CHECK_EQUAL( I<float>::cos_rev(I<double>(1.0,1.0)), I<float>(-INF_F,INF_F) );
 
     BOOST_CHECK_EQUAL( cos_rev(I<double>(std::stod("0X1.1A62633145C06P-54"),std::stod("0X1.1A62633145C07P-54")), I<double>(1.57,1.58)), I<double>(std::stod("0X1.921FB54442D17P+0"),std::stod("0X1.921FB54442D19P+0")) );
-    BOOST_CHECK_EQUAL( I<double>::cos_rev(I<double>(std::stod("-0X1P+0"),std::stod("-0X1.FFFFFFFFFFFFFP-1")), I<double>(3.14,3.15)), I<double>(std::stod("0x1.921fb52442d18p+1"),std::stod("0x1.921fb56442d1ap+1")) );
+    BOOST_CHECK_EQUAL( I<double>::cos_rev(I<double>(std::stod("-0X1P+0"),std::stod("-0X1.FFFFFFFFFFFFFP-1")), I<double>(3.14,3.15)), I<double>(std::stod("0x1.921fb52442d18p+1"),std::stod("0x1.921fb56442d19p+1")) );
     BOOST_CHECK_EQUAL( I<float>::cos_rev(I<double>(std::stod("0X1.1A62633145C06P-53"),std::stod("0X1.1A62633145C07P-53")), I<double>(-INF_D,1.5)), I<float>(-INF_F,std::stof("-0X1.921FB4P+0")) );
 
     BOOST_CHECK_EQUAL( cos_rev(DI<double>(-1.0,1.0,DEC::com)), DI<double>(-INF_D, INF_D,DEC::trv) );
@@ -165,7 +165,7 @@ BOOST_AUTO_TEST_CASE(integration_cos_rev_test)
 
     BOOST_CHECK_EQUAL( cos_rev(DI<double>(std::stod("0X1.1A62633145C06P-54"),std::stod("0X1.1A62633145C07P-54"),DEC::def), DI<double>(1.57,1.58,DEC::def)), DI<double>(std::stod("0X1.921FB54442D17P+0"),std::stod("0X1.921FB54442D19P+0"),DEC::trv) );
     BOOST_CHECK_EQUAL( decoration( cos_rev(DI<double>(std::stod("0X1.1A62633145C06P-54"),std::stod("0X1.1A62633145C07P-54"),DEC::def), DI<double>(1.57,1.58,DEC::def)) ), DEC::trv );
-    BOOST_CHECK_EQUAL( DI<double>::cos_rev(DI<double>(std::stod("-0X1P+0"),std::stod("-0X1.FFFFFFFFFFFFFP-1"),DEC::dac), DI<double>(3.14,3.15,DEC::def)), DI<double>(std::stod("0x1.921fb52442d18p+1"),std::stod("0x1.921fb56442d1ap+1"),DEC::trv) );
+    BOOST_CHECK_EQUAL( DI<double>::cos_rev(DI<double>(std::stod("-0X1P+0"),std::stod("-0X1.FFFFFFFFFFFFFP-1"),DEC::dac), DI<double>(3.14,3.15,DEC::def)), DI<double>(std::stod("0x1.921fb52442d18p+1"),std::stod("0x1.921fb56442d19p+1"),DEC::trv) );
     BOOST_CHECK_EQUAL( decoration( DI<double>::cos_rev(DI<double>(std::stod("-0X1P+0"),std::stod("-0X1.FFFFFFFFFFFFFP-1"),DEC::dac), DI<double>(3.14,3.15,DEC::def)) ), DEC::trv );
     BOOST_CHECK_EQUAL( DI<float>::cos_rev(DI<double>(std::stod("0X1.1A62633145C06P-53"),std::stod("0X1.1A62633145C07P-53"),DEC::com), DI<double>(-INF_D,1.5,DEC::dac)), DI<float>(-INF_F,std::stof("-0X1.921FB4P+0"),DEC::trv) );
     BOOST_CHECK_EQUAL( decoration( DI<float>::cos_rev(DI<double>(std::stod("0X1.1A62633145C06P-53"),std::stod("0X1.1A62633145C07P-53"),DEC::com), DI<double>(-INF_D,1.5,DEC::dac)) ), DEC::trv );
@@ -177,7 +177,7 @@ BOOST_AUTO_TEST_CASE(integration_tan_rev_test)
     BOOST_CHECK_EQUAL( I<double>::tan_rev(I<double>(0.1,0.1)), I<double>(-INF_D, INF_D) );
     BOOST_CHECK_EQUAL( I<float>::tan_rev(I<double>(std::stod("0X1.1A62633145C06P-53"),std::stod("0X1.1A62633145C07P-53"))), I<float>(-INF_F, INF_F) );
 
-    BOOST_CHECK_EQUAL( tan_rev(I<double>(std::stod("0X1.72CECE675D1FCP-52"),std::stod("0X1.72CECE675D1FDP-52")), I<double>(-3.15,3.15)), I<double>(std::stod("-0X1.921FB54442D19P+1"),std::stod("0X1.921FB54442D1aP+1")) );
+    BOOST_CHECK_EQUAL( tan_rev(I<double>(std::stod("0X1.72CECE675D1FCP-52"),std::stod("0X1.72CECE675D1FDP-52")), I<double>(-3.15,3.15)), I<double>(std::stod("-0X1.921FB54442D18P+1"),std::stod("0X1.921FB54442D1aP+1")) );
     BOOST_CHECK_EQUAL( I<double>::tan_rev(I<double>(std::stod("-0X1.D02967C31+53"),std::stod("0X1.D02967C31+53")), I<double>(-1.5707965,INF_D)), I<double>(std::stod("-0x1.111858f8568f7p+0"),INF_D) );
     BOOST_CHECK_EQUAL( I<float>::tan_rev(I<double>(std::stod("0X1.D02967C31CDB4P+53"),std::stod("0X1.D02967C31CDB5P+53")), I<double>(-1.5708,1.5708)), I<float>(std::stof("-0x1.921fb6p+0"),std::stof("0x1.921fb6p+0")) );
 
@@ -188,7 +188,7 @@ BOOST_AUTO_TEST_CASE(integration_tan_rev_test)
     BOOST_CHECK_EQUAL( DI<float>::tan_rev(DI<double>(-156.0,-12.0,DEC::com)), DI<float>(-INF_F, INF_F,DEC::trv) );
     BOOST_CHECK_EQUAL( decoration( DI<float>::tan_rev(DI<double>(-156.0,-12.0,DEC::com)) ), DEC::trv );
 
-    BOOST_CHECK_EQUAL( tan_rev(DI<double>(std::stod("0X1.D02967C31CDB4P+53"),std::stod("0X1.D02967C31CDB5P+53"),DEC::dac), DI<double>(-1.5708,1.5708,DEC::def)), DI<double>(std::stod("-0x1.921fb54442d1bp+0"),std::stod("0x1.921fb54442d19p+0"),DEC::trv) );
+    BOOST_CHECK_EQUAL( tan_rev(DI<double>(std::stod("0X1.D02967C31CDB4P+53"),std::stod("0X1.D02967C31CDB5P+53"),DEC::dac), DI<double>(-1.5708,1.5708,DEC::def)), DI<double>(std::stod("-0x1.921fb54442d19p+0"),std::stod("0x1.921fb54442d19p+0"),DEC::trv) );
     BOOST_CHECK_EQUAL( decoration( tan_rev(DI<double>(std::stod("0X1.D02967C31CDB4P+53"),std::stod("0X1.D02967C31CDB5P+53"),DEC::dac), DI<double>(-1.5708,1.5708,DEC::def)) ), DEC::trv );
     BOOST_CHECK_EQUAL( DI<double>::tan_rev(DI<double>(std::stod("-0X1.D02967C31+53"),std::stod("0X1.D02967C31+53"),DEC::def), DI<double>(-INF_D,1.5707965,DEC::def)), DI<double>(-INF_D,std::stod("0x1.111858f8568f7p+0"),DEC::trv) );
     BOOST_CHECK_EQUAL( decoration( DI<double>::tan_rev(DI<double>(std::stod("-0X1.D02967C31+53"),std::stod("0X1.D02967C31+53"),DEC::def), DI<double>(-INF_D,1.5707965,DEC::def)) ), DEC::trv );
